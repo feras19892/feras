@@ -1,24 +1,28 @@
 import { db } from '../../db/index.js';
 import { randomInt } from 'crypto';
 import { invalidateSystemSetting } from '../../shared/system-settings.js';
+import { broadcastEvent } from '../sse/event-bus.js';
 
 export async function getAllUsers(page = 1, limit = 50, search?: string, role?: string) {
   const offset = (page - 1) * limit;
   let where = 'WHERE 1=1';
   const params: (string | number)[] = [];
   if (search) {
-    where += ' AND (name LIKE ? OR email LIKE ?)';
+    where += ' AND (u.name LIKE ? OR u.email LIKE ?)';
     params.push(`%${search}%`, `%${search}%`);
   }
   if (role) {
-    where += ' AND role = ?';
+    where += ' AND u.role = ?';
     params.push(role);
   }
   const rows = await db.all(
-    `SELECT id, email, name, role, email_verified_at, created_at FROM users ${where} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+    `SELECT u.id, u.email, u.name, u.role, u.email_verified_at, u.created_at, u.blocked_at, u.block_reason, u.school_id, s.name as school_name
+     FROM users u
+     LEFT JOIN schools s ON u.school_id = s.id
+     ${where} ORDER BY u.created_at DESC LIMIT ? OFFSET ?`,
     ...params, limit, offset
   );
-  const total = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users ${where}`, ...params);
+  const total = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users u ${where}`, ...params);
   return { users: rows, total: total?.count || 0, page, limit, totalPages: Math.ceil((total?.count || 0) / limit) };
 }
 
@@ -33,7 +37,7 @@ export async function getSystemStats() {
   const avgGrade = await db.get(`SELECT AVG(grade) as avg FROM experiment_reports WHERE grade IS NOT NULL`);
 
   const todayLogins = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE date(login_at) = date('now')`);
-  const activeNow = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL`);
+  const activeNow = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL AND login_at > datetime('now', '-30 minutes')`);
   const activeUsersWeek = await db.get(`SELECT COUNT(DISTINCT user_id) as count FROM session_log WHERE login_at > datetime('now', '-7 days')`);
   const totalSessions = await db.get(`SELECT COUNT(*) as count FROM session_log`);
 
@@ -56,7 +60,16 @@ export async function getSystemStats() {
   };
 }
 
-export async function getAllClassesWithTeachers() {
+export async function getAllClassesWithTeachers(schoolId?: number) {
+  if (schoolId) {
+    return db.all(
+      `SELECT c.*, u.name as teacher_name, u.email as teacher_email,
+       (SELECT COUNT(*) FROM class_students cs WHERE cs.class_id = c.id) as student_count
+       FROM classes c JOIN users u ON c.teacher_id = u.id
+       WHERE c.school_id = ? ORDER BY c.created_at DESC`,
+      schoolId,
+    );
+  }
   return db.all(
     `SELECT c.*, u.name as teacher_name, u.email as teacher_email,
      (SELECT COUNT(*) FROM class_students cs WHERE cs.class_id = c.id) as student_count
@@ -64,20 +77,16 @@ export async function getAllClassesWithTeachers() {
   );
 }
 
-export async function getAllReportsWithDetails(page = 1, limit = 50) {
-  const offset = (page - 1) * limit;
-  const rows = await db.all(
-    `SELECT r.*, u.name as student_name, u.email as student_email,
-     c.name as class_name, t.name as teacher_name
-     FROM experiment_reports r
-     JOIN users u ON r.student_id = u.id
-     JOIN classes c ON r.class_id = c.id
-     JOIN users t ON c.teacher_id = t.id
-     ORDER BY r.submitted_at DESC LIMIT ? OFFSET ?`,
-    limit, offset
+export async function getAllTeachers(schoolId?: number) {
+  if (schoolId) {
+    return db.all(
+      `SELECT id, name, email FROM users WHERE role = 'teacher' AND school_id = ? ORDER BY name`,
+      schoolId,
+    );
+  }
+  return db.all(
+    `SELECT id, name, email FROM users WHERE role = 'teacher' ORDER BY name`
   );
-  const total = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports r JOIN users u ON r.student_id = u.id JOIN classes c ON r.class_id = c.id`);
-  return { reports: rows, total: total?.count || 0, page, limit, totalPages: Math.ceil((total?.count || 0) / limit) };
 }
 
 export async function deleteUser(userId: number) {
@@ -162,6 +171,26 @@ export async function deleteUser(userId: number) {
   return { success: true };
 }
 
+export async function deleteAllNonAdminUsers() {
+  const before = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users WHERE role != 'admin'`);
+  await db.run(`PRAGMA foreign_keys = OFF`);
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    await db.run(`DELETE FROM notifications WHERE user_id IN (SELECT id FROM users WHERE role != 'admin')`);
+    await db.run(`DELETE FROM subscription_notification_queue WHERE user_id IN (SELECT id FROM users WHERE role != 'admin')`);
+    await db.run(`DELETE FROM subscriptions WHERE owner_type = 'user' AND owner_id IN (SELECT id FROM users WHERE role != 'admin')`);
+    const res = await db.run(`DELETE FROM users WHERE role != 'admin'`);
+    await db.run('COMMIT');
+    const after = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users WHERE role != 'admin'`);
+    return { success: true, count: res.changes ?? 0, remaining: after?.count ?? 0 };
+  } catch (err) {
+    await db.run('ROLLBACK');
+    throw err;
+  } finally {
+    await db.run(`PRAGMA foreign_keys = ON`);
+  }
+}
+
 export async function updateUserRole(userId: number, role: string) {
   await db.run(`UPDATE users SET role = ? WHERE id = ?`, role, userId);
   return { success: true };
@@ -230,22 +259,24 @@ export async function updateClassForAdmin(classId: string, data: { name?: string
   return { success: true };
 }
 
-export async function updateReportGradeForAdmin(reportId: number, grade: number, feedback?: string) {
-  const report = await db.get(`SELECT id FROM experiment_reports WHERE id = ?`, reportId);
-  if (!report) return { success: false, message: 'التقرير غير موجود' };
-  if (grade < 0 || grade > 100) return { success: false, message: 'الدرجة يجب أن تكون بين 0 و 100' };
-
+export async function freezeClassForAdmin(classId: string, reason: string, frozenBy: number) {
+  const cls = await db.get<{ id: string }>(`SELECT id FROM classes WHERE id = ?`, classId);
+  if (!cls) return { success: false, message: 'الفصل غير موجود' };
   await db.run(
-    `UPDATE experiment_reports SET grade = ?, status = 'graded', graded_at = datetime('now'), feedback = ? WHERE id = ?`,
-    grade, feedback || null, reportId
+    `UPDATE classes SET is_frozen = 1, frozen_reason = ?, frozen_at = datetime('now'), frozen_by = ? WHERE id = ?`,
+    reason, frozenBy, classId,
   );
   return { success: true };
 }
 
-export async function getAllTeachers() {
-  return db.all(
-    `SELECT id, name, email FROM users WHERE role = 'teacher' ORDER BY name`
+export async function unfreezeClassForAdmin(classId: string) {
+  const cls = await db.get<{ id: string }>(`SELECT id FROM classes WHERE id = ?`, classId);
+  if (!cls) return { success: false, message: 'الفصل غير موجود' };
+  await db.run(
+    `UPDATE classes SET is_frozen = 0, frozen_reason = NULL, frozen_at = NULL, frozen_by = NULL WHERE id = ?`,
+    classId,
   );
+  return { success: true };
 }
 
 export async function getSystemSettings() {
@@ -295,23 +326,20 @@ export async function createClassForAdmin(name: string, code: string | undefined
     `INSERT INTO classes (id, name, code, teacher_id) VALUES (?, ?, ?, ?)`,
     `cls_${Date.now()}`, name, classCode, teacherId
   );
+  // تحديث حي: أبلغ المعلم المعيّن فوراً عبر SSE
+  broadcastEvent({ type: 'class_created', payload: { class_id: String(result.lastID), name }, targetUserId: teacherId });
   return { success: true, id: result.lastID, code: classCode };
 }
 
-export async function deleteReportForAdmin(reportId: number) {
-  const report = await db.get(`SELECT id FROM experiment_reports WHERE id = ?`, reportId);
-  if (!report) return { success: false, message: 'التقرير غير موجود' };
-  await db.run('BEGIN IMMEDIATE');
-  try {
-    await db.run(`DELETE FROM report_comments WHERE report_id = ?`, reportId);
-    await db.run(`DELETE FROM grade_history WHERE report_id = ?`, reportId);
-    await db.run(`DELETE FROM experiment_reports WHERE id = ?`, reportId);
-    await db.run('COMMIT');
-  } catch (err) {
-    await db.run('ROLLBACK');
-    throw err;
-  }
-  return { success: true };
+export async function getAllSchools() {
+  return db.all(
+    `SELECT s.*,
+      (SELECT COUNT(*) FROM users u WHERE u.school_id = s.id) as user_count,
+      (SELECT COUNT(*) FROM classes c JOIN users u ON c.teacher_id = u.id WHERE u.school_id = s.id) as class_count,
+      (SELECT COUNT(*) FROM experiment_reports r JOIN users u ON r.student_id = u.id WHERE u.school_id = s.id) as report_count
+     FROM schools s
+     ORDER BY s.created_at DESC`
+  );
 }
 
 // ─── System Alerts ───

@@ -9,12 +9,28 @@ export async function createFeedback(
   experimentName?: string,
   rating?: number,
   schoolId?: number | null,
+  pagePath?: string,
+  category?: string,
+  deviceInfo?: string,
 ) {
-  return db.run(
-    `INSERT INTO feedback (user_id, user_name, type, experiment_id, experiment_name, rating, message, school_id)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    userId, userName, type, experimentId || null, experimentName || null, rating || null, message, schoolId || null
-  );
+  try {
+    return await db.run(
+      `INSERT INTO feedback (user_id, user_name, type, experiment_id, experiment_name, rating, message, school_id, page_path, category, device_info)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      userId, userName, type, experimentId || null, experimentName || null, rating || null, message, schoolId || null,
+      pagePath || null, category || null, deviceInfo || null
+    );
+  } catch (err: any) {
+    if (err?.message?.includes('no column named')) {
+      if (process.env.NODE_ENV !== 'production') console.warn('[feedback] Migration 060 not applied; storing without context columns.');
+      return db.run(
+        `INSERT INTO feedback (user_id, user_name, type, experiment_id, experiment_name, rating, message, school_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        userId, userName, type, experimentId || null, experimentName || null, rating || null, message, schoolId || null
+      );
+    }
+    throw err;
+  }
 }
 
 export async function getAllFeedback() {

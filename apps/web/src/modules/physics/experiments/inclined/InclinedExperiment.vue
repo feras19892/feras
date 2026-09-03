@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useInclinedExperiment } from '../../../../composables/inclined/useInclinedExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import InclinedMenuBar from '../../../../components/experiment/inclined/InclinedMenuBar.vue'
 import InclinedCanvas from '../../../../components/experiment/inclined/InclinedCanvas.vue'
@@ -15,7 +17,10 @@ import InclinedStatusBar from '../../../../components/experiment/inclined/Inclin
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
-const { t } = useI18n()
+
+
+
+
 const { confirmReset } = useResetConfirm()
 const ex = useInclinedExperiment()
 const helpOpen = ref(false)

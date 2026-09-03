@@ -1,15 +1,25 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { useChartWorkspace } from '../../../composables/experiment/analysis/useChartWorkspace'
+import { watch, computed } from 'vue'
 import type { AnalysisColumnMeta, AnalysisPlotConfig } from '../../../types/physics'
 
 const props = defineProps<{
   readings: Record<string, number>[];
   columns: AnalysisColumnMeta[];
   suggestedPlots: AnalysisPlotConfig[];
+  readOnly?: boolean;
+  showStats?: boolean;
 }>();
 
-const { t } = useI18n()
+const emit = defineEmits<{
+  (e: 'change-axes', plot: AnalysisPlotConfig): void;
+  (e: 'update:regression', regression: { slope: number; intercept: number; r2: number }): void;
+  (e: 'slope-calc', calc: { label: string; formula: string; value: number; unit: string; expr: string }): void;
+}>();
+
+const showStats = computed(() => props.showStats !== false);
 
 const {
   xKey,
@@ -30,6 +40,19 @@ const {
   () => props.suggestedPlots
 );
 
+watch([xKey, yKey], () => {
+  if (!xKey.value || !yKey.value) return;
+  emit('change-axes', {
+    xKey: xKey.value,
+    yKey: yKey.value,
+    xLabel: xAxisLabel.value,
+    yLabel: yAxisLabel.value,
+    type: 'scatter',
+  } as AnalysisPlotConfig);
+});
+
+watch(regression, (v) => { if (v) emit('update:regression', v); });
+watch(slopeCalc, (v) => { if (v) emit('slope-calc', v); });
 defineExpose({
   getCanvas: () => canvasRef.value,
   getRegression: () => regression.value,
@@ -41,13 +64,13 @@ defineExpose({
 
 <template>
   <div class="chart-panel" ref="containerRef">
-    <div class="panel-header">
+    <div v-if="!readOnly" class="panel-header">
       <span>📈 {{ xKey && yKey ? `${yAxisLabel} ${t('analysis.against')} ${xAxisLabel}` : t('analysis.chartTitle') }}</span>
       <button class="btn-toggle" @click="showAxisControls = !showAxisControls">
         {{ t('analysis.axes') }}
       </button>
     </div>
-    <div v-if="showAxisControls" class="axis-controls">
+    <div v-if="!readOnly && showAxisControls" class="axis-controls">
       <div class="ctrl-row">
         <label>{{ t('analysis.xAxis') }}</label>
         <select v-model="xKey">
@@ -62,12 +85,12 @@ defineExpose({
       </div>
     </div>
     <canvas ref="canvasRef" style="flex:1;min-height:0;display:block;height:100%;"></canvas>
-    <div v-if="regression" class="reg-stats">
+    <div v-if="regression && showStats" class="reg-stats">
       <span>y = {{ regression.slope.toFixed(4) }}x {{ regression.intercept >= 0 ? '+' : '' }} {{ regression.intercept.toFixed(4) }}</span>
       <span class="r2">R² = {{ regression.r2.toFixed(4) }}</span>
     </div>
-    <div v-if="slopeWarning" class="slope-warning">{{ slopeWarning }}</div>
-    <div v-if="slopeCalc" class="slope-action">
+    <div v-if="slopeWarning && showStats" class="slope-warning">{{ slopeWarning }}</div>
+    <div v-if="slopeCalc && showStats" class="slope-action">
       <button class="btn-calc" @click="showSlopeResult = !showSlopeResult">
         🔬 {{ slopeCalc.label }}
       </button>

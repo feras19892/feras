@@ -9,7 +9,7 @@ import { createApprovalRequest } from './services.js';
 const schoolCreateRoutes = new Hono<{ Variables: { schoolId: number } }>();
 
 const schoolAuth = async (c: any, next: any) => {
-  const token = getCookie(c, 'access_token');
+  const token = getCookie(c, 'access_token') || (c.req.header('Authorization')?.startsWith('Bearer ') ? c.req.header('Authorization')!.slice(7) : undefined);
   if (!token) return c.json({ success: false, message: 'غير مصرح' }, 401);
   try {
     const payload = await verifyAccessToken(token);
@@ -32,6 +32,8 @@ const schoolCreateSchema = z.object({
   metadata: z.string().optional(),
 });
 
+const nonUserTargetTypes = ['class_creation', 'class_deletion', 'class_edit'];
+
 schoolCreateRoutes.post('/school/create', schoolAuth, zValidator('json', schoolCreateSchema), async (c) => {
   const schoolId = c.get('schoolId');
   const body = c.req.valid('json');
@@ -39,13 +41,14 @@ schoolCreateRoutes.post('/school/create', schoolAuth, zValidator('json', schoolC
   const school = await db.get<{ id: number; name: string; email: string }>('SELECT id, name, email FROM schools WHERE id = ?', schoolId);
   if (!school) return c.json({ success: false, message: 'School not found' }, 404);
 
+  const isNonUserTarget = nonUserTargetTypes.includes(body.type);
   const result = await createApprovalRequest({
     type: body.type as any,
     requester_type: 'school',
     requester_id: school.id,
     requester_name: school.name,
     approver_type: 'admin',
-    target_user_id: body.target_user_id || school.id,
+    target_user_id: isNonUserTarget ? 0 : (body.target_user_id || school.id),
     target_user_name: body.target_user_name,
     class_id: body.class_id,
     report_id: body.report_id,

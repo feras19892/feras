@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n';
-import type { OutstandingStudent, StrugglingStudent } from './school-reports-types';
-
+import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
-
+import type { OutstandingStudent, StrugglingStudent } from './school-reports-types';
 defineProps<{
   activeSection: string;
   outstandingStudents: OutstandingStudent[];

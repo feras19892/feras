@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { fft, applyHannWindow } from '../../../modules/physics/experiments/spring/fft'
 
 interface FftResult { freqs: number[]; amplitudes: number[]; dominantFreq: number }
 
-const { t } = useI18n()
 const props = defineProps<{
   signalSeries: { t: number; x: number }[]
   params: { mass: number; k: number }

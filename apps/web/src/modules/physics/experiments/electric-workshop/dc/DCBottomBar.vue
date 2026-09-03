@@ -1,7 +1,8 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { FaultInfo } from '../shared/types'
 import type { useWorkshop } from '../shared/useWorkshop'
-
 defineProps<{
   t: (key: string, vars?: Record<string, string | number>) => string
   workshop: ReturnType<typeof useWorkshop>

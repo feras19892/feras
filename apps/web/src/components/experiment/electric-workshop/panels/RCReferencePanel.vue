@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const NOTES = [
   '🔌 المكثف يخزن الطاقة في شكل شحنة كهربائية Q = C×V',
   '⚡ عند الشحن: Vc يرتفع، I يتناقص (منحنى أسي)',

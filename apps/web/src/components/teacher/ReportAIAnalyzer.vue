@@ -1,15 +1,20 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted } from 'vue';
-import { useI18n } from '../../composables/useI18n';
+
 import type { Report } from '../../services/report.service';
 import { analyzeReport } from '../../services/ai.service';
 import { sanitizeHtml } from '../../utils/sanitizeHtml';
+
+
+
+
 
 const props = defineProps<{
   report: Report;
 }>();
 
-const { t } = useI18n();
 const analyzing = ref(false);
 const aiResult = ref<string>('');
 const aiGrade = ref<number | null>(null);

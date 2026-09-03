@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed, ref, onMounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChemistryAnalysisStore } from '../../../stores/chemistry-analysis.store';
 import { consumePendingPayload } from '../../../composables/chemistry/sendToAnalysis';
-import { useI18n } from '../../../composables/useI18n';
+
+import { resolveExperimentId } from '../../../composables/useExperimentId';
 import ChemAnalysisMenuBar from './ChemAnalysisMenuBar.vue';
 import ChemAnalysisTabs from './ChemAnalysisTabs.vue';
 import ChemDataTab from './ChemDataTab.vue';
@@ -11,7 +14,10 @@ import ChemAnalysisTab from './ChemAnalysisTab.vue';
 import ChemReportTab from './ChemReportTab.vue';
 import SubmitReportModal from '../../../components/experiment/SubmitReportModal.vue';
 
-const { t } = useI18n();
+
+
+
+
 const router = useRouter();
 const store = useChemistryAnalysisStore();
 const activeTab = ref(0);
@@ -27,10 +33,7 @@ onMounted(() => {
 
 const hasData = computed(() => store.hasData);
 const sourceName = computed(() => store.sourceName);
-const experimentId = computed(() => {
-  const source = store.payload?.sourceExperiment;
-  return source ? `chemistry-${source}` : undefined;
-});
+const experimentId = computed(() => resolveExperimentId('chemistry', store.payload?.sourceExperiment));
 const readings = computed(() => store.readings);
 const columns = computed(() => store.columns);
 const equations = computed(() => store.equations);

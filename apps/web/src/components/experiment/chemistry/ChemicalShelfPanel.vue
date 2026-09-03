@@ -1,15 +1,20 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, computed } from 'vue';
 import type { Chemical, ChemicalCategory } from '../../../composables/chemistry/useChemistryLab';
 import { chemicals, selectedChemical, pendingChemicalFill, pendingSolidSelect, spatulaSelectedSolid } from '../../../composables/chemistry/useChemistryLab';
-import { useI18n } from '../../../composables/useI18n';
+
 import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
 import ChemicalCard from './ChemicalCard.vue';
+
+
+
+
 
 const { getName, getDesc } = useChemicalLocale();
 
 const emit = defineEmits<{ chemicalClick: [chem: Chemical] }>();
-const { t } = useI18n();
 
 const search = ref('');
 const activeCategory = ref<ChemicalCategory | 'all'>('all');

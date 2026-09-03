@@ -90,6 +90,7 @@ app.post('/', zValidator('json', createReportSchema), async (c) => {
     equations: body.equations,
     plots: body.plots,
     chart_snapshot: body.chart_snapshot,
+    question_template_id: body.question_template_id,
   });
   if (result.error) {
     return c.json({ success: false, message: result.error }, 400);
@@ -230,22 +231,26 @@ app.patch('/:id/seen', async (c) => {
 // PATCH /:id/grade — تصحيح
 app.patch('/:id/grade', zValidator('json', gradeReportSchema), async (c) => {
   const user = c.get('user');
-  if (user.role !== 'teacher' && user.role !== 'admin') {
+  if (user.role !== 'teacher' && user.role !== 'admin' && user.role !== 'school') {
     return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
   const id = validId(c.req.param('id'));
   if (!id) return c.json({ success: false, message: 'معرف غير صالح' }, 400);
+  const report = await svc.getReportById(id);
+  if (!report) return c.json({ success: false, message: 'التقرير غير موجود' }, 404);
   // Verify teacher owns the class for this report
   if (user.role === 'teacher') {
-    const report = await svc.getReportById(id);
-    if (!report) return c.json({ success: false, message: 'التقرير غير موجود' }, 404);
     const classRow = await db.get<{ teacher_id: number }>('SELECT teacher_id FROM classes WHERE id = ?', report.class_id);
     if (!classRow || classRow.teacher_id !== user.id) {
       return c.json({ success: false, message: 'غير مصرح' }, 403);
     }
+  } else if (user.role === 'school') {
+    const owns = await verifySchoolOwnsClass(user.id, report.class_id);
+    if (!owns) return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
   const data = c.req.valid('json');
-  const result = await svc.gradeReport(id, data, user.id, user.name);
+  // svc.gradeReport() already dispatches the report_graded notification once.
+  const result = await svc.gradeReport(id, data, user.id, user.name, user.role);
   return c.json(result);
 });
 

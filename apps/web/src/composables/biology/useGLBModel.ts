@@ -81,10 +81,16 @@ export function useGLBModel(
     raycaster.setFromCamera(pointer, camera);
     const visibleMeshes = allMeshes.filter((m) => m.visible);
     const intersects = raycaster.intersectObjects(visibleMeshes, false);
-    if (intersects.length === 0) return null;
-    const hitMesh = intersects[0].object as THREE.Mesh;
-    for (const [partId, meshes] of partMeshes) {
-      if (meshes.includes(hitMesh)) return partId;
+    const isVisibleEnough = (mesh: THREE.Mesh): boolean => {
+      const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      return materials.some((m) => !m.transparent || m.opacity >= 0.5);
+    };
+    for (const hit of intersects) {
+      const hitMesh = hit.object as THREE.Mesh;
+      if (!isVisibleEnough(hitMesh)) continue;
+      for (const [partId, meshes] of partMeshes) {
+        if (meshes.includes(hitMesh)) return partId;
+      }
     }
     return null;
   };
@@ -163,6 +169,7 @@ export function useGLBModel(
       scene, modelPath, parts, partMeshes, allMeshes,
       () => { isLoading.value = false; callApplyMaterialState(); },
       (msg) => { isLoading.value = false; error.value = msg; },
+      (model) => { loadedModel = model; },
       modelGenerator, modelEnhancer,
     );
 

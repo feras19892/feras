@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../modules/auth/stores/auth'
-import { useI18n } from '../composables/useI18n'
+
 import LandingInfoSide from '../components/landing/LandingInfoSide.vue'
 import LandingLoginSide from '../components/landing/LandingLoginSide.vue'
 import LandingFeatureDetail from '../components/landing/LandingFeatureDetail.vue'
 import FeedbackModal from '../components/shared/FeedbackModal.vue'
+import FrozenScreen from '../components/shared/FrozenScreen.vue'
 
-const { t, direction } = useI18n()
+
+
+
+
 const router = useRouter()
 const auth = useAuthStore()
 
@@ -25,6 +31,7 @@ async function handleLogin(payload: { email: string; password: string }) {
   try {
     const ok = await auth.login(payload.email, payload.password)
     if (ok === true) {
+      if (auth.isAdmin) { router.push('/admin'); return }
       if (auth.isStudent) { router.push('/student'); return }
       if (auth.isTeacher) { router.push('/teacher'); return }
       router.push('/home')
@@ -32,10 +39,15 @@ async function handleLogin(payload: { email: string; password: string }) {
       router.push('/school')
     } else {
       const errMsg = auth.error || t('auth.errors.invalidCredentials')
-      formError.value = errMsg.includes('blocked') ? t('auth.errors.accountBlocked', 'حسابك موقوف. تواصل مع الإدارة.')
-        : errMsg.includes('verify') ? t('auth.errors.emailNotVerified', 'يجب تأكيد بريدك الإلكتروني أولاً')
-        : errMsg.includes('network') || errMsg.includes('fetch') ? t('auth.errors.networkError', 'تعذر الاتصال بالخادم')
-        : t('auth.errors.invalidCredentials')
+      if (errMsg.includes('معاقب') || errMsg.includes('مجمد') || errMsg.includes('محظور') || errMsg.includes('blocked')) {
+        formError.value = t('auth.errors.accountBlocked', 'أنت معاقب من المدرس — تم تجميد حسابك مؤقتاً')
+      } else if (errMsg.includes('verify')) {
+        formError.value = t('auth.errors.emailNotVerified', 'يجب تأكيد بريدك الإلكتروني أولاً')
+      } else if (errMsg.includes('network') || errMsg.includes('fetch')) {
+        formError.value = t('auth.errors.networkError', 'تعذر الاتصال بالخادم')
+      } else {
+        formError.value = errMsg || t('auth.errors.invalidCredentials')
+      }
     }
   } catch (err) {
     formError.value = err instanceof Error && err.message.includes('fetch')
@@ -70,6 +82,7 @@ function scrollToLoginAfterDetail() {
     />
 
     <FeedbackModal v-model:show="showFeedback" />
+    <FrozenScreen />
 
     <LandingLoginSide
       :form-error="formError"

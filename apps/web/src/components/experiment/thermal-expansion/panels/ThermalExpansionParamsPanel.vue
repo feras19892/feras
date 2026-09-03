@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { ALPHA } from '../../../../composables/thermal-expansion/useThermalExpansionCalculations'
-const { t } = useI18n()
+
+
+
+
+
 const props = defineProps<{ params: { material: string; L0: number; t0: number; t1: number } }>()
 const emit = defineEmits<{ (e: 'update:params', p: typeof props.params): void }>()
 

@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useThinLensExperiment } from '../../../../composables/thinlens/useThinLensExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import ThinLensCanvas from '../../../../components/experiment/thinlens/ThinLensCanvas.vue'
 import ThinLensPanelBody from '../../../../components/experiment/thinlens/ThinLensPanelBody.vue'
@@ -13,8 +15,12 @@ import ThinLensGuidePanel from '../../../../components/experiment/thinlens/ThinL
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useThinLensExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

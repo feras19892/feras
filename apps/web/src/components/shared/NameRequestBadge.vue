@@ -1,9 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue';
-import { useI18n } from '../../composables/useI18n';
-import { fetchJson } from '../../services/http';
 
-const { t } = useI18n();
+import { fetchJson } from '../../services/http';
+import { useAuthStore } from '../../modules/auth/stores/auth';
+
+
+
+
+
+const auth = useAuthStore();
 
 interface NameRequest {
   id: number;
@@ -20,6 +27,7 @@ const error = ref('');
 const resolving = ref<number | null>(null);
 
 async function loadRequests() {
+  if (auth.role !== 'admin' && auth.role !== 'teacher') return;
   try {
     const data = await fetchJson<{ success: boolean; requests: NameRequest[] }>('/api/dashboard/name-requests');
     if (data.success) requests.value = data.requests;

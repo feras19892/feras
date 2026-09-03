@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
+
 import type { AnalysisColumnMeta } from '../../../types/physics';
 import StudentInfoPanel from './StudentInfoPanel.vue';
 import AnalysisDataTable from './AnalysisDataTable.vue';
 import AnalysisStatsPanel from './AnalysisStatsPanel.vue';
+
+
+
+
 
 const props = defineProps<{
   readings: Record<string, number>[];
@@ -15,8 +21,6 @@ const emit = defineEmits<{
   (e: 'add-row'): void;
   (e: 'remove-row', index: number): void;
 }>();
-
-const { t } = useI18n();
 
 const checks = computed(() => {
   const c: string[] = [];

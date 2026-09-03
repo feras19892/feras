@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue'
-import { useI18n } from '../../../../composables/useI18n'
+
 import type { CalorimetryTrial } from '../../../../composables/calorimetry/useCalorimetryTrials'
-const { t } = useI18n()
+
+
+
+
+
 const props = defineProps<{ trials: CalorimetryTrial[] }>()
 const avgTf = computed(() => props.trials.length ? props.trials.reduce((s, tr) => s + tr.tf, 0) / props.trials.length : 0)
 const avgC = computed(() => props.trials.length ? props.trials.reduce((s, tr) => s + tr.cMetal, 0) / props.trials.length : 0)

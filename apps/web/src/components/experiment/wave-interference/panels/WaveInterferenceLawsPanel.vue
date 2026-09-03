@@ -1,7 +1,8 @@
 ﻿<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 interface Props { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number; vWave: number }
+
 defineProps<Props>()
 </script>
 

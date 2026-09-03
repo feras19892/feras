@@ -1,9 +1,10 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue'
 import type { WorkshopComponent, FaultInfo } from '../shared/types'
 import type { useWorkshop } from '../shared/useWorkshop'
 import { sanitizeHtml } from '../../../../../utils/sanitizeHtml'
-
 const props = defineProps<{
   t: (key: string, vars?: Record<string, string | number>) => string
   workshop: ReturnType<typeof useWorkshop>

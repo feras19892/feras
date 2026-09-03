@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed, shallowRef, watch } from 'vue'
 import ExperimentReport from '../ExperimentReport.vue'
 import DeletableSection from '../DeletableSection.vue'
-import { useI18n } from '../../../composables/useI18n'
 
 interface StaticReading {
   mass: number; yLoad: number; yUnload: number; yAvg: number; deltaY: number; force: number
@@ -12,7 +13,6 @@ interface DynamicTrial {
   mass: number; t1: number; t2: number; t3: number; tAvg: number; T: number; T2: number
 }
 
-const { t } = useI18n()
 const props = defineProps<{
   staticReadings: StaticReading[]
   dynamicTrials: DynamicTrial[]

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 defineProps<{ open: boolean }>()
-const { t } = useI18n()
+
 const emit = defineEmits<{ (e: 'close'): void }>()
 </script>
 

@@ -1,12 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import { getLiquid, isContainer, items, phProbeTipMap } from '../../../composables/chemistry/useChemistryLab';
 import { isPhMeter } from '../../../composables/chemistry/chemLabIds';
 import { getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
-import { useI18n } from '../../../composables/useI18n';
-const { t } = useI18n();
-
 const props = defineProps<{
   item: LabItem | null;
 }>();

@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';
 import { authMiddleware } from '../auth/middleware.js';
 import { eventBus } from './event-bus.js';
+import { isAllowedOrigin } from '../../shared/middleware/cors.js';
 import type { SSEEvent } from './event-bus.js';
 import type { User } from '@my-modern-app/shared-types';
 
@@ -13,19 +14,44 @@ app.use(authMiddleware);
 app.get('/events', (c) => {
   const user = c.get('user');
 
-  return streamSSE(c, async (stream) => {
+  const requestOrigin = c.req.header('origin');
+  const envOrigins = process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(',').map((s) => s.trim()).filter((s) => s !== '*' && s !== '')
+    : [];
+  const fallbackOrigin = envOrigins[0] ?? null;
+  const origin = (requestOrigin && isAllowedOrigin(requestOrigin))
+    ? requestOrigin
+    : (requestOrigin ? null : fallbackOrigin);
+  if (!origin) {
+    return c.text('Origin not allowed', 403);
+  }
+  c.header('Access-Control-Allow-Origin', origin);
+  c.header('Access-Control-Allow-Credentials', 'true');
+  c.header('Vary', 'Origin');
+
+  c.res = streamSSE(c, async (stream) => {
     let cleanup: (() => void) | null = null;
 
+    let seq = 0;
     const listener = async (event: SSEEvent) => {
-      if (!event.targetUserId && !event.targetRole) return;
+      if (!event.targetUserId && !event.targetRole && !event.schoolId) return;
       if (event.targetUserId && event.targetUserId !== user.id) return;
       if (event.targetRole && event.targetRole !== user.role) return;
+      if (event.schoolId && user.role !== 'admin') {
+        const userSchoolId = user.school_id ?? (user.role === 'school' ? user.id : undefined);
+        if (userSchoolId !== event.schoolId) return;
+      }
 
-      await stream.writeSSE({
-        data: JSON.stringify(event),
-        event: event.type,
-        id: `${Date.now()}`,
-      });
+      try {
+        seq += 1;
+        await stream.writeSSE({
+          data: JSON.stringify(event),
+          event: event.type,
+          id: `${Date.now()}-${seq}`,
+        });
+      } catch {
+        // Client disconnected (abort) — cleanup is handled by stream.onAbort.
+      }
     };
 
     cleanup = eventBus.onEvent(listener);
@@ -46,6 +72,7 @@ app.get('/events', (c) => {
       });
     });
   });
+  return c.res;
 });
 
 export { app as sseRoutes };

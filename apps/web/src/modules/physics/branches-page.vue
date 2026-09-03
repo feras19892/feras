@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { useRouter } from 'vue-router';
 import { branches } from './catalog';
-import { useI18n } from '../../composables/useI18n';
 
-const { t } = useI18n();
 const router = useRouter();
 
 function goToBranch(id: string) {

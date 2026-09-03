@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const COMPARISON = [
   { prop: 'الجهد V', series: 'نفس V على كل R', parallel: 'نفس V على كل R', colorS: '#fbbf24', colorP: '#67e8f9' },
   { prop: 'التيار I', series: 'نفس I في كل R', parallel: 'I يتوزع: Itotal = I₁ + I₂', colorS: '#fbbf24', colorP: '#67e8f9' },

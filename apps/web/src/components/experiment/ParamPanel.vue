@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { SpringParams } from '../../modules/physics/experiments/spring/useSpringPhysics'
 
-const { t } = useI18n()
 const params = defineModel<SpringParams>({ required: true })
 </script>
 

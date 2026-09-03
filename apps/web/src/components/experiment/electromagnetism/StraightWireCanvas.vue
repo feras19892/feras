@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
-const { t } = useI18n()
-
 const props = defineProps<{
   I: number
   running: boolean
@@ -32,6 +31,7 @@ if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D
 }
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+let canvasEl: HTMLCanvasElement | null = null
 let cssW = 800, cssH = 400
 let rafId = 0
 let watchdogId = 0
@@ -119,7 +119,7 @@ function onMouseMove(e: MouseEvent) {
 function onMouseUp() {
   if (probeState === 'dragging') {
     probeState = 'placed'
-    const canvas = canvasRef.value!
+    const _canvas = canvasRef.value!
     const cx = cssW / 2
     const dxPx = Math.abs(probePos.x - cx)
     const rMeters = dxPx * (0.05 / 100)
@@ -428,6 +428,7 @@ onMounted(() => {
   resize()
   window.addEventListener('resize', resize)
   const canvas = canvasRef.value
+  canvasEl = canvas
   if (canvas) {
     canvas.addEventListener('wheel', onWheel, { passive: false })
     canvas.addEventListener('mousedown', onMouseDown)
@@ -459,14 +460,14 @@ onUnmounted(() => {
   if (watchdogId) clearInterval(watchdogId)
   if (resizeObserver) resizeObserver.disconnect()
   window.removeEventListener('resize', resize)
-  const canvas = canvasRef.value
-  if (canvas) {
-    canvas.removeEventListener('wheel', onWheel)
-    canvas.removeEventListener('mousedown', onMouseDown)
-    canvas.removeEventListener('mousemove', onMouseMove)
-    canvas.removeEventListener('mouseup', onMouseUp)
-    canvas.removeEventListener('mouseleave', onMouseUp)
-    canvas.removeEventListener('dblclick', onDoubleClick)
+  if (canvasEl) {
+    canvasEl.removeEventListener('wheel', onWheel)
+    canvasEl.removeEventListener('mousedown', onMouseDown)
+    canvasEl.removeEventListener('mousemove', onMouseMove)
+    canvasEl.removeEventListener('mouseup', onMouseUp)
+    canvasEl.removeEventListener('mouseleave', onMouseUp)
+    canvasEl.removeEventListener('dblclick', onDoubleClick)
+    canvasEl = null
   }
 })
 

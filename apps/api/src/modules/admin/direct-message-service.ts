@@ -1,14 +1,17 @@
 import { db } from '../../db/index.js';
 import { createNotification } from '../notifications/services.js';
+import { translateToArabic } from '../../shared/translation.js';
 
 export async function sendDirectMessage(senderId: number, senderName: string, receiverId: number, content: string) {
   const trimmed = content.trim();
   if (!trimmed) return { success: false, message: 'Empty message' };
   if (trimmed.length > 1000) return { success: false, message: 'Message too long' };
 
+  const translatedContent = await translateToArabic(trimmed);
+
   const result = await db.run(
-    `INSERT INTO direct_messages (sender_id, receiver_id, content) VALUES (?, ?, ?)`,
-    senderId, receiverId, trimmed,
+    `INSERT INTO direct_messages (sender_id, receiver_id, content, translated_content) VALUES (?, ?, ?, ?)`,
+    senderId, receiverId, trimmed, translatedContent,
   );
 
   const msg = await db.get(
@@ -73,7 +76,7 @@ export async function getConversationsList(userId: number) {
        CASE WHEN dm.sender_id = ? THEN dm.receiver_id ELSE dm.sender_id END as other_id,
        CASE WHEN dm.sender_id = ? THEN r.name ELSE s.name END as other_name,
        CASE WHEN dm.sender_id = ? THEN r.role ELSE s.role END as other_role,
-       dm.content as last_message,
+       COALESCE(dm.translated_content, dm.content) as last_message,
        dm.created_at as last_at,
        (SELECT COUNT(*) FROM direct_messages dm2
         WHERE dm2.receiver_id = ? AND dm2.sender_id =

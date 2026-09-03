@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { SpeedOfSoundTrial } from '../../../composables/speed-of-sound/useSpeedOfSoundTrials'
 import SpeedOfSoundPanelBody from './SpeedOfSoundPanelBody.vue'
+
 
 interface Props {
   maximized: Record<string, boolean>

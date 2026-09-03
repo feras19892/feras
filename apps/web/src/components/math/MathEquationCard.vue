@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue';
-import { useI18n } from '../../composables/useI18n';
+
 import type { MathEquation } from '../../types/math.types';
 
-const { t } = useI18n();
+
+
+
 
 const emit = defineEmits<{
   (e: 'select', id: string): void;

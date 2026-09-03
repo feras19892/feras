@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import type { AdminSchool } from '../../../services/school.service';
-import { useI18n } from '../../../composables/useI18n';
-
+import { useI18n } from '@/composables/useI18n';
 const { t, locale } = useI18n();
-
+import type { AdminSchool } from '../../../services/school.service';
 defineProps<{ schools: AdminSchool[]; loading: boolean; errorMsg: string }>();
 const emit = defineEmits<{
   open: [school: AdminSchool];

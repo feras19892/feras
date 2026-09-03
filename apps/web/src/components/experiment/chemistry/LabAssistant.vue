@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue';
 import { currentMessage, messageHistory, assistantOpen, toggleAssistant } from '../../../composables/chemistry/useLabAssistant';
-import { useI18n } from '../../../composables/useI18n';
-const { t } = useI18n();
 
 const typeIcons: Record<string, string> = {
   warning: '⚠️',

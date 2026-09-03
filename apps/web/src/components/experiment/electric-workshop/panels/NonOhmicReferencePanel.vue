@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const NOTES = [
   '💡 المصباح الكهربائي مادة لا أومية — R تزيد مع الحرارة',
   '⚡ المواد الأومية: V = I×R (خط مستقيم في رسم V vs I)',

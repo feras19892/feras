@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
-
-const { locale, setLocale, t } = useI18n()
-
+import { useI18n } from '@/composables/useI18n';
+const { t, locale, setLocale } = useI18n();
 async function onChange(ev: Event) {
   const val = (ev.target as HTMLSelectElement).value
   await setLocale(val as 'ar' | 'en' | 'es')

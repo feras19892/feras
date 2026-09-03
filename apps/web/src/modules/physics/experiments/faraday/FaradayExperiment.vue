@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useFaradayExperiment } from '../../../../composables/faraday/useFaradayExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import FaradayMenuBar from '../../../../components/experiment/faraday/FaradayMenuBar.vue'
 import FaradayCanvas from '../../../../components/experiment/faraday/FaradayCanvas.vue'
@@ -11,8 +13,12 @@ import FaradayControlBar from '../../../../components/experiment/faraday/Faraday
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useFaradayExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 

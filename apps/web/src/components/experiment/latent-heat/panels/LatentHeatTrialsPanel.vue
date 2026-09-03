@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { LatentHeatTrial } from '../../../../composables/latent-heat/useLatentHeatTrials'
-const { t } = useI18n()
+
 const props = defineProps<{ trials: LatentHeatTrial[] }>()
 const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()
 </script>

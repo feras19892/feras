@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import { useI18n } from '../../../../../composables/useI18n'
 import { useWorkshop } from '../shared/useWorkshop'
 import { useWorkshopCanvas } from '../shared/useWorkshopCanvas'
 import { getSpec } from '../shared/componentSpecs'
@@ -19,15 +20,14 @@ import { createACCanvasState, type ACCanvasState } from './acCanvasState'
 import { onMouseDown, onMouseMove, onMouseUp } from './acMouseEvents'
 import { onWheel, onDblClick, onTouchStart, onTouchMove, onTouchEnd, onKeyDown } from './acOtherEvents'
 import { useDevice } from '../../../../../composables/useDevice'
+import WorkshopReportToolbar from '../shared/WorkshopReportToolbar.vue'
 import ACDialogs from './ACDialogs.vue'
 import ACReadingsPanel from './ACReadingsPanel.vue'
 import ACPalette from './ACPalette.vue'
 import ACTopBar from './ACTopBar.vue'
 import ACBottomBar from './ACBottomBar.vue'
-
 const workshop = useWorkshop('ac')
 const device = useDevice()
-const { t } = useI18n()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const zoom = ref(1)
 const panX = ref(0)
@@ -264,6 +264,7 @@ onUnmounted(() => {
         @explain-m-n-a="showMNAExplanation"
         @select-fault="selectedFault = $event"
       />
+      <WorkshopReportToolbar :workshop="workshop" :canvas-ref="canvasRef" lab-type="ac" />
 
     </div>
 

@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, watch } from 'vue'
 import { useTeacherStatsCharts } from '../../composables/teacher/useTeacherStatsCharts'
-import { useI18n } from '../../composables/useI18n'
 
 interface Props {
   stats: { distribution?: Record<string, number>; total?: number } | null
 }
 const props = defineProps<Props>()
 
-const { t } = useI18n()
 const statsRef = ref(props.stats)
 watch(() => props.stats, (v) => { statsRef.value = v })
 const { barCanvas, pieCanvas } = useTeacherStatsCharts(statsRef, t('teacher.reportsLabel'))

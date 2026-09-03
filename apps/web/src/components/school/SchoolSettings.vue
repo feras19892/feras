@@ -1,16 +1,17 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import {
   updateSchoolName, changeSchoolPassword, requestEmailChange,
   type School,
 } from '../../services/school.service';
 
+
+
+
 const props = defineProps<{ school: School | null }>();
 const emit = defineEmits<{ schoolUpdated: [School] }>();
-
-const { t } = useI18n();
-
 const editName = ref('');
 const savingName = ref(false);
 const nameMsg = ref('');

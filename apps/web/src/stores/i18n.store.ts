@@ -55,42 +55,53 @@ const prismOverrides: Record<Locale, Record<string, string>> = {
 };
 
 function getSavedLocale(): Locale {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  return (saved as Locale) || 'ar';
+  const saved = localStorage.getItem(STORAGE_KEY)
+  return supportedLocales.includes(saved as Locale) ? (saved as Locale) : 'ar'
 }
 
 export const useI18nStore = defineStore('i18n', () => {
-  const locale = ref<Locale>(getSavedLocale());
-  const supported = ref<Locale[]>(supportedLocales);
-  const loading = ref(false);
-  const messages = ref<TranslationDict>({});
+  const locale = ref<Locale>(getSavedLocale())
+  const supported = ref<Locale[]>(supportedLocales)
+  const loading = ref(false)
+  const messages = ref<TranslationDict>({})
+  const loadError = ref('')
 
-  const isRtl = computed(() => locale.value === 'ar');
-  const direction = computed<'rtl' | 'ltr'>(() => (isRtl.value ? 'rtl' : 'ltr'));
+  const isRtl = computed(() => locale.value === 'ar')
+  const direction = computed<'rtl' | 'ltr'>(() => (isRtl.value ? 'rtl' : 'ltr'))
 
   async function bootstrap() {
-    await setLocale(locale.value, false);
+    await setLocale(locale.value, false)
   }
 
   async function setLocale(next: Locale, persist = true) {
-    loading.value = true;
-    locale.value = next;
-    if (persist) {
-      localStorage.setItem(STORAGE_KEY, next);
+    if (!supportedLocales.includes(next)) {
+      next = 'ar'
     }
-    document.documentElement.lang = next;
-    document.documentElement.dir = isRtl.value ? 'rtl' : 'ltr';
-    const [base, exp] = await Promise.all([
-      loadLocaleMessages(next),
-      loadExperimentMessages(next),
-    ]);
-    messages.value = {
-      ...base,
-      ...exp,
-      experiments: exp,
-      prism: { ...exp, ...prismOverrides[next] },
-    } as TranslationDict;
-    loading.value = false;
+    loading.value = true
+    loadError.value = ''
+    locale.value = next
+    if (persist) {
+      localStorage.setItem(STORAGE_KEY, next)
+    }
+    document.documentElement.lang = next
+    document.documentElement.dir = isRtl.value ? 'rtl' : 'ltr'
+    try {
+      const [base, exp] = await Promise.all([
+        loadLocaleMessages(next),
+        loadExperimentMessages(next),
+      ])
+      messages.value = {
+        ...base,
+        ...exp,
+        experiments: exp,
+        prism: { ...exp, ...prismOverrides[next] },
+      } as TranslationDict
+    } catch (e) {
+      loadError.value = 'فشل تحميل ملفات اللغة'
+      console.error('i18n load failed', e)
+    } finally {
+      loading.value = false
+    }
   }
 
   const t = (
@@ -142,6 +153,7 @@ export const useI18nStore = defineStore('i18n', () => {
     supported,
     messages,
     loading,
+    loadError,
     direction,
     bootstrap,
     setLocale,

@@ -4,16 +4,15 @@ import { z } from 'zod';
 import { db } from '../../db/index.js';
 import {
   getEmailChangeRequests, reviewEmailChangeRequest,
-  getSchoolUserDetail, getSchoolClassDetail, createSchoolWarning,
+  getSchoolUserDetail, createSchoolWarning,
   getSchoolWarnings, reportToAdmin, getSchoolSessionLog, getSchoolActivityLog,
   getTeacherPerformance, createCapacityRequest, getCapacityRequests,
   reviewCapacityRequest, freezeClass, unfreezeClass,
 } from './services.js';
 import { schoolAuthMiddleware, adminAuthMiddleware } from '../auth/middleware.js';
-import { streamSSE } from 'hono/streaming';
-import { addSchoolSSEClient } from '../notifications/sse.js';
-import * as notifSvc from '../notifications/services.js';
 import { schoolReportRoutes } from './handlers-reports.js';
+import { classRoutes } from './handlers-classes.js';
+import { notifRoutes } from './handlers-notifications.js';
 import type { School } from '@my-modern-app/shared-types';
 import type { User } from '@my-modern-app/shared-types';
 
@@ -53,15 +52,6 @@ schoolRoutes.get('/users/:userId/detail', schoolAuth, async (c) => {
   if (!userId) return c.json({ success: false, message: 'Invalid user ID' }, 400);
   const detail = await getSchoolUserDetail(school.id, userId);
   if (!detail) return c.json({ success: false, message: 'المستخدم غير موجود في هذه المدرسة' }, 404);
-  return c.json({ success: true, ...detail });
-});
-
-// ─── School Oversight: Class Detail ───
-schoolRoutes.get('/classes/:classId/detail', schoolAuth, async (c) => {
-  const school = c.get('school') as School;
-  const classId = c.req.param('classId');
-  const detail = await getSchoolClassDetail(school.id, classId);
-  if (!detail) return c.json({ success: false, message: 'الفصل غير موجود في هذه المدرسة' }, 404);
   return c.json({ success: true, ...detail });
 });
 
@@ -136,8 +126,8 @@ schoolRoutes.post('/capacity-request', schoolAuth, zValidator('json', capacitySc
   const result = await createCapacityRequest({
     school_id: school.id,
     school_name: school.name,
-    current_max_students: school.max_students,
-    current_max_teachers: school.max_teachers,
+    current_max_students: school.max_students ?? 0,
+    current_max_teachers: school.max_teachers ?? 0,
     requested_max_students: body.requested_max_students,
     requested_max_teachers: body.requested_max_teachers,
     reason: body.reason,
@@ -204,111 +194,6 @@ schoolRoutes.post('/unfreeze-class', schoolAuth, zValidator('json', z.object({ c
   }
 });
 
-// ─── School Notifications ───
-schoolRoutes.get('/notifications/stream', schoolAuth, (c) => {
-  const school = c.get('school') as School;
-  return streamSSE(c, async (stream) => {
-    let aborted = false;
-
-    const sseAdapter = {
-      enqueue: (chunk: Uint8Array) => {
-        const text = new TextDecoder().decode(chunk);
-        const lines = text.split('\n');
-        let evt = 'message';
-        let data = '';
-        for (const line of lines) {
-          if (line.startsWith('event: ')) evt = line.slice(7).trim();
-          else if (line.startsWith('data: ')) data += line.slice(6);
-        }
-        return stream.writeSSE({ event: evt, data });
-      },
-      close: () => {},
-      error: () => {},
-      desiredSize: null,
-    } as unknown as ReadableStreamDefaultController;
-    const cleanup = addSchoolSSEClient(school.id, sseAdapter);
-
-    await stream.writeSSE({ event: 'connected', data: JSON.stringify({ schoolId: school.id }) });
-
-    let heartbeatErrors = 0;
-    const heartbeat = setInterval(async () => {
-      if (aborted) return;
-      try {
-        await stream.writeSSE({ event: 'ping', data: String(Date.now()) });
-        heartbeatErrors = 0;
-      } catch {
-        heartbeatErrors++;
-        if (heartbeatErrors >= 3) {
-          aborted = true;
-          cleanup();
-          clearInterval(heartbeat);
-        }
-      }
-    }, 30000);
-
-    await new Promise<void>((resolve) => {
-      const maxLifetime = setTimeout(() => {
-        if (aborted) return;
-        aborted = true;
-        cleanup();
-        clearInterval(heartbeat);
-        stream.writeSSE({ event: 'reconnect', data: '{} ' }).catch(() => {});
-        resolve();
-      }, 10 * 60 * 1000);
-
-      stream.onAbort(() => {
-        aborted = true;
-        cleanup();
-        clearInterval(heartbeat);
-        clearTimeout(maxLifetime);
-        resolve();
-      });
-    });
-  });
-});
-
-schoolRoutes.get('/notifications', schoolAuth, async (c) => {
-  const school = c.get('school') as School;
-  const list = await notifSvc.getSchoolNotifications(school.id);
-  return c.json({ success: true, notifications: list });
-});
-
-schoolRoutes.get('/notifications/unread-count', schoolAuth, async (c) => {
-  const school = c.get('school') as School;
-  const count = await notifSvc.getSchoolUnreadCount(school.id);
-  return c.json({ success: true, count });
-});
-
-schoolRoutes.patch('/notifications/:id/read', schoolAuth, async (c) => {
-  const school = c.get('school') as School;
-  const id = validId(c.req.param('id'));
-  if (!id) return c.json({ success: false, message: 'Invalid ID' }, 400);
-  await notifSvc.markSchoolNotificationAsRead(id, school.id);
-  return c.json({ success: true });
-});
-
-schoolRoutes.patch('/notifications/read-all', schoolAuth, async (c) => {
-  const school = c.get('school') as School;
-  await notifSvc.markAllSchoolNotificationsAsRead(school.id);
-  return c.json({ success: true });
-});
-
-schoolRoutes.delete('/notifications/:id', schoolAuth, async (c) => {
-  const school = c.get('school') as School;
-  const id = validId(c.req.param('id'));
-  if (!id) return c.json({ success: false, message: 'Invalid ID' }, 400);
-  await notifSvc.deleteSchoolNotification(id, school.id);
-  return c.json({ success: true });
-});
-
-schoolRoutes.patch('/notifications/:id/pin', schoolAuth, async (c) => {
-  const school = c.get('school') as School;
-  const id = validId(c.req.param('id'));
-  if (!id) return c.json({ success: false, message: 'Invalid ID' }, 400);
-  const result = await notifSvc.togglePinSchoolNotification(id, school.id);
-  return c.json(result);
-});
-
 // ─── School Export ───
 import { exportSchoolUsers, exportSchoolClasses, exportSchoolReports, exportSchoolActivity } from './export-service.js';
 
@@ -335,6 +220,8 @@ schoolRoutes.get('/export/:type', schoolAuth, async (c) => {
 });
 
 // ─── Merge sub-routers ───
+schoolRoutes.route('/classes', classRoutes);
+schoolRoutes.route('/notifications', notifRoutes);
 schoolRoutes.route('/', schoolReportRoutes);
 
 export { schoolRoutes as schoolOversightRoutes };

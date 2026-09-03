@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
-import type { SchoolReportItem } from '../../../services/school.service';
-
+import { useI18n } from '@/composables/useI18n';
 const { t, locale } = useI18n();
-
+import { ref, computed } from 'vue';
+import type { SchoolReportItem } from '../../../services/school.service';
 const props = defineProps<{ reports: SchoolReportItem[] }>();
 
 const searchQuery = ref('');
@@ -78,7 +76,7 @@ function statusLabel(s: string) {
             </span>
           </td>
           <td>{{ r.grade ?? '—' }}</td>
-          <td>{{ formatDate(r.created_at) }}</td>
+          <td>{{ r.created_at ? formatDate(r.created_at) : '—' }}</td>
         </tr>
       </tbody>
     </table>

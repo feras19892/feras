@@ -1,11 +1,15 @@
 import { Hono } from 'hono';
+import { z } from 'zod';
+import { zValidator } from '@hono/zod-validator';
 import { adminAuthMiddleware } from '../auth/middleware.js';
 import {
   adminGetSchoolUsers, adminGetSchoolClasses, adminGetSchoolReports,
   adminRemoveSchoolUser, adminBlockSchoolUser,
 } from './services.js';
+import { verifyAdminPassword } from '../admin/admin-password.js';
+import type { User } from '@my-modern-app/shared-types';
 
-const adminSubRoutes = new Hono();
+const adminSubRoutes = new Hono<{ Variables: { user: User } }>();
 const adminAuth = adminAuthMiddleware;
 
 function validId(idStr: string): number | null {
@@ -46,28 +50,40 @@ adminSubRoutes.get('/admin/:id/reports', adminAuth, async (c) => {
   }
 });
 
-adminSubRoutes.delete('/admin/:id/users/:userId', adminAuth, async (c) => {
+adminSubRoutes.post('/admin/:id/users/:userId/remove', adminAuth, zValidator('json', z.object({ admin_password: z.string().min(1, 'كلمة مرور الإدمن مطلوبة') })), async (c) => {
   const id = validId(c.req.param('id'));
   const userId = validId(c.req.param('userId'));
   if (!id || !userId) return c.json({ success: false, message: 'Invalid ID' }, 400);
+  const { admin_password } = c.req.valid('json');
+  const admin = c.get('user') as User;
+  const pwCheck = await verifyAdminPassword(admin, admin_password);
+  if (pwCheck) return c.json(pwCheck, 401);
   const result = await adminRemoveSchoolUser(id, userId);
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true });
 });
 
-adminSubRoutes.patch('/admin/:id/users/:userId/block', adminAuth, async (c) => {
+adminSubRoutes.patch('/admin/:id/users/:userId/block', adminAuth, zValidator('json', z.object({ admin_password: z.string().min(1, 'كلمة مرور الإدمن مطلوبة') })), async (c) => {
   const id = validId(c.req.param('id'));
   const userId = validId(c.req.param('userId'));
   if (!id || !userId) return c.json({ success: false, message: 'Invalid ID' }, 400);
+  const { admin_password } = c.req.valid('json');
+  const admin = c.get('user') as User;
+  const pwCheck = await verifyAdminPassword(admin, admin_password);
+  if (pwCheck) return c.json(pwCheck, 401);
   const result = await adminBlockSchoolUser(id, userId, true);
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true });
 });
 
-adminSubRoutes.patch('/admin/:id/users/:userId/unblock', adminAuth, async (c) => {
+adminSubRoutes.patch('/admin/:id/users/:userId/unblock', adminAuth, zValidator('json', z.object({ admin_password: z.string().min(1, 'كلمة مرور الإدمن مطلوبة') })), async (c) => {
   const id = validId(c.req.param('id'));
   const userId = validId(c.req.param('userId'));
   if (!id || !userId) return c.json({ success: false, message: 'Invalid ID' }, 400);
+  const { admin_password } = c.req.valid('json');
+  const admin = c.get('user') as User;
+  const pwCheck = await verifyAdminPassword(admin, admin_password);
+  if (pwCheck) return c.json(pwCheck, 401);
   const result = await adminBlockSchoolUser(id, userId, false);
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true });

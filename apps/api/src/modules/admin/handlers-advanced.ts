@@ -86,45 +86,85 @@ async function getEmergencyPasswordHash(): Promise<string> {
   return '';
 }
 
-async function verifyEmergencyPassword(c: any): Promise<boolean> {
-  const hash = await getEmergencyPasswordHash();
-  if (!hash) return false;
-  const body = await c.req.json().catch(() => ({}));
-  const provided = String(body.emergency_password || '');
-  if (!provided) return false;
-  try {
-    return await comparePassword(provided, hash);
-  } catch {
-    return false;
+const emergencyAttempts = new Map<number, { count: number; lockedUntil: number }>();
+const MAX_EMERGENCY_ATTEMPTS = 5;
+const EMERGENCY_LOCKOUT_MS = 5 * 60 * 1000;
+
+const emergencyPasswordSchema = z.object({
+  emergency_password: z.string().min(1),
+});
+
+const changeEmergencyPasswordSchema = z.object({
+  current_password: z.string().min(1),
+  new_password: passwordComplexity,
+});
+
+async function verifyEmergencyPassword(c: any): Promise<{ ok: boolean; message?: string }> {
+  const user = c.get('user') as User;
+  const now = Date.now();
+  const record = emergencyAttempts.get(user.id);
+  if (record && record.lockedUntil > now) {
+    const remaining = Math.ceil((record.lockedUntil - now) / 1000);
+    return { ok: false, message: `تم قفل المحاولات مؤقتاً — حاول بعد ${remaining} ثانية` };
   }
+  const hash = await getEmergencyPasswordHash();
+  if (!hash) return { ok: false, message: 'كلمة مرور الطوارئ غير مضبوطة' };
+  const body = c.req.valid('json');
+  const provided = body.emergency_password;
+  if (!provided) return { ok: false, message: 'كلمة مرور الطوارئ مطلوبة' };
+  let matched = false;
+  try {
+    matched = await comparePassword(provided, hash);
+  } catch { /* ignore */ }
+  if (!matched) {
+    const attempts = (record?.count ?? 0) + 1;
+    if (attempts >= MAX_EMERGENCY_ATTEMPTS) {
+      emergencyAttempts.set(user.id, { count: 0, lockedUntil: now + EMERGENCY_LOCKOUT_MS });
+      return { ok: false, message: `تم تجاوز الحد — قفل ${EMERGENCY_LOCKOUT_MS / 60000} دقيقة` };
+    }
+    emergencyAttempts.set(user.id, { count: attempts, lockedUntil: 0 });
+    return { ok: false, message: `كلمة مرور الطوارئ غير صحيحة (${MAX_EMERGENCY_ATTEMPTS - attempts} محاولات متبقية)` };
+  }
+  emergencyAttempts.delete(user.id);
+  return { ok: true };
 }
 
 async function broadcastEmergency(user: User, title: string, content: string) {
-  await createAnnouncement({
-    author_type: 'admin',
-    author_id: user.id,
-    author_name: user.name,
-    scope: 'global',
-    title,
-    content,
-    is_pinned: true,
-  });
+  try {
+    await createAnnouncement({
+      author_type: 'admin',
+      author_id: user.id,
+      author_name: user.name,
+      scope: 'global',
+      title,
+      content,
+      is_pinned: true,
+    });
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('broadcastEmergency announcement failed:', err);
+  }
   const shortContent = content.slice(0, 150);
   const notifTitle = `🚨 ${title}`;
 
-  // Bulk insert notifications for all active users in one query
-  await db.run(
-    `INSERT INTO notifications (user_id, type, title, message)
-     SELECT id, 'emergency', ?, ? FROM users WHERE blocked_at IS NULL`,
-    notifTitle, shortContent,
-  );
+  try {
+    await db.run(
+      `INSERT INTO notifications (user_id, type, title, message)
+       SELECT id, 'emergency', ?, ? FROM users WHERE blocked_at IS NULL`,
+      notifTitle, shortContent,
+    );
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('broadcastEmergency user notifications failed:', err);
+  }
 
-  // Bulk insert school notifications in one query
-  await db.run(
-    `INSERT INTO school_notifications (school_id, type, title, message)
-     SELECT id, 'emergency', ?, ? FROM schools WHERE blocked_at IS NULL`,
-    notifTitle, shortContent,
-  );
+  try {
+    await db.run(
+      `INSERT INTO school_notifications (school_id, type, title, message)
+       SELECT id, 'emergency', ?, ? FROM schools WHERE blocked_at IS NULL`,
+      notifTitle, shortContent,
+    );
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('broadcastEmergency school notifications failed:', err);
+  }
 
   // Push SSE only to connected users and schools
   const connectedUsers = getConnectedUserIds();
@@ -144,40 +184,47 @@ async function broadcastEmergency(user: User, title: string, content: string) {
   }
 }
 
-app.post('/emergency/stop-registration', async (c) => {
-  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
+
+app.post('/emergency/stop-registration', zValidator('json', emergencyPasswordSchema), async (c) => {
+  const check = await verifyEmergencyPassword(c);
+  if (!check.ok) return c.json({ success: false, message: check.message }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('stop_registration', 'true', user.id);
   await broadcastEmergency(user, 'إيقاف التسجيل', 'تم إيقاف تسجيل المستخدمين الجدد مؤقتاً بواسطة الإدارة. سيتم استئناف التسجيل قريباً.');
   return c.json({ success: true, message: 'تم إيقاف التسجيل وإرسال إشعار لجميع المستخدمين' });
 });
 
-app.post('/emergency/resume-registration', async (c) => {
-  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
+
+app.post('/emergency/resume-registration', zValidator('json', emergencyPasswordSchema), async (c) => {
+  const check = await verifyEmergencyPassword(c);
+  if (!check.ok) return c.json({ success: false, message: check.message }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('stop_registration', 'false', user.id);
   await broadcastEmergency(user, 'استئناف التسجيل', 'تم استئناف تسجيل المستخدمين الجدد. يمكنكم التسجيل الآن.');
   return c.json({ success: true, message: 'تم استئناف التسجيل وإرسال إشعار لجميع المستخدمين' });
 });
 
-app.post('/emergency/maintenance-on', async (c) => {
-  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
+app.post('/emergency/maintenance-on', zValidator('json', emergencyPasswordSchema), async (c) => {
+  const check = await verifyEmergencyPassword(c);
+  if (!check.ok) return c.json({ success: false, message: check.message }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('maintenance_mode', 'true', user.id);
   await broadcastEmergency(user, 'وضع الصيانة', 'النظام في وضع الصيانة حالياً. قد تكون بعض الخدمات غير متاحة مؤقتاً. نعتذر عن الإزعاج.');
   return c.json({ success: true, message: 'تم تفعيل وضع الصيانة وإرسال إشعار لجميع المستخدمين' });
 });
 
-app.post('/emergency/maintenance-off', async (c) => {
-  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
+app.post('/emergency/maintenance-off', zValidator('json', emergencyPasswordSchema), async (c) => {
+  const check = await verifyEmergencyPassword(c);
+  if (!check.ok) return c.json({ success: false, message: check.message }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('maintenance_mode', 'false', user.id);
   await broadcastEmergency(user, 'انتهاء الصيانة', 'تم إيقاف وضع الصيانة. جميع الخدمات متاحة الآن بشكل طبيعي.');
   return c.json({ success: true, message: 'تم إيقاف وضع الصيانة وإرسال إشعار لجميع المستخدمين' });
 });
 
-app.post('/emergency/freeze-all', async (c) => {
-  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
+app.post('/emergency/freeze-all', zValidator('json', emergencyPasswordSchema), async (c) => {
+  const check = await verifyEmergencyPassword(c);
+  if (!check.ok) return c.json({ success: false, message: check.message }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('freeze_all_classes', 'true', user.id);
   await svc.freezeAllClasses(user.id);
@@ -185,20 +232,21 @@ app.post('/emergency/freeze-all', async (c) => {
   return c.json({ success: true, message: 'تم تجميد جميع الفصول وإرسال إشعار لجميع المستخدمين' });
 });
 
-app.post('/emergency/unfreeze-all', async (c) => {
-  if (!await verifyEmergencyPassword(c)) return c.json({ success: false, message: 'كلمة مرور الطوارئ غير صحيحة' }, 403);
+app.post('/emergency/unfreeze-all', zValidator('json', emergencyPasswordSchema), async (c) => {
+  const check = await verifyEmergencyPassword(c);
+  if (!check.ok) return c.json({ success: false, message: check.message }, 403);
   const user = c.get('user') as User;
   await svc.updateSystemSetting('freeze_all_classes', 'false', user.id);
-  await svc.unfreezeAllClasses();
+  await svc.unfreezeAllClasses(user.id);
   await broadcastEmergency(user, 'إلغاء تجميد الفصول', 'تم إلغاء تجميد جميع الفصول. يمكنكم متابعة العمل بشكل طبيعي.');
   return c.json({ success: true, message: 'تم إلغاء التجميد وإرسال إشعار لجميع المستخدمين' });
 });
 
-app.post('/emergency/change-password', async (c) => {
+app.post('/emergency/change-password', zValidator('json', changeEmergencyPasswordSchema), async (c) => {
   const user = c.get('user') as User;
-  const body = await c.req.json().catch(() => ({}));
+  const body = c.req.valid('json');
   const currentHash = await getEmergencyPasswordHash();
-  const provided = String(body.current_password || '');
+  const provided = body.current_password;
   if (!currentHash || !provided) {
     return c.json({ success: false, message: 'كلمة المرور الحالية غير صحيحة' }, 403);
   }

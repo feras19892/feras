@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { useRouter } from 'vue-router';
-import { useI18n } from '../../composables/useI18n';
 import type { SchoolUserDetail, SchoolClass, SchoolReportItem, SchoolActivityItem, SchoolSessionItem, SchoolWarningItem } from '../../services/school.service';
-
 const props = defineProps<{
   activeTab: string;
   user: SchoolUserDetail | null;
@@ -18,8 +18,6 @@ const props = defineProps<{
 }>();
 
 const router = useRouter();
-const { t } = useI18n();
-
 function fmtDate(s?: string | null) {
   if (!s) return '—';
   return new Date(s).toLocaleDateString(props.dateLocaleStr, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });

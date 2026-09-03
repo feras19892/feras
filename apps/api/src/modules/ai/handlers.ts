@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { authMiddleware } from '../auth/middleware.js';
 import { ollamaChat, ollamaTags } from './services.js';
 import { enqueueAI } from './queue.js';
+import { analyzeReportBuiltIn } from './analyzer.js';
 import type { User } from '@my-modern-app/shared-types';
 
 type Variables = { user: User };
@@ -21,24 +22,28 @@ const analyzeSchema = z.object({
   plots: z.string().optional().nullable(),
   conclusion: z.string().optional().nullable(),
   chart_snapshot: z.string().optional().nullable(),
+  mode: z.enum(['builtin', 'ai']).optional().default('builtin'),
 });
 
+// أجعل المحرك الإحصائي المدمج هو الأساس (فوري/موثوق/غير متأثر بالشبكة)،
+// وOllama خياراً صريحاً عبر mode='ai' مع fallback تلقائي للمدمج عند فشله.
 app.post('/analyze', zValidator('json', analyzeSchema), async (c) => {
   const body = c.req.valid('json');
 
-  try {
-    const reportContext = [
-      `التجربة: ${body.experiment_name}`,
-      `الطالب: ${body.student_name || 'غير محدد'}`,
-      `القراءات: ${body.readings || 'لا توجد'}`,
-      `الأعمدة: ${body.columns || 'لا توجد'}`,
-      `المعادلات: ${body.equations || 'لا توجد'}`,
-      `الرسومات: ${body.plots || 'لا توجد'}`,
-      `الخاتمة: ${body.conclusion || 'لا توجد'}`,
-      body.chart_snapshot ? 'يوجد رسم بياني (chart snapshot)' : 'لا يوجد رسم بياني',
-    ].join('\n');
+  const builtIn = () => analyzeReportBuiltIn(body);
 
-    const systemPrompt = `أنت خبير في تقييم تقارير التجارب الفيزيائية. حلل التقرير التالي بشكل شامل واحترافي.
+  const buildAiContext = () => [
+    `التجربة: ${body.experiment_name}`,
+    `الطالب: ${body.student_name || 'غير محدد'}`,
+    `القراءات: ${body.readings || 'لا توجد'}`,
+    `الأعمدة: ${body.columns || 'لا توجد'}`,
+    `المعادلات: ${body.equations || 'لا توجد'}`,
+    `الرسومات: ${body.plots || 'لا توجد'}`,
+    `الخاتمة: ${body.conclusion || 'لا توجد'}`,
+    body.chart_snapshot ? 'يوجد رسم بياني (chart snapshot)' : 'لا يوجد رسم بياني',
+  ].join('\n');
+
+  const aiSystemPrompt = `أنت خبير في تقييم تقارير التجارب العلمية. حلل التقرير التالي بشكل شامل واحترافي.
 
 يجب أن يكون تحليلك باللغة العربية ويشمل:
 1. ملخص التقرير
@@ -51,22 +56,44 @@ app.post('/analyze', zValidator('json', analyzeSchema), async (c) => {
 في نهاية التحليل، اكتب سطرًا بالصيغة التالية بالضبط:
 GRADE: <رقم من 0 إلى 100>`;
 
+  // مدمج بالافتراضي: نتيجة فورية ومؤكدة دون اتصال خارجي
+  if (body.mode === 'builtin') {
+    const r = builtIn();
+    return c.json({ success: true, analysis: r.analysis, grade: r.grade, source: 'builtin' });
+  }
+
+  // mode='ai': حاول الذكاء خارجياً، وتراجع للمدمج عند أي فشل/تأخر/انقطاع
+  try {
     const aiAnalysis = await enqueueAI((signal) => ollamaChat([
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: reportContext },
+      { role: 'system', content: aiSystemPrompt },
+      { role: 'user', content: buildAiContext() },
     ], signal));
 
-    // Extract grade from AI response
-    const gradeMatch = aiAnalysis.match(/GRADE:\s*(\d+)/i);
-    const aiGrade = gradeMatch ? Math.min(100, Math.max(0, parseInt(gradeMatch[1], 10))) : 0;
+    // استخراج الدرجة بشكل صارم مع fallback للدرجة المحسوبة
+    const gradeMatch = aiAnalysis.match(/GRADE[^0-9]*(\d{1,3})/i);
+    const aiGrade = gradeMatch
+      ? Math.min(100, Math.max(0, parseInt(gradeMatch[1], 10)))
+      : builtIn().grade;
 
-    // Remove the GRADE line from the displayed analysis
-    const cleanAnalysis = aiAnalysis.replace(/GRADE:\s*\d+/i, '').trim();
+    const cleanAnalysis = aiAnalysis.replace(/GRADE[^0-9]*\d{1,3}/i, '').trim();
 
-    return c.json({ success: true, analysis: cleanAnalysis, grade: aiGrade });
+    return c.json({
+      success: true,
+      analysis: cleanAnalysis || builtIn().analysis,
+      grade: aiGrade,
+      source: 'ai',
+    });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Unknown error';
-    return c.json({ success: false, message: `Ollama error: ${msg}` }, 502);
+    // ارجع للمحرك المدمج بدلاً من إفشال الطلب
+    const r = builtIn();
+    return c.json({
+      success: true,
+      analysis: r.analysis,
+      grade: r.grade,
+      source: 'builtin',
+      fallback: true,
+      message: err instanceof Error ? err.message : 'AI request failed; used built-in analyzer',
+    });
   }
 });
 

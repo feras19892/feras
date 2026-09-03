@@ -1,8 +1,10 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { usePendulumExperiment } from '../../../../composables/pendulum/usePendulumExperiment'
 import { usePendulumReport } from '../../../../composables/pendulum/usePendulumReport'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import PendulumMenuBar from '../../../../components/experiment/pendulum/PendulumMenuBar.vue'
 import PendulumCanvas from '../../../../components/experiment/pendulum/PendulumCanvas.vue'
@@ -15,9 +17,13 @@ import PendulumGuidePanel from '../../../../components/experiment/pendulum/Pendu
 import PendulumReport from '../../../../components/experiment/pendulum/PendulumReport.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = usePendulumExperiment()
 const rep = usePendulumReport()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

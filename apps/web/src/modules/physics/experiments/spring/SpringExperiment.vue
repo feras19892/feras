@@ -1,8 +1,10 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useSpringExperiment } from '../../../../composables/spring/useSpringExperiment'
 import { useSpringReport } from '../../../../composables/spring/useSpringReport'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import SpringMenuBar from '../../../../components/experiment/spring/SpringMenuBar.vue'
 import SpringCanvas from '../../../../components/experiment/spring/SpringCanvas.vue'
@@ -15,9 +17,14 @@ import SpringGuidePanel from '../../../../components/experiment/spring/SpringGui
 import SpringOverlayPanels from '../../../../components/experiment/spring/SpringOverlayPanels.vue'
 import SpringReport from '../../../../components/experiment/spring/SpringReport.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
+
+
+
+
+
 const ex = useSpringExperiment()
 const rep = useSpringReport()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

@@ -1,0 +1,135 @@
+/* ============================================================
+   Light Theme Global Overrides
+   Applied when [data-theme="light"] on <html>
+   ============================================================ */
+
+/* ── Shell ── */
+[data-theme="light"] body { background: #f1f5f9; }
+[data-theme="light"] .app { background: #f1f5f9; color: #1a2332; }
+
+/* ── Dashboard pages ── */
+[data-theme="light"] .settings-page,
+[data-theme="light"] .chat-page,
+[data-theme="light"] .experiments-page,
+[data-theme="light"] .classes-page,
+[data-theme="light"] .dash-page,
+[data-theme="light"] .sm-overview { background: #f8fafc; color: #1a2332; }
+
+[data-theme="light"] .settings-page > h2,
+[data-theme="light"] .chat-page > h2 { color: #1a2332; }
+
+/* ── Info cards ── */
+[data-theme="light"] .info-card { background: #fff; border-color: #e2e8f0; color: #1a2332; }
+[data-theme="light"] .info-card h4 { color: #1a2332; }
+[data-theme="light"] .info-card .form-group label { color: #475569; }
+[data-theme="light"] .info-card .form-input { background: #f8fafc; color: #1a2332; border-color: #cbd5e1; }
+[data-theme="light"] .form-check { color: #475569; }
+[data-theme="light"] .user-summary { color: #64748b; }
+
+/* ── Alerts ── */
+[data-theme="light"] .alert-success { background: #dcfce7; color: #16a34a; }
+[data-theme="light"] .alert-error { background: #fee2e2; color: #dc2626; }
+
+/* ── Buttons ── */
+[data-theme="light"] .btn-primary { background: #7c3aed; color: #fff; }
+[data-theme="light"] .btn-primary:hover:not(:disabled) { background: #6d28d9; }
+
+/* ── Chat ── */
+[data-theme="light"] .class-circle { background: #fff; border-color: #e2e8f0; color: #1a2332; }
+[data-theme="light"] .circle-name { color: #64748b; }
+
+/* ── Experiments page ── */
+[data-theme="light"] .experiments-page .page-header h1 { color: #0e7490; }
+[data-theme="light"] .experiments-page .page-header p { color: #64748b; }
+[data-theme="light"] .experiments-page .card { background: #fff; border-color: #e2e8f0; }
+[data-theme="light"] .experiments-page .card h3 { color: #1a2332; }
+[data-theme="light"] .experiments-page .desc { color: #64748b; }
+[data-theme="light"] .experiments-page .badge { background: #f1f5f9; color: #475569; }
+
+/* ── Overview/Home cards ── */
+[data-theme="light"] .sm-welcome h2 { color: #1a2332; }
+[data-theme="light"] .sm-welcome p { color: #64748b; }
+[data-theme="light"] .sm-stat { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .sm-stat__value { color: #1a2332; }
+[data-theme="light"] .sm-stat__label { color: #64748b; }
+[data-theme="light"] .sm-card { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .sm-card__title { color: #1a2332; }
+[data-theme="light"] .sm-number { background: #f8fafc; }
+[data-theme="light"] .sm-number__value { color: #1a2332; }
+[data-theme="light"] .sm-number__label { color: #64748b; }
+[data-theme="light"] .sm-analytic { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .sm-analytic__value { color: #1a2332; }
+[data-theme="light"] .sm-analytic__label { color: #64748b; }
+[data-theme="light"] .sm-ring__value { color: #1a2332; }
+[data-theme="light"] .sm-ring__label { color: #64748b; }
+[data-theme="light"] .sm-health__row { color: #475569; border-color: #e2e8f0; }
+[data-theme="light"] .sm-health__row span:first-child { color: #64748b; }
+
+/* ── Status badges ── */
+[data-theme="light"] .status-badge { color: #1a2332; }
+[data-theme="light"] .status-badge.submitted { background: #fef3c7; color: #d97706; }
+[data-theme="light"] .status-badge.graded { background: #dcfce7; color: #16a34a; }
+[data-theme="light"] .status-badge.resubmitted { background: #dbeafe; color: #2563eb; }
+[data-theme="light"] .status-badge.pending { background: #f1f5f9; color: #64748b; }
+[data-theme="light"] .status-badge.draft { background: #f1f5f9; color: #64748b; }
+
+/* ── MyWork detail ── */
+[data-theme="light"] .detail-row { color: #1a2332; border-color: #e2e8f0; }
+[data-theme="light"] .detail-label { color: #64748b; }
+[data-theme="light"] .detail-section h4 { color: #1a2332; }
+[data-theme="light"] .detail-section p { color: #475569; }
+[data-theme="light"] .readings-pre { background: #f1f5f9; color: #475569; }
+
+/* ── Modal ── */
+[data-theme="light"] .modal-overlay { background: rgba(0,0,0,0.3); }
+[data-theme="light"] .modal-content { background: #fff; border: 1px solid #e2e8f0; color: #1a2332; }
+[data-theme="light"] .modal-content h3 { color: #1a2332; }
+
+/* ── Quiz Results ── */
+[data-theme="light"] .qr-header h3 { color: #1a2332; }
+[data-theme="light"] .btn-back { background: #fff; color: #475569; border-color: #e2e8f0; }
+[data-theme="light"] .qr-overall-card { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .qr-overall-val { color: #1a2332; }
+[data-theme="light"] .qr-overall-lbl { color: #64748b; }
+[data-theme="light"] .qr-filter-select { background: #fff; color: #1a2332; border-color: #cbd5e1; }
+[data-theme="light"] .qr-card { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .qr-card-class { color: #475569; }
+[data-theme="light"] .qr-card-stats { background: #f8fafc; }
+[data-theme="light"] .qr-stat-val { color: #1a2332; }
+[data-theme="light"] .qr-summary-card { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .qr-summary-lbl { color: #64748b; }
+[data-theme="light"] .qr-grade-dist { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .qr-grade-dist h4 { color: #1a2332; }
+[data-theme="light"] .qr-dist-label { color: #475569; }
+[data-theme="light"] .qr-dist-bar-wrap { background: #f1f5f9; }
+[data-theme="light"] .qr-dist-count { color: #475569; }
+[data-theme="light"] .qr-table-wrap { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .qr-table-header h4 { color: #1a2332; }
+[data-theme="light"] .qr-sort span { color: #64748b; }
+[data-theme="light"] .qr-sort button { background: #fff; color: #64748b; border-color: #e2e8f0; }
+[data-theme="light"] .qr-rank { color: #475569; }
+[data-theme="light"] .qr-student-name { color: #1a2332; }
+[data-theme="light"] .qr-row-progress { background: #f1f5f9; }
+[data-theme="light"] .qr-date-cell { color: #64748b; }
+
+/* ── Quiz Manager ── */
+[data-theme="light"] .qm-search { background: #fff; color: #1a2332; border-color: #cbd5e1; }
+[data-theme="light"] .qm-filter-select { background: #fff; color: #1a2332; border-color: #cbd5e1; }
+[data-theme="light"] .qm-card { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .qm-card h3 { color: #1a2332; }
+[data-theme="light"] .qm-card p { color: #475569; }
+[data-theme="light"] .qm-meta { color: #64748b; }
+
+/* ── Panel cards (teacher/student dashboard) ── */
+[data-theme="light"] .panel-card { background: #fff; border: 1px solid #e2e8f0; }
+[data-theme="light"] .panel-card h3 { color: #1a2332; }
+[data-theme="light"] .panel-card p { color: #475569; }
+
+/* ── Tables ── */
+[data-theme="light"] .classes-table { background: #fff; }
+[data-theme="light"] .classes-table th { background: #f8fafc; color: #475569; }
+[data-theme="light"] .classes-table td { color: #1a2332; border-color: #e2e8f0; }
+[data-theme="light"] .classes-table tr:hover td { background: #f8fafc; }
+
+/* ── Admin page ── */
+[data-theme="light"] .admin-layout { background: #f1f5f9; color: #1a2332; }

@@ -1,9 +1,10 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { WorkshopComponent, WorkshopWire } from '../shared/types'
 import type { useWorkshop } from '../shared/useWorkshop'
 import { componentDefs } from '../shared/componentDefs'
 import { WIRE_COLOR_NAMES } from '../shared/types'
-
 defineProps<{
   t: (key: string, vars?: Record<string, string>) => string
   workshop: ReturnType<typeof useWorkshop>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 const props = defineProps<{ params: { n: number; T: number; V: number } }>()
+
 const emit = defineEmits<{ (e: 'update:params', p: { n: number; T: number; V: number }): void }>()
 </script>
 

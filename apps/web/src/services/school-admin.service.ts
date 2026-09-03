@@ -1,17 +1,19 @@
 import { fetchJson } from './http';
 import type { SchoolUser, SchoolClass, SchoolReportItem } from './school.service';
 
-export async function adminUpdateSchool(id: number, updates: { name?: string; email?: string; max_students?: number; max_teachers?: number }) {
+export async function adminUpdateSchool(id: number, updates: { name?: string; email?: string; max_students?: number; max_teachers?: number }, adminPassword: string) {
   return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(updates),
+    body: JSON.stringify({ ...updates, admin_password: adminPassword }),
   });
 }
 
-export async function adminDeleteSchool(id: number) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${id}`, {
-    method: 'DELETE',
+export async function adminDeleteSchool(id: number, adminPassword: string) {
+  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${id}/delete`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ admin_password: adminPassword }),
   });
 }
 
@@ -27,21 +29,27 @@ export async function adminGetSchoolReports(id: number) {
   return fetchJson<{ success: boolean; reports: SchoolReportItem[] }>(`/api/school/admin/${id}/reports`);
 }
 
-export async function adminRemoveSchoolUser(schoolId: number, userId: number) {
-  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${schoolId}/users/${userId}`, {
-    method: 'DELETE',
+export async function adminRemoveSchoolUser(schoolId: number, userId: number, adminPassword: string) {
+  return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${schoolId}/users/${userId}/remove`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ admin_password: adminPassword }),
   });
 }
 
-export async function adminBlockSchoolUser(schoolId: number, userId: number) {
+export async function adminBlockSchoolUser(schoolId: number, userId: number, adminPassword: string) {
   return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${schoolId}/users/${userId}/block`, {
     method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ admin_password: adminPassword }),
   });
 }
 
-export async function adminUnblockSchoolUser(schoolId: number, userId: number) {
+export async function adminUnblockSchoolUser(schoolId: number, userId: number, adminPassword: string) {
   return fetchJson<{ success: boolean; message?: string }>(`/api/school/admin/${schoolId}/users/${userId}/unblock`, {
     method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ admin_password: adminPassword }),
   });
 }
 

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
 import type { ClassItem, ClassStudent } from '../../services/class.service'
 import ClassReportsTab from './ClassReportsTab.vue'
 import ClassStatsTab from './ClassStatsTab.vue'
@@ -8,6 +10,10 @@ import StudentDetailModal from './StudentDetailModal.vue'
 import CreateAnnouncementForm from './CreateAnnouncementForm.vue'
 import AnnouncementsPanel from '../shared/AnnouncementsPanel.vue'
 import PlagiarismChecker from './PlagiarismChecker.vue'
+
+
+
+
 
 interface ClassStatItem { student_count: number; total_reports: number; pending_count: number; class_average: number }
 
@@ -21,7 +27,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'close'): void }>()
 
-const { t } = useI18n()
 const activeSection = ref<'overview' | 'students' | 'reports' | 'stats' | 'announcements' | 'plagiarism'>('overview')
 const selectedStudent = ref<ClassStudent | null>(null)
 const detailOpen = ref(false)

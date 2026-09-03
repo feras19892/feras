@@ -56,14 +56,22 @@ export function applyMaterialState(deps: MaterialStateDeps): void {
           } else if (selectedPartId.value) {
             material.transparent = true;
             material.opacity = dimOpacity;
-            material.depthWrite = dimOpacity > 0.15;
+            material.depthWrite = false;
             material.side = THREE.DoubleSide;
             mesh.renderOrder = 0;
           } else {
-            material.transparent = false;
-            material.opacity = 1;
-            material.depthWrite = true;
-            material.side = THREE.FrontSide;
+            const baseOpacity = def?.dimOpacity ?? 1;
+            if (baseOpacity < 1) {
+              material.transparent = true;
+              material.opacity = baseOpacity;
+              material.depthWrite = false;
+              material.side = THREE.DoubleSide;
+            } else {
+              material.transparent = false;
+              material.opacity = 1;
+              material.depthWrite = true;
+              material.side = THREE.FrontSide;
+            }
             mesh.renderOrder = 0;
           }
         }

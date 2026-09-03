@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n';
-import type { SchoolUser } from '../../../services/school.service';
-
+import { useI18n } from '@/composables/useI18n';
 const { t, locale } = useI18n();
-
+import type { SchoolUser } from '../../../services/school.service';
 defineProps<{ users: SchoolUser[] }>();
 const emit = defineEmits<{
   remove: [userId: number];

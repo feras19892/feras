@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useBiotSavartExperiment } from '../../../../composables/biot-savart/useBiotSavartExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import BiotSavartMenuBar from '../../../../components/experiment/biot-savart/BiotSavartMenuBar.vue'
 import BiotSavartCanvas from '../../../../components/experiment/biot-savart/BiotSavartCanvas.vue'
@@ -11,8 +13,12 @@ import BiotSavartControlBar from '../../../../components/experiment/biot-savart/
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useBiotSavartExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 

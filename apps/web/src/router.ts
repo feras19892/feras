@@ -8,14 +8,34 @@ let cachedStatus: SystemStatus | null = null;
 let statusPromise: Promise<void> | null = null;
 let statusLastFetch = 0;
 const STATUS_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const STATUS_RETRY_MAX = 3;
+const STATUS_RETRY_BASE_MS = 350;
+
+function isStatusNetworkError(err: unknown): boolean {
+  return err instanceof TypeError || (err instanceof Error && (err.message.includes('Failed to fetch') || err.message.includes('fetch failed')));
+}
+
+/** Fetch system status with short retry/backoff to survive the dev startup race (API boots after web). */
+async function fetchSystemStatusWithRetry(): Promise<SystemStatus | null> {
+  for (let attempt = 1; attempt <= STATUS_RETRY_MAX; attempt++) {
+    try {
+      const status = await getSystemStatus();
+      cachedStatus = status;
+      statusLastFetch = Date.now();
+      return status;
+    } catch (err) {
+      if (!isStatusNetworkError(err) || attempt === STATUS_RETRY_MAX) return null;
+      await new Promise(r => setTimeout(r, STATUS_RETRY_BASE_MS * attempt));
+    }
+  }
+  return null;
+}
 
 async function ensureSystemStatus() {
   const now = Date.now();
   if (cachedStatus && now - statusLastFetch < STATUS_TTL_MS) return;
   if (statusPromise) { await statusPromise; return; }
-  statusPromise = getSystemStatus()
-    .then(s => { cachedStatus = s; statusLastFetch = Date.now(); })
-    .catch(() => { statusPromise = null; });
+  statusPromise = fetchSystemStatusWithRetry().then(() => { statusPromise = null; });
   await statusPromise;
 }
 
@@ -56,7 +76,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  // Redirect role-specific dashboards from /home
+  // Redirect role-specific dashboards from /home (using new routes for testing)
   if (to.path === '/home' && !to.query.view) {
     if (auth.isAdmin) return next('/admin');
     if (auth.isStudent && !auth.isGuest) return next('/student');
@@ -68,3 +88,4 @@ router.beforeEach(async (to, from, next) => {
 });
 
 export default router;
+

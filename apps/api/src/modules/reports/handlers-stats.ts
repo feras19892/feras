@@ -17,6 +17,19 @@ function validId(idStr: string): number | null {
   return Number.isFinite(n) && n > 0 ? n : null;
 }
 
+// نفس نمط admin/export-service.ts — حماية من CSV Injection (=, +, -, @) والفواصل/الأسطر
+function escapeCsvValue(v: unknown): string {
+  if (v === null || v === undefined) return '';
+  let s = String(v).replace(/"/g, '""');
+  if (/^[=+\-@\t\r]/.test(s)) {
+    s = `\'${s}`;
+  }
+  if (s.includes(',') || s.includes('\n') || s.includes('\r')) {
+    return `"${s}"`;
+  }
+  return s;
+}
+
 // GET /student/:student_id/stats — إحصائيات الطالب
 app.get('/student/:student_id/stats', async (c) => {
   const user = c.get('user');
@@ -48,6 +61,16 @@ app.get('/student/:student_id/stats', async (c) => {
     return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
   const stats = await svc.getStudentStats(studentId);
+  return c.json({ success: true, stats });
+});
+
+// GET /teacher/stats — عدّادات حية دقيقة لمعلم (خارج نطاق القوائم المقتطعة)
+app.get('/teacher/stats', async (c) => {
+  const user = c.get('user');
+  if (user.role !== 'teacher') {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
+  const stats = await svc.getTeacherStats(user.id);
   return c.json({ success: true, stats });
 });
 
@@ -138,9 +161,9 @@ app.get('/class/:class_id/gradebook.csv', async (c) => {
   }
 
   const header = ['Student', ...experiments, 'Average'];
-  const lines = [header.join(',')];
+  const lines = [header.map(escapeCsvValue).join(',')];
   for (const s of students) {
-    const vals: string[] = [s.name.replace(/,/g, ' ')];
+    const vals: string[] = [escapeCsvValue(s.name)];
     let sum = 0, count = 0;
     for (const exp of experiments) {
       const key = `${s.id}|${exp}`;
@@ -212,7 +235,7 @@ app.post('/bulk-grade', zValidator('json', z.object({
           results.push({ report_id: g.report_id, success: false, message: 'غير مصرح' }); continue;
         }
       }
-      await svc.gradeReport(g.report_id, { grade: g.grade, feedback: g.feedback }, user.id, user.name);
+      await svc.gradeReport(g.report_id, { grade: g.grade, feedback: g.feedback }, user.id, user.name, user.role);
       results.push({ report_id: g.report_id, success: true });
     } catch (err) {
       results.push({ report_id: g.report_id, success: false, message: err instanceof Error ? err.message : 'Unknown error' });

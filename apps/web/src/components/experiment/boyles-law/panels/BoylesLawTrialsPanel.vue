@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { BoylesLawTrial } from '../../../../composables/boyles-law/useBoylesLawTrials'
-const { t } = useI18n()
+
 defineProps<{ trials: BoylesLawTrial[] }>()
 const emit = defineEmits<{
   (e: 'remove', id: number): void

@@ -1,0 +1,27 @@
+/* ============================================================
+   Unified page — requests, notifications, system side-by-side
+   ============================================================ */
+
+.unified-page {
+  height: 100%;
+  max-width: 100% !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  overflow: hidden;
+  color: var(--as-text);
+}
+
+.unified-col {
+  min-height: 0;
+  overflow: auto;
+  background: var(--as-surface);
+  border: 1px solid var(--as-border);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+@media (max-width: 1100px) {
+  .unified-page { grid-template-columns: 1fr; overflow: auto; }
+  .unified-col { max-height: none; }
+}

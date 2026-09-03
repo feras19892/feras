@@ -1,5 +1,6 @@
 export function getApiBaseUrl(): string {
-  return import.meta.env.VITE_API_BASE_URL ?? '';
+  const env = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? ''
+  return env.trim() ? env : 'http://localhost:3000'
 }
 
 export function apiUrl(path: string): string {
@@ -19,9 +20,11 @@ export function getRefreshToken(): string | null {
   return localStorage.getItem(REFRESH_TOKEN_KEY);
 }
 
-export function setTokens(access?: string, refresh?: string) {
+export function setTokens(access?: string, _refresh?: string) {
   if (access) localStorage.setItem(ACCESS_TOKEN_KEY, access);
-  if (refresh) localStorage.setItem(REFRESH_TOKEN_KEY, refresh);
+  // أمان (#3): refresh token لم يعد يُخزَّن في localStorage — يعيش فقط في كوكي
+  // HttpOnly يضبطها الـ API (7 أيام + تدوير عند كل تحديث). الجلسات القديمة التي
+  // تحتوي refresh محفوظ سابقاً تستمر بالعمل عبر getRefreshToken() حتى الدخول القادم.
 }
 
 export function clearTokens() {
@@ -116,37 +119,54 @@ export async function fetchJson<T>(path: string, options: FetchOptions = {}): Pr
   let response = await fetch(apiUrl(path), fetchOpts);
 
   if (response.status === 401) {
-    const refreshed = await singleFlightRefresh();
-    if (refreshed) {
-      const newAccessToken = getAccessToken();
-      const retryHeaders: Record<string, string> = {
-        ...mergedHeaders,
-        Accept: 'application/json',
-        'ngrok-skip-browser-warning': 'true',
-      };
-      if (newAccessToken) {
-        retryHeaders['Authorization'] = `Bearer ${newAccessToken}`;
-      }
-      const retryOpts: FetchOptions = { ...options, headers: retryHeaders, credentials: 'include' };
-      if (options.body) {
-        if (typeof options.body === 'string' || options.body instanceof FormData || options.body instanceof Blob) {
-          retryOpts.body = options.body;
-        } else {
-          retryOpts.body = JSON.stringify(options.body);
+    if (path.includes('/auth/login') || path.includes('/auth/register')) {
+      // Pass through: let the caller see the actual 401 response body
+    } else {
+      const refreshed = await singleFlightRefresh();
+      if (refreshed) {
+        const newAccessToken = getAccessToken();
+        const retryHeaders: Record<string, string> = {
+          ...mergedHeaders,
+          Accept: 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        };
+        if (newAccessToken) {
+          retryHeaders['Authorization'] = `Bearer ${newAccessToken}`;
         }
-      }
-      response = await fetch(apiUrl(path), retryOpts);
-      if (response.status === 401) {
+        const retryOpts: FetchOptions = { ...options, headers: retryHeaders, credentials: 'include' };
+        if (options.body) {
+          if (typeof options.body === 'string' || options.body instanceof FormData || options.body instanceof Blob) {
+            retryOpts.body = options.body;
+          } else {
+            retryOpts.body = JSON.stringify(options.body);
+          }
+        }
+        response = await fetch(apiUrl(path), retryOpts);
+        if (response.status === 401) {
+          window.dispatchEvent(new CustomEvent('auth:session-expired'));
+          return { success: false, message: 'Session expired' } as T;
+        }
+      } else {
         window.dispatchEvent(new CustomEvent('auth:session-expired'));
         return { success: false, message: 'Session expired' } as T;
       }
-    } else {
-      window.dispatchEvent(new CustomEvent('auth:session-expired'));
-      return { success: false, message: 'Session expired' } as T;
     }
   }
 
   if (!response.ok) {
+    if (response.status === 429) {
+      const body = await response.json().catch(() => null);
+      const limitMsg = body?.message || 'تم تجاوز عدد المحاولات المسموح بها. يرجى الانتظار قليلاً ثم المحاولة مرة أخرى.';
+      throw new ApiError(limitMsg, 429);
+    }
+    if (response.status === 403) {
+      const body = await response.json().catch(() => null);
+      if (body?.blocked || body?.message?.includes('معاقب') || body?.message?.includes('مجمد') || body?.message?.includes('محظور')) {
+        window.dispatchEvent(new CustomEvent('auth:blocked', { detail: body }));
+        return { success: false, message: body?.message || 'تم تجميد حسابك', blocked: true } as T;
+      }
+      return { success: false, message: body?.message || 'غير مصرح' } as T;
+    }
     if (response.status === 404) {
       const body = await response.json().catch(() => null);
       return { success: false, message: body?.message || 'Resource not found' } as T;
@@ -158,7 +178,7 @@ export async function fetchJson<T>(path: string, options: FetchOptions = {}): Pr
       if (body && typeof body.success === 'boolean') {
         return body as T;
       }
-    } catch { /* ignore */ }
+    } catch { if (import.meta.env.DEV) console.warn('Failed to parse error response body') }
     throw new ApiError(msg, response.status);
   }
   return (await response.json()) as T;

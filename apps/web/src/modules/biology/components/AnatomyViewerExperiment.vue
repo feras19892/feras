@@ -1,19 +1,30 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import * as THREE from 'three';
-import { useI18n } from '../../../composables/useI18n';
+
 import type { AnatomyOrganData, AnatomyOrganPart } from '../../../services/anatomy-viewer-data';
 import type { HotspotState } from '../../../types/biology.types';
 import InfoPanel from './InfoPanel.vue';
 import StageStepper from './StageStepper.vue';
+import BiologyReportButton from './BiologyReportButton.vue';
+import { useRoute } from 'vue-router';
+import { resolveExperimentId } from '../../../composables/useExperimentId';
+
+
+
+
 
 const props = defineProps<{
   organData: AnatomyOrganData;
 }>();
 
 const router = useRouter();
-const { t } = useI18n();
+
+const route = useRoute();
+const experimentId = computed(() => resolveExperimentId('biology', route.path.split('/').filter(Boolean).pop() ?? ''));
 const currentPartIndex = ref(0);
 const isLoading = ref(true);
 
@@ -94,6 +105,7 @@ const toggleFullscreen = (): void => {
         <h1 class="experiment-title">{{ t(organData.titleKey) }}</h1>
         <p class="experiment-subtitle">{{ t(organData.subtitleKey) }}</p>
       </div>
+      <BiologyReportButton :experiment-id="experimentId" :experiment-name="t(organData.titleKey)" />
       <button class="header-action" @click="toggleFullscreen">
         <svg v-if="!isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />

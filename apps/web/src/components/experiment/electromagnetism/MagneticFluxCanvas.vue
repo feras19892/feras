@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
+
 import {
+
+
   drawFieldLinesHorizontal, drawFluxCoil,
   drawNormalAndBAngle, drawFluxLabels, drawFluxGraph,
 } from './magnetic-flux-helpers'
 
-const { t } = useI18n()
+
+
 
 const props = defineProps<{
   B: number
@@ -36,6 +41,7 @@ if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D
 }
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+let canvasEl: HTMLCanvasElement | null = null
 let cssW = 800, cssH = 400
 let rafId = 0
 let watchdogId = 0
@@ -94,7 +100,7 @@ function onMouseDown(e: MouseEvent) {
     }
   }
   if (probeState === 'placed') {
-    const canvas = canvasRef.value!
+    const _canvas = canvasRef.value!
     const sx = (probePos.x - cssW / 2) * zoom + cssW / 2 + panX
     const sy = (probePos.y - cssH / 2) * zoom + cssH / 2 + panY
     const dx = pos.x - sx
@@ -294,6 +300,7 @@ function resize() {
 
 onMounted(() => {
   const canvas = canvasRef.value
+  canvasEl = canvas
   if (!canvas) return
   resize()
   canvas.addEventListener('wheel', onWheel, { passive: false })
@@ -325,14 +332,14 @@ onUnmounted(() => {
     resizeObserver.disconnect()
     resizeObserver = null
   }
-  const canvas = canvasRef.value
-  if (canvas) {
-    canvas.removeEventListener('wheel', onWheel)
-    canvas.removeEventListener('mousedown', onMouseDown)
-    canvas.removeEventListener('mousemove', onMouseMove)
-    canvas.removeEventListener('mouseup', onMouseUp)
-    canvas.removeEventListener('mouseleave', onMouseUp)
-    canvas.removeEventListener('dblclick', onDoubleClick)
+  if (canvasEl) {
+    canvasEl.removeEventListener('wheel', onWheel)
+    canvasEl.removeEventListener('mousedown', onMouseDown)
+    canvasEl.removeEventListener('mousemove', onMouseMove)
+    canvasEl.removeEventListener('mouseup', onMouseUp)
+    canvasEl.removeEventListener('mouseleave', onMouseUp)
+    canvasEl.removeEventListener('dblclick', onDoubleClick)
+    canvasEl = null
   }
 })
 

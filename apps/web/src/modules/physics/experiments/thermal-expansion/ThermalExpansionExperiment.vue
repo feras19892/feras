@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useThermalExpansionExperiment } from '../../../../composables/thermal-expansion/useThermalExpansionExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import ThermalExpansionMenuBar from '../../../../components/experiment/thermal-expansion/ThermalExpansionMenuBar.vue'
 import ThermalExpansionCanvas from '../../../../components/experiment/thermal-expansion/ThermalExpansionCanvas.vue'
@@ -14,8 +16,12 @@ import ThermalExpansionHelpModal from '../../../../components/experiment/thermal
 import ThermalExpansionGuidePanel from '../../../../components/experiment/thermal-expansion/ThermalExpansionGuidePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useThermalExpansionExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

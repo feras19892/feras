@@ -1,10 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue'
 import { useSpringStatic, type StaticReading } from '../../../composables/spring/useSpringStatic'
 import type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'
-import { useI18n } from '../../../composables/useI18n'
-
-const { t } = useI18n()
 
 const props = defineProps<{
   params: SpringParams

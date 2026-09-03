@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { StraightWireTrial } from '../../../composables/electromagnetism/useStraightWireExperiment'
-import { useI18n } from '../../../composables/useI18n'
-const { t } = useI18n()
 
 defineProps<{
   trials: StraightWireTrial[]

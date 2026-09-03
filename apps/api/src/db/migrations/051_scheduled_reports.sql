@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS scheduled_reports (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  admin_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  frequency TEXT NOT NULL,
+  format TEXT NOT NULL DEFAULT 'csv',
+  filters TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE
+);

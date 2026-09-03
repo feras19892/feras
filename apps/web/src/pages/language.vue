@@ -1,15 +1,34 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18nStore } from '../stores/i18n.store'
-import { localeNames } from '../locales'
-import type { Locale } from '../locales/types'
+import { localeNames, supportedLocales, type Locale } from '../locales'
 
 const router = useRouter()
 const i18n = useI18nStore()
 
+const changing = ref(false)
+const error = ref('')
+
 async function pick(lang: Locale) {
-  await i18n.setLocale(lang)
-  router.replace('/')
+  if (!supportedLocales.includes(lang) || changing.value) return
+  changing.value = true
+  error.value = ''
+  try {
+    await i18n.setLocale(lang)
+    const previous = router.options?.history?.state?.back as string | undefined
+    if (previous && !previous.startsWith('/language')) {
+      router.back()
+    } else {
+      router.replace('/')
+    }
+  } catch (e) {
+    error.value = i18n.loadError || 'فشل تغيير اللغة'
+  } finally {
+    changing.value = false
+  }
 }
 </script>
 
@@ -17,14 +36,16 @@ async function pick(lang: Locale) {
   <div class="lang-page">
     <div class="lang-card">
       <h1 class="title">{{ i18n.t('landing.chooseLang', 'Choose Language') }}</h1>
+      <p v-if="error" class="error-text">{{ error }}</p>
       <div class="options">
         <button
           v-for="loc in i18n.supported"
           :key="loc"
           class="option-btn"
+          :disabled="changing"
           @click="pick(loc)"
         >
-          <span class="flag">{{ loc === 'ar' ? '🇸🇦' : loc === 'en' ? '🇬🇧' : '🇪🇸' }}</span>
+          <span class="flag">{{ localeNames[loc] ? localeNames[loc][0] : '•' }}</span>
           <span class="name">{{ localeNames[loc] }}</span>
         </button>
       </div>

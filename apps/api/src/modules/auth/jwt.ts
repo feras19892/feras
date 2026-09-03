@@ -28,7 +28,13 @@ function getSecret(): Uint8Array {
 export async function signAccessToken(
   payload: Omit<JWTPayload, 'iat' | 'exp'>
 ): Promise<string> {
-  return new SignJWT({ sub: payload.sub, email: payload.email, role: payload.role })
+  return new SignJWT({
+    sub: payload.sub,
+    email: payload.email,
+    name: payload.name,
+    role: payload.role,
+    school_id: payload.school_id,
+  })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('15m')
@@ -40,7 +46,9 @@ export async function verifyAccessToken(token: string): Promise<JWTPayload> {
   return {
     sub: String(payload.sub),
     email: String(payload.email),
+    name: payload.name as string | undefined,
     role: payload.role as JWTPayload['role'],
+    school_id: payload.school_id as number | null | undefined,
     iat: Number(payload.iat),
     exp: Number(payload.exp),
   };

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { TitrationReading } from '../../../composables/chemistry/experiments';
-import { useI18n } from '../../../composables/useI18n';
+import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
+import type { TitrationReading } from '../../../composables/chemistry/experiments';
 
 const props = defineProps<{
   readings: TitrationReading[];

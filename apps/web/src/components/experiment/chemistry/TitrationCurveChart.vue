@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue';
 import type { TitrationReading } from '../../../composables/chemistry/experiments';
-import { useI18n } from '../../../composables/useI18n';
-const { t } = useI18n();
 
 const props = defineProps<{
   readings: TitrationReading[];

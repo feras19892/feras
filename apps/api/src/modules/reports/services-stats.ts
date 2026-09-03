@@ -1,13 +1,67 @@
 import { db } from '../../db/index.js';
 
 export async function getStudentStats(studentId: number) {
-  const reports = await db.all<{ status: string; grade: number | null }[]>(`SELECT status, grade FROM experiment_reports WHERE student_id = ?`, studentId);
+  const reports = await db.all<{ status: string; grade: number | null; feedback: string | null; feedback_seen: number }[]>(
+    `SELECT status, grade, feedback, feedback_seen FROM experiment_reports WHERE student_id = ?`,
+    studentId,
+  );
   const total = reports.length;
   const graded = reports.filter((r) => r.status === 'graded');
+  // دلالياً: pending = مُرسل/مُعاد إرساله فقط — المسودة حقل منفصل (كانت تُحتسب خطأً ضمن pending)
+  const pending = reports.filter((r) => r.status === 'submitted' || r.status === 'resubmitted').length;
+  const draft = reports.filter((r) => r.status === 'draft').length;
   const avg = graded.length > 0
     ? Math.round(graded.reduce((s, r) => s + (r.grade || 0), 0) / graded.length)
     : 0;
-  return { total, graded: graded.length, pending: total - graded.length, average: avg };
+  const best = graded.reduce((m, r) => (r.grade != null && r.grade > m ? r.grade : m), 0);
+  const newFeedback = graded.filter((r) => r.feedback && !r.feedback_seen).length;
+  return {
+    total,
+    graded: graded.length,
+    pending,
+    draft,
+    average: avg,
+    best_grade: best,
+    new_feedback: newFeedback,
+  };
+}
+
+export interface TeacherLiveStats {
+  pending: number;
+  unopened: number;
+  overdue: number;
+  submitted_today: number;
+  graded_today: number;
+}
+
+/** عدّادات دقيقة على مستوى كل فصول المعلم — بغض النظر عن حجم قوائم التقارير المقتطعة */
+export async function getTeacherStats(teacherId: number): Promise<TeacherLiveStats> {
+  const row = await db.get<{
+    pending: number | null;
+    unopened: number | null;
+    overdue: number | null;
+    submitted_today: number | null;
+    graded_today: number | null;
+  }>(
+    `SELECT
+       SUM(CASE WHEN r.status IN ('submitted','resubmitted') THEN 1 ELSE 0 END) as pending,
+       SUM(CASE WHEN r.teacher_seen = 0 AND r.status != 'draft' THEN 1 ELSE 0 END) as unopened,
+       SUM(CASE WHEN r.status IN ('submitted','resubmitted') AND r.submitted_at IS NOT NULL
+                AND julianday('now') - julianday(r.submitted_at) >= 2 THEN 1 ELSE 0 END) as overdue,
+       SUM(CASE WHEN date(r.submitted_at) = date('now') THEN 1 ELSE 0 END) as submitted_today,
+       SUM(CASE WHEN r.graded_at IS NOT NULL AND date(r.graded_at) = date('now') THEN 1 ELSE 0 END) as graded_today
+     FROM experiment_reports r
+     JOIN classes c ON r.class_id = c.id
+     WHERE c.teacher_id = ?`,
+    teacherId,
+  );
+  return {
+    pending: row?.pending ?? 0,
+    unopened: row?.unopened ?? 0,
+    overdue: row?.overdue ?? 0,
+    submitted_today: row?.submitted_today ?? 0,
+    graded_today: row?.graded_today ?? 0,
+  };
 }
 
 export async function getClassStats(classId: string) {

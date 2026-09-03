@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'
 import PendulumEnvSelector from './PendulumEnvSelector.vue'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const params = defineModel<PendulumParams>({ required: true })
 </script>
 

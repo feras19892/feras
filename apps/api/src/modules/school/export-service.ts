@@ -1,15 +1,22 @@
 import { db } from '../../db/index.js';
 
+function escapeCsvValue(v: unknown): string {
+  if (v === null || v === undefined) return '';
+  let s = String(v).replace(/"/g, '""');
+  if (/^[=+\-@\t\r]/.test(s)) {
+    s = `\'${s}`;
+  }
+  if (s.includes(',') || s.includes('\n') || s.includes('\r')) {
+    return `"${s}"`;
+  }
+  return s;
+}
+
 function toCsv(rows: any[], columns: string[]) {
   if (!rows.length) return columns.join(',') + '\n';
   const lines = [columns.join(',')];
   for (const row of rows) {
-    const vals = columns.map((c) => {
-      const v = row[c];
-      if (v === null || v === undefined) return '';
-      const s = String(v).replace(/"/g, '""');
-      return s.includes(',') || s.includes('\n') ? `"${s}"` : s;
-    });
+    const vals = columns.map((c) => escapeCsvValue(row[c]));
     lines.push(vals.join(','));
   }
   return lines.join('\n');

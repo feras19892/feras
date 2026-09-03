@@ -5,11 +5,18 @@ import { authMiddleware } from '../auth/middleware.js';
 import * as svc from './services.js';
 import type { User } from '@my-modern-app/shared-types';
 import { db } from '../../db/index.js';
-import { getSystemSettingBool } from '../../shared/system-settings.js';
+import { getSystemSettingBool, setSystemSetting } from '../../shared/system-settings.js';
 
 type Variables = { user: User };
 const app = new Hono<{ Variables: Variables }>();
 app.use(authMiddleware);
+
+// GET /unread-counts — unread message counts per class for current user
+app.get('/unread-counts', async (c) => {
+  const user = c.get('user');
+  const counts = await svc.getUnreadCounts(user.id, user.role);
+  return c.json({ success: true, counts });
+});
 
 async function isChatEnabled(): Promise<boolean> {
   return getSystemSettingBool('chat_enabled', true);
@@ -82,11 +89,13 @@ app.post('/:classId', zValidator('json', sendMessageSchema), async (c) => {
   }
 
   if (result.flagged) {
+    const words = result.flaggedWords?.join('، ') || 'محتوى غير لائق';
     return c.json({
       success: true,
       message: result.message,
       flagged: true,
-      warning: 'تم حظر رسالتك لاحتوائها على كلمات غير لائقة. تم إبلاغ الإدارة.',
+      flaggedWords: result.flaggedWords,
+      warning: `تحذير: تم اكتشاف كلمات محظورة في رسالتك (${words}). الرسالة لم تُرسَل وتم إبلاغ الإدارة.`,
     });
   }
 
@@ -119,6 +128,16 @@ app.get('/admin/all', async (c) => {
   return c.json({ success: true, messages });
 });
 
+// PATCH /admin/unflag/:messageId — admin only, remove flagged status
+app.patch('/admin/unflag/:messageId', async (c) => {
+  const user = c.get('user');
+  if (user.role !== 'admin') return c.json({ success: false, message: 'غير مصرح' }, 403);
+  const messageId = Number(c.req.param('messageId'));
+  const result = await svc.unflagMessage(messageId);
+  if (!result.success) return c.json({ success: false, message: 'الرسالة غير موجودة' }, 404);
+  return c.json({ success: true });
+});
+
 // GET /admin/stats — admin only, chat statistics
 app.get('/admin/stats', async (c) => {
   const user = c.get('user');
@@ -127,11 +146,15 @@ app.get('/admin/stats', async (c) => {
   return c.json({ success: true, stats });
 });
 
-// GET /unread-counts — unread message counts per class for current user
-app.get('/unread-counts', async (c) => {
+// POST /admin/toggle — admin only, enable/disable chat globally
+app.post('/admin/toggle', async (c) => {
   const user = c.get('user');
-  const counts = await svc.getUnreadCounts(user.id, user.role);
-  return c.json({ success: true, counts });
+  if (user.role !== 'admin') return c.json({ success: false, message: 'غير مصرح' }, 403);
+  const body = (await c.req.json().catch(() => ({}))) as { enabled?: boolean };
+  const current = await isChatEnabled();
+  const next = typeof body.enabled === 'boolean' ? body.enabled : !current;
+  await setSystemSetting('chat_enabled', next ? 'true' : 'false');
+  return c.json({ success: true, enabled: next });
 });
 
 // POST /:classId/read — mark chat as read for current user

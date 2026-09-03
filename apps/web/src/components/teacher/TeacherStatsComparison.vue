@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
-
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 interface StudentStat { id: number; name: string; reports: number; avg: number }
 
 interface Props {
@@ -8,7 +8,6 @@ interface Props {
 }
 defineProps<Props>()
 
-const { t } = useI18n()
 </script>
 
 <template>

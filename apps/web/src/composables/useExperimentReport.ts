@@ -71,6 +71,7 @@ export function useExperimentReport(studentStorageKey: string) {
         sendToTeacherBtn: t('experiments.sendToTeacherBtn'),
         guestStudent: t('experiments.guestStudent'),
         joinClassFirst: t('experiments.joinClassFirst'),
+        loginFirst: t('experiments.loginFirst'),
         branchPhysics: t('experiments.branchPhysics'),
         sentSuccessfully: t('experiments.sentSuccessfully'),
         reportSentSuccess: t('experiments.reportSentSuccess'),

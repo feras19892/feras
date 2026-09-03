@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
+
 import type { AnalysisColumnMeta } from '../../../types/physics';
+
+
+
+
 
 const props = defineProps<{
   readings: Record<string, number>[];
@@ -14,7 +20,6 @@ const emit = defineEmits<{
   (e: 'remove-row', index: number): void;
 }>();
 
-const { t } = useI18n();
 const rows = computed(() => props.readings);
 
 // Smart outlier detection: highlight values > 2σ from mean

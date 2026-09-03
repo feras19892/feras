@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { InterferenceTrial } from '../../../composables/interference/useInterferenceTrials'
 import InterferencePanelBody from './InterferencePanelBody.vue'
+
 
 interface Props {
   maximized: Record<string, boolean>

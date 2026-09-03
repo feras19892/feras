@@ -1,12 +1,19 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { useI18n } from '../../../composables/useI18n';
+
 import { useBiologyHotspots } from '../../../composables/biology/useBiologyHotspots';
 import { useBiologyExplode } from '../../../composables/biology/useBiologyExplode';
 import type { BiologyExperiment as BiologyExperimentModel } from '../../../types/biology.types';
 import Biology3DCanvas from './Biology3DCanvas.vue';
 import InfoPanel from './InfoPanel.vue';
+import SubmitReportModal from '@/components/experiment/SubmitReportModal.vue';
+
+
+
+
 
 const props = withDefaults(
   defineProps<{
@@ -21,7 +28,7 @@ const props = withDefaults(
 );
 
 const router = useRouter();
-const { t } = useI18n();
+
 const { hotspots, selectedHotspot, selectedId, select } = useBiologyHotspots(
   props.experiment.organelles
 );
@@ -56,6 +63,7 @@ watch(selectedId, (id) => {
 });
 
 const isFullscreen = ref(false);
+const reportOpen = ref(false);
 
 const toggleFullscreen = (): void => {
   const el = document.querySelector('.experiment-page') as HTMLElement | null;
@@ -83,6 +91,9 @@ const toggleFullscreen = (): void => {
         <h1 class="experiment-title">{{ t(experiment.titleKey) }}</h1>
         <p class="experiment-subtitle">{{ t(experiment.subtitleKey) }}</p>
       </div>
+      <button class="header-action" @click="reportOpen = true" title="إرسال التقرير">
+        📋 إرسال التقرير
+      </button>
       <button class="header-action" @click="toggleFullscreen">
         <svg v-if="!isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
@@ -183,7 +194,16 @@ const toggleFullscreen = (): void => {
         </div>
       </aside>
     </main>
-  </div>
+
+  <SubmitReportModal
+    v-model:show="reportOpen"
+    experiment-type="biology"
+    :experiment-id="experiment.id"
+    :experiment-name="t(experiment.titleKey)"
+    readings="[]"
+    params="{}"
+  />
+</div>
 </template>
 
 <style scoped>

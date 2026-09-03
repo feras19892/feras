@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const MATERIALS = [
   { name: 'نحاس', alpha: 16.5, color: '#b87333' },
   { name: 'ألمنيوم', alpha: 23.1, color: '#a8b5c0' },

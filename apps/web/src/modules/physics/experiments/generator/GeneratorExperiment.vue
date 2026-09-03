@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useGeneratorExperiment } from '../../../../composables/electromagnetism/useGeneratorExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import MenuBar from '../../../../components/experiment/electromagnetism/MenuBar.vue'
 import ControlBar from '../../../../components/experiment/electromagnetism/ControlBar.vue'
 import GeneratorCanvas from '../../../../components/experiment/electromagnetism/GeneratorCanvas.vue'
@@ -12,8 +14,12 @@ import GeneratorGuidePanel from '../../../../components/experiment/electromagnet
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 
+
+
+
+
 const ex = useGeneratorExperiment()
-const { t } = useI18n()
+
 const showGuide = ref(true)
 const helpOpen = ref(false)
 

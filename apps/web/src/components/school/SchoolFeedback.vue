@@ -1,10 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import { ref, onMounted, computed } from 'vue';
 import { getSchoolFeedback, updateSchoolFeedbackStatus, type SchoolFeedbackItem, type SchoolFeedbackStats } from '../../services/school.service';
-import { useI18n } from '../../composables/useI18n';
-
-const { t, locale } = useI18n();
-
 type FeedbackItem = SchoolFeedbackItem;
 
 const feedback = ref<FeedbackItem[]>([]);
@@ -77,7 +75,7 @@ onMounted(load);
       <button :class="['sf-filter-btn', { active: filter === 'dismissed' }]" @click="filter = 'dismissed'">{{ t('school.feedbackDismiss') }}</button>
     </div>
 
-    <div v-if="loading" class="sf-loading">{{ t('common.loading') }}</div>
+    <div v-if="loading" class="sf-loading">جاري التحميل...</div>
     <div v-else-if="filtered.length === 0" class="sf-empty">{{ t('school.feedbackEmpty') }}</div>
     <div v-else class="sf-list">
       <div v-for="f in filtered" :key="f.id" :class="['sf-item', f.status]">

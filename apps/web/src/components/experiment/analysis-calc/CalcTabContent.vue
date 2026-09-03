@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { computed } from 'vue';
 import CalcTabMechanics from './CalcTabMechanics.vue';
 import CalcTabOptics from './CalcTabOptics.vue';
 import CalcTabThermal from './CalcTabThermal.vue';
 import CalcTabElectric from './CalcTabElectric.vue';
+
 
 const props = defineProps<{
   sourceExperiment: string;

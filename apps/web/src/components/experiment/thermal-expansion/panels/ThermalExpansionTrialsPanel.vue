@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { ThermalExpansionTrial } from '../../../../composables/thermal-expansion/useThermalExpansionTrials'
-const { t } = useI18n()
+
 defineProps<{ trials: ThermalExpansionTrial[] }>()
 const matNames: Record<string, string> = {
   copper: 'نحاس', aluminum: 'ألمنيوم', iron: 'حديد', steel: 'فولاذ', brass: 'سبائك نحاس', glass: 'زجاج',

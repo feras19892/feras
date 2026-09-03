@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const REFERENCES = [
   { name: 'نابض ناعم', kRange: [5, 20], color: '#22c55e' },
   { name: 'نابض متوسط', kRange: [20, 100], color: '#5B8DB8' },

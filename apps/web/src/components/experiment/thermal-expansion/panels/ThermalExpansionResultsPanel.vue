@@ -1,7 +1,10 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { computed } from 'vue'
 import { ALPHA } from '../../../../composables/thermal-expansion/useThermalExpansionCalculations'
 import type { ThermalExpansionTrial } from '../../../../composables/thermal-expansion/useThermalExpansionTrials'
+
 const props = defineProps<{ trials: ThermalExpansionTrial[] }>()
 
 const avgAlpha = computed(() => props.trials.length ? props.trials.reduce((s, tr) => s + tr.alphaMeasured, 0) / props.trials.length : 0)

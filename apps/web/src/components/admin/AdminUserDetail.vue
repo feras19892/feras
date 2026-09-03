@@ -1,16 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, onMounted } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import { useConfirmDialog } from '../../composables/useConfirmDialog';
 import { useAdminUserDetail } from '../../composables/admin/useAdminUserDetail';
 import { impersonateUser } from '../../services/admin.service';
+import { setTokens } from '../../services/http';
 import AdminDirectMessage from './AdminDirectMessage.vue';
 import UserDetailModals from './UserDetailModals.vue';
-
 const props = defineProps<{ userId: number }>();
 const emit = defineEmits<{ (e: 'back'): void; (e: 'refresh'): void }>();
-
-const { t } = useI18n();
 const { profile, loading, error, load, ban, unban, addNote } = useAdminUserDetail();
 
 const showWarnModal = ref(false);
@@ -42,7 +41,7 @@ async function onImpersonate() {
   if (!password) return;
   try {
     const res = await impersonateUser(props.userId, password);
-    if (res.success) window.location.href = '/home';
+    if (res.success && res.token) { setTokens(res.token, res.refreshToken); localStorage.setItem('auth_user', JSON.stringify(res.user)); localStorage.removeItem('school_session'); window.location.href = `/${res.user.role}`; }
   } catch {
     await confirmDialog({ message: t('auth.errors.invalidCredentials'), variant: 'danger', icon: '⚠️' });
   }

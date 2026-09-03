@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, onMounted, watch } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
 import { useClassManager } from '../../composables/teacher/useClassManager'
 import { getClassStats } from '../../services/class.service'
 import CreateClassModal from './CreateClassModal.vue'
 import ClassGrid from './ClassGrid.vue'
 import ClassDetail from './ClassDetail.vue'
 
-const { t } = useI18n()
+
+
+
+
 const { classes, expandedId, classStudents, showModal, newClassName, createClass, deleteClass, renameClass, copyCode, loadClassDetails, loading } = useClassManager()
 
 const renameTarget = ref<{ id: string; name: string } | null>(null)

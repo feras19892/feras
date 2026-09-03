@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 interface Trial {
+
   id: number; mass: number; k: number; amplitude: number; T: number; f: number; omega: number; kCalc: number; err: number;
 }
 
 const trials = defineModel<Trial[]>({ required: true })
 
-const { t } = useI18n()
 const emit = defineEmits<{
   (e: 'remove', id: number): void
   (e: 'clear'): void

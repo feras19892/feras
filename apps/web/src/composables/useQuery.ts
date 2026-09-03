@@ -20,7 +20,15 @@ declare global {
 }
 
 const cache = new Map<string, QueryEntry<unknown>>();
+const MAX_CACHE_SIZE = 500;
 const FOCUS_LISTENERS = new Set<() => void>();
+
+function evictOldestCacheEntry() {
+  if (cache.size > MAX_CACHE_SIZE) {
+    const oldest = cache.keys().next().value;
+    if (oldest !== undefined) cache.delete(oldest);
+  }
+}
 
 if (typeof window !== 'undefined' && !window.__queryFocusInit) {
   window.__queryFocusInit = true;
@@ -50,6 +58,7 @@ export function useQuery<T>(
       subscribers: 0,
     };
     cache.set(key, entry as QueryEntry<unknown>);
+    evictOldestCacheEntry();
   }
   entry.subscribers++;
 
@@ -113,6 +122,7 @@ export function useQuery<T>(
   }
 
   syncFromCache();
+  if (options.enabled?.value === false) return;
   execute();
 
   if (options.refetchOnFocus) {
@@ -155,6 +165,7 @@ export function setQueryData<T>(key: string, data: T) {
       subscribers: 0,
     };
     cache.set(key, entry as QueryEntry<unknown>);
+    evictOldestCacheEntry();
   } else {
     entry.data = data;
     entry.lastFetch = Date.now();

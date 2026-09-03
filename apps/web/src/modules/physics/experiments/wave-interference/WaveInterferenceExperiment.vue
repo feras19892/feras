@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useWaveInterferenceExperiment } from '../../../../composables/wave-interference/useWaveInterferenceExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import WaveInterferenceMenuBar from '../../../../components/experiment/wave-interference/WaveInterferenceMenuBar.vue'
 import WaveInterferenceCanvas from '../../../../components/experiment/wave-interference/WaveInterferenceCanvas.vue'
@@ -14,8 +16,12 @@ import WaveInterferenceOverlayPanels from '../../../../components/experiment/wav
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useWaveInterferenceExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

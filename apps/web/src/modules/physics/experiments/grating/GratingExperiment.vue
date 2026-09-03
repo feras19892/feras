@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useGratingExperiment } from '../../../../composables/grating/useGratingExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import GratingMenuBar from '../../../../components/experiment/grating/GratingMenuBar.vue'
 import GratingCanvas from '../../../../components/experiment/grating/GratingCanvas.vue'
@@ -13,8 +15,12 @@ import GratingOverlayPanels from '../../../../components/experiment/grating/Grat
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useGratingExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 

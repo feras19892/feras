@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 const emit = defineEmits<{
+
   (e: 'calcFinalVelocity'): void
   (e: 'calcMomentumDiff'): void
   (e: 'calcEnergyLoss'): void

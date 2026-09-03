@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { reactive } from 'vue';
 import { glasswareSections } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolDef } from '../../../composables/chemistry/useChemistryTools';
 import type { Chemical } from '../../../composables/chemistry/useChemistryLab';
-import { useI18n } from '../../../composables/useI18n';
+
 import ChemicalShelfPanel from './ChemicalShelfPanel.vue';
-const { t } = useI18n();
+
+
+
+
 
 const activeTab = defineModel<string>('activeTab', { default: 'glassware' });
 

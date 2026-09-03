@@ -1,10 +1,11 @@
 import { EventEmitter } from 'events';
 
 export interface SSEEvent {
-  type: 'approval_created' | 'approval_escalated' | 'approval_resolved' | 'report_submitted' | 'report_resubmitted' | 'report_graded' | 'chat_flagged' | 'class_frozen' | 'class_unfrozen';
+  type: 'approval_created' | 'approval_escalated' | 'approval_resolved' | 'report_submitted' | 'report_resubmitted' | 'report_graded' | 'chat_flagged' | 'class_frozen' | 'class_unfrozen' | 'class_created';
   payload: Record<string, unknown>;
   targetUserId?: number;
   targetRole?: string;
+  schoolId?: number;
   timestamp: string;
 }
 
@@ -49,5 +50,6 @@ class SSEEventBus extends EventEmitter {
 export const eventBus = SSEEventBus.getInstance();
 
 export function broadcastEvent(event: Omit<SSEEvent, 'timestamp'>) {
-  eventBus.broadcast({ ...event, timestamp: new Date().toISOString() });
+  const schoolId = event.schoolId ?? (event.payload?.schoolId as number | undefined) ?? undefined;
+  eventBus.broadcast({ ...event, schoolId, timestamp: new Date().toISOString() });
 }

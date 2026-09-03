@@ -79,4 +79,6 @@ export interface AnalysisPayload {
   calculatedN2?: number;
   expectedN2?: number;
   hasCalcTab?: boolean;
+  theoretical?: { value: number; label: string; unit: string };
+  equipment?: string[];
 }

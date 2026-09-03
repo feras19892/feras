@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
 
 const props = defineProps<{ active: number; extraTabs?: string[] }>();
 const emit = defineEmits<(e: 'change', idx: number) => void>();
-const { t } = useI18n();
+
 const tabs = computed(() => [t('analysis.dataTab'), t('analysis.analysisTab'), ...(props.extraTabs || []), t('analysis.reportTab')]);
 </script>
 

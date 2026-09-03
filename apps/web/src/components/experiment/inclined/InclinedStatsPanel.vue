@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 const props = defineProps<{
+
   trialStats: {
     a_mean: number; a_std: number
     t_mean: number; t_std: number

@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from '../composables/useI18n'
+
 import { fetchJson } from '../services/http'
 import { useAuthStore } from '../modules/auth/stores/auth'
 import type { User } from '@my-modern-app/shared-types'
 
+
+
+
+
 const route = useRoute()
 const router = useRouter()
-const { t } = useI18n()
+
 const auth = useAuthStore()
 
 const email = ref<string>((route.query.email as string) || '')

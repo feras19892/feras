@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { loginSchema, registerSchema, passwordUpdateSchema, profileUpdateSchema, deleteAccountSchema, nameRequestSchema, verifyEmailSchema } from './schemas.js';
 import { z } from 'zod';
-import { login, register, refreshAccessToken, logout, logoutSchool, updatePassword, updateProfileName, deleteAccount, createNameRequest, verifyEmailCode, resendVerificationCode, requestPasswordReset, resetPassword, getUserById } from './services.js';
+import { login, register, refreshAccessToken, logout, logoutSchool, updatePassword, updateProfileName, deleteAccount, createNameRequest, verifyEmailCode, resendVerificationCode, requestPasswordReset, resetPassword, getUserById, exportUserData } from './services.js';
 import { createEmailChangeRequest } from '../school/services.js';
 import * as activitySvc from '../activity/service.js';
 import * as sessionSvc from '../sessions/service.js';
@@ -12,6 +12,7 @@ import { authMiddleware } from './middleware.js';
 import { loginRateLimit, passwordResetRateLimit, verifyEmailRateLimit } from '../../shared/middleware/rate-limit.js';
 import { db } from '../../db/index.js';
 import { getSystemSetting, getSystemSettingBool } from '../../shared/system-settings.js';
+import { getActiveSubscription } from '../subscriptions/services.js';
 import type { User } from '@my-modern-app/shared-types';
 
 const authRoutes = new Hono<{ Variables: { user: User } }>();
@@ -44,8 +45,17 @@ authRoutes.post('/register', zValidator('json', registerSchema), async (c) => {
     return c.json({ success: false, message: 'تم إيقاف التسجيل مؤقتاً بواسطة الإدارة. يرجى المحاولة لاحقاً.' }, 403);
   }
   const body = c.req.valid('json');
-  const creds = { ...body, school_code: body.school_code || undefined };
-  const result = await register(creds);
+  const clientIp = c.req.header('X-Forwarded-For') || c.req.header('x-real-ip') || c.req.header('x-client-ip') || 'unknown';
+  const userAgent = c.req.header('user-agent') || '';
+  const fingerprint = body.fingerprint ?? undefined;
+  const creds = {
+    ...body,
+    school_code: body.school_code || undefined,
+    invite_code: body.invite_code || undefined,
+    age: body.age ?? undefined,
+    fingerprint: undefined,
+  };
+  const result = await register(creds, clientIp, userAgent, fingerprint);
   if (!result.success) {
     const msg = result.message || 'فشل التسجيل';
     if (msg === 'البريد الإلكتروني مسجل بالفعل') return c.json({ success: false, message: msg }, 409);
@@ -59,8 +69,12 @@ authRoutes.post('/register', zValidator('json', registerSchema), async (c) => {
 authRoutes.post('/login', zValidator('json', loginSchema), async (c) => {
   const body = c.req.valid('json');
   const clientIp = c.req.header('X-Forwarded-For') || c.req.header('x-real-ip') || c.req.header('x-client-ip') || 'unknown';
-  const result = await login(body.email, body.password, clientIp);
+  const userAgent = c.req.header('user-agent') || '';
+  const result = await login(body.email, body.password, clientIp, userAgent);
   if (!result.success) {
+    if (result.message?.includes('معاقب') || result.message?.includes('محظور') || result.message?.includes('مجمد')) {
+      return c.json({ success: false, message: result.message, blocked: true }, 403);
+    }
     return c.json({ success: false, message: result.message }, 401);
   }
   if (result.token) {
@@ -125,7 +139,9 @@ authRoutes.post('/logout', async (c) => {
 
 authRoutes.get('/me', authMiddleware, async (c) => {
   const user = c.get('user');
-  return c.json({ success: true, user });
+  const ownerType = user.role === 'school' ? 'school' : 'user';
+  const subscription = await getActiveSubscription(user.id, ownerType);
+  return c.json({ success: true, user, subscription: subscription || null });
 });
 
 authRoutes.post('/verify-email', verifyEmailRateLimit, zValidator('json', verifyEmailSchema), async (c) => {
@@ -195,6 +211,12 @@ authRoutes.post('/name-request', authMiddleware, zValidator('json', nameRequestS
     return c.json({ success: false, message: result.message }, 400);
   }
   return c.json({ success: true });
+});
+
+authRoutes.get('/export-data', authMiddleware, async (c) => {
+  const user = c.get('user');
+  const data = await exportUserData(user.id);
+  return c.json({ success: true, data });
 });
 
 authRoutes.delete('/account', authMiddleware, zValidator('json', deleteAccountSchema), async (c) => {

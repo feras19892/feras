@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import { ref, computed, onMounted } from 'vue';
 import {
   type ApprovalRequest,
@@ -7,9 +9,6 @@ import {
   getSchoolPendingApprovals, schoolApprove, schoolReject,
   adminGetAllApprovals, adminApprove, adminReject,
 } from '../../services/approval.service';
-import { useI18n } from '../../composables/useI18n';
-
-const { t, locale } = useI18n();
 
 const props = defineProps<{
   mode: 'student' | 'teacher' | 'school' | 'admin';

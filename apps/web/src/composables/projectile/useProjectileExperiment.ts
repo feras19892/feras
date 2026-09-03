@@ -109,6 +109,8 @@ export function useProjectileExperiment() {
         { xKey: 'v0Squared', yKey: 'rangeMeters', xLabel: 'v₀² (m²/s²)', yLabel: 'R (m)', type: 'scatter' },
         { xKey: 'sin2Theta', yKey: 'rangeMeters', xLabel: 'sin(2θ)', yLabel: 'R (m)', type: 'scatter' },
       ],
+      theoretical: { value: params.angleDeg, label: 'زاوية الإطلاق النظرية', unit: '°' },
+      equipment: ['قاذفة', 'كرة', 'مسطرة', 'ساعة توقيت'],
     }
     sendToAnalysis(router, payload)
   }

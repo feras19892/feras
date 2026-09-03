@@ -42,11 +42,11 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   watch(user, (u) => {
-    try { localStorage.setItem('auth_user', JSON.stringify(u)); } catch { /* ignore */ }
+    try { localStorage.setItem('auth_user', JSON.stringify(u)); } catch { if (import.meta.env.DEV) console.warn('Failed to persist user') }
   }, { deep: true });
 
   watch(schoolSession, (s) => {
-    try { if (s) localStorage.setItem('school_session', JSON.stringify(s)); else localStorage.removeItem('school_session'); } catch { /* ignore */ }
+    try { if (s) localStorage.setItem('school_session', JSON.stringify(s)); else localStorage.removeItem('school_session'); } catch { if (import.meta.env.DEV) console.warn('Failed to persist school session') }
   }, { deep: true });
 
   const isLoggedIn = computed(() => !!user.value || !!schoolSession.value);

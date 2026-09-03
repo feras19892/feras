@@ -115,6 +115,7 @@ export function useInclinedExperiment() {
         { xKey: 'thetaDeg', yKey: 'acceleration', xLabel: 'θ (°)', yLabel: 'a (m/s²)', type: 'scatter' },
         { xKey: 'timeOfArrival', yKey: 'length', xLabel: 't (s)', yLabel: 's (m)', type: 'scatter' },
       ],
+      theoretical: { value: params.g, label: 'g النظري', unit: 'm/s²' },
     }
     sendToAnalysis(router, payload)
   }

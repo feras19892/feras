@@ -1,8 +1,7 @@
 ﻿<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { wavelengthToColor } from '../../../../composables/diffraction/useDiffractionCalculations'
-
-const { t } = useI18n()
 
 interface Props {
   mode: 'single' | 'grating'

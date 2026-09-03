@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { ResonanceTrial } from '../../../composables/resonance/useResonanceTrials'
 import ResonancePanelBody from './ResonancePanelBody.vue'
+
 
 interface Props {
   maximized: Record<string, boolean>

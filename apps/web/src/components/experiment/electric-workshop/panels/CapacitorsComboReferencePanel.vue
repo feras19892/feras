@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const NOTES = [
+
   '🔌 المكثف يخزن الطاقة في المجال الكهربائي بين لوحيه',
   '⚡ على التوالي: 1/Ceq = 1/C1 + 1/C2 (Ceq أقل)',
   '⚡ على التوازي: Ceq = C1 + C2 (Ceq أكبر)',

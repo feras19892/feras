@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 interface Props {
+
   launchLabel: string
   canUndo: boolean
   canRedo: boolean
@@ -9,7 +10,6 @@ interface Props {
 
 defineProps<Props>()
 
-const { t } = useI18n()
 const emit = defineEmits<{
   (e: 'togglePause'): void
   (e: 'reset'): void

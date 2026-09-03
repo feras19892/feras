@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const ANGLES = [
   { theta: 0, transmission: 100, color: '#22c55e' },
   { theta: 45, transmission: 50, color: '#f59e0b' },

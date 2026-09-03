@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const TEMPS = [
+
   { t: 0, v: 331, color: '#3b82f6' },
   { t: 20, v: 343, color: '#22c55e' },
   { t: 40, v: 355, color: '#ef4444' },

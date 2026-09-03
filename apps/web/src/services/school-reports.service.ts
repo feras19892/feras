@@ -1,19 +1,42 @@
 import { fetchJson } from './http';
-import type { DailyReport } from '../components/school/school-reports-types';
+
+export interface SchoolReportSummary {
+  total_students: number;
+  total_teachers: number;
+  total_classes: number;
+  reports_today: number;
+  pending_reports: number;
+  overdue_reports: number;
+}
+
+export interface SchoolReportClassItem {
+  class_id: string;
+  class_name: string;
+  class_code: string;
+  teacher_name: string;
+  is_frozen: boolean;
+  is_active: boolean;
+  student_count: number;
+  active_today: number;
+  reports_today: number;
+  graded_today: number;
+  pending_reports: number;
+  overdue_reports: number;
+  quiz_submissions_today: number;
+  class_average: number;
+  issues: string[];
+}
 
 // ─── School Detailed Reports ───
 export interface SchoolDetailedReport {
   date: string;
-  total_reports: number;
-  graded_reports: number;
-  pending_reports: number;
-  avg_grade: number;
-  by_class: { class_name: string; report_count: number; avg_grade: number }[];
+  summary: SchoolReportSummary;
+  classes: SchoolReportClassItem[];
 }
 
 export async function getSchoolDetailedReports(date?: string) {
   const query = date ? `?date=${date}` : '';
-  return fetchJson<{ success: boolean; report: DailyReport }>(`/api/school/reports/detailed${query}`);
+  return fetchJson<{ success: boolean; report: SchoolDetailedReport }>(`/api/school/reports/detailed${query}`);
 }
 
 export interface OutstandingStudent {
@@ -70,8 +93,32 @@ export interface TeacherEvaluation {
   is_blocked: boolean;
 }
 
+export interface StudentEvaluation {
+  id: number;
+  name: string;
+  email: string;
+  created_at: string;
+  blocked_at?: string | null;
+  class_count: number;
+  total_reports: number;
+  graded_reports: number;
+  pending_reports: number;
+  grading_rate: number;
+  avg_grade: number;
+  quiz_submissions: number;
+  badge_count: number;
+  last_report_at: string | null;
+  last_graded_at: string | null;
+  student_score: number;
+  is_blocked: boolean;
+}
+
 export async function getTeacherEvaluation() {
   return fetchJson<{ success: boolean; evaluations: TeacherEvaluation[] }>('/api/school/reports/teacher-evaluation');
+}
+
+export async function getStudentEvaluation() {
+  return fetchJson<{ success: boolean; evaluations: StudentEvaluation[] }>('/api/school/reports/student-evaluation');
 }
 
 // ─── School Feedback ───

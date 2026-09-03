@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const MEDIA = [
   { name: 'هواء', n: 1.0, color: '#22c55e' },
   { name: 'ماء', n: 1.33, color: '#5B8DB8' },

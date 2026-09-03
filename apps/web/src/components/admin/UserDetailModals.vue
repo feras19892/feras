@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, watch } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import { useConfirmDialog } from '../../composables/useConfirmDialog';
+import { useAdminPasswordConfirm } from '../../composables/useAdminPasswordConfirm';
 import { resetUserPassword, updateAdminUser, sendAdminWarning } from '../../services/admin.service';
+const { adminPasswordConfirm } = useAdminPasswordConfirm()
 
 const props = defineProps<{
   userId: number
@@ -19,9 +22,6 @@ const emit = defineEmits<{
   (e: 'close-edit'): void
   (e: 'refresh'): void
 }>();
-
-const { t } = useI18n();
-
 const warnTitle = ref('');
 const warnMsg = ref('');
 const warnSeverity = ref<'low'|'normal'|'high'|'critical'>('normal');
@@ -55,8 +55,10 @@ const { confirmDialog } = useConfirmDialog();
 
 async function onResetPassword() {
   if (!newPassword.value || newPassword.value.length < 6) { await confirmDialog({ message: t('adminUser.passwordMin'), variant: 'danger', icon: '⚠️' }); return; }
+  const adminPassword = await adminPasswordConfirm({ message: 'أدخل كلمة مرور الأدمن لتأكيد إعادة التعيين' })
+  if (!adminPassword) return
   resetLoading.value = true;
-  const res = await resetUserPassword(props.userId, newPassword.value);
+  const res = await resetUserPassword(props.userId, newPassword.value, adminPassword);
   resetLoading.value = false;
   if (res.success) {
     emit('close-reset');

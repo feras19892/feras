@@ -39,7 +39,8 @@ module.exports = {
     {
       files: ['*.vue'],
       rules: {
-        '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^props$|^_', argsIgnorePattern: '^_' }],
+        '@typescript-eslint/no-unused-vars': 'off',
+        'vue/no-unused-vars': ['error', { ignorePattern: '^props$|^_' }],
       },
     },
     {

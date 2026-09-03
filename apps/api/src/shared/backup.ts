@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readdir, stat, unlink } from 'fs/promises';
+import { copyFile, mkdir, readdir, stat, unlink, readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
@@ -53,6 +53,121 @@ export async function backupDatabase(): Promise<boolean> {
     return true;
   } catch (err) {
     console.error('[backup] Error:', err);
+    return false;
+  }
+}
+
+export interface BackupInfo {
+  name: string;
+  path: string;
+  size: number;
+  mtime: Date;
+  created_at: string;
+}
+
+export async function listBackups(): Promise<BackupInfo[]> {
+  try {
+    if (!existsSync(BACKUP_DIR)) {
+      return [];
+    }
+
+    const files = await readdir(BACKUP_DIR);
+    const backups = await Promise.all(
+      files
+        .filter((f: string) => f.startsWith('app_') && f.endsWith('.db'))
+        .map(async (f: string) => {
+          const path = join(BACKUP_DIR, f);
+          const stats = await stat(path);
+          return {
+            name: f,
+            path,
+            size: stats.size,
+            mtime: stats.mtime,
+            created_at: stats.mtime.toISOString(),
+          };
+        })
+    );
+
+    return backups.sort((a, b) => b.mtime.getTime() - a.mtime.getTime());
+  } catch (err) {
+    console.error('[backup] Error listing backups:', err);
+    return [];
+  }
+}
+
+export async function restoreBackup(backupName: string): Promise<boolean> {
+  try {
+    if (!existsSync(BACKUP_DIR)) {
+      console.error('[backup] Backup directory not found');
+      return false;
+    }
+
+    const backupPath = join(BACKUP_DIR, backupName);
+    if (!existsSync(backupPath)) {
+      console.error('[backup] Backup file not found:', backupPath);
+      return false;
+    }
+
+    if (!existsSync(DB_PATH)) {
+      console.error('[backup] Database file not found:', DB_PATH);
+      return false;
+    }
+
+    // Create a backup of current database before restoring
+    const currentBackupPath = join(BACKUP_DIR, `pre_restore_${timestamp()}.db`);
+    await copyFile(DB_PATH, currentBackupPath);
+    console.log(`[backup] Current database backed up to ${currentBackupPath}`);
+
+    // Restore the selected backup
+    await copyFile(backupPath, DB_PATH);
+    console.log(`[backup] Database restored from ${backupPath}`);
+
+    return true;
+  } catch (err) {
+    console.error('[backup] Error restoring backup:', err);
+    return false;
+  }
+}
+
+export async function downloadBackup(backupName: string): Promise<Buffer | null> {
+  try {
+    if (!existsSync(BACKUP_DIR)) {
+      console.error('[backup] Backup directory not found');
+      return null;
+    }
+
+    const backupPath = join(BACKUP_DIR, backupName);
+    if (!existsSync(backupPath)) {
+      console.error('[backup] Backup file not found:', backupPath);
+      return null;
+    }
+
+    const data = await readFile(backupPath);
+    return data;
+  } catch (err) {
+    console.error('[backup] Error downloading backup:', err);
+    return null;
+  }
+}
+
+export async function deleteBackup(backupName: string): Promise<boolean> {
+  try {
+    if (!existsSync(BACKUP_DIR)) {
+      console.error('[backup] Backup directory not found');
+      return false;
+    }
+
+    const backupPath = join(BACKUP_DIR, backupName);
+    if (!existsSync(backupPath)) {
+      console.error('[backup] Backup file not found:', backupPath);
+      return false;
+    }
+
+    await unlink(backupPath);
+    console.log(`[backup] Deleted backup: ${backupName}`);
+    return true;
+  } catch (err) {
+    console.error('[backup] Error deleting backup:', err);
     return false;
   }
 }

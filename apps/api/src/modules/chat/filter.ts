@@ -14,6 +14,8 @@ const AR_BAD = [
   'مخنث', 'لوطي', 'منحرف', 'منحرفة', 'سكير', 'سكيرة', 'عربيد',
   'حشاش', 'مدمن', 'تافه', 'تافهة', 'سخيف', 'سخيفة', 'رديء', 'رديئة',
   'بليد', 'بليدة', 'حمقا', 'غبياء',
+  'كلبة', 'بهايم', 'جحش', 'جحا', 'تعيس', 'تعيسة', 'مهبول', 'مهبولة',
+  'ابن زنا', 'ابن كلب', 'ابن حمار', 'يا كلب', 'يا حيوان', 'يا قذر', 'يا وسخ',
 ];
 
 // --- English bad words ---
@@ -49,6 +51,9 @@ const EN_BAD = [
   'kill yourself', 'kys',
   'rape', 'raping', 'rapist',
   'nazi', 'hitler',
+  'stfu', 'wtf', 'wth', 'omfg', 'a-hole', 'biatch', 'bish',
+  'fck', 'fcking', 'fk', 'fuk', 'fuking', 'azz', 'azzhole', 'dik', 'dikhead',
+  'motherfckr', 'sh1t', 'sh1tty', 'puss', 'cnt', 'c0ck', 'c0cksucker',
 ];
 
 // --- Spanish bad words ---
@@ -86,6 +91,8 @@ const ES_BAD = [
   'zorra', 'zorro', 'zorras', 'zorros',
   'guarra', 'guarras', 'guarro', 'guarros',
   'cerdo', 'cerda', 'cerdos', 'cerdas',
+  'mamón', 'mamona', 'mamones', 'cabro', 'cabronazo', 'cabroncete',
+  'negrata', 'negratas', 'sudaca', 'sudacas', 'esperpento', 'cateto', 'cateta',
 ];
 
 // --- Normalization helpers ---
@@ -120,13 +127,23 @@ function normalizeLatin(text: string): string {
     .replace(/[3]/g, 'e')
     .replace(/[4]/g, 'a')
     .replace(/[5]/g, 's')
+    .replace(/[6]/g, 'g')
     .replace(/[7]/g, 't')
+    .replace(/[9]/g, 'g')
     .replace(/[*]/g, '')
     .replace(/[.]/g, '')
     .replace(/[-_]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
     .toLowerCase();
+}
+
+function collapseRepeats(text: string): string {
+  return text.replace(/(.)\1{2,}/g, '$1');
+}
+
+function removeZeroWidth(text: string): string {
+  return text.replace(/[\u200B-\u200F\uFEFF\u2060]/g, '');
 }
 
 const ARABIC_LETTER = /[ء-ي]/;
@@ -186,8 +203,9 @@ function detectSocial(text: string): boolean {
 }
 
 export function filterMessage(content: string): FilterResult {
-  const arText = normalizeArabic(content);
-  const latinText = normalizeLatin(content);
+  const prepared = collapseRepeats(removeZeroWidth(content));
+  const arText = normalizeArabic(prepared);
+  const latinText = normalizeLatin(prepared);
 
   const arHits = checkList(arText, AR_BAD, 'ar');
   const enHits = checkList(latinText, EN_BAD, 'latin');

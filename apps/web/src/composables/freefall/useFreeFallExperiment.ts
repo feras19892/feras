@@ -101,6 +101,8 @@ export function useFreeFallExperiment() {
         { xKey: 't2', yKey: 'h', xLabel: 't² (s²)', yLabel: 'h (m)', type: 'scatter' },
         { xKey: 'h', yKey: 'gCalc', xLabel: 'h (m)', yLabel: 'g (m/s²)', type: 'scatter' },
       ],
+      theoretical: { value: params.g, label: 'g النظري', unit: 'm/s²' },
+      equipment: ['كرة', 'مسطرة', 'ساعة توقيت'],
     }
     sendToAnalysis(router, payload)
   }

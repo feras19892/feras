@@ -1,10 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, watch } from 'vue';
-import { useI18n } from '../../composables/useI18n';
-import { useConfirmDialog } from '../../composables/useConfirmDialog';
 import { getAdminClassStudents } from '../../services/admin.service';
 import ClassModals from './classes/ClassModals.vue';
-
 interface AdminClassItem {
   id: string;
   name: string;
@@ -25,8 +24,6 @@ interface ClassStudent {
 
 const props = defineProps<{ classes: AdminClassItem[]; initialSearch?: string }>();
 const emit = defineEmits<{ (e: 'delete', id: string): void; (e: 'refresh'): void }>();
-
-const { t } = useI18n();
 const searchQuery = ref(props.initialSearch || '');
 watch(() => props.initialSearch, (v) => { if (v !== undefined) searchQuery.value = v; });
 const expandedClassId = ref<string | null>(null);
@@ -46,12 +43,8 @@ const filteredClasses = computed(() => {
   );
 });
 
-const { confirmDialog } = useConfirmDialog();
-
 function confirmDeleteClass(id: string) {
-  confirmDialog({ message: t('admin.confirmDeleteClassShort'), variant: 'danger' }).then(ok => {
-    if (ok) emit('delete', id);
-  });
+  emit('delete', id);
 }
 
 async function toggleStudents(classId: string) {

@@ -16,6 +16,7 @@ export const createReportSchema = z.object({
   equations: z.string().optional(),
   plots: z.string().optional(),
   chart_snapshot: z.string().max(500_000).optional(),
+  question_template_id: z.number().int().nullable().optional(),
 });
 
 export const gradeReportSchema = z.object({

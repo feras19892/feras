@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{
   params: { mass: number; k: number; amplitude: number }
   simState: { x: number; v: number; t: number }

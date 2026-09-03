@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { AdminStats } from '../../../services/admin.service';
 import type { DetailedStats } from '../dashboard/useAdminDashboard';
 import DashboardPerformance from '../dashboard/DashboardPerformance.vue';
 import DashboardRanking from '../dashboard/DashboardRanking.vue';
+
 
 defineProps<{
   stats: AdminStats | null;

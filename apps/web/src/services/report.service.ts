@@ -17,6 +17,9 @@ export interface Report {
   equations?: string;
   plots?: string;
   chart_snapshot?: string;
+  question_template_id?: number | null;
+  question_score?: number | null;
+  question_max_score?: number | null;
   status: 'draft' | 'submitted' | 'graded' | 'resubmitted';
   version: number;
   teacher_seen: boolean;
@@ -73,6 +76,7 @@ export async function createReport(data: {
   equations?: string;
   plots?: string;
   chart_snapshot?: string;
+  question_template_id?: number | null;
 }) {
   return fetchJson<{ success: boolean; report: Report }>('/api/reports', {
     method: 'POST',
@@ -104,11 +108,12 @@ export async function resubmitReport(reportId: number, data: {
   });
 }
 
-export async function getReports(params?: { class_id?: string; student_id?: string; status?: string; search?: string; page?: number; limit?: number }) {
+export async function getReports(params?: { class_id?: string; student_id?: string; status?: string; search?: string; page?: number; limit?: number }, signal?: AbortSignal) {
   const qs = params ? '?' + new URLSearchParams(
     Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)]))
   ).toString() : '';
-  return fetchJson<{ success: boolean; reports: Report[]; total: number; page: number; limit: number; totalPages: number }>(`/api/reports${qs}`);
+  const opts = signal ? { signal } : undefined;
+  return fetchJson<{ success: boolean; reports: Report[]; total: number; page: number; limit: number; totalPages: number }>(`/api/reports${qs}`, opts);
 }
 
 export async function getReport(id: number) {
@@ -143,13 +148,28 @@ export async function getGradeHistory(reportId: number) {
   return fetchJson<{ success: boolean; history: GradeHistoryEntry[] }>(`/api/reports/${reportId}/history`);
 }
 
-export async function getStudentStats(studentId: number) {
+export async function getStudentStats(studentId: number, signal?: AbortSignal) {
+  const opts = signal ? { signal } : undefined;
   return fetchJson<{ success: boolean; stats: {
     total: number;
     graded: number;
     pending: number;
+    draft?: number;
     average: number;
-  } }>(`/api/reports/student/${studentId}/stats`);
+    best_grade?: number;
+    new_feedback?: number;
+  } }>(`/api/reports/student/${studentId}/stats`, opts);
+}
+
+export async function getTeacherStats(signal?: AbortSignal) {
+  const opts = signal ? { signal } : undefined;
+  return fetchJson<{ success: boolean; stats: {
+    pending: number;
+    unopened: number;
+    overdue: number;
+    submitted_today: number;
+    graded_today: number;
+  } }>('/api/reports/teacher/stats', opts);
 }
 
 export async function getClassStats(classId: string) {

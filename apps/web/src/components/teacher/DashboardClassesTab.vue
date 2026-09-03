@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { ClassRow } from '../../composables/teacher/useTeacherDashboard'
 
 defineProps<{ rows: ClassRow[]; activeChatId?: string | null; unreadChatCounts?: Record<string, number> }>()
 const emit = defineEmits<{ (e: 'navigate', tab: string): void; (e: 'open-chat', cls: { id: string; name: string }): void }>()
-const { t } = useI18n()
+
 </script>
 
 <template>

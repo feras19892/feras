@@ -100,6 +100,9 @@ app.patch('/read-all', async (c) => {
 
 app.delete('/:id', async (c) => {
   const user = c.get('user');
+  if (user.role === 'student') {
+    return c.json({ success: false, message: 'لا يمكن للطالب حذف الإشعارات' }, 403);
+  }
   const id = Number(c.req.param('id'));
   await svc.deleteNotification(id, user.id);
   return c.json({ success: true });

@@ -3,6 +3,7 @@ import { db } from '../../db/index.js';
 import { hashPassword, comparePassword, generateRefreshToken, hashRefreshToken, generateVerificationCode, hashVerificationCode, timingSafeEqual } from './crypto.js';
 import { sendPasswordResetEmail } from '../../shared/email.js';
 import { signAccessToken } from './jwt.js';
+import { deleteUserCompletely } from '../../shared/delete-user.js';
 
 export async function getUserById(id: number): Promise<User | null> {
   const u = await db.get<{ id: number; email: string; name: string; role: string; school_id: number | null; avatar_url: string | null }>(
@@ -68,30 +69,7 @@ export async function deleteAccount(userId: number, password: string): Promise<{
   const valid = await comparePassword(password, row.password_hash);
   if (!valid) return { success: false, message: 'كلمة المرور غير صحيحة' };
 
-  await db.run('BEGIN IMMEDIATE');
-  try {
-    await db.run('DELETE FROM refresh_tokens WHERE user_id = ?', userId);
-    await db.run('DELETE FROM class_students WHERE student_id = ?', userId);
-    await db.run('DELETE FROM experiment_reports WHERE student_id = ?', userId);
-    await db.run('DELETE FROM class_messages WHERE user_id = ?', userId);
-    await db.run('DELETE FROM class_chat_reads WHERE user_id = ?', userId);
-    await db.run('DELETE FROM chat_spam_tracker WHERE user_id = ?', userId);
-    await db.run('DELETE FROM report_comments WHERE author_id = ?', userId);
-    await db.run('DELETE FROM quiz_submissions WHERE student_id = ?', userId);
-    await db.run('DELETE FROM name_change_requests WHERE user_id = ?', userId);
-    await db.run('DELETE FROM email_verification_codes WHERE user_id = ?', userId);
-    await db.run('DELETE FROM password_reset_codes WHERE user_id = ?', userId);
-    await db.run('DELETE FROM notifications WHERE user_id = ?', userId);
-    await db.run('DELETE FROM feedback WHERE user_id = ?', userId);
-    await db.run('DELETE FROM activity_log WHERE actor_id = ?', userId);
-    await db.run('DELETE FROM session_log WHERE user_id = ?', userId);
-    await db.run('DELETE FROM email_change_requests WHERE requester_type = ? AND requester_id = ?', 'user', userId);
-    await db.run('DELETE FROM users WHERE id = ?', userId);
-    await db.run('COMMIT');
-  } catch (err) {
-    await db.run('ROLLBACK');
-    throw err;
-  }
+  await deleteUserCompletely(userId);
   return { success: true };
 }
 

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
-
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 const emit = defineEmits<{
+
   (e: 'exportCsv'): void
   (e: 'exportFull'): void
   (e: 'exportGradebook'): void
 }>()
 
-const { t } = useI18n()
 </script>
 
 <template>

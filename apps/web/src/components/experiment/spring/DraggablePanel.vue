@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref } from 'vue'
 
 defineOptions({ inheritAttrs: false })
 
-const { t } = useI18n()
 const props = defineProps<{
   id: string
   title: string

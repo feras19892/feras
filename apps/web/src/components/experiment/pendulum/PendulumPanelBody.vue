@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import PendulumDataPanel from './PendulumDataPanel.vue'
 import PendulumParamPanel from './PendulumParamPanel.vue'
 import PendulumSignalChart from './PendulumSignalChart.vue'
 import type { PendulumTrial } from '../../../composables/pendulum/usePendulumTrials'
 import type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'
-import { useI18n } from '../../../composables/useI18n'
 
 interface Measured { T: number | null; f: number | null; omega: number | null; gCalc: number | null }
 interface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean; signalSeries: { t: number; theta: number }[]; measurementPeriod: number | null }
 
-const { t } = useI18n()
 const props = defineProps<{
   id: string; trials: PendulumTrial[]; params: PendulumParams; sim: SimState; measured: Measured
 }>()

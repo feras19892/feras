@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { useTheme } from '@shared/composables/useTheme';
-import { useI18n } from '../../../composables/useI18n';
 
 const { isDark, toggle } = useTheme();
-const { t } = useI18n();
+
 </script>
 
 <template>

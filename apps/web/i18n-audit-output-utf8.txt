@@ -1,0 +1,1660 @@
+﻿Scope: all 8 workspace projects
+✓ Lockfile passes supply-chain policies (verified 4d ago)
+
+   ╭──────────────────────────────────────────╮
+   │                                          │
+   │   Update available! 11.13.0 → 11.24.0.   │
+   │   Changelog: https://pnpm.io/v/11.24.0   │
+   │     To update, run: pnpm add -g pnpm     │
+   │                                          │
+   ╰──────────────────────────────────────────╯
+
+
+Done in 1.1s using pnpm v11.13.0
+=== I18N AUDIT REPORT ===
+
+Total files scanned: 1674
+  Vue files: 984
+  TS files: 690
+Files > 300 lines: 64
+Files with hardcoded text: 321
+
+
+=== FILES > 300 LINES ===
+  locales/experiments/ar-4a.ts                                 877 lines
+  locales/experiments/en-4a.ts                                 877 lines
+  locales/experiments/es-4a.ts                                 877 lines
+  locales/experiments/ar-4b.ts                                 713 lines
+  locales/experiments/en-4b.ts                                 713 lines
+  locales/experiments/es-4b.ts                                 713 lines
+  locales/electricWorkshop_ar_b.ts                             633 lines
+  components/experiment/electromagnetism/LorentzForceCanvas.vue 552 lines
+  locales/electricWorkshop_en_b.ts                             552 lines
+  locales/electricWorkshop_es_b.ts                             551 lines
+  composables/school/useSchoolHelp.ts                          518 lines
+  components/experiment/electromagnetism/StraightWireCanvas.vue 497 lines
+  pages/math/equations-physics.ts                              495 lines
+  pages/math/index.vue                                         491 lines
+  composables/student/studentHelpData.ts                       482 lines
+  composables/teacher/useTeacherHelp.ts                        442 lines
+  locales/biology-en_a.ts                                      438 lines
+  locales/biology-es_a.ts                                      438 lines
+  components/experiment/electromagnetism/FaradayLawCanvas.vue  436 lines
+  locales/biology-ar_a.ts                                      420 lines
+  components/experiment/electromagnetism/TorqueCoilCanvas.vue  399 lines
+  components/experiment/latent-heat/LatentHeatCanvas.vue       385 lines
+  components/experiment/electromagnetism/SolenoidCanvas.vue    377 lines
+  components/experiment/electromagnetism/GeneratorCanvas.vue   374 lines
+  components/experiment/electromagnetism/MagneticFluxCanvas.vue 366 lines
+  pages/math/equations-advanced/number-theory.ts               363 lines
+  modules/physics/experiments/electric-workshop/shared/solver-transient.ts 361 lines
+  services/core/admin.api.ts                                   355 lines
+  components/shared/AccountSettingsModal.vue                   346 lines
+  modules/physics/experiments/electric-workshop/shared/componentSpecsBasic.ts 344 lines
+  modules/physics/experiments/electric-workshop/shared/solver-ac.ts 343 lines
+  components/teacher/GradeModal.vue                            336 lines
+  components/experiment/chemistry/InspectorPanel.vue           334 lines
+  locales/experiments/ar-1.ts                                  334 lines
+  locales/experiments/en-1.ts                                  334 lines
+  locales/experiments/es-1.ts                                  334 lines
+  modules/physics/experiments/electric-workshop/ac/ACLab.vue   330 lines
+  pages/math/equations-basic/algebra.ts                        329 lines
+  components/admin/AdminDirectMessage.vue                      326 lines
+  components/teacher/ReportAIAnalyzer.vue                      325 lines
+  pages/admin/tabs/AdminUsersV2.vue                            325 lines
+  modules/physics/experiments/electric-workshop/shared/useWorkshopCanvas.ts 322 lines
+  components/teacher/QuizBuilder.vue                           321 lines
+  locales/biology-ar_b.ts                                      321 lines
+  locales/biology-en_b.ts                                      321 lines
+  locales/biology-es_b.ts                                      321 lines
+  locales/electricWorkshop_ar_a.ts                             319 lines
+  modules/physics/experiments/electric-workshop/ac/acMouseEvents.ts 318 lines
+  pages/math/equations-advanced/geometry.ts                    318 lines
+  components/experiment/netforce/NetForceCanvas.vue            317 lines
+  modules/physics/experiments/electric-workshop/shared/componentSpecsAdvanced.ts 317 lines
+  modules/physics/experiments/electric-workshop/shared/solver-dc.ts 317 lines
+  pages/admin/tabs/UserDetailV3.vue                            316 lines
+  components/teacher/TeacherEnhancementsTab.vue                315 lines
+  modules/physics/experiments/electric-workshop/shared/useWorkshop.ts 315 lines
+  components/admin/SystemOverview.vue                          314 lines
+  modules/physics/experiments/electric-workshop/shared/smartWireHelpers.ts 314 lines
+  pages/admin/tabs/subscriptions/NotificationUserManager.vue   308 lines
+  components/experiment/electric-workshop/panels/GenericWorksheetPanel.vue 306 lines
+  locales/common.ts                                            306 lines
+  pages/school/tabs/SchoolFeedback.vue                         304 lines
+  modules/chemistry/analysis-calc/ChemAnalysisPage.vue         303 lines
+  pages/admin/tabs/AdminOverviewV2.vue                         302 lines
+  composables/chemistry/useLabSimulation.ts                    301 lines
+
+=== FILES WITH HARDCODED TEXT (Vue templates) ===
+
+  components/admin/AdminHelpModal.vue (141 lines, 8 hardcoded strings):
+    Line 16: "📄 PDF:"
+    Line 16: "يفتح طباعة الصفحة الحالية لتصديرها أو حفظها كملف PDF."
+    Line 19: "يوضح طريقة الاتصال بالخادم: "مباشر" عبر SSE، "تحديث دوري" عن"
+    Line 48: "سجل النشاطات (Audit Log)، صحة النظام، الإعدادات العامة، النس"
+    Line 62: "Alt + رقم (1–9):"
+    ... and 3 more
+
+  components/admin/tabs/TabAcademic.vue (172 lines, 2 hardcoded strings):
+    Line 104: "= 70, warn: cls.avg_grade"
+    Line 104: "= 50, danger: cls.avg_grade"
+
+  components/dev/ExperimentMonitorPage.vue (253 lines, 1 hardcoded strings):
+    Line 34: "🎮  السرعة (FPS)"
+
+  components/dev/ExperimentMonitorWidget.vue (147 lines, 1 hardcoded strings):
+    Line 33: "🎮 FPS"
+
+  components/experiment/analysis-calc/AnalysisErrorPanel.vue (106 lines, 1 hardcoded strings):
+    Line 48: "= 5 && errorPercent"
+
+  components/experiment/analysis-calc/AnalysisReportPreview.vue (264 lines, 2 hardcoded strings):
+    Line 91: "R²:"
+    Line 149: "= 5 && errorCalcData.errorPercent"
+
+  components/experiment/biot-savart/BiotSavartControlBar.vue (41 lines, 1 hardcoded strings):
+    Line 25: "💾 CSV"
+
+  components/experiment/biot-savart/BiotSavartPanelBody.vue (78 lines, 3 hardcoded strings):
+    Line 44: "B = μ₀I / 2πr"
+    Line 45: "B = μ₀IR² / 2(R²+x²)^³⁄₂"
+    Line 46: "B = μ₀nI"
+
+  components/experiment/boyles-law/BoylesLawControlBar.vue (42 lines, 3 hardcoded strings):
+    Line 21: "Ctrl+Z"
+    Line 22: "Ctrl+Y"
+    Line 25: "💾 CSV"
+
+  components/experiment/boyles-law/BoylesLawGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "P₁ · V₁ = P₂ · V₂ (at constant T)"
+    Line 28: "P · V = constant"
+
+  components/experiment/boyles-law/BoylesLawHelpModal.vue (39 lines, 3 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 20: "Ctrl+Z"
+    Line 21: "Ctrl+Y"
+
+  components/experiment/boyles-law/BoylesLawOverlayPanels.vue (52 lines, 1 hardcoded strings):
+    Line 29: "&#x2715;"
+
+  components/experiment/boyles-law/panels/BoylesLawLawsPanel.vue (81 lines, 4 hardcoded strings):
+    Line 27: "P × V = constant"
+    Line 32: "P·V"
+    Line 39: "P·V = n·R·T"
+    Line 41: "n·R·T"
+
+  components/experiment/boyles-law/panels/BoylesLawParamsPanel.vue (40 lines, 2 hardcoded strings):
+    Line 21: "n (mol)"
+    Line 25: "T (K)"
+
+  components/experiment/boyles-law/panels/BoylesLawReadingsPanel.vue (38 lines, 1 hardcoded strings):
+    Line 16: "P·V"
+
+  components/experiment/boyles-law/panels/BoylesLawTrialsPanel.vue (39 lines, 1 hardcoded strings):
+    Line 13: "P·V"
+
+  components/experiment/boyles-law/panels/BoylesLawWorksheetPanel.vue (50 lines, 1 hardcoded strings):
+    Line 29: "P × V = constant"
+
+  components/experiment/calorimetry/CalorimetryControlBar.vue (42 lines, 3 hardcoded strings):
+    Line 21: "Ctrl+Z"
+    Line 22: "Ctrl+Y"
+    Line 25: "💾 CSV"
+
+  components/experiment/calorimetry/CalorimetryGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "Q = m · c · ΔT"
+    Line 28: "Q_lost = Q_gained"
+
+  components/experiment/calorimetry/CalorimetryHelpModal.vue (30 lines, 2 hardcoded strings):
+    Line 14: "Ctrl+Z"
+    Line 15: "Ctrl+Y"
+
+  components/experiment/calorimetry/CalorimetryOverlayPanels.vue (42 lines, 1 hardcoded strings):
+    Line 29: "&#x2715;"
+
+  components/experiment/calorimetry/panels/CalorimetryChartPanel.vue (59 lines, 1 hardcoded strings):
+    Line 32: "Tf vs T_metal"
+
+  components/experiment/calorimetry/panels/CalorimetryLawsPanel.vue (62 lines, 4 hardcoded strings):
+    Line 25: "Q_lost = Q_gained"
+    Line 29: "ΔQ"
+    Line 35: "c = Q / (m · ΔT)"
+    Line 39: "ΔT"
+
+  components/experiment/calorimetry/panels/CalorimetryReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 12: "📊 الحرارة النوعية (J/kg·K)"
+
+  components/experiment/calorimetry/panels/CalorimetryResultsPanel.vue (50 lines, 3 hardcoded strings):
+    Line 31: "T̄f"
+    Line 32: "c̄"
+    Line 33: "σ(c)"
+
+  components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue (47 lines, 1 hardcoded strings):
+    Line 21: "&#x2715;"
+
+  components/experiment/calorimetry/panels/CalorimetryWorksheetPanel.vue (57 lines, 2 hardcoded strings):
+    Line 34: "Q_مفقود = Q_مكتسب"
+    Line 36: "mMetal·cMetal·(tMetal - tf) = mWater·cWater·(tf - tWater)"
+
+  components/experiment/chemistry/InspectorSpatula.vue (82 lines, 4 hardcoded strings):
+    Line 66: "🥄 +0.5g"
+    Line 67: "🥄 +1g"
+    Line 68: "🥄 +2g"
+    Line 69: "🥄 +5g"
+
+  components/experiment/chemistry/LabHotPlate.vue (68 lines, 1 hardcoded strings):
+    Line 38: "HOT PLATE"
+
+  components/experiment/chemistry/LabPhMeter.vue (212 lines, 1 hardcoded strings):
+    Line 161: "ON/OFF"
+
+  components/experiment/chemistry/LabRetortStandAssembly.vue (227 lines, 1 hardcoded strings):
+    Line 104: "Snap!"
+
+  components/experiment/chemistry/LabStatsPanel.vue (106 lines, 1 hardcoded strings):
+    Line 38: "📟 pH"
+
+  components/experiment/chemistry/LabThermometer.vue (266 lines, 2 hardcoded strings):
+    Line 174: "°C"
+    Line 202: "°C"
+
+  components/experiment/collision/CollisionControlBar.vue (67 lines, 1 hardcoded strings):
+    Line 45: "&#x1F4BE; CSV"
+
+  components/experiment/collision/CollisionDataPanel.vue (55 lines, 7 hardcoded strings):
+    Line 22: "m₁"
+    Line 22: "m₂"
+    Line 22: "v₁i"
+    Line 22: "v₂i"
+    Line 22: "v₁f"
+    ... and 2 more
+
+  components/experiment/collision/CollisionEquationsPanel.vue (38 lines, 5 hardcoded strings):
+    Line 16: "v₁f = [(m₁ − e·m₂)v₁i + (1+e)m₂·v₂i] / (m₁+m₂)"
+    Line 17: "v₂f = [(m₂ − e·m₁)v₂i + (1+e)m₁·v₁i] / (m₁+m₂)"
+    Line 18: "P = m·v"
+    Line 19: "KE = ½·m·v²"
+    Line 20: "Loss% = (KEi − KEf) / KEi × 100"
+
+  components/experiment/collision/CollisionGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "m₁v₁ + m₂v₂ = m₁v₁' + m₂v₂'"
+    Line 28: "e = (v₂' − v₁') / (v₁ − v₂)"
+    Line 30: "ΔKE = ½m₁v₁² + ½m₂v₂² − ½m₁v₁'² − ½m₂v₂'²"
+
+  components/experiment/collision/CollisionHelpModal.vue (134 lines, 7 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 35: "m1·v1ᵢ + m2·v2ᵢ = m1·v1f + m2·v2f"
+    Line 38: "m1·v1ᵢ + m2·v2ᵢ = (m1 + m2)·v_f"
+    Line 40: "v_f = (m1·v1ᵢ + m2·v2ᵢ) / (m1 + m2)"
+    Line 64: "Slope = Δp / Δv_f"
+    ... and 2 more
+
+  components/experiment/collision/CollisionParamsPanel.vue (104 lines, 6 hardcoded strings):
+    Line 41: "m₁ (kg)"
+    Line 46: "m₂ (kg)"
+    Line 51: "v₁i (m/s)"
+    Line 56: "v₂i (m/s)"
+    Line 61: "r₁ (m)"
+    ... and 1 more
+
+  components/experiment/collision/CollisionReport.vue (76 lines, 7 hardcoded strings):
+    Line 35: "m₁ (kg)"
+    Line 35: "m₂ (kg)"
+    Line 35: "v₁i (m/s)"
+    Line 35: "v₂i (m/s)"
+    Line 35: "v₁f (m/s)"
+    ... and 2 more
+
+  components/experiment/collision/CollisionStatsPanel.vue (65 lines, 2 hardcoded strings):
+    Line 17: "kg·m/s"
+    Line 21: "kg·m/s"
+
+  components/experiment/collision/panels/CollisionWorksheetPanel.vue (79 lines, 4 hardcoded strings):
+    Line 41: "m₁v₁i + m₂v₂i = m₁v₁f + m₂v₂f"
+    Line 55: "e = (v₂f − v₁f) / (v₁i − v₂i)"
+    Line 59: "اصطدام مرن (e ≈ 1)"
+    Line 60: "اصطدام غير مرن (e ≈ 0)"
+
+  components/experiment/diffraction/DiffractionControlBar.vue (57 lines, 5 hardcoded strings):
+    Line 35: "&#x21A9;"
+    Line 35: "Ctrl+Z"
+    Line 36: "&#x21AA;"
+    Line 36: "Ctrl+Y"
+    Line 39: "&#x1F4BE; CSV"
+
+  components/experiment/diffraction/DiffractionGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "d · sin θ = m · λ"
+    Line 28: "λ = (d · sin θ) / m"
+
+  components/experiment/diffraction/DiffractionHelpModal.vue (144 lines, 7 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 46: "a · sin(θ) = m · λ"
+    Line 49: "sin(θ) ≈ tan(θ) = y / D"
+    Line 51: "y = (λD) · (1/a)"
+    Line 74: "Slope = Δy / Δ(1/a)"
+    ... and 2 more
+
+  components/experiment/diffraction/DiffractionOverlayPanels.vue (76 lines, 1 hardcoded strings):
+    Line 42: "&#x2715;"
+
+  components/experiment/diffraction/DiffractionStatusBar.vue (59 lines, 5 hardcoded strings):
+    Line 34: "a ="
+    Line 35: "N ="
+    Line 35: "lines/mm"
+    Line 36: "D ="
+    Line 38: "w ="
+
+  components/experiment/diffraction/panels/DiffractionLawsPanel.vue (70 lines, 3 hardcoded strings):
+    Line 23: "w = 2λD / a"
+    Line 33: "a·sinθ = mλ"
+    Line 37: "I = I₀ sinc²(πa·sinθ/λ)"
+
+  components/experiment/diffraction/panels/DiffractionReadingsPanel.vue (94 lines, 2 hardcoded strings):
+    Line 34: "1/a"
+    Line 74: "d = 1/N"
+
+  components/experiment/diffraction/panels/DiffractionReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 16: "λ (nm)"
+
+  components/experiment/diffraction/panels/DiffractionResultsPanel.vue (74 lines, 1 hardcoded strings):
+    Line 37: "R²"
+
+  components/experiment/diffraction/panels/DiffractionTrialsPanel.vue (59 lines, 4 hardcoded strings):
+    Line 24: "a (mm)"
+    Line 25: "1/a"
+    Line 28: "y₁"
+    Line 41: "&#x00D7;"
+
+  components/experiment/diffraction/panels/DiffractionWorksheetPanel.vue (55 lines, 1 hardcoded strings):
+    Line 33: "w = 2λD / a"
+
+  components/experiment/electric-workshop/panels/CapacitorsComboReferencePanel.vue (42 lines, 7 hardcoded strings):
+    Line 16: "1/Ceq = 1/C1 + 1/C2 (توالي)"
+    Line 17: "Ceq = C1 + C2 (توازي)"
+    Line 18: "τ = R × C"
+    Line 19: "V(t) = V0(1 - e^(-t/τ))"
+    Line 24: "🔊 مرشحات الصوت (crossover)"
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/CapacitorsComboWorksheetPanel.vue (81 lines, 7 hardcoded strings):
+    Line 20: "المكثف يخزن الشحنة الكهربائية. سعته C تقاس بالفاراد (F)."
+    Line 22: "1/Ceq = 1/C1 + 1/C2"
+    Line 24: "Ceq = C1 + C2"
+    Line 46: "τ = R × Ceq"
+    Line 59: "V(t) = V0 × (1 - e^(-t/τ))"
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/GalvanometerReferencePanel.vue (50 lines, 6 hardcoded strings):
+    Line 20: "ε = -N × ΔΦ/Δt"
+    Line 21: "I = ε / R"
+    Line 22: "Φ = B × A × cos(θ)"
+    Line 23: "ε = N × v × B × L"
+    Line 30: "أفران الحث (Induction)"
+    ... and 1 more
+
+  components/experiment/electric-workshop/panels/GalvanometerWorksheetPanel.vue (133 lines, 19 hardcoded strings):
+    Line 38: "هو توليد قوة دافعة كهربائية (EMF) في موصل عند تغير التدفق ال"
+    Line 40: "جهاز حساس يكشف تيارات صغيرة جداً (µA) ويظهرها كانحراف مؤشر."
+    Line 55: "ε = -N × ΔΦ/Δt"
+    Line 56: "في تجربتنا: ΔΦ/Δt ∝ سرعة المغناطيس"
+    Line 57: "ε = N × v × k"
+    ... and 14 more
+
+  components/experiment/electric-workshop/panels/InternalResistanceReferencePanel.vue (40 lines, 5 hardcoded strings):
+    Line 16: "Vt = ε - I × r"
+    Line 17: "I = ε / (R + r)"
+    Line 18: "P_load = Vt² / R"
+    Line 22: "🔋 بطاريات السيارة (r صغيرة جداً)"
+    Line 23: "📱 بطاريات الهاتف (r تزداد مع العمر)"
+
+  components/experiment/electric-workshop/panels/InternalResistanceWorksheetPanel.vue (82 lines, 10 hardcoded strings):
+    Line 20: "مقاومة داخلية r"
+    Line 21: "الجهد الحقيقي (EMF) ينقسم: جزء على المقاومة الداخلية، وجزء ع"
+    Line 22: "Vt = ε - I × r"
+    Line 23: "حيث: ε = القوة الدافعة، r = المقاومة الداخلية، Vt = الجهد ال"
+    Line 33: "I = ε / (R + r)"
+    ... and 5 more
+
+  components/experiment/electric-workshop/panels/KirchhoffReferencePanel.vue (88 lines, 1 hardcoded strings):
+    Line 44: "إشارات الجهد في KVL"
+
+  components/experiment/electric-workshop/panels/KirchhoffWorksheetPanel.vue (229 lines, 18 hardcoded strings):
+    Line 55: "لدينا دائرة كهربائية بحلقتين تتشاركان المقاومة R₃:"
+    Line 66: "المجاهيل: I₁ (التيار في الحلقة اليسرى)، I₂ (التيار في الحلقة"
+    Line 79: "I₁ + I₂ = I₃  ←  I₃ = I₁ + I₂"
+    Line 80: "هذا يعني أن التيار في R₃ يساوي مجموع التيارين القادمين من ال"
+    Line 94: "نبدأ من V₁ وندور مع اتجاه التيار:"
+    ... and 13 more
+
+  components/experiment/electric-workshop/panels/LampReferencePanel.vue (63 lines, 4 hardcoded strings):
+    Line 25: "P = V × I"
+    Line 26: "P_light = P × η"
+    Line 27: "P_heat = P × (1 - η)"
+    Line 28: "η = P_light / P × 100%"
+
+  components/experiment/electric-workshop/panels/LampWorksheetPanel.vue (150 lines, 6 hardcoded strings):
+    Line 42: "LED: ~40% ضوء، ~60% حرارة (أكثر كفاءة)"
+    Line 56: "P = V × I"
+    Line 70: "P_light = P × 0.05"
+    Line 84: "P_heat = P × 0.95"
+    Line 97: "P_light + P_heat = P"
+    ... and 1 more
+
+  components/experiment/electric-workshop/panels/NonOhmicReferencePanel.vue (41 lines, 5 hardcoded strings):
+    Line 16: "أومي: V = I × R"
+    Line 17: "لا أومي: R = f(V, I)"
+    Line 18: "R_dyn = dV/dI"
+    Line 23: "🔌 الصمام (Diode)"
+    Line 25: "🌡️ الثرمستور (NTC/PTC)"
+
+  components/experiment/electric-workshop/panels/NonOhmicWorksheetPanel.vue (82 lines, 9 hardcoded strings):
+    Line 20: ": V = I×R (علاقة خطية)، R ثابتة (مثل المقاومة المعدنية)."
+    Line 21: ": V ≠ I×R، R تتغير مع التيار/الحرارة (مثل المصباح، الصمام)."
+    Line 22: "أومي: V = I × R (خط مستقيم)"
+    Line 23: "لا أومي: V ≠ I × R (منحنى)"
+    Line 32: "I = V / R"
+    ... and 4 more
+
+  components/experiment/electric-workshop/panels/OhmsLawWorksheetPanel.vue (91 lines, 3 hardcoded strings):
+    Line 41: "R = V / I"
+    Line 55: "V = I × R"
+    Line 69: "I = V / R"
+
+  components/experiment/electric-workshop/panels/ParallelReferencePanel.vue (59 lines, 7 hardcoded strings):
+    Line 19: "📊 مقارنة: توالي vs توازي"
+    Line 36: "V = V₁ = V₂ = ..."
+    Line 37: "= I₁ + I₂ + ..."
+    Line 38: "1/R"
+    Line 38: "= 1/R₁ + 1/R₂ + ..."
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/ParallelWorksheetPanel.vue (186 lines, 16 hardcoded strings):
+    Line 52: "في التوازي: الجهد V واحد على المقاومتين، والتيار يتوزع."
+    Line 53: "المجاهيل: I₁, I₂, I"
+    Line 53: ", R"
+    Line 62: "في التوازي، نفس الجهد V على المقاومتين:"
+    Line 63: "I = V / R"
+    ... and 11 more
+
+  components/experiment/electric-workshop/panels/PotentiometerReferencePanel.vue (40 lines, 3 hardcoded strings):
+    Line 16: "εx = (Lx / L) × εref"
+    Line 17: "Vslide = I × R_sliding"
+    Line 18: "عند التوازن: Ig = 0"
+
+  components/experiment/electric-workshop/panels/PotentiometerWorksheetPanel.vue (83 lines, 4 hardcoded strings):
+    Line 20: "جهاز دقيق لقياس الجهد (EMF) بدون سحب تيار من المصدر المجهول."
+    Line 22: "Vslide = (Lx / L) × Vref"
+    Line 23: "عند التوازن: الأميتر يقرأ صفراً → εx = Vslide"
+    Line 58: "εx = Vslide (عند التوازن)"
+
+  components/experiment/electric-workshop/panels/PowerWorksheetPanel.vue (188 lines, 11 hardcoded strings):
+    Line 42: "القدرة الكهربائية P"
+    Line 43: "وحدتها: الواط (Watt) = جول/ثانية"
+    Line 49: "المجهول: P (القدرة بالواط)"
+    Line 59: "P = V × I"
+    Line 72: "باستخدام V = I×R (قانون أوم)، نعوّض في P = V×I:"
+    ... and 6 more
+
+  components/experiment/electric-workshop/panels/RCReferencePanel.vue (61 lines, 5 hardcoded strings):
+    Line 22: "🔌 دائرة RC"
+    Line 37: "τ = R × C"
+    Line 38: "شحن: Vc = V₀(1 - e^(-t/τ))"
+    Line 39: "تفريغ: Vc = V₀ × e^(-t/τ)"
+    Line 40: "Q = C × V"
+
+  components/experiment/electric-workshop/panels/RCWorksheetPanel.vue (150 lines, 15 hardcoded strings):
+    Line 45: "المكثف (Capacitor)"
+    Line 46: "عند توصيله ببطارية عبر مقاومة، يشحن تدريجياً حتى Vc = V₀."
+    Line 61: "τ = R × C"
+    Line 76: "Vc(t) = V₀ × (1 - e^(-t/τ))"
+    Line 77: "I(t) = (V₀/R) × e^(-t/τ)"
+    ... and 10 more
+
+  components/experiment/electric-workshop/panels/ResistivityReferencePanel.vue (67 lines, 3 hardcoded strings):
+    Line 32: "R = ρ × L / A"
+    Line 33: "ρ = R × A / L"
+    Line 41: "ρ (Ω·m)"
+
+  components/experiment/electric-workshop/panels/ResistivityWorksheetPanel.vue (192 lines, 10 hardcoded strings):
+    Line 82: "من قانون أوم: R = V / I"
+    Line 83: "R = V / I"
+    Line 97: "R = ρ × L / A"
+    Line 100: "ρ = المقاومية (Ω·m) — خاصية المادة"
+    Line 101: "L = طول السلك (m)"
+    ... and 5 more
+
+  components/experiment/electric-workshop/panels/SeriesReferencePanel.vue (40 lines, 5 hardcoded strings):
+    Line 16: "Req = R1 + R2 + R3"
+    Line 17: "I = V / Req"
+    Line 18: "Vn = I × Rn"
+    Line 22: "التوالي: Req أكبر، I واحد"
+    Line 23: "التوازي: Req أصغر، V واحد"
+
+  components/experiment/electric-workshop/panels/SeriesWorksheetPanel.vue (83 lines, 4 hardcoded strings):
+    Line 22: "V = V1 + V2 + V3"
+    Line 23: "Req = R1 + R2 + R3"
+    Line 32: "Req = R1 + R2 + R3"
+    Line 44: "I = V / Req"
+
+  components/experiment/electric-workshop/panels/VoltageDividerReferencePanel.vue (60 lines, 16 hardcoded strings):
+    Line 19: "V_out = V × R2/(R1+R2)"
+    Line 20: "V1 = V × R1/(R1+R2)"
+    Line 21: "I = V / (R1+R2)"
+    Line 26: "R1 = R2"
+    Line 26: "V_out = V/2"
+    ... and 11 more
+
+  components/experiment/electric-workshop/panels/VoltageDividerWorksheetPanel.vue (129 lines, 7 hardcoded strings):
+    Line 45: "R1:"
+    Line 46: "R2:"
+    Line 47: "R_total:"
+    Line 57: "R_total = R1 + R2"
+    Line 70: "I = V / R_total"
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/WheatstoneReferencePanel.vue (47 lines, 7 hardcoded strings):
+    Line 19: "R1/R2 = R3/Rx"
+    Line 20: "Rx = R2 × R3 / R1"
+    Line 21: "Vg = V × (R2/(R1+R2) - Rx/(R3+Rx))"
+    Line 26: "اضبط R3 حتى يقرأ الجلفانوميتر صفراً"
+    Line 27: "سجّل قيمة R3 عند التوازن"
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/WheatstoneWorksheetPanel.vue (135 lines, 14 hardcoded strings):
+    Line 40: "دائرة لقياس المقاومة المجهولة (Rx) بدقة عالية جداً."
+    Line 42: ": الجلفانوميتر يقرأ صفراً → Rx = R2 × R3 / R1"
+    Line 44: "R1:"
+    Line 45: "R2:"
+    Line 46: "R3 (ضبط):"
+    ... and 9 more
+
+  components/experiment/electromagnetism/CircularCoilDataPanel.vue (65 lines, 3 hardcoded strings):
+    Line 31: "I (A)"
+    Line 33: "R (cm)"
+    Line 34: "B (μT)"
+
+  components/experiment/electromagnetism/CircularCoilGuidePanel.vue (115 lines, 1 hardcoded strings):
+    Line 90: "B = μ₀NI / (2R)"
+
+  components/experiment/electromagnetism/CircularCoilParamPanel.vue (57 lines, 2 hardcoded strings):
+    Line 39: "B = μ₀NI / (2R)"
+    Line 40: "μ₀ = 4π × 10⁻⁷ T·m/A"
+
+  components/experiment/electromagnetism/CircularCoilReadingsPanel.vue (71 lines, 1 hardcoded strings):
+    Line 37: "μT"
+
+  components/experiment/electromagnetism/ElectromagnetismHelpModal.vue (36 lines, 1 hardcoded strings):
+    Line 14: "&#x2715;"
+
+  components/experiment/electromagnetism/FaradayLawGuidePanel.vue (127 lines, 3 hardcoded strings):
+    Line 98: "Φ = B · A"
+    Line 100: "EMF = -N · dΦ/dt"
+    Line 102: "I = EMF / R"
+
+  components/experiment/electromagnetism/FaradayLawParamPanel.vue (90 lines, 2 hardcoded strings):
+    Line 72: "EMF = -N · dΦ/dt"
+    Line 73: "Φ = B·A &nbsp;|&nbsp; I = EMF / R"
+
+  components/experiment/electromagnetism/FaradayLawReadingsPanel.vue (106 lines, 2 hardcoded strings):
+    Line 38: "m/s"
+    Line 59: "R (Ω)"
+
+  components/experiment/electromagnetism/GeneratorGuidePanel.vue (123 lines, 5 hardcoded strings):
+    Line 90: "Φ = N · B · A · cos(ωt)"
+    Line 92: "EMF = N·B·A·ω·sin(ωt)"
+    Line 94: "EMF_peak = N·B·A·ω"
+    Line 96: "f = ω / (2π)"
+    Line 98: "I = EMF / R &nbsp;|&nbsp; P = EMF² / R"
+
+  components/experiment/electromagnetism/GeneratorParamPanel.vue (80 lines, 3 hardcoded strings):
+    Line 62: "EMF = N·B·A·ω·sin(ωt)"
+    Line 63: "EMF_peak = N·B·A·ω"
+    Line 64: "I = EMF / R &nbsp;|&nbsp; f = ω / 2π"
+
+  components/experiment/electromagnetism/GeneratorReadingsPanel.vue (96 lines, 1 hardcoded strings):
+    Line 37: "rad/s"
+
+  components/experiment/electromagnetism/GuidePanel.vue (112 lines, 3 hardcoded strings):
+    Line 79: "💾 تصدير CSV"
+    Line 84: "B = μ₀I / (2πr)"
+    Line 85: "الميل في رسم B vs 1/r يساوي μ₀I / 2π — استخدمه لحساب μ₀"
+
+  components/experiment/electromagnetism/LorentzForceDataPanel.vue (67 lines, 1 hardcoded strings):
+    Line 35: "e/m"
+
+  components/experiment/electromagnetism/LorentzForceGuidePanel.vue (121 lines, 4 hardcoded strings):
+    Line 90: "B = 8μ₀NI / (5√5 · R)"
+    Line 92: "v = √(2eV/m)"
+    Line 94: "r = mv / (eB)"
+    Line 96: "e/m = 2V / (B²r²)"
+
+  components/experiment/electromagnetism/LorentzForceParamPanel.vue (74 lines, 3 hardcoded strings):
+    Line 52: "B = 8μ₀NI / (5√5 · R)"
+    Line 53: "v = √(2eV/m) &nbsp;|&nbsp; r = mv/(eB)"
+    Line 54: "e/m = 2V / (B²r²)"
+
+  components/experiment/electromagnetism/LorentzForceReadingsPanel.vue (106 lines, 2 hardcoded strings):
+    Line 49: "m/s"
+    Line 65: "C/kg"
+
+  components/experiment/electromagnetism/MagneticFluxDataPanel.vue (67 lines, 1 hardcoded strings):
+    Line 34: "cos θ"
+
+  components/experiment/electromagnetism/MagneticFluxGuidePanel.vue (105 lines, 3 hardcoded strings):
+    Line 76: "Φ = B · A · cos(θ)"
+    Line 78: "Φ_max = B · A"
+    Line 80: "Φ = 0 at θ = 90°"
+
+  components/experiment/electromagnetism/MagneticFluxParamPanel.vue (63 lines, 1 hardcoded strings):
+    Line 44: "Φ = B · A · cos(θ)"
+
+  components/experiment/electromagnetism/MagneticFluxReadingsPanel.vue (94 lines, 2 hardcoded strings):
+    Line 30: "cm²"
+    Line 46: "cos θ"
+
+  components/experiment/electromagnetism/SolenoidDataPanel.vue (65 lines, 3 hardcoded strings):
+    Line 31: "I (A)"
+    Line 33: "L (cm)"
+    Line 34: "B (μT)"
+
+  components/experiment/electromagnetism/SolenoidGuidePanel.vue (115 lines, 1 hardcoded strings):
+    Line 90: "B = μ₀NI / L"
+
+  components/experiment/electromagnetism/SolenoidParamPanel.vue (57 lines, 2 hardcoded strings):
+    Line 39: "B = μ₀NI / L"
+    Line 40: "μ₀ = 4π × 10⁻⁷ T·m/A"
+
+  components/experiment/electromagnetism/SolenoidReadingsPanel.vue (71 lines, 1 hardcoded strings):
+    Line 37: "μT"
+
+  components/experiment/electromagnetism/StraightWireDataPanel.vue (63 lines, 3 hardcoded strings):
+    Line 31: "I (A)"
+    Line 32: "r (cm)"
+    Line 33: "B (μT)"
+
+  components/experiment/electromagnetism/StraightWireGuidePanel.vue (114 lines, 1 hardcoded strings):
+    Line 86: "B = μ₀I / (2πr)"
+
+  components/experiment/electromagnetism/StraightWireParamPanel.vue (48 lines, 2 hardcoded strings):
+    Line 30: "B = μ₀I / (2πr)"
+    Line 31: "μ₀ = 4π × 10⁻⁷ T·m/A"
+
+  components/experiment/electromagnetism/StraightWireReadingsPanel.vue (63 lines, 1 hardcoded strings):
+    Line 31: "μT"
+
+  components/experiment/electromagnetism/TorqueCoilGuidePanel.vue (117 lines, 2 hardcoded strings):
+    Line 90: "μ = NIA"
+    Line 92: "τ = μB sin(θ) = NIAB sin(θ)"
+
+  components/experiment/electromagnetism/TorqueCoilParamPanel.vue (88 lines, 2 hardcoded strings):
+    Line 71: "τ = NIAB sin(θ)"
+    Line 72: "μ = NIA &nbsp;|&nbsp; A = a × b"
+
+  components/experiment/electromagnetism/TorqueCoilReadingsPanel.vue (96 lines, 3 hardcoded strings):
+    Line 45: "m²"
+    Line 50: "A·m²"
+    Line 60: "N·m"
+
+  components/experiment/EquationsPanel.vue (45 lines, 3 hardcoded strings):
+    Line 24: "T = 2π√(m/k)"
+    Line 25: "ω₀ = √(k/m)"
+    Line 26: "E = ½kA²"
+
+  components/experiment/faraday/FaradayControlBar.vue (41 lines, 1 hardcoded strings):
+    Line 25: "💾 CSV"
+
+  components/experiment/faraday/FaradayPanelBody.vue (76 lines, 5 hardcoded strings):
+    Line 38: "B (T)"
+    Line 39: "A (m²)"
+    Line 40: "ω (rad/s)"
+    Line 43: "ε = -N · dΦ/dt"
+    Line 44: "Φ = B · A · cos(θ)"
+
+  components/experiment/freefall/FreeFallControlBar.vue (80 lines, 1 hardcoded strings):
+    Line 47: "&#x1F4BE; CSV"
+
+  components/experiment/freefall/FreeFallGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "h = ½ · g · t²"
+    Line 28: "v = g · t"
+    Line 30: "g = 2h / t²"
+
+  components/experiment/freefall/FreeFallHelpModal.vue (136 lines, 4 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 28: "y = ½ · g · t²"
+    Line 60: "Slope = Δy / Δt²"
+    Line 64: "Slope = ½ · g  →  g = 2 × Slope"
+
+  components/experiment/freefall/FreeFallOverlayPanels.vue (93 lines, 1 hardcoded strings):
+    Line 59: "&#x2715;"
+
+  components/experiment/freefall/FreeFallPanelBody.vue (133 lines, 7 hardcoded strings):
+    Line 80: "v(t)"
+    Line 80: "v = -g·t"
+    Line 81: "y(t)"
+    Line 81: "y = y₀ - ½ g t²"
+    Line 82: "t = √(2h / g)"
+    ... and 2 more
+
+  components/experiment/freefall/FreeFallParamsPanel.vue (34 lines, 1 hardcoded strings):
+    Line 16: "g (m/s²)"
+
+  components/experiment/freefall/FreeFallReport.vue (101 lines, 5 hardcoded strings):
+    Line 69: "h (m)"
+    Line 69: "t (s)"
+    Line 69: "t² (s²)"
+    Line 69: "v_impact (m/s)"
+    Line 69: "g_calc (m/s²)"
+
+  components/experiment/freefall/FreeFallTablePanel.vue (48 lines, 4 hardcoded strings):
+    Line 17: "h (m)"
+    Line 17: "t (s)"
+    Line 17: "t² (s²)"
+    Line 17: "v (m/s)"
+
+  components/experiment/freefall/panels/FreeFallReferencePanel.vue (39 lines, 2 hardcoded strings):
+    Line 13: "📊 مرجع قيم g"
+    Line 17: "g (m/s²)"
+
+  components/experiment/freefall/panels/FreeFallWorksheetPanel.vue (91 lines, 8 hardcoded strings):
+    Line 34: "📐 خطوات حساب تسارع الجاذبية g"
+    Line 41: "h = ½gt²"
+    Line 42: "حيث h = الارتفاع، t = زمن السقوط، g = تسارع الجاذبية"
+    Line 51: "g = 2h / t²"
+    Line 66: "g المحسوب:"
+    ... and 3 more
+
+  components/experiment/grating/GratingControlBar.vue (57 lines, 5 hardcoded strings):
+    Line 35: "&#x21A9;"
+    Line 35: "Ctrl+Z"
+    Line 36: "&#x21AA;"
+    Line 36: "Ctrl+Y"
+    Line 39: "&#x1F4BE; CSV"
+
+  components/experiment/grating/GratingHelpModal.vue (41 lines, 3 hardcoded strings):
+    Line 16: "&#x2715;"
+    Line 22: "Ctrl+Z"
+    Line 23: "Ctrl+Y"
+
+  components/experiment/grating/GratingOverlayPanels.vue (60 lines, 1 hardcoded strings):
+    Line 34: "&#x2715;"
+
+  components/experiment/grating/GratingStatusBar.vue (54 lines, 3 hardcoded strings):
+    Line 31: "N ="
+    Line 31: "lines/mm"
+    Line 32: "D ="
+
+  components/experiment/grating/panels/GratingLawsPanel.vue (51 lines, 4 hardcoded strings):
+    Line 19: "d·sinθ = m·λ"
+    Line 28: "θ₁ = arcsin(λ/d)"
+    Line 35: "y = D·tanθ"
+    Line 39: "m_max = floor(d/λ)"
+
+  components/experiment/grating/panels/GratingReadingsPanel.vue (70 lines, 1 hardcoded strings):
+    Line 50: "d = 1/N"
+
+  components/experiment/grating/panels/GratingTrialsPanel.vue (47 lines, 2 hardcoded strings):
+    Line 20: "y₁"
+    Line 29: "&#x00D7;"
+
+  components/experiment/ideal-gas/IdealGasControlBar.vue (44 lines, 5 hardcoded strings):
+    Line 22: "&#x21A9;"
+    Line 22: "Ctrl+Z"
+    Line 23: "&#x21AA;"
+    Line 23: "Ctrl+Y"
+    Line 26: "&#x1F4BE; CSV"
+
+  components/experiment/ideal-gas/IdealGasGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "P · V = n · R · T"
+    Line 28: "P₁V₁/T₁ = P₂V₂/T₂"
+
+  components/experiment/ideal-gas/IdealGasHelpModal.vue (37 lines, 2 hardcoded strings):
+    Line 17: "Ctrl+Z"
+    Line 18: "Ctrl+Y"
+
+  components/experiment/ideal-gas/IdealGasOverlayPanels.vue (52 lines, 1 hardcoded strings):
+    Line 29: "&#x2715;"
+
+  components/experiment/ideal-gas/panels/IdealGasChartPanel.vue (66 lines, 3 hardcoded strings):
+    Line 48: "P-V Diagram"
+    Line 51: "V (m³)"
+    Line 52: "P (Pa)"
+
+  components/experiment/ideal-gas/panels/IdealGasLawsPanel.vue (36 lines, 2 hardcoded strings):
+    Line 16: "P · V = n · R · T"
+    Line 22: "P = nRT / V"
+
+  components/experiment/ideal-gas/panels/IdealGasResultsPanel.vue (48 lines, 6 hardcoded strings):
+    Line 27: "P̄"
+    Line 28: "T̄"
+    Line 29: "V̄"
+    Line 30: "R̄ (PV/nT)"
+    Line 31: "σ(R)"
+    ... and 1 more
+
+  components/experiment/ideal-gas/panels/IdealGasTrialsPanel.vue (40 lines, 1 hardcoded strings):
+    Line 20: "&#x2715;"
+
+  components/experiment/ideal-gas/panels/IdealGasWorksheetPanel.vue (52 lines, 1 hardcoded strings):
+    Line 31: "P = nRT / V"
+
+  components/experiment/inclined/InclinedEquationsPanel.vue (61 lines, 8 hardcoded strings):
+    Line 38: "a = g·sin(θ) − μ·g·cos(θ)"
+    Line 39: "s = ½·a·t²"
+    Line 40: "v = a·t"
+    Line 41: "t = √(2L/a)"
+    Line 42: "v = √(2aL)"
+    ... and 3 more
+
+  components/experiment/inclined/InclinedGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "a = g · (sin θ − μ · cos θ)"
+    Line 28: "F_∥ = m · g · sin θ"
+    Line 30: "F_f = μ · m · g · cos θ"
+
+  components/experiment/inclined/InclinedHelpModal.vue (137 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 28: "f_k = μ_k · N = μ_k · m · g · cos(θ)"
+    Line 34: "a = g (sinθ − μ_k·cosθ)"
+    Line 67: "Slope = Δa / Δsin(θ)"
+    Line 71: "Slope = g"
+
+  components/experiment/inclined/InclinedParamsPanel.vue (114 lines, 1 hardcoded strings):
+    Line 55: "g (m/s²)"
+
+  components/experiment/inclined/InclinedTablePanel.vue (67 lines, 9 hardcoded strings):
+    Line 22: "L (m)"
+    Line 23: "m (kg)"
+    Line 25: "a (m/s²)"
+    Line 26: "t (s)"
+    Line 27: "v (m/s)"
+    ... and 4 more
+
+  components/experiment/inclined/panels/InclinedWorksheetPanel.vue (72 lines, 1 hardcoded strings):
+    Line 38: "a = g(sinθ − μ·cosθ)"
+
+  components/experiment/interference/InterferenceControlBar.vue (55 lines, 5 hardcoded strings):
+    Line 33: "&#x21A9;"
+    Line 33: "Ctrl+Z"
+    Line 34: "&#x21AA;"
+    Line 34: "Ctrl+Y"
+    Line 37: "&#x1F4BE; CSV"
+
+  components/experiment/interference/InterferenceGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "Δy = (λ · L) / d"
+    Line 28: "λ = (Δy · d) / L"
+
+  components/experiment/interference/InterferenceHelpModal.vue (143 lines, 7 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 45: "d · sin(θ) = m · λ"
+    Line 48: "Δy = λ · D / d"
+    Line 50: "Δy = (λD) · (1/d)"
+    Line 73: "Slope = Δ(Δy) / Δ(1/d)"
+    ... and 2 more
+
+  components/experiment/interference/InterferenceOverlayPanels.vue (64 lines, 1 hardcoded strings):
+    Line 36: "&#x2715;"
+
+  components/experiment/interference/InterferenceStatusBar.vue (54 lines, 3 hardcoded strings):
+    Line 31: "d ="
+    Line 32: "D ="
+    Line 34: "Δy ="
+
+  components/experiment/interference/panels/InterferenceLawsPanel.vue (56 lines, 4 hardcoded strings):
+    Line 19: "Δy = λD / d"
+    Line 29: "d·sinθ = mλ"
+    Line 37: "d·sinθ = (m + ½)λ"
+    Line 44: "I = I₀ cos²(πd·sinθ/λ)"
+
+  components/experiment/interference/panels/InterferenceReadingsPanel.vue (79 lines, 5 hardcoded strings):
+    Line 26: "1/d"
+    Line 44: "Central fringe (m=0)"
+    Line 45: "Max intensity"
+    Line 48: "Dark fringes"
+    Line 49: "Between bright fringes"
+
+  components/experiment/interference/panels/InterferenceReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 16: "λ (nm)"
+
+  components/experiment/interference/panels/InterferenceResultsPanel.vue (58 lines, 7 hardcoded strings):
+    Line 30: "Slope (= λ·D/1000)"
+    Line 31: "D (screen dist)"
+    Line 32: "λ (from slope)"
+    Line 33: "λ (theory)"
+    Line 34: "R²"
+    ... and 2 more
+
+  components/experiment/interference/panels/InterferenceTrialsPanel.vue (47 lines, 3 hardcoded strings):
+    Line 20: "d (mm)"
+    Line 20: "1/d"
+    Line 20: "Δy"
+
+  components/experiment/interference/panels/InterferenceWorksheetPanel.vue (55 lines, 1 hardcoded strings):
+    Line 33: "Δy = λD / d"
+
+  components/experiment/latent-heat/LatentHeatControlBar.vue (42 lines, 3 hardcoded strings):
+    Line 21: "Ctrl+Z"
+    Line 22: "Ctrl+Y"
+    Line 25: "💾 CSV"
+
+  components/experiment/latent-heat/LatentHeatGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "Q = m · L_f"
+    Line 28: "L_f = Q / m"
+
+  components/experiment/latent-heat/LatentHeatHelpModal.vue (30 lines, 2 hardcoded strings):
+    Line 14: "Ctrl+Z"
+    Line 15: "Ctrl+Y"
+
+  components/experiment/latent-heat/LatentHeatOverlayPanels.vue (37 lines, 1 hardcoded strings):
+    Line 20: "&#x2715;"
+
+  components/experiment/latent-heat/panels/LatentHeatLawsPanel.vue (46 lines, 6 hardcoded strings):
+    Line 16: "Q = m × L"
+    Line 23: "انصهار الثلج (L_f)"
+    Line 23: "334 kJ/kg"
+    Line 24: "تبخر الماء (L_v)"
+    Line 24: "2260 kJ/kg"
+    ... and 1 more
+
+  components/experiment/latent-heat/panels/LatentHeatParamsPanel.vue (34 lines, 2 hardcoded strings):
+    Line 8: "الكتلة (kg)"
+    Line 20: "قوة التسخين (W)"
+
+  components/experiment/latent-heat/panels/LatentHeatReferencePanel.vue (36 lines, 1 hardcoded strings):
+    Line 14: "L (J/kg)"
+
+  components/experiment/latent-heat/panels/LatentHeatResultsPanel.vue (73 lines, 2 hardcoded strings):
+    Line 39: "متوسط L المقاس"
+    Line 43: "L الحقيقي"
+
+  components/experiment/latent-heat/panels/LatentHeatTrialsPanel.vue (49 lines, 2 hardcoded strings):
+    Line 24: "&#x2715;"
+    Line 29: "اضغط S لتسجيل نتيجة بعد تشغيل التجربة"
+
+  components/experiment/latent-heat/panels/LatentHeatWorksheetPanel.vue (53 lines, 1 hardcoded strings):
+    Line 31: "Q = m · L"
+
+  components/experiment/lightray/LightRayControlBar.vue (47 lines, 1 hardcoded strings):
+    Line 34: "&#x1F4BE; CSV"
+
+  components/experiment/lightray/LightRayGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "n₁ · sin θ₁ = n₂ · sin θ₂"
+    Line 28: "θ_r = θ_i (Law of Reflection)"
+
+  components/experiment/lightray/LightRayHelpModal.vue (38 lines, 2 hardcoded strings):
+    Line 18: "Ctrl+Z"
+    Line 19: "Ctrl+Y"
+
+  components/experiment/lightray/LightRayStatusBar.vue (37 lines, 1 hardcoded strings):
+    Line 22: "🔴 TIR"
+
+  components/experiment/lightray/panels/LightRayWorksheetPanel.vue (71 lines, 3 hardcoded strings):
+    Line 37: "n₁ sin θᵢ = n₂ sin θₜ"
+    Line 38: "n₁ = معامل انكسار الوسط الأول، n₂ = معامل انكسار الوسط الثان"
+    Line 47: "n₂ = n₁ sin θᵢ / sin θₜ"
+
+  components/experiment/mirror/MirrorGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "1/f = 1/d_o + 1/d_i"
+    Line 28: "m = -d_i / d_o = h_i / h_o"
+
+  components/experiment/mirror/MirrorHelpModal.vue (136 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 34: "1/f = 1/u + 1/v"
+    Line 43: "M = hᵢ/hₒ = −v/u"
+    Line 67: "Slope = −1"
+    Line 71: "f = 1/C"
+
+  components/experiment/mirror/panels/MirrorWorksheetPanel.vue (82 lines, 2 hardcoded strings):
+    Line 46: "1/f = 1/do + 1/di"
+    Line 60: "m = -di/do = hi/ho"
+
+  components/experiment/netforce/NetForceControlBar.vue (56 lines, 1 hardcoded strings):
+    Line 34: "📊 CSV"
+
+  components/experiment/netforce/NetForceGuidePanel.vue (47 lines, 4 hardcoded strings):
+    Line 17: "عند التوازن، اضغط 📝 تسجيل (S)."
+    Line 22: "F_net = √(ΣFx² + ΣFy²)"
+    Line 24: "f ≤ μ × N"
+    Line 26: "Fc = m · ω² · r"
+
+  components/experiment/netforce/NetForceHelpModal.vue (56 lines, 7 hardcoded strings):
+    Line 13: "محصلة القوى هي القوة الواحدة المكافئة لجميع القوى المؤثرة عل"
+    Line 18: "راقب أسهم القوى على Canvas — كل سهم ملون يمثل قوة."
+    Line 27: "القانون: Fc = m × ω² × r"
+    Line 33: "صدّر البيانات CSV أو أرسلها لتحليل البيانات."
+    Line 37: "Space: تشغيل/إيقاف"
+    ... and 2 more
+
+  components/experiment/netforce/NetForcePanelBody.vue (262 lines, 3 hardcoded strings):
+    Line 75: "حساب المحصلة / Fc"
+    Line 76: "حساب Fc = mv²/r"
+    Line 77: "انحدار Fc vs ω²"
+
+  components/experiment/netforce/NetForceReport.vue (163 lines, 13 hardcoded strings):
+    Line 58: "القيمة (N)"
+    Line 60: "الوزن (W)"
+    Line 61: "القوة العمودية (N)"
+    Line 62: "الاحتكاك (f)"
+    Line 63: "القوة المطبقة (F)"
+    ... and 8 more
+
+  components/experiment/pendulum/panels/PendulumReferencePanel.vue (39 lines, 2 hardcoded strings):
+    Line 13: "📊 مرجع قيم g"
+    Line 17: "g (m/s²)"
+
+  components/experiment/pendulum/panels/PendulumWorksheetPanel.vue (91 lines, 8 hardcoded strings):
+    Line 34: "📐 خطوات حساب تسارع الجاذبية g"
+    Line 41: "T = 2π√(L/g)"
+    Line 42: "حيث T = الدورة الزمنية، L = طول الخيط، g = تسارع الجاذبية"
+    Line 51: "g = 4π²L / T²"
+    Line 66: "g المحسوب:"
+    ... and 3 more
+
+  components/experiment/pendulum/PendulumControlBar.vue (73 lines, 1 hardcoded strings):
+    Line 46: "&#x1F4BE; CSV"
+
+  components/experiment/pendulum/PendulumDataPanel.vue (48 lines, 1 hardcoded strings):
+    Line 22: "&#xD7;"
+
+  components/experiment/pendulum/PendulumFFTPanel.vue (110 lines, 3 hardcoded strings):
+    Line 83: "100 Hz"
+    Line 83: "200 Hz"
+    Line 83: "500 Hz"
+
+  components/experiment/pendulum/PendulumGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "T = 2π √(L / g)"
+    Line 28: "T² = (4π² / g) · L"
+    Line 30: "g = 4π² / Slope"
+
+  components/experiment/pendulum/PendulumHelpModal.vue (130 lines, 9 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 24: "F = -m · g · sin(θ)"
+    Line 32: "T = 2π √(L / g)"
+    Line 34: "T² = (4π² / g) · L"
+    Line 36: "f = 1/T = (1/2π) √(g/L)"
+    ... and 4 more
+
+  components/experiment/pendulum/PendulumOverlayPanels.vue (49 lines, 1 hardcoded strings):
+    Line 31: "&#x2715;"
+
+  components/experiment/pendulum/PendulumPanelBody.vue (57 lines, 3 hardcoded strings):
+    Line 41: "T = 2π√(L/g)"
+    Line 41: "الزمن الدوري (T) لا يعتمد على كتلة الجسم المعلق"
+    Line 42: "جرّب تغيير كتلة البندول من لوحة المتغيرات — ستجد أن T ثابت ت"
+
+  components/experiment/pendulum/PendulumPhotogate.vue (109 lines, 1 hardcoded strings):
+    Line 75: "t (s)"
+
+  components/experiment/pendulum/PendulumReport.vue (51 lines, 4 hardcoded strings):
+    Line 31: "L (m)"
+    Line 31: "T (s)"
+    Line 31: "f (Hz)"
+    Line 31: "g (m/s²)"
+
+  components/experiment/pendulum/PendulumScatterChart.vue (86 lines, 12 hardcoded strings):
+    Line 54: "&#x1F4C8; Scatter"
+    Line 56: "L (m)"
+    Line 56: "g (m/s²)"
+    Line 56: "T (s)"
+    Line 56: "f (Hz)"
+    ... and 7 more
+
+  components/experiment/polarization/panels/PolarizationLawsPanel.vue (51 lines, 4 hardcoded strings):
+    Line 20: "I = I₀ cos²(θ₂ − θ₁)"
+    Line 31: "I_max = I₀  (when Δθ = 0°)"
+    Line 35: "I = 0  (when Δθ = 90°)"
+    Line 39: "T = cos²(Δθ) × 100%"
+
+  components/experiment/polarization/panels/PolarizationReadingsPanel.vue (69 lines, 1 hardcoded strings):
+    Line 34: "cos²(Δθ)"
+
+  components/experiment/polarization/panels/PolarizationReferencePanel.vue (37 lines, 1 hardcoded strings):
+    Line 15: "I/I₀ (%)"
+
+  components/experiment/polarization/panels/PolarizationResultsPanel.vue (55 lines, 1 hardcoded strings):
+    Line 32: "R²"
+
+  components/experiment/polarization/panels/PolarizationTrialsPanel.vue (48 lines, 3 hardcoded strings):
+    Line 20: "cos²θ"
+    Line 20: "I₀"
+    Line 30: "&#x00D7;"
+
+  components/experiment/polarization/panels/PolarizationWorksheetPanel.vue (59 lines, 1 hardcoded strings):
+    Line 35: "I = I₀ cos²(Δθ)"
+
+  components/experiment/polarization/PolarizationControlBar.vue (57 lines, 5 hardcoded strings):
+    Line 35: "&#x21A9;"
+    Line 35: "Ctrl+Z"
+    Line 36: "&#x21AA;"
+    Line 36: "Ctrl+Y"
+    Line 39: "&#x1F4BE; CSV"
+
+  components/experiment/polarization/PolarizationGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "I = I₀ · cos²θ (Malus's Law)"
+    Line 28: "I₀ = Slope"
+
+  components/experiment/polarization/PolarizationHelpModal.vue (137 lines, 4 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 46: "I = I₀ · cos²(θ)"
+    Line 69: "Slope = ΔI / Δcos²θ"
+    Line 73: "Slope = I₀"
+
+  components/experiment/polarization/PolarizationOverlayPanels.vue (68 lines, 1 hardcoded strings):
+    Line 38: "&#x2715;"
+
+  components/experiment/polarization/PolarizationStatusBar.vue (54 lines, 2 hardcoded strings):
+    Line 33: "I ="
+    Line 34: "T ="
+
+  components/experiment/prism/panels/PrismLawsPanel.vue (58 lines, 3 hardcoded strings):
+    Line 27: "n₁ sin θ₁ = n₂ sin θ₂"
+    Line 34: "n = sin((A+D)/2) / sin(A/2)"
+    Line 41: "n = sin((A+δ_min)/2) / sin(A/2)"
+
+  components/experiment/prism/panels/PrismResultsPanel.vue (43 lines, 4 hardcoded strings):
+    Line 26: "A (Y-intercept)"
+    Line 27: "B (Slope)"
+    Line 28: "R²"
+    Line 29: "n = A + B/λ²"
+
+  components/experiment/prism/panels/PrismTrialsPanel.vue (50 lines, 1 hardcoded strings):
+    Line 31: "&#x1F5D1;"
+
+  components/experiment/prism/panels/PrismWorksheetPanel.vue (58 lines, 1 hardcoded strings):
+    Line 36: "sin θ₂ = sin θ₁ / n"
+
+  components/experiment/prism/PrismControlBar.vue (55 lines, 5 hardcoded strings):
+    Line 33: "&#x21A9;"
+    Line 33: "Ctrl+Z"
+    Line 34: "&#x21AA;"
+    Line 34: "Ctrl+Y"
+    Line 37: "&#x1F4BE; CSV"
+
+  components/experiment/prism/PrismGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "n · sin θ_c = 1 (Critical Angle)"
+    Line 28: "n = c / v (Refractive Index)"
+
+  components/experiment/prism/PrismHelpModal.vue (133 lines, 7 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 24: "n(λ) = A + B / λ²"
+    Line 37: "n₁ · sin(θ₁) = n₂ · sin(θ₂)"
+    Line 39: "n = sin((A + δₘ)/2) / sin(A/2)"
+    Line 63: "Slope = Δn / Δ(1/λ²) = B"
+    ... and 2 more
+
+  components/experiment/prism/PrismOverlayPanels.vue (75 lines, 1 hardcoded strings):
+    Line 42: "&#x2715;"
+
+  components/experiment/prism/PrismStatusBar.vue (64 lines, 4 hardcoded strings):
+    Line 34: "A ="
+    Line 36: "n ="
+    Line 38: "θc ="
+    Line 39: "⚠ TIR"
+
+  components/experiment/projectile/panels/ProjectileReferencePanel.vue (39 lines, 1 hardcoded strings):
+    Line 17: "sin(2θ)"
+
+  components/experiment/projectile/panels/ProjectileWorksheetPanel.vue (95 lines, 2 hardcoded strings):
+    Line 44: "R = v₀²·sin(2θ) / g"
+    Line 58: "H = v₀²·sin²(θ) / (2g)"
+
+  components/experiment/projectile/ProjectileGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "R = (v₀² · sin 2θ) / g"
+    Line 28: "H = (v₀² · sin²θ) / (2g)"
+    Line 30: "t_flight = (2 · v₀ · sinθ) / g"
+
+  components/experiment/projectile/ProjectileHelpModal.vue (129 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 28: "v₀ₓ = v₀ · cos(θ) &nbsp;&nbsp;&nbsp;&nbsp; v₀ᵧ = v₀ · sin(θ)"
+    Line 58: "Slope = ΔR / Δsin(2θ)"
+    Line 62: "v₀² / g"
+    Line 63: "v₀ = √(Slope × g)"
+
+  components/experiment/projectile/ProjectileHintOverlay.vue (72 lines, 1 hardcoded strings):
+    Line 43: "v₀"
+
+  components/experiment/projectile/ProjectilePanelBody.vue (276 lines, 4 hardcoded strings):
+    Line 166: "v₀ (m/s)"
+    Line 168: "g (m/s²)"
+    Line 169: "x₀ (m)"
+    Line 170: "y₀ (m)"
+
+  components/experiment/projectile/ProjectileReport.vue (122 lines, 5 hardcoded strings):
+    Line 29: "v₀"
+    Line 42: "v₀ (m/s)"
+    Line 81: "z = v₀ sin θ / g"
+    Line 82: "H = (v₀ sin θ)² / 2g"
+    Line 83: "R = v₀² sin(2θ) / g"
+
+  components/experiment/resonance/panels/ResonanceLawsPanel.vue (35 lines, 3 hardcoded strings):
+    Line 12: "f_n = n v / (2L)"
+    Line 17: "λ_n = 2L / n"
+    Line 22: "v = f × λ"
+
+  components/experiment/resonance/panels/ResonanceTrialsPanel.vue (36 lines, 1 hardcoded strings):
+    Line 18: "&#x00D7;"
+
+  components/experiment/resonance/panels/ResonanceWorksheetPanel.vue (58 lines, 1 hardcoded strings):
+    Line 35: "f = n·v / (2L) = n·√(T/μ) / (2L)"
+
+  components/experiment/resonance/ResonanceControlBar.vue (46 lines, 5 hardcoded strings):
+    Line 24: "&#x21A9;"
+    Line 24: "Ctrl+Z"
+    Line 25: "&#x21AA;"
+    Line 25: "Ctrl+Y"
+    Line 28: "&#x1F4BE; CSV"
+
+  components/experiment/resonance/ResonanceGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "f_n = n · v / (2L)"
+    Line 28: "v = f_n · 2L / n"
+
+  components/experiment/resonance/ResonanceHelpModal.vue (39 lines, 3 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 20: "Ctrl+Z"
+    Line 21: "Ctrl+Y"
+
+  components/experiment/resonance/ResonanceOverlayPanels.vue (58 lines, 1 hardcoded strings):
+    Line 32: "&#x2715;"
+
+  components/experiment/resonance/ResonanceStatusBar.vue (44 lines, 5 hardcoded strings):
+    Line 20: "L ="
+    Line 21: "T ="
+    Line 22: "n ="
+    Line 23: "f ="
+    Line 24: "lambda ="
+
+  components/experiment/shared/DraggablePanel.vue (88 lines, 2 hardcoded strings):
+    Line 64: "&#x26F6;"
+    Line 65: "&#x2715;"
+
+  components/experiment/specific-heat/panels/SpecificHeatLawsPanel.vue (55 lines, 6 hardcoded strings):
+    Line 19: "m_m·c_m·(T_m − T_f) = m_w·c_w·(T_f − T_w)"
+    Line 24: "استخراج c_m"
+    Line 25: "c_m = m_w·c_w·(T_f − T_w) / (m_m·(T_m − T_f))"
+    Line 30: "Q_lost = m_m·c_m·(T_m − T_f)"
+    Line 35: "Q_gained = m_w·c_w·(T_f − T_w)"
+    ... and 1 more
+
+  components/experiment/specific-heat/panels/SpecificHeatParamsPanel.vue (45 lines, 3 hardcoded strings):
+    Line 19: "كتلة المعدن m_m (g)"
+    Line 24: "كتلة الماء m_w (g)"
+    Line 29: "حرارة الماء البارد T_w (°C)"
+
+  components/experiment/specific-heat/panels/SpecificHeatReadingsPanel.vue (34 lines, 5 hardcoded strings):
+    Line 19: "m_m (كتلة المعدن)"
+    Line 20: "m_w (كتلة الماء)"
+    Line 21: "T_w (حرارة الماء الأولية)"
+    Line 22: "T_m (حرارة المعدن)"
+    Line 23: "T_f (حرارة الاتزان)"
+
+  components/experiment/specific-heat/panels/SpecificHeatReferencePanel.vue (71 lines, 2 hardcoded strings):
+    Line 28: "c (J/kg·°C)"
+    Line 43: "احسب c_m من تجربتك"
+
+  components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue (100 lines, 4 hardcoded strings):
+    Line 36: "c_m (من الميل)"
+    Line 43: "R²"
+    Line 47: "c_m (آخر تجربة)"
+    Line 51: "c_m (الحقيقي)"
+
+  components/experiment/specific-heat/panels/SpecificHeatWorksheetPanel.vue (169 lines, 10 hardcoded strings):
+    Line 60: "= m"
+    Line 60: "× c"
+    Line 60: "× (T"
+    Line 60: "− T"
+    Line 77: "= Q"
+    ... and 5 more
+
+  components/experiment/specific-heat/SpecificHeatControlBar.vue (51 lines, 3 hardcoded strings):
+    Line 24: "Ctrl+Z"
+    Line 25: "Ctrl+Y"
+    Line 30: "💾 CSV"
+
+  components/experiment/specific-heat/SpecificHeatGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "c_m = (m_w · c_w · ΔT_w) / (m_m · ΔT_m)"
+    Line 28: "Slope = c_m"
+
+  components/experiment/specific-heat/SpecificHeatHelpModal.vue (112 lines, 4 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 35: "Q_lost = Q_gained"
+    Line 37: "Q_lost = m_m · c_m · (T_m - T_f)"
+    Line 39: "Q_gained = m_w · c_w · (T_f - T_w)"
+
+  components/experiment/specific-heat/SpecificHeatLab.vue (223 lines, 1 hardcoded strings):
+    Line 76: "🔥 جاري تسخين المعدن — انتظر حتى 100°C"
+
+  components/experiment/specific-heat/SpecificHeatOverlayPanels.vue (68 lines, 1 hardcoded strings):
+    Line 37: "&#x2715;"
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundLawsPanel.vue (53 lines, 7 hardcoded strings):
+    Line 18: "Resonance Wavelength"
+    Line 23: "Speed of Sound"
+    Line 24: "v = f · λ"
+    Line 32: "Theoretical Speed (Air)"
+    Line 33: "v = 331.3 + 0.6·T"
+    ... and 2 more
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundParamsPanel.vue (68 lines, 5 hardcoded strings):
+    Line 20: "L — Tube length"
+    Line 29: "f — Frequency"
+    Line 38: "T — Temperature"
+    Line 50: "1st (λ/4)"
+    Line 51: "3rd (3λ/4)"
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundReadingsPanel.vue (71 lines, 6 hardcoded strings):
+    Line 20: "L — Tube length"
+    Line 24: "f — Frequency"
+    Line 28: "T — Temperature"
+    Line 33: "λ — Wavelength"
+    Line 38: "v — Measured"
+    ... and 1 more
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundReferencePanel.vue (37 lines, 2 hardcoded strings):
+    Line 14: "T (°C)"
+    Line 15: "v (m/s)"
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundResultsPanel.vue (57 lines, 7 hardcoded strings):
+    Line 31: "Slope (v/4)"
+    Line 32: "v = 4×Slope"
+    Line 33: "R²"
+    Line 34: "End correction e"
+    Line 38: "Avg v (meas)"
+    ... and 2 more
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundTrialsPanel.vue (47 lines, 1 hardcoded strings):
+    Line 19: "1/f"
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundWorksheetPanel.vue (55 lines, 1 hardcoded strings):
+    Line 32: "v = 331.4 + 0.6T"
+
+  components/experiment/speed-of-sound/SpeedOfSoundControlBar.vue (44 lines, 5 hardcoded strings):
+    Line 22: "&#x21A9;"
+    Line 22: "Ctrl+Z"
+    Line 23: "&#x21AA;"
+    Line 23: "Ctrl+Y"
+    Line 26: "&#x1F4BE; CSV"
+
+  components/experiment/speed-of-sound/SpeedOfSoundGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "v = f · λ"
+    Line 28: "v = 331 + 0.6 · T"
+
+  components/experiment/speed-of-sound/SpeedOfSoundHelpModal.vue (149 lines, 8 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 41: "L = λ / 4"
+    Line 43: "L + e = λ / 4 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; L = λ/4 − e"
+    Line 50: "v = f · λ &nbsp;&nbsp;&rArr;&nbsp;&nbsp; λ = v / f"
+    Line 53: "L = (v/4) · (1/f) − e"
+    ... and 3 more
+
+  components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue (68 lines, 1 hardcoded strings):
+    Line 37: "&#x2715;"
+
+  components/experiment/speed-of-sound/SpeedOfSoundStatusBar.vue (52 lines, 7 hardcoded strings):
+    Line 28: "L ="
+    Line 29: "f ="
+    Line 30: "v ="
+    Line 30: "m/s"
+    Line 31: "vₜ ="
+    ... and 2 more
+
+  components/experiment/spring/DraggablePanel.vue (88 lines, 2 hardcoded strings):
+    Line 64: "&#x26F6;"
+    Line 65: "&#x2715;"
+
+  components/experiment/spring/panels/SpringReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 16: "k (N/m)"
+
+  components/experiment/spring/panels/SpringWorksheetPanel.vue (91 lines, 8 hardcoded strings):
+    Line 34: "📐 خطوات حساب ثابت النابض k"
+    Line 41: "T = 2π√(m/k)"
+    Line 42: "حيث T = الدورة الزمنية، m = الكتلة، k = ثابت النابض"
+    Line 51: "k = 4π²m / T²"
+    Line 66: "k المحسوب:"
+    ... and 3 more
+
+  components/experiment/spring/SpringControlBar.vue (67 lines, 1 hardcoded strings):
+    Line 45: "&#x1F4BE; CSV"
+
+  components/experiment/spring/SpringDataPanel.vue (57 lines, 1 hardcoded strings):
+    Line 32: "&#xD7;"
+
+  components/experiment/spring/SpringFFTPanel.vue (136 lines, 3 hardcoded strings):
+    Line 105: "100 Hz"
+    Line 105: "200 Hz"
+    Line 105: "500 Hz"
+
+  components/experiment/spring/SpringGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "F = -k · x"
+    Line 28: "T = 2π √(m / k)"
+    Line 30: "T² = (4π² / k) · m"
+
+  components/experiment/spring/SpringHelpModal.vue (129 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 24: "F = -k · x"
+    Line 58: "Slope = ΔT² / Δm"
+    Line 62: "Slope = 4π² / k"
+    Line 63: "k = 4π² / Slope"
+
+  components/experiment/spring/SpringOverlayPanels.vue (84 lines, 1 hardcoded strings):
+    Line 56: "&#x2715;"
+
+  components/experiment/spring/SpringPhotogate.vue (145 lines, 1 hardcoded strings):
+    Line 109: "t (s)"
+
+  components/experiment/spring/SpringReport.vue (172 lines, 9 hardcoded strings):
+    Line 112: "m (g)"
+    Line 112: "Δy (cm)"
+    Line 112: "F (N)"
+    Line 131: "m (g)"
+    Line 131: "t₁ (s)"
+    ... and 4 more
+
+  components/experiment/spring/SpringScatterChart.vue (95 lines, 3 hardcoded strings):
+    Line 64: "&#x1F4C8; T² vs m"
+    Line 74: "k = 4π² / Slope ="
+    Line 74: "N/m"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionChartPanel.vue (47 lines, 3 hardcoded strings):
+    Line 32: "ΔL vs t₁"
+    Line 35: "t₁ (°C)"
+    Line 36: "ΔL (mm)"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionLawsPanel.vue (45 lines, 7 hardcoded strings):
+    Line 8: "ΔL = α × L₀ × ΔT"
+    Line 10: "L₀"
+    Line 11: "ΔT"
+    Line 13: "ΔL"
+    Line 18: "α = ΔL / (L₀ × ΔT)"
+    ... and 2 more
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionParamsPanel.vue (59 lines, 3 hardcoded strings):
+    Line 26: "L₀ (m)"
+    Line 31: "t₀ (°C)"
+    Line 36: "t₁ (°C)"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionReadingsPanel.vue (47 lines, 5 hardcoded strings):
+    Line 23: "L₀"
+    Line 24: "t₀"
+    Line 25: "t₁"
+    Line 27: "ΔL"
+    Line 28: "L₁"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 12: "📊 معامل التمدد (×10⁻⁶/K)"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionResultsPanel.vue (52 lines, 1 hardcoded strings):
+    Line 27: "متوسط ΔL"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionTrialsPanel.vue (50 lines, 6 hardcoded strings):
+    Line 14: "L₀"
+    Line 14: "t₀"
+    Line 14: "t₁"
+    Line 14: "ΔL"
+    Line 24: "&#x2715;"
+    ... and 1 more
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionWorksheetPanel.vue (55 lines, 1 hardcoded strings):
+    Line 32: "ΔL = α · L₀ · ΔT"
+
+  components/experiment/thermal-expansion/ThermalExpansionControlBar.vue (42 lines, 3 hardcoded strings):
+    Line 21: "Ctrl+Z"
+    Line 22: "Ctrl+Y"
+    Line 25: "💾 CSV"
+
+  components/experiment/thermal-expansion/ThermalExpansionGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "ΔL = α · L₀ · ΔT"
+    Line 28: "α = ΔL / (L₀ · ΔT)"
+
+  components/experiment/thermal-expansion/ThermalExpansionHelpModal.vue (30 lines, 2 hardcoded strings):
+    Line 14: "Ctrl+Z"
+    Line 15: "Ctrl+Y"
+
+  components/experiment/thermal-expansion/ThermalExpansionOverlayPanels.vue (40 lines, 1 hardcoded strings):
+    Line 27: "&#x2715;"
+
+  components/experiment/thinlens/panels/ThinLensWorksheetPanel.vue (82 lines, 2 hardcoded strings):
+    Line 46: "1/f = 1/do + 1/di"
+    Line 60: "m = -di/do = hi/ho"
+
+  components/experiment/thinlens/ThinLensGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "1/f = 1/d_o + 1/d_i"
+    Line 28: "m = -d_i / d_o"
+
+  components/experiment/thinlens/ThinLensHelpModal.vue (135 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 34: "1/f = 1/u + 1/v"
+    Line 42: "M = hᵢ/hₒ = −v/u"
+    Line 66: "Slope = −1"
+    Line 70: "f = 1/C"
+
+  components/experiment/wave-interference/panels/WaveInterferenceLawsPanel.vue (35 lines, 3 hardcoded strings):
+    Line 12: "v = f × λ"
+    Line 17: "Δr = m × λ"
+    Line 22: "Δr = (m + 1/2) × λ"
+
+  components/experiment/wave-interference/panels/WaveInterferenceTrialsPanel.vue (36 lines, 1 hardcoded strings):
+    Line 18: "&#x00D7;"
+
+  components/experiment/wave-interference/panels/WaveInterferenceWorksheetPanel.vue (54 lines, 1 hardcoded strings):
+    Line 32: "v = f·λ"
+
+  components/experiment/wave-interference/WaveInterferenceControlBar.vue (46 lines, 5 hardcoded strings):
+    Line 24: "&#x21A9;"
+    Line 24: "Ctrl+Z"
+    Line 25: "&#x21AA;"
+    Line 25: "Ctrl+Y"
+    Line 28: "&#x1F4BE; CSV"
+
+  components/experiment/wave-interference/WaveInterferenceGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "Δφ = (2π/λ) · Δx"
+    Line 28: "A_result = 2A · cos(Δφ/2)"
+
+  components/experiment/wave-interference/WaveInterferenceHelpModal.vue (39 lines, 3 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 20: "Ctrl+Z"
+    Line 21: "Ctrl+Y"
+
+  components/experiment/wave-interference/WaveInterferenceOverlayPanels.vue (58 lines, 1 hardcoded strings):
+    Line 32: "&#x2715;"
+
+  components/experiment/wave-interference/WaveInterferenceStatusBar.vue (43 lines, 5 hardcoded strings):
+    Line 20: "d ="
+    Line 21: "lambda ="
+    Line 22: "f ="
+    Line 23: "v ="
+    Line 23: "m/s"
+
+  components/landing/LandingLoginSide.vue (131 lines, 1 hardcoded strings):
+    Line 24: "⚛️ PhysLab"
+
+  components/school/SchoolHelpModal.vue (127 lines, 3 hardcoded strings):
+    Line 15: "يوضح حالة الاتصال بالخادم: مباشر (SSE)، تحديث دوري، أو غير م"
+    Line 50: "Alt + رقم (1–9):"
+    Line 51: "Ctrl/Cmd + K:"
+
+  components/school/SchoolTables.vue (295 lines, 1 hardcoded strings):
+    Line 284: "' + confirmTarget.userName + '"
+
+  components/student/DeadlinesPanel.vue (123 lines, 1 hardcoded strings):
+    Line 95: "📥 تصدير الكل إلى التقويم (.ics)"
+
+  components/student/StudentHelpModal.vue (129 lines, 6 hardcoded strings):
+    Line 15: "يوضح حالة الاتصال بالخادم: مباشر (SSE)، تحديث دوري، أو غير م"
+    Line 39: "يتيح تغيير قيم مثل التيار I، عدد اللفات N، الجهد V، المقاومة"
+    Line 41: "مؤشر القياس (Probe):"
+    Line 42: "ابدأ المحاكاة، أوقفها مؤقتًا (Pause)، أو أعد تشغيلها."
+    Line 50: "Alt + رقم (1–9):"
+    ... and 1 more
+
+  components/teacher/QuizBuilder.vue (321 lines, 4 hardcoded strings):
+    Line 286: "الخيار A"
+    Line 287: "الخيار B"
+    Line 290: "الخيار C (اختياري)"
+    Line 291: "الخيار D (اختياري)"
+
+  components/teacher/QuizManager.vue (224 lines, 1 hardcoded strings):
+    Line 150: "📥 تصدير CSV"
+
+  components/teacher/ReportAIAnalyzer.vue (325 lines, 2 hardcoded strings):
+    Line 96: "= 80 && aiGrade"
+    Line 97: "= 70 && aiGrade"
+
+  components/teacher/ReportCalculationsSection.vue (181 lines, 2 hardcoded strings):
+    Line 72: "R²"
+    Line 103: "= 5 && errorCalcData.errorPercent"
+
+  components/teacher/ReportReadingsSection.vue (134 lines, 1 hardcoded strings):
+    Line 79: "= 50 && cs.consistency"
+
+  components/teacher/TeacherGrading.vue (251 lines, 1 hardcoded strings):
+    Line 135: "⌨️ ↑↓: تنقل • Enter: فتح • G: تصحيح • P: معاينة"
+
+  components/teacher/TeacherHelpModal.vue (127 lines, 3 hardcoded strings):
+    Line 15: "يوضح حالة الاتصال بالخادم: مباشر (SSE)، تحديث دوري، أو غير م"
+    Line 49: "Alt + رقم (1–9):"
+    Line 50: "Ctrl/Cmd + K:"
+
+  components/teacher/TeacherQuizBuilder.vue (265 lines, 4 hardcoded strings):
+    Line 200: "الخيار A"
+    Line 204: "الخيار B"
+    Line 210: "الخيار C (اختياري)"
+    Line 214: "الخيار D (اختياري)"
+
+  modules/biology/components/AnatomyViewerExperiment.vue (222 lines, 1 hardcoded strings):
+    Line 138: "3D Model on Sketchfab"
+
+  modules/chemistry/analysis-calc/ChemAnalysisTab.vue (225 lines, 6 hardcoded strings):
+    Line 151: "(mL)"
+    Line 165: "[H⁺]"
+    Line 166: "[OH⁻]"
+    Line 169: "pH:"
+    Line 170: "pOH:"
+    ... and 1 more
+
+  modules/chemistry/analysis-calc/ChemReportTab.vue (226 lines, 3 hardcoded strings):
+    Line 164: "V (mL)"
+    Line 164: "[H⁺] (M)"
+    Line 164: "[OH⁻] (M)"
+
+  modules/physics/experiment-template/ExperimentShell.vue (229 lines, 1 hardcoded strings):
+    Line 71: "📊 FFT"
+
+  modules/physics/experiments/electric-workshop/ac/ACBottomBar.vue (108 lines, 4 hardcoded strings):
+    Line 45: "RL Circuit"
+    Line 46: "RC Circuit"
+    Line 47: "RLC Circuit"
+    Line 50: "Low-Pass Filter"
+
+  modules/physics/experiments/electric-workshop/ac/ACDialogs.vue (298 lines, 2 hardcoded strings):
+    Line 217: "Ctrl+Z"
+    Line 218: "Ctrl+Y"
+
+  modules/physics/experiments/electric-workshop/dc/DCDialogs.vue (279 lines, 2 hardcoded strings):
+    Line 202: "Ctrl+Z"
+    Line 203: "Ctrl+Y"
+
+  pages/admin/tabs/AdminUsersV2.vue (325 lines, 1 hardcoded strings):
+    Line 6: "📊 تصدير CSV"
+
+  pages/admin/tabs/ClassesV2.vue (274 lines, 1 hardcoded strings):
+    Line 6: "📊 تصدير CSV"
+
+  pages/admin/tabs/SchoolsV2.vue (212 lines, 1 hardcoded strings):
+    Line 6: "📊 تصدير CSV"
+
+  pages/admin/tabs/subscriptions/SubscriptionList.vue (216 lines, 1 hardcoded strings):
+    Line 26: "📄 CSV"
+
+  pages/admin/tabs/subscriptions/SubscriptionOverview.vue (286 lines, 1 hardcoded strings):
+    Line 55: "💰 الإيرادات المتكررة (MRR)"
+
+  pages/report-view.vue (249 lines, 1 hardcoded strings):
+    Line 216: "يمكنك رفع صورة بروفايل (JPG, PNG - أقل من 2MB)"
+
+  pages/school/tabs/SchoolClasses.vue (254 lines, 1 hardcoded strings):
+    Line 6: "📊 تصدير CSV"
+
+  pages/school/tabs/SchoolFeedback.vue (304 lines, 1 hardcoded strings):
+    Line 182: "📊 تصدير CSV"
+
+  pages/school/tabs/SchoolReports.vue (223 lines, 1 hardcoded strings):
+    Line 17: "📊 تصدير CSV"
+
+  pages/school/tabs/SchoolStudents.vue (224 lines, 1 hardcoded strings):
+    Line 6: "📊 تصدير CSV"
+
+  pages/school/tabs/SchoolTeachers.vue (224 lines, 1 hardcoded strings):
+    Line 6: "📊 تصدير CSV"
+
+  pages/school/tabs/SchoolWarnings.vue (152 lines, 1 hardcoded strings):
+    Line 13: "📊 تصدير CSV"
+
+  pages/teacher/tabs/Grading.vue (292 lines, 1 hardcoded strings):
+    Line 89: "💡 Ctrl+Enter للحفظ السريع"
+
+  pages/teacher/tabs/QuizDetailResults.vue (162 lines, 1 hardcoded strings):
+    Line 105: "📥 تصدير CSV"
+
+=== LOCALE COVERAGE ===
+  Locale files: account, admin-ar, admin-en, admin-es, admin-extras, admin-reports, admin-user, ai, approval, ar-admin, ar-core, ar-misc, ar-science, auth, biology-ar_a, biology-ar_b, biology-ar_c, biology-en_a, biology-en_b, biology-en_c, biology-es_a, biology-es_b, biology-es_c, chemistry-analysis, chemistry-ar, chemistry-assistant, chemistry-chemicals, chemistry-en, chemistry-es, chemistry-experiments-ar, chemistry-experiments-en, chemistry-experiments-es, chemistry-lab, chemistry-report, chemistry-shelf, chemistry-tools, common, dashboard-ar, dashboard-en, dashboard-es, electricWorkshop, electricWorkshop_ar_a, electricWorkshop_ar_b, electricWorkshop_en_a, electricWorkshop_en_b, electricWorkshop_es_a, electricWorkshop_es_b, en-admin, en-core, en-misc, en-science, es-admin, es-core, es-misc, es-science, index, landing-ar, landing-en, landing-es, legal, lens, math, report, school-dashboard-ar, school-dashboard-en, school-dashboard-es, school-reports-locale, school, settings, shared-locale-ar, shared-locale-en, shared-locale-es, subscriptions, system, teacher-ar, teacher-en, teacher-es, types
+
+=== DONE ===

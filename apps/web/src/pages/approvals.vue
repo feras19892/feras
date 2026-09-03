@@ -1,16 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
 import ApprovalPanel from '../components/shared/ApprovalPanel.vue';
 import AccountSettingsModal from '../components/shared/AccountSettingsModal.vue';
 import NotificationBell from '../components/shared/NotificationBell.vue';
-import { useI18n } from '../composables/useI18n';
-
 const router = useRouter();
 const auth = useAuthStore();
-const { t } = useI18n();
-
 const mode = computed<'student' | 'teacher' | 'school' | 'admin'>(() => {
   return (auth.user?.role || auth.role) as any;
 });

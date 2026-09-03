@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue'
-import { useI18n } from '../../../../composables/useI18n'
+
 import type { InterferenceTrial } from '../../../../composables/interference/useInterferenceTrials'
-const { t } = useI18n()
+
+
+
+
 
 interface Props {
   trials: InterferenceTrial[]

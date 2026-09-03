@@ -1,6 +1,7 @@
 import { db } from '../../db/index.js';
 import { hashPassword, comparePassword } from '../auth/crypto.js';
 import { createNotification } from '../notifications/services.js';
+import { dispatchEvent } from '../notifications/dispatch.js';
 
 // ─── School self-service functions ───
 
@@ -41,19 +42,53 @@ export async function changeSchoolPassword(schoolId: number, currentPassword: st
   return { success: true };
 }
 
-export async function blockSchoolUser(schoolId: number, userId: number): Promise<{ success: boolean; message?: string }> {
-  const user = await db.get<{ school_id: number | null }>('SELECT school_id FROM users WHERE id = ?', userId);
+export async function blockSchoolUser(
+  schoolId: number,
+  userId: number,
+  reason = 'بدون سبب',
+  days = 0,
+): Promise<{ success: boolean; message?: string }> {
+  const user = await db.get<{ school_id: number | null; name: string }>('SELECT school_id, name FROM users WHERE id = ?', userId);
   if (!user) return { success: false, message: 'User not found' };
   if (user.school_id !== schoolId) return { success: false, message: 'User does not belong to this school' };
-  await db.run('UPDATE users SET blocked_at = datetime("now") WHERE id = ?', userId);
+
+  const blockUntil = days > 0
+    ? new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString()
+    : null;
+  await db.run(
+    'UPDATE users SET blocked_at = datetime("now"), block_reason = ?, block_until = ? WHERE id = ?',
+    reason,
+    blockUntil,
+    userId,
+  );
+
+  const school = await db.get<{ name: string }>('SELECT name FROM schools WHERE id = ?', schoolId);
+  await dispatchEvent({
+    type: 'user_blocked',
+    actorId: schoolId,
+    actorName: school?.name || 'المدرسة',
+    actorRole: 'school',
+    payload: { userId, schoolId, reason },
+  });
+
   return { success: true };
 }
 
 export async function unblockSchoolUser(schoolId: number, userId: number): Promise<{ success: boolean; message?: string }> {
-  const user = await db.get<{ school_id: number | null }>('SELECT school_id FROM users WHERE id = ?', userId);
+  const user = await db.get<{ school_id: number | null; name: string }>('SELECT school_id, name FROM users WHERE id = ?', userId);
   if (!user) return { success: false, message: 'User not found' };
   if (user.school_id !== schoolId) return { success: false, message: 'User does not belong to this school' };
-  await db.run('UPDATE users SET blocked_at = NULL WHERE id = ?', userId);
+  await db.run('UPDATE users SET blocked_at = NULL, block_reason = NULL, block_until = NULL WHERE id = ?', userId);
+
+  const school = await db.get<{ name: string }>('SELECT name FROM schools WHERE id = ?', schoolId);
+  await dispatchEvent({
+    type: 'user_unblocked',
+    actorId: schoolId,
+    actorName: school?.name || 'المدرسة',
+    actorRole: 'school',
+    payload: { userId, schoolId },
+  });
+
   return { success: true };
 }
 
@@ -104,10 +139,11 @@ export async function getSchoolUserDetail(schoolId: number, userId: number) {
   const warnings = await db.all(
     `SELECT w.id, w.title, w.message, w.severity, w.is_read, w.created_at,
      a.name as admin_name, s.name as school_name
-     FROM warnings w LEFT JOIN users a ON w.admin_id = a.id
-     LEFT JOIN schools s ON w.admin_id = s.id
+     FROM warnings w
+     LEFT JOIN users a ON w.admin_id = a.id
+     LEFT JOIN schools s ON w.school_id = s.id
      WHERE w.user_id = ? ORDER BY w.created_at DESC`,
-    userId
+    userId,
   );
 
   const stats = {
@@ -125,51 +161,6 @@ export async function getSchoolUserDetail(schoolId: number, userId: number) {
   return { user, joinedClasses, taughtClasses, reports, activity, sessions, warnings, stats };
 }
 
-export async function getSchoolClassDetail(schoolId: number, classId: string) {
-  const cls = await db.get<any>(
-    `SELECT c.*, u.name as teacher_name, u.email as teacher_email
-     FROM classes c JOIN users u ON c.teacher_id = u.id
-     WHERE c.id = ? AND u.school_id = ?`,
-    classId, schoolId
-  );
-  if (!cls) return null;
-
-  const students = await db.all(
-    `SELECT u.id, u.name, u.email, cs.joined_at,
-     (SELECT COUNT(*) FROM experiment_reports r WHERE r.student_id = u.id AND r.class_id = c.id) as report_count
-     FROM class_students cs
-     JOIN users u ON cs.student_id = u.id
-     JOIN classes c ON cs.class_id = c.id
-     WHERE cs.class_id = ? ORDER BY cs.joined_at`,
-    classId
-  );
-
-  const messages = await db.all(
-    `SELECT m.id, m.user_id, m.user_name, m.user_role, m.content, m.is_flagged, m.flagged_reason, m.created_at
-     FROM class_messages m WHERE m.class_id = ? ORDER BY m.created_at DESC LIMIT 200`,
-    classId
-  );
-
-  const reports = await db.all(
-    `SELECT r.id, r.experiment_name, r.status, r.grade, r.submitted_at,
-     u.name as student_name
-     FROM experiment_reports r
-     JOIN users u ON r.student_id = u.id
-     WHERE r.class_id = ? ORDER BY r.submitted_at DESC`,
-    classId
-  );
-
-  const stats = {
-    studentCount: students.length,
-    messageCount: messages.length,
-    flaggedCount: messages.filter((m: any) => m.is_flagged).length,
-    reportCount: reports.length,
-    gradedCount: reports.filter((r: any) => r.status === 'graded').length,
-  };
-
-  return { class: cls, students, messages, reports, stats };
-}
-
 export async function createSchoolWarning(
   schoolId: number,
   userId: number,
@@ -185,15 +176,17 @@ export async function createSchoolWarning(
   if (user.school_id !== schoolId) return { success: false, message: 'User does not belong to this school' };
 
   await db.run(
-    `INSERT INTO warnings (admin_id, user_id, title, message, severity) VALUES (?, ?, ?, ?, ?)`,
+    `INSERT INTO warnings (school_id, user_id, title, message, severity) VALUES (?, ?, ?, ?, ?)`,
     schoolId, userId, title, message, severity,
   );
 
-  await createNotification({
-    user_id: userId,
-    type: 'warning',
-    title,
-    message,
+  const school = await db.get<{ name: string }>('SELECT name FROM schools WHERE id = ?', schoolId);
+  await dispatchEvent({
+    type: 'warning_sent',
+    actorId: schoolId,
+    actorName: school?.name || 'المدرسة',
+    actorRole: 'school',
+    payload: { studentId: userId, schoolId, message: `${title}: ${message}` },
   });
 
   return { success: true };
@@ -204,9 +197,9 @@ export async function getSchoolWarnings(schoolId: number): Promise<any[]> {
     `SELECT w.*, u.name as user_name, u.email as user_email, u.role as user_role
      FROM warnings w
      JOIN users u ON w.user_id = u.id
-     WHERE u.school_id = ? AND w.admin_id = ?
+     WHERE w.school_id = ?
      ORDER BY w.created_at DESC`,
-    schoolId, schoolId,
+    schoolId,
   );
 }
 

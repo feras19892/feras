@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch } from 'vue';
 import { getReports, getStudentStats } from '../../services/report.service';
 import type { Report } from '../../services/report.service';
 import type { ClassStudent } from '../../services/class.service';
-import { useI18n } from '../../composables/useI18n';
 
 const props = defineProps<{
   show: boolean;
@@ -14,8 +15,6 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-const { t } = useI18n();
-
 const reports = ref<Report[]>([]);
 const stats = ref({ total: 0, graded: 0, pending: 0, average: 0 });
 const loading = ref(false);
@@ -24,12 +23,12 @@ watch(() => props.show, async (val) => {
   if (val && props.student) {
     loading.value = true;
     try {
-      const [rRes, sRes] = await Promise.all([
+      const [rRes, sRes] = await Promise.allSettled([
         getReports({ student_id: String(props.student.id) }),
         getStudentStats(props.student.id),
       ]);
-      if (rRes.success) reports.value = rRes.reports;
-      if (sRes.success) stats.value = sRes.stats;
+      if (rRes.status === 'fulfilled' && rRes.value.success) reports.value = rRes.value.reports;
+      if (sRes.status === 'fulfilled' && sRes.value.success) stats.value = sRes.value.stats;
     } catch (err) {
       console.error('load student detail failed:', err);
     }

@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { ref } from 'vue';
 import { createAnnouncement } from '../../services/announcement.service';
+
 const props = defineProps<{ classId: string }>();
 const emit = defineEmits<{ created: [] }>();
 

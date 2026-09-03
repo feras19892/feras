@@ -8,12 +8,12 @@ export interface ChatMessage {
 
 const OLLAMA_TIMEOUT_MS = 120_000;
 
-export async function ollamaChat(messages: ChatMessage[], signal?: AbortSignal): Promise<string> {
+export async function ollamaChat(messages: ChatMessage[], signal?: AbortSignal, model?: string): Promise<string> {
   const res = await fetch(`${OLLAMA_URL}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: OLLAMA_MODEL,
+      model: model || OLLAMA_MODEL,
       messages,
       stream: false,
     }),

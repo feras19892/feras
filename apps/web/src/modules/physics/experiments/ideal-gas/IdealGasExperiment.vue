@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useIdealGasExperiment } from '../../../../composables/ideal-gas/useIdealGasExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import IdealGasMenuBar from '../../../../components/experiment/ideal-gas/IdealGasMenuBar.vue'
 import IdealGasCanvas from '../../../../components/experiment/ideal-gas/IdealGasCanvas.vue'
@@ -14,8 +16,12 @@ import IdealGasOverlayPanels from '../../../../components/experiment/ideal-gas/I
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useIdealGasExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

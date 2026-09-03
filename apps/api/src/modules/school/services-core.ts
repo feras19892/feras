@@ -1,10 +1,13 @@
 import { db } from '../../db/index.js';
+import { createSubscription } from '../subscriptions/services.js';
 import { hashPassword, comparePassword, generateRefreshToken, hashRefreshToken } from '../auth/crypto.js';
 import { signAccessToken } from '../auth/jwt.js';
-import { createNotification, createSchoolNotification } from '../notifications/services.js';
+import { createSchoolNotification } from '../notifications/services.js';
 import { checkLockout, logLoginAttempt, clearFailedAttempts } from '../auth/services-auth.js';
+import { createHash } from 'crypto';
 import type { School } from '@my-modern-app/shared-types';
 import { randomBytes } from 'crypto';
+import { deleteUserCompletely } from '../../shared/delete-user.js';
 
 function generateSchoolCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -37,12 +40,20 @@ async function issueTokensForSchool(school: School): Promise<{ token: string; re
   return { token, refreshToken };
 }
 
+function computeSchoolFingerprint(ip: string, userAgent: string, input?: string | null): string {
+  if (input) return createHash('sha256').update(input).digest('hex').slice(0, 32);
+  return createHash('sha256').update(`${ip}:${userAgent}`).digest('hex').slice(0, 32);
+}
+
 export async function registerSchool(
   name: string,
   email: string,
   password: string,
   maxStudents = 50,
   maxTeachers = 10,
+  ip: string = 'unknown',
+  userAgent: string = '',
+  fingerprint?: string,
 ): Promise<{ success: boolean; message?: string; school?: School; token?: string; refreshToken?: string; code?: string }> {
   try {
     const existing = await db.get<{ id: number }>('SELECT id FROM schools WHERE email = ?', email);
@@ -50,11 +61,21 @@ export async function registerSchool(
       return { success: false, message: 'Email already registered' };
     }
 
+    const regFingerprint = computeSchoolFingerprint(ip, userAgent, fingerprint);
+    const existingDevice = await db.get<{ id: number }>(
+      'SELECT id FROM schools WHERE registration_fingerprint = ? AND trial_used = 1',
+      regFingerprint,
+    );
+    if (existingDevice) {
+      return { success: false, message: 'هذا الجهاز/المتصفح استُخدم للتجربة من قبل' };
+    }
+
     const passwordHash = await hashPassword(password);
     const code = generateSchoolCode();
     const result = await db.run(
-      'INSERT INTO schools (name, email, password_hash, code, max_students, max_teachers) VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO schools (name, email, password_hash, code, max_students, max_teachers, registration_ip, registration_user_agent, registration_fingerprint, trial_used, last_login_ip, last_login_fingerprint) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       name, email, passwordHash, code, maxStudents, maxTeachers,
+      ip, userAgent, regFingerprint, 1, ip, regFingerprint,
     );
 
     const school: School = {
@@ -66,6 +87,20 @@ export async function registerSchool(
       max_teachers: maxTeachers,
       is_active: true,
     };
+
+    const startsAt = new Date().toISOString();
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    await createSubscription({
+      owner_id: school.id,
+      owner_type: 'school',
+      plan_id: null,
+      status: 'TRIAL',
+      starts_at: startsAt,
+      expires_at: expiresAt,
+      next_billing_at: null,
+      max_students: maxStudents,
+      max_teachers: maxTeachers,
+    });
 
     const { token, refreshToken } = await issueTokensForSchool(school);
     return { success: true, school, token, refreshToken, code };
@@ -79,6 +114,8 @@ export async function loginSchool(
   email: string,
   password: string,
   ip: string = 'unknown',
+  userAgent: string = '',
+  fingerprint?: string,
 ): Promise<{ success: boolean; message?: string; school?: School; token?: string; refreshToken?: string }> {
   try {
     if (await checkLockout(email)) {
@@ -115,6 +152,9 @@ export async function loginSchool(
 
     await clearFailedAttempts(email);
     await logLoginAttempt(email, ip, true);
+
+    const loginFingerprint = computeSchoolFingerprint(ip, userAgent, fingerprint);
+    await db.run('UPDATE schools SET last_login_ip = ?, last_login_fingerprint = ? WHERE id = ?', ip, loginFingerprint, row.id);
 
     const school: School = {
       id: Number(row.id),
@@ -203,21 +243,25 @@ export async function getSchoolUsers(schoolId: number, page = 1, limit = 50): Pr
 
 export async function getSchoolClasses(schoolId: number): Promise<{ id: string; name: string; code: string; teacher_name: string; student_count: number; created_at: string }[]> {
   const rows = await db.all<{ id: string; name: string; code: string; teacher_name: string; student_count: number; created_at: string }[]>(
-    `SELECT c.id, c.name, c.code, u.name as teacher_name,
+    `SELECT c.id, c.name, c.code, COALESCE(u.name, '—') as teacher_name,
      (SELECT COUNT(*) FROM class_students cs WHERE cs.class_id = c.id) as student_count,
      c.created_at
-     FROM classes c JOIN users u ON c.teacher_id = u.id
-     WHERE u.school_id = ? ORDER BY c.created_at DESC`,
+     FROM classes c
+     LEFT JOIN users u ON c.teacher_id = u.id
+     WHERE c.school_id = ? ORDER BY c.created_at DESC`,
     schoolId,
   );
   return rows;
 }
 
 export async function removeSchoolUser(schoolId: number, userId: number): Promise<{ success: boolean; message?: string }> {
-  const user = await db.get<{ school_id: number | null }>('SELECT school_id FROM users WHERE id = ?', userId);
+  const user = await db.get<{ school_id: number | null; role: string }>('SELECT school_id, role FROM users WHERE id = ?', userId);
   if (!user) return { success: false, message: 'User not found' };
   if (user.school_id !== schoolId) return { success: false, message: 'User does not belong to this school' };
-  await db.run('DELETE FROM users WHERE id = ?', userId);
+  if (user.role !== 'student' && user.role !== 'teacher') {
+    return { success: false, message: 'لا يمكن حذف هذا الحساب' };
+  }
+  await deleteUserCompletely(userId);
   return { success: true };
 }
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 const props = defineProps<{ stepIndex: number }>()
+
 const steps = [t('experiments.setupStep'), t('experiments.measurementStep'), t('experiments.analysisStep')]
 </script>
 

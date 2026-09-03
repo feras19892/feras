@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { CollisionParams } from '../../../modules/physics/experiments/collision/useCollisionPhysics'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{
   params: CollisionParams
 }>()

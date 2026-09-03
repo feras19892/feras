@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { useConfirmDialog } from '../../composables/useConfirmDialog'
-import { useI18n } from '../../composables/useI18n'
 
 const { dialogVisible, dialogOptions, acceptDialog, cancelDialog } = useConfirmDialog()
-const { t } = useI18n()
+
 </script>
 
 <template>

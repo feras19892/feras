@@ -1,14 +1,19 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { toRef } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
 import type { Report } from '../../services/report.service'
 import { useReportParser } from '../../composables/teacher/useReportParser'
 import ReportReadingsSection from './ReportReadingsSection.vue'
 import ReportCalculationsSection from './ReportCalculationsSection.vue'
 import ReportConclusionSection from './ReportConclusionSection.vue'
 
+
+
+
+
 const props = defineProps<{ report: Report }>()
-const { t } = useI18n()
 
 const r = toRef(props, 'report')
 const parser = useReportParser(r)

@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import CollisionPanelBody from './CollisionPanelBody.vue'
 
 import type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'
 import type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'
 import type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'
+
 
 const props = defineProps<{
   maximized: Record<string, boolean>
@@ -25,7 +28,7 @@ const emit = defineEmits<{
 
 <template>
   <Teleport to="body">
-    <div v-for="[id, active] in Object.entries(maximized).filter(([,a]) => a)" :key="id" class="overlay-backdrop" @click="emit('maximize', id)">
+    <div v-for="[id] in Object.entries(maximized).filter(([,a]) => a)" :key="id" class="overlay-backdrop" @click="emit('maximize', id)">
       <div class="overlay-panel" @click.stop>
         <div class="overlay-header">
           <span>{{ panelTitle(id) }}</span>

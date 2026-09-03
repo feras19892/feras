@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, watch } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
 import { getAdminTeachers, updateAdminClass, createAdminClass } from '../../../services/admin.service';
-
 interface AdminClassItem {
   id: string; name: string; code: string;
   teacher_name: string; student_count: number; created_at?: string;
@@ -20,8 +20,6 @@ const emit = defineEmits<{
   (e: 'close-create'): void
   (e: 'saved'): void
 }>();
-
-const { t } = useI18n();
 const teachers = ref<Teacher[]>([]);
 const editName = ref('');
 const editTeacherId = ref<number | null>(null);

@@ -16,6 +16,11 @@ export interface ClassStudent {
   name: string;
   email: string;
   joined_at: string;
+  blocked_at?: string | null;
+  penalty_count?: number;
+  reward_count?: number;
+  badge_count?: number;
+  total_points?: number;
 }
 
 export async function createClass(name: string) {
@@ -26,8 +31,9 @@ export async function createClass(name: string) {
   });
 }
 
-export async function getMyClasses() {
-  return fetchJson<{ success: boolean; classes: ClassItem[] }>('/api/classes');
+export async function getMyClasses(signal?: AbortSignal) {
+  const opts = signal ? { signal } : undefined;
+  return fetchJson<{ success: boolean; classes: ClassItem[] }>('/api/classes', opts);
 }
 
 export async function getClassDetails(id: string) {
@@ -69,7 +75,8 @@ export async function getClassStats(id: string) {
   } }>(`/api/classes/${id}/stats`);
 }
 
-export async function getBatchClassData() {
+export async function getBatchClassData(signal?: AbortSignal) {
+  const opts = signal ? { signal } : undefined;
   return fetchJson<{ success: boolean; statsMap: Record<string, {
     student_count: number;
     total_reports: number;
@@ -77,11 +84,12 @@ export async function getBatchClassData() {
     pending_count: number;
     class_average: number;
     top_students: { student_id: number; avg: number; report_count: number }[];
-  }>; studentsMap: Record<string, ClassStudent[]> }>('/api/classes/batch-data');
+  }>; studentsMap: Record<string, ClassStudent[]> }>('/api/classes/batch-data', opts);
 }
 
-export async function getBatchStudentData() {
-  return fetchJson<{ success: boolean; studentsMap: Record<string, ClassStudent[]> }>('/api/classes/batch-student-data');
+export async function getBatchStudentData(signal?: AbortSignal) {
+  const opts = signal ? { signal } : undefined;
+  return fetchJson<{ success: boolean; studentsMap: Record<string, ClassStudent[]> }>('/api/classes/batch-student-data', opts);
 }
 
 export async function updateClass(id: string, data: { name?: string; is_active?: boolean }) {

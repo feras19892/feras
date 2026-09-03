@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{
   trials: CollisionTrial[]
 }>()

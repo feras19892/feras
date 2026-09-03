@@ -3,7 +3,9 @@ import type { User, UserRole } from './user.js';
 export interface JWTPayload {
   sub: string;
   email: string;
+  name?: string;
   role: UserRole;
+  school_id?: number | null;
   iat: number;
   exp: number;
 }

@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useResonanceExperiment } from '../../../../composables/resonance/useResonanceExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import ResonanceMenuBar from '../../../../components/experiment/resonance/ResonanceMenuBar.vue'
 import ResonanceCanvas from '../../../../components/experiment/resonance/ResonanceCanvas.vue'
@@ -14,8 +16,12 @@ import ResonanceOverlayPanels from '../../../../components/experiment/resonance/
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useResonanceExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

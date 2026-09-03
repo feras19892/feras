@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue'
 import ExperimentReport from '../ExperimentReport.vue'
 import DeletableSection from '../DeletableSection.vue'
 
 import type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
+
 const props = defineProps<{
   trials: ProjectileTrial[]
   params?: { v0: number; angleDeg: number; g: number; dragCoeff: number }

@@ -1,5 +1,6 @@
 import { db } from '../../db/index.js';
-import { createNotification } from '../notifications/services.js';
+import { dispatchEvent } from '../notifications/dispatch.js';
+import { broadcastEvent } from '../sse/event-bus.js';
 
 export async function freezeClass(schoolId: number, classId: string, reason: string, frozenBy: number) {
   const cls = await db.get<{ teacher_id: number }>(`SELECT teacher_id FROM classes WHERE id = ?`, classId);
@@ -15,25 +16,20 @@ export async function freezeClass(schoolId: number, classId: string, reason: str
     reason, frozenBy, classId,
   );
 
-  await createNotification({
-    user_id: cls.teacher_id,
+  const school = await db.get<{ name: string }>(`SELECT name FROM schools WHERE id = ?`, schoolId);
+  await dispatchEvent({
     type: 'class_frozen',
-    title: 'تم تجميد فصلك',
-    message: `تم تجميد الفصل من قبل المدرسة. السبب: ${reason}`,
-    class_id: classId,
+    actorId: schoolId,
+    actorName: school?.name || 'المدرسة',
+    actorRole: 'school',
+    payload: { classId, reason },
   });
 
-  const students = await db.all<{ student_id: number }[]>(
-    `SELECT student_id FROM class_students WHERE class_id = ?`, classId,
-  );
+  // تحديث حي: أبلغ معلم الفصل وطلابه فوراً عبر SSE
+  broadcastEvent({ type: 'class_frozen', payload: { class_id: classId, reason }, targetUserId: cls.teacher_id });
+  const students = await db.all<{ student_id: number }[]>('SELECT student_id FROM class_students WHERE class_id = ?', classId);
   for (const s of students) {
-    await createNotification({
-      user_id: s.student_id,
-      type: 'class_frozen',
-      title: 'تم تجميد الفصل',
-      message: `تم تجميد فصلك من قبل المدرسة. السبب: ${reason}`,
-      class_id: classId,
-    });
+    broadcastEvent({ type: 'class_frozen', payload: { class_id: classId }, targetUserId: s.student_id });
   }
 
   return { success: true };
@@ -53,25 +49,20 @@ export async function unfreezeClass(schoolId: number, classId: string) {
     classId,
   );
 
-  await createNotification({
-    user_id: cls.teacher_id,
+  const school = await db.get<{ name: string }>(`SELECT name FROM schools WHERE id = ?`, schoolId);
+  await dispatchEvent({
     type: 'class_unfrozen',
-    title: 'تم إلغاء تجميد فصلك',
-    message: 'تم إلغاء تجميد الفصل من قبل المدرسة',
-    class_id: classId,
+    actorId: schoolId,
+    actorName: school?.name || 'المدرسة',
+    actorRole: 'school',
+    payload: { classId },
   });
 
-  const students = await db.all<{ student_id: number }[]>(
-    `SELECT student_id FROM class_students WHERE class_id = ?`, classId,
-  );
+  // تحديث حي: أبلغ معلم الفصل وطلابه فوراً عبر SSE
+  broadcastEvent({ type: 'class_unfrozen', payload: { class_id: classId }, targetUserId: cls.teacher_id });
+  const students = await db.all<{ student_id: number }[]>('SELECT student_id FROM class_students WHERE class_id = ?', classId);
   for (const s of students) {
-    await createNotification({
-      user_id: s.student_id,
-      type: 'class_unfrozen',
-      title: 'تم إلغاء تجميد الفصل',
-      message: 'تم إلغاء تجميد فصلك من قبل المدرسة',
-      class_id: classId,
-    });
+    broadcastEvent({ type: 'class_unfrozen', payload: { class_id: classId }, targetUserId: s.student_id });
   }
 
   return { success: true };

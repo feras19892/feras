@@ -149,6 +149,7 @@ export const es4 = {
     expFreeFall: 'Caída Libre',
     expInclined: 'Plano Inclinado',
     expCollision: 'Colisión en 1D',
+    expNetForce: 'Fuerza Neta',
     expLightRay: 'Laboratorio de Rayo de Luz',
     expThinLens: 'Lente Delgada',
     expMirrors: 'Espejos Esféricos',

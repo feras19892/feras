@@ -38,6 +38,7 @@ export const es3 = {
     sendToTeacherBtn: '📤 Enviar al Profesor',
     guestStudent: 'Estudiante Invitado',
     joinClassFirst: 'Debes unirte a una clase primero',
+    loginFirst: 'Inicia sesión y únete a una clase para compartir tu informe',
     branchPhysics: 'Física',
     sentSuccessfully: '✅ Enviado',
     reportSentSuccess: '¡Informe enviado al profesor con éxito!',

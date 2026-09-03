@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
 
 const props = defineProps<{
   sourceName: string;
@@ -10,8 +11,6 @@ const emit = defineEmits<{
   (e: 'clear'): void;
   (e: 'back'): void;
 }>();
-
-const { t } = useI18n();
 
 const title = computed(() => {
   return props.sourceName ? t('analysis.analysisTitle', { name: props.sourceName }) : t('analysis.defaultTitle');

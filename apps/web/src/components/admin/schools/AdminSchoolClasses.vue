@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n';
-import type { SchoolClass } from '../../../services/school.service';
-
+import { useI18n } from '@/composables/useI18n';
 const { t, locale } = useI18n();
-
+import type { SchoolClass } from '../../../services/school.service';
 defineProps<{ classes: SchoolClass[] }>();
 
 function formatDate(dateStr: string) {

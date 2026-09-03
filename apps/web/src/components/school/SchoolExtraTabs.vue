@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n';
-
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 interface SchoolSessionRow {
   id: number;
   user_name: string;
@@ -36,8 +36,6 @@ defineProps<{
   schoolWarnings: SchoolWarningRow[];
   dateLocaleStr: string;
 }>();
-
-const { t } = useI18n();
 </script>
 
 <template>

@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed, ref, onErrorCaptured } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getExperiment } from './catalog';
 import { loadExperiment } from './experiment-loader';
-import { useI18n } from '../../composables/useI18n';
+
 import FeedbackModal from '../../components/shared/FeedbackModal.vue';
 
-const { t } = useI18n();
+
+
+
+
 const route = useRoute();
 const router = useRouter();
 

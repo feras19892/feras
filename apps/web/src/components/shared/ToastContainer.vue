@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { useToast } from '../../composables/useToast'
 import type { ToastType } from '../../stores/toast.store'
+
 
 const { toasts, dismiss } = useToast()
 

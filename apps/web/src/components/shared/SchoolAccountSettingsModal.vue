@@ -1,12 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch, computed } from 'vue';
 import { useAuthStore } from '../../modules/auth/stores/auth';
 import { updateSchoolName, changeSchoolPassword } from '../../services/school.service';
-import { useI18n } from '../../composables/useI18n';
-
 const auth = useAuthStore();
-const { t } = useI18n();
-
 const show = ref(false);
 const activeSection = ref<'name' | 'password'>('name');
 

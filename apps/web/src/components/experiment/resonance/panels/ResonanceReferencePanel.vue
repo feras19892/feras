@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 const HARMONICS = [
+
   { n: 1, name: t('experiments.resHarmonic1'), color: '#22c55e' },
   { n: 2, name: t('experiments.resHarmonic2'), color: '#3b82f6' },
   { n: 3, name: t('experiments.resHarmonic3'), color: '#f59e0b' },

@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, locale } = useI18n();
 import { ref, onMounted, computed } from 'vue';
 import { fetchJson } from '../../services/http';
-import { useI18n } from '../../composables/useI18n';
-
-const { t, locale } = useI18n();
 const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US');
 
 interface TeacherPerf {

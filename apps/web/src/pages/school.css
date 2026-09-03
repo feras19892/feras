@@ -5,8 +5,8 @@
 .topbar-title { margin: 0; font-size: 1.1rem; font-weight: 700; color: #f1f5f9; }
 .topbar-date { font-size: 0.72rem; color: #475569; }
 .topbar-right { display: flex; align-items: center; gap: 0.3rem; }
-.help-btn-top { width: 32px; height: 32px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.06); background: transparent; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #64748b; }
-.help-btn-top:hover { border-color: rgba(6,182,212,0.2); color: #67e8f9; }
+.help-btn-top { width: 32px; height: 32px; border-radius: 6px; border: 1px solid rgba(251,191,36,0.3); background: rgba(251,191,36,0.12); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fbbf24; }
+.help-btn-top:hover { background: rgba(251,191,36,0.22); color: #fbbf24; }
 .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.8rem; padding: 1rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
 .kpi-item { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; padding: 0.8rem 0.5rem; min-height: 80px; justify-content: center; border-radius: 6px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); }
 .kpi-icon { font-size: 0.85rem; }

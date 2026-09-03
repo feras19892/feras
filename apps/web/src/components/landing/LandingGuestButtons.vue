@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
-
-const { t } = useI18n()
-
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 const emit = defineEmits<{
+
   (e: 'enterAsTeacher'): void
   (e: 'enterAsStudent'): void
 }>()

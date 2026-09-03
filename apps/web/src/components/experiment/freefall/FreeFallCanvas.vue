@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
 import type { FreeFallState } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'

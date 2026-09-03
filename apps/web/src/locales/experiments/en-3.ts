@@ -38,6 +38,7 @@ export const en3 = {
     sendToTeacherBtn: '📤 Send to Teacher',
     guestStudent: 'Guest Student',
     joinClassFirst: 'You must join a class first',
+    loginFirst: 'Please sign in and join a class to share your report',
     branchPhysics: 'Physics',
     sentSuccessfully: '✅ Sent',
     reportSentSuccess: 'Report sent to teacher successfully!',

@@ -2,7 +2,7 @@ import { deleteCookie, setCookie, getCookie } from 'hono/cookie';
 import type { Context } from 'hono';
 
 const isProd = process.env.NODE_ENV === 'production';
-const crossOrigin = process.env.CORS_ORIGIN !== undefined;
+const crossOrigin = isProd && !!process.env.CORS_ORIGIN;
 
 const REFRESH_COOKIE_OPTS = {
   path: '/',

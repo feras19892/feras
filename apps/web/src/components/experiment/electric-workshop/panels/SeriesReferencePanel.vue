@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const NOTES = [
   '🔗 في التوالي: التيار واحد في جميع المقاومات',
   '⚡ V = V1 + V2 + V3 — الجهد يتوزع',

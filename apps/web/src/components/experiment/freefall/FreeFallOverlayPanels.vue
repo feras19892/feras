@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import FreeFallPanelBody from './FreeFallPanelBody.vue'
 import type { PanelId } from '../../../composables/freefall/useFreeFallLayout'
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
 import type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
+
 
 interface Measured {
   flightTime: number | null

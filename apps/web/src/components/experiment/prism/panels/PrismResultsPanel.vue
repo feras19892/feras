@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { PrismTrial } from '../../../../composables/prism/usePrismTrials'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useMaterialName } from '../../../../composables/prism/useMaterialName'
 
-const { t } = useI18n()
+
+
+
+
 const { materialName } = useMaterialName()
 
 interface Props {

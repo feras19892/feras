@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, watch, onMounted } from 'vue';
 
 export interface ChartPoint {
@@ -14,7 +15,6 @@ interface Props {
   intercept?: number;
 }
 
-const { t } = useI18n()
 const props = defineProps<Props>();
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 

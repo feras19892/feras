@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
 import {
@@ -7,13 +9,13 @@ import {
   isBunsenBurner, isHeatingMantle, isHotPlate, isBalance, isPhMeter, isThermometer,
 } from '../../../composables/chemistry/useChemistryLab';
 import { computeBalanceWeight, getBalanceReading, getPhReading, getTemperatureReading } from '../../../composables/chemistry/useLabSimulation';
-import { useI18n } from '../../../composables/useI18n';
 import InspectorContainer from './InspectorContainer.vue';
 import InspectorBurette from './InspectorBurette.vue';
 import InspectorPipette from './InspectorPipette.vue';
 import InspectorSpatula from './InspectorSpatula.vue';
 
-const { t } = useI18n();
+
+
 const props = defineProps<{
   item: LabItem | null;
   state: ToolState | null;

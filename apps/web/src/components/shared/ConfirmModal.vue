@@ -3,12 +3,13 @@ import { computed } from 'vue';
 import { sanitizeHtml } from '../../utils/sanitizeHtml';
 
 const props = defineProps<{
+  open: boolean;
   icon: string;
   title: string;
   message: string;
   confirmLabel: string;
   cancelLabel: string;
-  variant: 'danger' | 'success';
+  variant: 'danger' | 'success' | 'warning';
   loading?: boolean;
 }>();
 
@@ -22,7 +23,7 @@ const emit = defineEmits<{
 
 <template>
   <Teleport to="body">
-    <div class="confirm-overlay" @click.self="emit('cancel')">
+    <div v-if="open" class="confirm-overlay" @click.self="emit('cancel')">
       <div class="confirm-modal">
         <div class="confirm-icon">{{ icon }}</div>
         <h3 class="confirm-title">{{ title }}</h3>
@@ -52,5 +53,7 @@ const emit = defineEmits<{
 .confirm-btn.danger:hover { background: rgba(239,68,68,0.3); }
 .confirm-btn.success { background: rgba(34,197,94,0.2); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
 .confirm-btn.success:hover { background: rgba(34,197,94,0.3); }
+.confirm-btn.warning { background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+.confirm-btn.warning:hover { background: rgba(245,158,11,0.3); }
 .confirm-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 </style>

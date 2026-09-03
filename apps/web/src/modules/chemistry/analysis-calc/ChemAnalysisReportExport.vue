@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
 
 const props = defineProps<{
   hasData: boolean;
@@ -13,7 +14,6 @@ const emit = defineEmits<{
   (e: 'sendToTeacher'): void;
 }>();
 
-const { t } = useI18n();
 const sending = ref(false);
 const sent = ref(false);
 

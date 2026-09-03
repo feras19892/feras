@@ -15,4 +15,5 @@ export const leaveClassSchema = z.object({
 export const updateClassSchema = z.object({
   name: z.string().min(1).max(100).optional(),
   is_active: z.boolean().optional(),
+  is_frozen: z.boolean().optional(),
 });

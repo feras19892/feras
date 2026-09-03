@@ -1,16 +1,23 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, computed } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
 import { useAuthStore } from '../../modules/auth/stores/auth'
+import StudentHelpButton from './StudentHelpButton.vue'
 import AccountSettingsModal from '../shared/AccountSettingsModal.vue'
 import { updateAvatar } from '../../services/enhancements.service'
 import type { StudentKPI, StudentReportRow } from '../../composables/student/useStudentDashboard'
+
+
+
+
 
 const props = defineProps<{
   kpi: StudentKPI
   recent: StudentReportRow[]
 }>()
-const { t } = useI18n()
+
 const auth = useAuthStore()
 
 const personalAvg = computed(() => {
@@ -76,6 +83,11 @@ function statusLabel(s: string): string {
 
 <template>
   <div class="tab-panel">
+    <div class="panel-card" style="display: flex; align-items: center; justify-content: space-between;">
+      <span></span>
+      <StudentHelpButton tab-id="settings" />
+    </div>
+
     <!-- Profile header -->
     <div class="panel-card profile-card">
       <img v-if="auth.user?.avatar_url" :src="auth.user.avatar_url" class="avatar-img" alt="avatar" />

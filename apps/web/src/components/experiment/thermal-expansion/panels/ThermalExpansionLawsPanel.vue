@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const props = defineProps<{ L0: number; t0: number; t1: number; alpha: number; dL: number; material?: string }>()
 </script>
 <template>

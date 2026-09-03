@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
+
 import type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';
 import type { StudentInfo } from '../../../stores/analysis.store';
+
+
+
+
 
 const props = defineProps<{
   sourceName: string;
@@ -22,8 +28,6 @@ const props = defineProps<{
   calculatedN2?: number | null;
   expectedN2?: number | null;
 }>();
-
-const { t } = useI18n();
 
 const stats = computed(() => {
   const s: Record<string, { mean: number; std: number; min: number; max: number }> = {};

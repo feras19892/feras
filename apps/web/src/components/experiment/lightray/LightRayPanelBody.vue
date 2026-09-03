@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue'
 import type { LightRayTrial } from '../../../composables/lightray/useLightRayExperiment'
 import LightRayChart from './LightRayChart.vue'
-import { useI18n } from '../../../composables/useI18n'
 
 interface Props {
   id: string
@@ -19,7 +20,6 @@ interface Props {
   speedInMedium: number | null
 }
 
-const { t } = useI18n()
 const props = defineProps<Props>()
 
 const emit = defineEmits<{

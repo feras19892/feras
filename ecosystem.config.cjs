@@ -1,24 +1,28 @@
-const path = require('path');
-const root = __dirname;
-
 module.exports = {
   apps: [
     {
       name: 'api',
-      script: path.join(root, 'node_modules/tsx/dist/cli.mjs'),
-      args: 'src/index.ts',
-      cwd: path.join(root, 'apps/api'),
+      cwd: 'apps/api',
+      script: 'node_modules/.bin/tsx.CMD',
+      args: ['src/index.ts'],
+      interpreter: 'none',
+      autorestart: true,
+      max_restarts: 10,
+      min_uptime: '10s',
+      exp_backoff_restart_delay: 100,
+      env: {
+        NODE_ENV: 'production',
+      },
     },
     {
-      name: 'web',
-      script: path.join(root, 'node_modules/vite/bin/vite.js'),
-      args: 'preview --host --port 5173',
-      cwd: path.join(root, 'apps/web'),
-    },
-    {
-      name: 'tunnel',
-      script: 'tmp/ngrok-runner.cjs',
-      cwd: root,
+      name: 'ngrok',
+      script: 'ngrok.cmd',
+      args: ['http', '3000', '--log=stdout'],
+      interpreter: 'none',
+      autorestart: true,
+      max_restarts: 10,
+      min_uptime: '10s',
+      exp_backoff_restart_delay: 100,
     },
   ],
-}
+};

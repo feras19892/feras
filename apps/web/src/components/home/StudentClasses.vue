@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
 import { joinClass as apiJoinClass, getMyClasses, leaveClass as apiLeaveClass } from '../../services/class.service'
 import type { ClassItem } from '../../services/class.service'
 
-const { t } = useI18n()
+
+
+
+
 const showJoinModal = ref(false)
 const joinCode = ref('')
 const joinError = ref('')

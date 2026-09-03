@@ -1,4 +1,5 @@
 import { db } from '../../db/index.js';
+import { dispatchEvent } from '../notifications/dispatch.js';
 
 export async function resolveSystemAlert(id: number, resolvedBy: number) {
   const alert = await db.get(`SELECT id FROM system_alerts WHERE id = ?`, id);
@@ -15,12 +16,26 @@ export async function freezeAllClasses(adminId: number) {
     `UPDATE classes SET is_frozen = 1, frozen_reason = 'تجمد طارئ من الأدمن', frozen_at = datetime('now'), frozen_by = ? WHERE is_frozen = 0`,
     adminId,
   );
+  await dispatchEvent({
+    type: 'system_alert',
+    actorId: adminId,
+    actorName: 'الإدارة',
+    actorRole: 'admin',
+    payload: { targetType: 'all', message: 'تم تجميد جميع الفصول بواسطة الإدارة' },
+  });
   return { success: true };
 }
 
-export async function unfreezeAllClasses() {
+export async function unfreezeAllClasses(adminId: number) {
   await db.run(
     `UPDATE classes SET is_frozen = 0, frozen_reason = NULL, frozen_at = NULL, frozen_by = NULL WHERE is_frozen = 1`,
   );
+  await dispatchEvent({
+    type: 'system_alert',
+    actorId: adminId,
+    actorName: 'الإدارة',
+    actorRole: 'admin',
+    payload: { targetType: 'all', message: 'تم إلغاء تجميد جميع الفصول بواسطة الإدارة' },
+  });
   return { success: true };
 }

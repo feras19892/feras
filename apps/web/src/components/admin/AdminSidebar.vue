@@ -1,136 +1,126 @@
-<script lang="ts">
-export interface NavItem { id: string; icon: string; label: string; badge?: number }
-export interface NavGroup { id: string; title: string; icon: string; items: NavItem[] }
-</script>
-
-<script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useI18n } from '../../composables/useI18n';
-
-const { t } = useI18n();
-
-const props = defineProps<{
-  groups: NavGroup[];
-  activeId: string;
-  userName: string;
-  collapsed?: boolean;
-}>();
-
-const emit = defineEmits<{
-  (e: 'select', id: string): void;
-  (e: 'home'): void;
-  (e: 'logout'): void;
-  (e: 'toggle-collapse'): void;
-}>();
-
-const openGroups = ref<Set<string>>(new Set());
-
-function toggleGroup(id: string) {
-  if (openGroups.value.has(id)) openGroups.value.delete(id);
-  else openGroups.value.add(id);
-}
-
-const navGroups = computed(() => props.groups.map(g => ({
-  ...g,
-  isOpen: openGroups.value.has(g.id) || g.items.some(i => i.id === props.activeId),
-  hasActive: g.items.some(i => i.id === props.activeId),
-  totalBadge: g.items.reduce((s, i) => s + (i.badge || 0), 0) || undefined,
-})));
-</script>
-
 <template>
-  <aside class="admin-sidebar" :class="{ collapsed }">
-    <div class="sidebar-head">
-      <button class="brand" @click="emit('home')">
-        <span class="brand-dot"></span>
-        <span v-if="!collapsed" class="brand-text">PhysLab</span>
-      </button>
-      <button v-if="!collapsed" class="collapse-btn" @click="emit('toggle-collapse')">◀</button>
-    </div>
-
-    <button v-if="collapsed" class="expand-btn" @click="emit('toggle-collapse')">▶</button>
-
-    <nav class="sidebar-nav">
-      <div v-for="group in navGroups" :key="group.id" class="nav-group">
-        <button class="group-header" :class="{ active: group.hasActive }" @click="toggleGroup(group.id)">
-          <span class="group-icon">{{ group.icon }}</span>
-          <span v-if="!collapsed" class="group-title">{{ group.title }}</span>
-          <span v-if="!collapsed && group.totalBadge" class="group-badge">{{ group.totalBadge }}</span>
-          <span v-if="!collapsed" class="group-arrow" :class="{ open: group.isOpen }">▾</span>
-        </button>
-        <div v-if="!collapsed && group.isOpen" class="group-items">
-          <button
-            v-for="item in group.items"
-            :key="item.id"
-            :class="['nav-item', { active: activeId === item.id }]"
-            @click="emit('select', item.id)"
-          >
-            <span class="item-icon">{{ item.icon }}</span>
-            <span class="item-label">{{ item.label }}</span>
-            <span v-if="item.badge" class="item-badge">{{ item.badge }}</span>
-          </button>
-        </div>
-      </div>
-    </nav>
-
-    <div class="sidebar-foot">
-      <div v-if="!collapsed" class="user-info">
-        <span class="user-avatar">👤</span>
-        <span class="user-name">{{ userName }}</span>
-      </div>
-      <button class="logout-btn" @click="emit('logout')" :title="t('shared.logout')">
-        <span>⏻</span>
+  <nav class="admin-sidebar__nav" :aria-label="t('admin.aria.mainNav')">
+    <div v-for="group in groups" :key="group.title" class="admin-sidebar__section">
+      <div class="admin-sidebar__title">{{ t(group.title, group.title) }}</div>
+      <button
+        v-for="item in groupItems(group)"
+        :key="item.id"
+        class="admin-sidebar__item"
+        :class="{ active: item.tabId === activeId }"
+        :aria-current="item.tabId === activeId ? 'page' : undefined"
+        @click="emits('select', item.tabId)"
+      >
+        <span class="admin-sidebar__icon" aria-hidden="true">{{ item.icon }}</span>
+        <span>{{ t(item.label, item.label) }}</span>
+        <span v-if="item.badge && item.badge > 0" class="admin-sidebar__badge">{{ item.badge > 99 ? '99+' : item.badge }}</span>
       </button>
     </div>
-  </aside>
+  </nav>
 </template>
 
-<style scoped>
-.admin-sidebar {
-  width: 240px; flex-shrink: 0; display: flex; flex-direction: column;
-  background: #0a0f1c; border-inline-end: 1px solid rgba(255,255,255,0.06);
-  position: sticky; top: 0; height: 100vh; transition: width 0.18s ease; z-index: 100; overflow: hidden;
+<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
+import { computed } from 'vue'
+
+export interface AdminNavItem {
+  id: string
+  label: string
+  icon: string
+  tabId: string
+  badge?: number
 }
-.admin-sidebar.collapsed { width: 56px; }
 
-.sidebar-head { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
-.brand { display: flex; align-items: center; gap: 0.5rem; border: none; background: transparent; cursor: pointer; font-family: inherit; }
-.brand-dot { width: 8px; height: 8px; border-radius: 50%; background: #f87171; flex-shrink: 0; }
-.brand-text { font-size: 1rem; font-weight: 800; color: #f1f5f9; letter-spacing: -0.5px; }
-.collapse-btn { border: none; background: transparent; color: #475569; cursor: pointer; font-size: 0.7rem; padding: 0.2rem; border-radius: 4px; }
-.collapse-btn:hover { color: #94a3b8; }
-.expand-btn { border: none; background: transparent; color: #475569; cursor: pointer; font-size: 0.8rem; padding: 0.5rem; }
-.expand-btn:hover { color: #94a3b8; }
+interface SidebarGroup { title: string; ids: string[] }
 
-.sidebar-nav { flex: 1; overflow-y: auto; padding: 0.5rem; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
-.sidebar-nav::-webkit-scrollbar { width: 4px; }
-.sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+interface Props {
+  items: AdminNavItem[]
+  activeId: string
+  groups?: SidebarGroup[]
+}
 
-.nav-group { margin-bottom: 0.3rem; }
-.group-header { display: flex; align-items: center; gap: 0.5rem; width: 100%; padding: 0.5rem 0.6rem; border: none; background: transparent; border-radius: 6px; color: #64748b; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; text-align: start; transition: background 0.12s, color 0.12s; }
-.group-header:hover { background: rgba(255,255,255,0.04); color: #e2e8f0; }
-.group-header.active { color: #c7d2fe; }
-.group-icon { font-size: 1rem; flex-shrink: 0; }
-.group-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.group-badge { min-width: 18px; height: 18px; border-radius: 999px; background: rgba(239,68,68,0.15); color: #f87171; font-size: 0.6rem; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
-.group-arrow { font-size: 0.6rem; transition: transform 0.15s; opacity: 0.5; }
-.group-arrow.open { transform: rotate(180deg); }
+const props = defineProps<Props>()
+const emits = defineEmits<{ select: [tabId: string] }>()
 
-.group-items { display: flex; flex-direction: column; gap: 0.1rem; padding-inline-start: 1.5rem; padding-top: 0.2rem; }
-.nav-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border: none; background: transparent; border-radius: 6px; color: #64748b; font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: inherit; text-align: start; width: 100%; transition: background 0.12s, color 0.12s; }
-.nav-item:hover { background: rgba(255,255,255,0.04); color: #e2e8f0; }
-.nav-item.active { background: rgba(239,68,68,0.1); color: #f87171; }
-.item-icon { font-size: 0.85rem; flex-shrink: 0; }
-.item-label { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.item-badge { min-width: 16px; height: 16px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.58rem; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+const groups = computed(() => props.groups?.length ? props.groups : [])
 
-.sidebar-foot { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 1rem; border-top: 1px solid rgba(255,255,255,0.04); }
-.user-info { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
-.user-avatar { font-size: 0.9rem; }
-.user-name { font-size: 0.75rem; font-weight: 600; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.logout-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); background: transparent; color: #64748b; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.15s, color 0.15s; }
-.logout-btn:hover { border-color: rgba(239,68,68,0.3); color: #f87171; }
+function groupItems(group: SidebarGroup) {
+  return props.items.filter(item => group.ids.includes(item.id))
+}
+</script>
 
-.admin-sidebar.collapsed .sidebar-head { justify-content: center; }
-.admin-sidebar.collapsed .sidebar-foot { justify-content: center; padding: 0.6rem; }
+<style scoped>
+.admin-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 12px;
+  box-sizing: border-box;
+  background: var(--as-sidebar-bg, #0b1121);
+}
+
+.admin-sidebar__section {
+  margin-bottom: 16px;
+}
+
+.admin-sidebar__title {
+  padding: 0 10px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+.admin-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: #cbd5e1;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: start;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.admin-sidebar__item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.admin-sidebar__item.active {
+  background: #fff;
+  color: #111827;
+  font-weight: 700;
+}
+
+.admin-sidebar__icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.admin-sidebar__badge {
+  margin-inline-start: auto;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  flex-shrink: 0;
+}
 </style>

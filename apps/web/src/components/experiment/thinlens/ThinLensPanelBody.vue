@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
+
 import type { ThinLensTrial } from '../../../composables/thinlens/useThinLensExperiment'
+
+
+
+
 
 interface Props {
   id: string
@@ -18,7 +24,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const { t } = useI18n()
 
 const emit = defineEmits<{
   (e: 'remove', id: number): void

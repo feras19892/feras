@@ -55,7 +55,7 @@ export function useCommandPalette() {
 
   const filteredCommands = computed(() => {
     const q = query.value.toLowerCase().trim();
-    let cmds = staticCommands.value;
+    const cmds = staticCommands.value;
 
     if (!q) return cmds.map(c => ({ ...c, type: 'nav' as const }));
     const navMatches = cmds.filter(c =>

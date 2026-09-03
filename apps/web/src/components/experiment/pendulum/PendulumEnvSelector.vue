@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
-const { t } = useI18n()
-
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 interface EnvOption { label: string; value: number; icon: string }
+
 const options: EnvOption[] = [
   { label: '🌍 ' + t('experiments.earth'), value: 9.81, icon: '🌍' },
   { label: '🌑 ' + t('experiments.moon'), value: 1.62, icon: '🌑' },

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 interface PendulumTrial { id: number; length: number; g: number; T: number; f: number; omega: number; gCalc: number; err: number }
+
 const trials = defineModel<PendulumTrial[]>({ required: true })
-const { t } = useI18n()
+
 const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()
 const tableHeaders = ['#', 'L', 'T', 'f', 'ω', 'gcalc', t('experiments.error')]
 </script>

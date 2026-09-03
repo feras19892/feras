@@ -3,7 +3,7 @@ import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { db } from '../../db/index.js';
 import {
-  getSchoolDetailedReports, getOutstandingStudents, getStrugglingStudents, getTeacherEvaluation,
+  getSchoolDetailedReports, getOutstandingStudents, getStrugglingStudents, getTeacherEvaluation, getStudentEvaluation,
 } from './services.js';
 import { schoolAuthMiddleware } from '../auth/middleware.js';
 import * as feedbackSvc from '../admin/feedback-service.js';
@@ -48,6 +48,12 @@ reportRoutes.get('/reports/teacher-evaluation', schoolAuth, async (c) => {
   return c.json({ success: true, evaluations });
 });
 
+reportRoutes.get('/reports/student-evaluation', schoolAuth, async (c) => {
+  const school = c.get('school') as School;
+  const evaluations = await getStudentEvaluation(school.id);
+  return c.json({ success: true, evaluations });
+});
+
 // ─── School Feedback Monitoring ───
 reportRoutes.get('/feedback', schoolAuth, async (c) => {
   const school = c.get('school') as School;
@@ -60,9 +66,9 @@ reportRoutes.patch('/feedback/:id/status', schoolAuth, zValidator('json', z.obje
   const school = c.get('school') as School;
   const id = validId(c.req.param('id'));
   if (!id) return c.json({ success: false, message: 'Invalid ID' }, 400);
-  const item = await db.get<{ school_id: number | null }>('SELECT school_id FROM feedback WHERE id = ?', id);
+  const item = await db.get<{ school_id: number | null; type: string }>('SELECT school_id, type FROM feedback WHERE id = ?', id);
   if (!item) return c.json({ success: false, message: 'غير موجود' }, 404);
-  if (item.school_id !== school.id) return c.json({ success: false, message: 'غير مصرح' }, 403);
+  if (item.school_id !== school.id || item.type !== 'complaint') return c.json({ success: false, message: 'غير مصرح' }, 403);
   const { status } = c.req.valid('json');
   await feedbackSvc.updateFeedbackStatus(id, status);
   return c.json({ success: true });

@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
+import StudentHelpButton from './StudentHelpButton.vue'
 import type { ClassItem, ClassStudent } from '../../services/class.service'
+
+
+
+
 
 type JoinResult = { success: boolean; class_id?: string; name?: string; message?: string }
 type LeaveResult = { success: boolean; message?: string }
@@ -18,7 +25,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'open-chat', cls: { id: string; name: string }): void }>()
 
-const { t } = useI18n()
 const expandedId = ref<string | null>(null)
 const showJoinModal = ref(false)
 const joinCode = ref('')
@@ -85,6 +91,7 @@ function maskEmail(email: string): string {
   <div class="tab-panel">
     <!-- Join class button -->
     <div class="panel-card join-bar">
+      <StudentHelpButton tab-id="classes" />
       <button class="join-btn" @click="showJoinModal = true">
         <span>➕</span> {{ t('dashboard.joinClass') }}
       </button>

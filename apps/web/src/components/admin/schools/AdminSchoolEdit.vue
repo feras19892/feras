@@ -1,10 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch } from 'vue';
 import type { AdminSchool } from '../../../services/school.service';
-import { useI18n } from '../../../composables/useI18n';
-
-const { t } = useI18n();
-
 const props = defineProps<{ school: AdminSchool }>();
 const emit = defineEmits<{ save: [data: { name: string; email: string; max_students: number; max_teachers: number }] }>();
 

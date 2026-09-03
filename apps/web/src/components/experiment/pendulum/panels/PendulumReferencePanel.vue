@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const REFERENCES = [
   { location: 'أعلى الجبل', g: 9.78, color: '#22c55e' },
   { location: 'سطح البحر', g: 9.81, color: '#5B8DB8' },

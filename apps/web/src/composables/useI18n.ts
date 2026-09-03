@@ -3,12 +3,13 @@ import { useI18nStore } from '../stores/i18n.store';
 
 export const useI18n = () => {
   const store = useI18nStore();
-  const { locale, supported, direction, loading, messages } = storeToRefs(store);
+  const { locale, supported, direction, loading, loadError, messages } = storeToRefs(store);
   return {
     locale,
     supported,
     direction,
     loading,
+    loadError,
     messages,
     t: store.t,
     tArray: store.tArray,

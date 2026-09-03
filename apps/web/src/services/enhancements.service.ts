@@ -17,7 +17,7 @@ export interface Penalty {
 
 export interface Rating {
   id: number;
-  target_id: number;
+  target_id: string | number;
   target_type: string;
   rater_id: number;
   rater_type: string;
@@ -25,6 +25,7 @@ export interface Rating {
   comment: string | null;
   created_at: string;
   rater_name?: string;
+  target_name?: string;
 }
 
 export async function createPenalty(studentId: number, type: 'penalty' | 'reward', reason: string, points: number, classId?: string) {
@@ -59,20 +60,45 @@ export async function getAllPenalties() {
   return fetchJson<{ success: boolean; penalties: Penalty[] }>('/api/enh/penalties/all');
 }
 
-export async function createRating(targetId: number, targetType: string, rating: number, comment?: string) {
+export async function createRating(targetId: string | number, targetType: string, rating: number, comment?: string, signal?: AbortSignal) {
   return fetchJson<{ success: boolean; message?: string }>('/api/enh/ratings', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ target_id: targetId, target_type: targetType, rating, comment }),
+    ...(signal ? { signal } : {}),
   });
 }
 
-export async function getRatings(targetType: string, targetId: number) {
+export async function getRatings(targetType: string, targetId: string | number) {
   return fetchJson<{ success: boolean; ratings: Rating[]; average: number; count: number }>(`/api/enh/ratings/${targetType}/${targetId}`);
 }
 
 export async function getAllRatings() {
   return fetchJson<{ success: boolean; ratings: Rating[] }>('/api/enh/ratings/all');
+}
+
+export async function getMyRatings(signal?: AbortSignal) {
+  const opts = signal ? { signal } : undefined;
+  return fetchJson<{ success: boolean; given: Rating[]; received: Rating[]; average: number; count: number }>('/api/enh/ratings/my', opts);
+}
+
+export interface RatingStats {
+  givenCount: number;
+  receivedAvg: number;
+  receivedCount: number;
+}
+
+export async function getRatingStats() {
+  return fetchJson<{ success: boolean; stats: RatingStats }>('/api/enh/ratings/stats');
+}
+
+export async function getRatingTargets(signal?: AbortSignal) {
+  const opts = signal ? { signal } : undefined;
+  return fetchJson<{ success: boolean; targets: { teachers?: { id: number; name: string }[]; students?: { id: number; name: string }[]; classes?: { id: string; name: string }[]; school: number | null } }>('/api/enh/rating-targets', opts);
+}
+
+export async function getTeacherRecentActions() {
+  return fetchJson<{ success: boolean; actions: Penalty[] }>('/api/enh/teacher/recent-actions');
 }
 
 export async function updateAvatar(avatarUrl: string) {

@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { locale } = useI18n();
 import { ref, onMounted, computed, watch } from 'vue';
 import { fetchJson } from '../../services/http';
 import type { School, SchoolStats, SchoolUser, SchoolClass, SchoolReportItem, SchoolWarningItem } from '../../services/school.service';
 import SchoolCapacitySection from './SchoolCapacitySection.vue';
 import SchoolRecentItems from './SchoolRecentItems.vue';
+
 
 const props = defineProps<{
   school: School | null;

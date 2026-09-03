@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useLightRayExperiment } from '../../../../composables/lightray/useLightRayExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import LightRayMenuBar from '../../../../components/experiment/lightray/LightRayMenuBar.vue'
 import LightRayCanvas from '../../../../components/experiment/lightray/LightRayCanvas.vue'
@@ -14,7 +16,10 @@ import LightRayOverlayPanels from '../../../../components/experiment/lightray/Li
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
-const { t } = useI18n()
+
+
+
+
 const { confirmReset } = useResetConfirm()
 const ex = useLightRayExperiment()
 const helpOpen = ref(false)

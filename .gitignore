@@ -6,10 +6,13 @@ node_modules/
 build/
 *.tsbuildinfo
 
-# Environment variables
+# Environment variables (never commit real values — .env.example is the only exception)
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+
+# Vercel CLI local data (may contain pulled environment values)
+.vercel/
 
 # Logs
 logs/
@@ -88,3 +91,14 @@ apps/api/dist/
 *.db-shm
 *.db-wal
 data/
+
+# Local tooling artifacts (never commit)
+tmp-*.cjs
+tmp-*.mjs
+tmp_*.json
+tmp/
+ngrok_*.txt
+vitest.config.ts.timestamp-*
+eslint-report.json
+eslint-errors-only.json
+*.tsbuildinfo

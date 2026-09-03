@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from '../../composables/useI18n';
+
 import { useMathStore } from '../../stores/math.store';
 import MathEquationCard from '../../components/math/MathEquationCard.vue';
 
-const { t } = useI18n();
+
+
+
+
 const route = useRoute();
 const router = useRouter();
 const store = useMathStore();

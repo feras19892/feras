@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
-import { useI18n } from '../composables/useI18n';
+
 import { getSystemStatus } from '../services/system-status.service';
+
+
+
+
 
 const router = useRouter();
 const auth = useAuthStore();
-const { t } = useI18n();
 
 const email = ref('');
 const password = ref('');
@@ -19,7 +24,7 @@ onMounted(async () => {
   try {
     const status = await getSystemStatus();
     registrationEnabled.value = status.registration_enabled;
-  } catch { /* ignore */ }
+  } catch { if (import.meta.env.DEV) console.warn('Failed to load system status') }
 });
 
 async function handleLogin() {
@@ -43,7 +48,7 @@ async function handleLogin() {
     return;
   }
 
-  formError.value = t('auth.errors.invalidCredentials');
+  formError.value = (auth.error as string | null) || t('auth.errors.invalidCredentials');
 }
 
 function enterAsGuest() {

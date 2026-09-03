@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/stores/auth';
-import { useI18n } from '../composables/useI18n';
+
 import { registerSchool } from '../services/school.service';
+
+
+
+
 
 const router = useRouter();
 const auth = useAuthStore();
-const { t } = useI18n();
 
 onMounted(() => {
   // Clear user/guest session via auth store, preserve school session
@@ -21,23 +26,24 @@ const lastName = ref('');
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
+const inviteCode = ref('');
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const formError = ref('');
 const selectedRole = ref<'teacher' | 'student' | 'school'>('student');
-const schoolCode = ref('');
+const age = ref<number | ''>('');
+const agreed = ref(false);
 const schoolName = ref('');
 const maxStudents = ref(50);
 const maxTeachers = ref(10);
-const successCode = ref('');
-const agreedToTerms = ref(false);
+const successMessage = ref('');
 
 const isSchool = computed(() => selectedRole.value === 'school');
 const fullName = computed(() => `${firstName.value.trim()} ${lastName.value.trim()}`.trim());
 
 async function handleRegister() {
   formError.value = '';
-  successCode.value = '';
+  successMessage.value = '';
 
   const trimmedEmail = email.value.trim();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,14 +55,6 @@ async function handleRegister() {
     formError.value = t('auth.errors.passwordsMismatch');
     return;
   }
-  if (password.value.length < 8) {
-    formError.value = t('auth.errors.passwordTooShort');
-    return;
-  }
-  if (!agreedToTerms.value) {
-    formError.value = t('legal.mustAgree');
-    return;
-  }
 
   // School registration path
   if (isSchool.value) {
@@ -65,8 +63,8 @@ async function handleRegister() {
       return;
     }
     const res = await registerSchool(schoolName.value.trim(), trimmedEmail, password.value, maxStudents.value, maxTeachers.value);
-    if (res.success && res.code) {
-      successCode.value = res.code;
+    if (res.success) {
+      successMessage.value = t('school.registerSuccess', 'تم تسجيل مدرستك بنجاح');
       if (res.school) {
         auth.setSchoolSession(res.school);
       }
@@ -82,20 +80,28 @@ async function handleRegister() {
     return;
   }
 
+  const ageNum = age.value !== '' ? Number(age.value) : undefined;
+  if (selectedRole.value !== 'school' && (ageNum === undefined || !Number.isFinite(ageNum) || !Number.isInteger(ageNum) || ageNum < 14)) {
+    formError.value = t('auth.errors.ageTooYoung', 'يجب أن يكون العمر 14 عاماً أو أكثر');
+    return;
+  }
+  if (selectedRole.value !== 'school' && !agreed.value) {
+    formError.value = t('auth.errors.consentRequired', 'يجب الموافقة على سياسة الخصوصية وشروط الاستخدام');
+    return;
+  }
+
   const result = await auth.registerWithRole(
     trimmedEmail,
     password.value,
     fullName.value,
     selectedRole.value as 'student' | 'teacher',
-    schoolCode.value.trim() || undefined,
+    inviteCode.value || undefined,
+    inviteCode.value || undefined,
+    ageNum,
+    agreed.value,
   );
   if (result.ok) {
-    router.push({
-      path: '/verify-email',
-      query: {
-        email: trimmedEmail,
-      },
-    });
+    router.push('/');
   } else {
     formError.value = auth.error || t('auth.errors.registerFailed');
   }
@@ -112,12 +118,9 @@ async function handleRegister() {
         </p>
       </div>
 
-      <!-- Success: school code display -->
-      <div v-if="successCode" class="success-box">
-        <h2>✅ {{ t('school.registerSuccess') }}</h2>
-        <p>{{ t('school.yourCode') }}:</p>
-        <div class="code-display">{{ successCode }}</div>
-        <p class="code-hint">{{ t('school.codeHint') }}</p>
+      <!-- Success: school registered -->
+      <div v-if="successMessage" class="success-box">
+        <h2>✅ {{ successMessage }}</h2>
         <button class="btn-submit" @click="router.push('/school')">{{ t('school.goToDashboard') }}</button>
         <button class="btn-secondary" @click="router.push('/school/login')">{{ t('school.goToLogin') }}</button>
       </div>
@@ -172,12 +175,23 @@ async function handleRegister() {
           <label>{{ t('auth.emailLabel') }}</label>
           <input v-model="email" type="email" required autocomplete="username" name="email" />
         </div>
-        <!-- School code: only for student/teacher -->
+        <!-- Age: only for student/teacher -->
         <div v-if="!isSchool" class="field">
-          <label>{{ t('school.schoolCodeOptional') }}</label>
-          <input v-model="schoolCode" type="text" :placeholder="t('school.schoolCodePlaceholder')" name="schoolCode" />
-          <p class="field-hint">{{ t('school.schoolCodeHint') }}</p>
+          <label>{{ t('auth.ageLabel', 'العمر') }}</label>
+          <input v-model.number="age" type="number" min="14" max="120" required :placeholder="t('auth.agePlaceholder', 'مثلاً 16')" />
         </div>
+        <div v-if="!isSchool" class="field consent-field">
+          <label class="consent-label">
+            <input v-model="agreed" type="checkbox" required />
+            <span>
+              {{ t('auth.consentPrefix', 'أوافق على') }}
+              <router-link to="/privacy">{{ t('legal.privacyLink', 'سياسة الخصوصية') }}</router-link>
+              {{ t('legal.andWord', 'و') }}
+              <router-link to="/terms">{{ t('legal.termsLink', 'شروط الاستخدام') }}</router-link>
+            </span>
+          </label>
+        </div>
+        <!-- School code: only for student/teacher -->
         <!-- Capacity fields: only for school -->
         <div v-if="isSchool" class="field-row">
           <div class="field half">
@@ -210,7 +224,7 @@ async function handleRegister() {
           </div>
         </div>
         <div class="field">
-          <label>{{ t('auth.confirmPasswordLabel') }}</label>
+          <label>{{ t('auth.confirmPasswordLabel', 'تأكيد كلمة السر') }}</label>
           <div class="password-wrapper">
             <input
               v-model="confirmPassword"
@@ -229,15 +243,17 @@ async function handleRegister() {
             </button>
           </div>
         </div>
+        <div v-if="!isSchool" class="field">
+          <label>{{ t('auth.inviteCodeLabel', 'كود المدرسة أو كود الدعوة (اختياري)') }}</label>
+          <input
+            v-model="inviteCode"
+            type="text"
+            autocomplete="off"
+            name="inviteCode"
+            :placeholder="t('auth.inviteCodePlaceholder', 'ادخل كود المدرسة أو الدعوة')"
+          />
+        </div>
         <p v-if="formError" class="error">{{ formError }}</p>
-        <label class="terms-check">
-          <input type="checkbox" v-model="agreedToTerms" />
-          <span>{{ t('legal.agreePrefix') }}
-            <router-link to="/terms" target="_blank">{{ t('legal.termsLink') }}</router-link>
-            {{ t('legal.andWord') }}
-            <router-link to="/privacy" target="_blank">{{ t('legal.privacyLink') }}</router-link>
-          </span>
-        </label>
         <button type="submit" class="btn-submit" :disabled="auth.loading">
           {{ auth.loading ? t('auth.loading') : isSchool ? t('school.registerBtn') : t('auth.registerBtn') }}
         </button>

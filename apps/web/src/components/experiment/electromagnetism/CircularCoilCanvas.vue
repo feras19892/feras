@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+
+const { t } = useI18n();
+
 import {
+
+
   drawWires, drawFieldLines, drawCoil,
   drawCurrentArrows, drawBatteryAndLabels,
 } from './circular-coil-helpers'
 import { createProbeState } from './circular-coil-probe'
 import { drawProbe, computeProbeReading } from './circular-coil-probe-draw'
 
-const { t } = useI18n()
+
 
 const props = defineProps<{
   I: number
@@ -37,6 +42,7 @@ if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D
 }
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+let canvasEl: HTMLCanvasElement | null = null
 let cssW = 800, cssH = 400
 let rafId = 0
 let watchdogId = 0
@@ -51,7 +57,6 @@ let currentI = 0
 let currentN = 0
 
 const probe = createProbeState()
-
 function getCanvasPos(e: MouseEvent): { x: number; y: number } {
   const canvas = canvasRef.value!
   const rect = canvas.getBoundingClientRect()
@@ -101,7 +106,7 @@ function onMouseMove(e: MouseEvent) {
 function onMouseUp() {
   if (probe.state === 'dragging') {
     probe.state = 'placed'
-    const canvas = canvasRef.value!
+    const _canvas = canvasRef.value!
     const reading = computeProbeReading(probe.pos, cssW, cssH, currentI, currentN)
     probe.measured = reading
     emit('probe-placed', reading.R, reading.B)
@@ -156,8 +161,9 @@ function resize() {
 }
 
 onMounted(() => {
-  resize(); window.addEventListener('resize', resize)
   const canvas = canvasRef.value
+  canvasEl = canvas
+  resize(); window.addEventListener('resize', resize)
   if (canvas) {
     canvas.addEventListener('wheel', onWheel, { passive: false })
     canvas.addEventListener('mousedown', onMouseDown)
@@ -177,14 +183,14 @@ onUnmounted(() => {
   if (watchdogId) clearInterval(watchdogId)
   if (resizeObserver) resizeObserver.disconnect()
   window.removeEventListener('resize', resize)
-  const canvas = canvasRef.value
-  if (canvas) {
-    canvas.removeEventListener('wheel', onWheel)
-    canvas.removeEventListener('mousedown', onMouseDown)
-    canvas.removeEventListener('mousemove', onMouseMove)
-    canvas.removeEventListener('mouseup', onMouseUp)
-    canvas.removeEventListener('mouseleave', onMouseUp)
-    canvas.removeEventListener('dblclick', onDoubleClick)
+  if (canvasEl) {
+    canvasEl.removeEventListener('wheel', onWheel)
+    canvasEl.removeEventListener('mousedown', onMouseDown)
+    canvasEl.removeEventListener('mousemove', onMouseMove)
+    canvasEl.removeEventListener('mouseup', onMouseUp)
+    canvasEl.removeEventListener('mouseleave', onMouseUp)
+    canvasEl.removeEventListener('dblclick', onDoubleClick)
+    canvasEl = null
   }
 })
 

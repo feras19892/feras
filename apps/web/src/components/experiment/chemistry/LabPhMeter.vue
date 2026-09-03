@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { phProbeTipMap } from '../../../composables/chemistry/useChemistryLab';
+
 
 interface Props {
   uid: string;

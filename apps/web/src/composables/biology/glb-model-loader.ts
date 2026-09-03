@@ -32,6 +32,8 @@ export function buildPartMeshMap(
     allMeshes.push(mesh);
   });
 
+  if (parts.length === 0) return;
+
   for (const part of parts) {
     const meshes: THREE.Mesh[] = [];
     const seen = new Set<THREE.Mesh>();
@@ -111,6 +113,7 @@ export function loadModel(
   allMeshes: THREE.Mesh[],
   onLoad: () => void,
   onError: (msg: string) => void,
+  onModelLoaded?: (model: THREE.Object3D) => void,
   modelGenerator?: () => THREE.Object3D,
   modelEnhancer?: (model: THREE.Object3D) => void,
 ): void {
@@ -119,6 +122,7 @@ export function loadModel(
     scaleAndCenterModel(loadedModel);
     scene.add(loadedModel);
     buildPartMeshMap(loadedModel, parts, partMeshes, allMeshes);
+    onModelLoaded?.(loadedModel);
     onLoad();
     return;
   }
@@ -135,6 +139,7 @@ export function loadModel(
       scaleAndCenterModel(loadedModel);
       scene.add(loadedModel);
       buildPartMeshMap(loadedModel, parts, partMeshes, allMeshes);
+      onModelLoaded?.(loadedModel);
       onLoad();
     },
     undefined,

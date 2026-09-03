@@ -1,0 +1,106 @@
+.quiz-manager { padding: 0; }
+.qm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.qm-header h3 { margin: 0; font-size: 20px; color: #e2e8f0; }
+.qm-header-actions { display: flex; gap: 8px; }
+.btn-results { padding: 8px 16px; background: #1e293b; color: #cbd5e1; border: 1px solid #334155; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.15s; }
+.btn-results:hover { border-color: #6366f1; color: #818cf8; }
+.btn-create { padding: 8px 18px; background: var(--accent, #3b82f6); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.15s; }
+.btn-create:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+.btn-cancel { padding: 6px 16px; background: var(--bg-hover, #f1f5f9); border: 1px solid var(--border-color, #e5e7eb); border-radius: 8px; cursor: pointer; font-size: 14px; }
+
+.qm-loading, .qm-error, .qm-empty { text-align: center; padding: 40px; color: #cbd5e1; font-size: 15px; }
+.qm-error { color: #f87171; }
+
+.qm-filters { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.qm-search { flex: 1; min-width: 200px; padding: 6px 12px; border: 1px solid #334155; border-radius: 8px; background: #1e293b; color: #e2e8f0; font-size: 13px; }
+.qm-search:focus { border-color: #6366f1; outline: none; }
+.qm-filter-select { padding: 6px 12px; border: 1px solid #334155; border-radius: 8px; background: #1e293b; color: #e2e8f0; font-size: 13px; cursor: pointer; }
+.qm-filter-select:focus { border-color: #6366f1; outline: none; }
+
+.qm-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.qm-summary-card { display: flex; flex-direction: column; align-items: center; padding: 12px 8px; border-radius: 10px; background: #1e293b; border: 1px solid #334155; border-top: 3px solid #6366f1; }
+.qm-summary-card.draft { border-top-color: #6b7280; }
+.qm-summary-card.published { border-top-color: #3b82f6; }
+.qm-summary-card.closed { border-top-color: #dc2626; }
+.qm-summary-val { font-size: 22px; font-weight: 800; color: #e2e8f0; }
+.qm-summary-lbl { font-size: 11px; color: #cbd5e1; margin-top: 2px; }
+
+.qm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.qm-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; transition: all 0.2s; border-right: 4px solid #334155; }
+.qm-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.qm-card.excellent { border-right-color: #16a34a; }
+.qm-card.good { border-right-color: #3b82f6; }
+.qm-card.average { border-right-color: #f59e0b; }
+.qm-card.weak { border-right-color: #dc2626; }
+.qm-card.none { border-right-color: #334155; }
+
+.qm-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+.qm-card-header h4 { margin: 0; font-size: 16px; color: #e2e8f0; }
+.qm-status-badge { font-size: 11px; padding: 3px 10px; border-radius: 999px; font-weight: 700; white-space: nowrap; }
+.qm-status-badge.draft { background: rgba(107,114,128,0.15); color: #6b7280; }
+.qm-status-badge.published { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.qm-status-badge.closed { background: rgba(220,38,38,0.15); color: #dc2626; }
+
+.qm-card-type { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.qm-type-badge { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: rgba(139,92,246,0.15); color: #8b5cf6; font-weight: 600; }
+.qm-class-name { font-size: 12px; color: #cbd5e1; }
+
+.qm-desc { font-size: 13px; color: #cbd5e1; margin: 0 0 10px; line-height: 1.4; }
+
+.qm-card-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; padding: 10px; background: #0f172a; border-radius: 8px; }
+.qm-stat { text-align: center; }
+.qm-stat-val { display: block; font-size: 18px; font-weight: 800; color: #e2e8f0; }
+.qm-stat-lbl { display: block; font-size: 10px; color: #cbd5e1; margin-top: 2px; }
+
+.qm-card-meta { display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; margin-bottom: 10px; }
+
+.qm-card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.qm-btn { padding: 5px 12px; border: 1px solid #334155; border-radius: 6px; background: #1e293b; color: #e2e8f0; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.15s; }
+.qm-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+.qm-btn.publish { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+.qm-btn.edit { background: #6366f1; color: #fff; border-color: #6366f1; }
+.qm-btn.close { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+.qm-btn.delete { color: #dc2626; border-color: rgba(220,38,38,0.3); }
+.qm-btn.delete:hover { background: #fee2e2; }
+
+/* Summary Cards */
+.qm-summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.qm-summary-card { display: flex; flex-direction: column; align-items: center; padding: 16px 12px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; transition: transform 0.15s; }
+.qm-summary-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.qm-summary-card.avg { border-top: 3px solid #3b82f6; }
+.qm-summary-card.high { border-top: 3px solid #16a34a; }
+.qm-summary-card.low { border-top: 3px solid #dc2626; }
+.qm-summary-card.passed { border-top: 3px solid #22c55e; }
+.qm-summary-card.failed { border-top: 3px solid #ef4444; }
+.qm-summary-card.total { border-top: 3px solid #8b5cf6; }
+.qm-summary-icon { font-size: 24px; margin-bottom: 6px; }
+.qm-summary-val { font-size: 24px; font-weight: 800; color: #e2e8f0; }
+.qm-summary-lbl { font-size: 11px; color: #cbd5e1; margin-top: 2px; }
+
+/* Grade Distribution */
+.qm-grade-dist { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+.qm-grade-dist h4 { margin: 0 0 12px; font-size: 15px; color: #e2e8f0; }
+.qm-dist-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.qm-dist-label { font-size: 13px; font-weight: 600; min-width: 140px; color: #e2e8f0; }
+.qm-dist-bar-wrap { flex: 1; height: 20px; background: #0f172a; border-radius: 999px; overflow: hidden; }
+.qm-dist-bar { height: 100%; border-radius: 999px; transition: width 0.4s ease; }
+.qm-dist-count { font-size: 12px; color: #cbd5e1; min-width: 70px; text-align: end; }
+
+/* Submissions Table */
+.qm-subs-table-wrap { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; }
+.qm-subs-table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+.qm-subs-table-header h4 { margin: 0; font-size: 15px; color: #e2e8f0; }
+.qm-subs-sort { display: flex; gap: 6px; align-items: center; font-size: 12px; }
+.qm-subs-sort span { color: #94a3b8; }
+.qm-subs-sort button { padding: 3px 10px; border: 1px solid #334155; border-radius: 6px; background: #1e293b; color: #e2e8f0; cursor: pointer; font-size: 12px; font-family: inherit; }
+.qm-subs-sort button.active { background: var(--accent, #3b82f6); color: #fff; border-color: var(--accent, #3b82f6); }
+
+.qm-subs-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.qm-subs-table th { text-align: start; padding: 8px 10px; border-bottom: 2px solid #334155; color: #94a3b8; font-size: 12px; }
+.qm-subs-table td { padding: 10px; border-bottom: 1px solid #334155; color: #e2e8f0; }
+.qm-rank { font-weight: 700; color: #cbd5e1; text-align: center; }
+.qm-student-name { font-weight: 600; color: #e2e8f0; }
+.qm-grade-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+.qm-row-progress { width: 100px; height: 8px; background: #0f172a; border-radius: 999px; overflow: hidden; }
+.qm-row-progress-fill { height: 100%; border-radius: 999px; transition: width 0.3s ease; }
+.qm-date-cell { font-size: 12px; color: #cbd5e1; }

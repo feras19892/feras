@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 interface SignalPoint { t: number; x: number }
 
-const { t } = useI18n()
 const props = defineProps<{
   series: SignalPoint[]
   params: { mass: number; k: number; amplitude: number }

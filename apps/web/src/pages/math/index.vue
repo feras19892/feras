@@ -1,15 +1,20 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import { branches, equations, type Branch, type Equation } from './data';
 import { normalizeNumerals } from './math-utils';
 import FeedbackModal from '../../components/shared/FeedbackModal.vue';
-import { useI18n } from '../../composables/useI18n';
+
 import MathText from './MathText.vue';
 import { useMathGraph } from './useMathGraph';
 import { useMathPractice } from './useMathPractice';
 
-const { t } = useI18n();
+
+
+
+
 const showFeedback = ref(false);
 
 const selectedBranchId = ref<string>('');

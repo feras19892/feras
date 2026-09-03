@@ -1,16 +1,21 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { getReports, deleteReport } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
-import { useI18n } from '../../composables/useI18n'
+
 import { useConfirmDialog } from '../../composables/useConfirmDialog'
 import GradeModal from './GradeModal.vue'
+
+
+
+
 
 const router = useRouter()
 
 const props = defineProps<{ classId: string }>()
-const { t } = useI18n()
 
 const reports = ref<Report[]>([])
 const loading = ref(false)

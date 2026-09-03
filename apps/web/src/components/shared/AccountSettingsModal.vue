@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { useI18n } from '../../composables/useI18n';
 import { useAuthStore } from '../../modules/auth/stores/auth';
 import { updateAvatar } from '../../services/enhancements.service';
-
-const { t } = useI18n();
 const auth = useAuthStore();
 const router = useRouter();
 

@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useFreeFallExperiment } from '../../../../composables/freefall/useFreeFallExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import { useFreeFallReport } from '../../../../composables/freefall/useFreeFallReport'
 import FreeFallMenuBar from '../../../../components/experiment/freefall/FreeFallMenuBar.vue'
@@ -16,7 +18,10 @@ import FreeFallOverlayPanels from '../../../../components/experiment/freefall/Fr
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
-const { t } = useI18n()
+
+
+
+
 const { confirmReset } = useResetConfirm()
 const ex = useFreeFallExperiment()
 const rep = useFreeFallReport()

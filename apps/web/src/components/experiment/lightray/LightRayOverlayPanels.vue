@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { LightRayTrial } from '../../../composables/lightray/useLightRayExperiment'
 import LightRayPanelBody from './LightRayPanelBody.vue'
+
 
 interface Props {
   maximized: Record<string, boolean>

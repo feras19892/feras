@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const props = defineProps<{ params: { mass: number; phaseType: 'fusion' | 'vaporization'; heatingPower: number } }>()
 const emit = defineEmits<{ (e: 'update:params', p: { mass: number; phaseType: 'fusion' | 'vaporization'; heatingPower: number }): void }>()
 </script>

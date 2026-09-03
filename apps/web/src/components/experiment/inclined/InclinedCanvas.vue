@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { toRad, calculateInclinedSummary, calculateDragForce } from '../../../composables/inclined/inclinedUtils'
 
-const { t } = useI18n()
 const props = defineProps<{
   params: { thetaDeg: number; length: number; mass: number; g: number; mu: number; airResistance: boolean; bodyTypeId: string; cd: number; area: number }
   simState: { t: number; s: number; v: number; arrived: boolean; running: boolean }

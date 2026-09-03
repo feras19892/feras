@@ -1,11 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
+import { ref, onMounted, onUnmounted, onActivated, onDeactivated, computed } from 'vue';
 import { getAnnouncements, deleteAnnouncement, createAnnouncement, type Announcement } from '../../services/announcement.service';
 import { useAuthStore } from '../../modules/auth/stores/auth';
-import { useI18n } from '../../composables/useI18n';
+
+import { useToast } from '../../composables/useToast';
 import { useConfirmDialog } from '../../composables/useConfirmDialog';
 
-const { t, locale } = useI18n();
+
+
+
+
+
+const toast = useToast();
 const auth = useAuthStore();
 const announcements = ref<Announcement[]>([]);
 const loading = ref(false);
@@ -59,7 +67,9 @@ async function submit() {
       formData.value = { title: '', content: '', scope: (auth.isAdmin ? 'global' : auth.isSchool ? 'school' : 'class') as 'global' | 'class' | 'school', is_pinned: false };
       showForm.value = false;
     }
-  } catch { /* ignore */ }
+  } catch {
+    toast.error(t('admin.loadError'));
+  }
   saving.value = false;
 }
 
@@ -73,13 +83,21 @@ const canDelete = (a: Announcement) => auth.isAdmin || auth.user?.id === a.autho
 
 let refreshTimer: ReturnType<typeof setInterval> | null = null;
 
-onMounted(() => {
+onMounted(() => { load(); });
+
+onActivated(() => {
   load();
-  refreshTimer = setInterval(() => load(), 60000);
+  if (!refreshTimer) {
+    refreshTimer = setInterval(() => load(), 60000);
+  }
+});
+
+onDeactivated(() => {
+  if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; }
 });
 
 onUnmounted(() => {
-  if (refreshTimer) clearInterval(refreshTimer);
+  if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; }
 });
 </script>
 
@@ -109,7 +127,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div v-if="loading" class="loading">{{ t('common.loading') }}</div>
+    <div v-if="loading" class="loading">جاري التحميل...</div>
     <div v-else-if="announcements.length === 0" class="empty">{{ t('shared.annEmpty') }}</div>
     <div v-else class="list">
       <div

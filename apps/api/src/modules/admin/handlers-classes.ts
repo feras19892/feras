@@ -2,6 +2,7 @@ import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import type { Hono } from 'hono';
 import * as svc from './services.js';
+import { verifyAdminPassword } from './admin-password.js';
 import type { User } from '@my-modern-app/shared-types';
 
 const createClassSchema = z.object({
@@ -13,7 +14,9 @@ const createClassSchema = z.object({
 export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): void {
   app.get('/classes', async (c) => {
     try {
-      const list = await svc.getAllClassesWithTeachers();
+      const user = c.get('user');
+      const adminSchoolId = (user as User).school_id ?? undefined;
+      const list = await svc.getAllClassesWithTeachers(adminSchoolId);
       return c.json({ success: true, classes: list });
     } catch (err) {
       if (process.env.NODE_ENV !== 'production') console.error('admin getClasses error:', err);
@@ -21,8 +24,12 @@ export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): v
     }
   });
 
-  app.delete('/classes/:id', async (c) => {
+  app.post('/classes/:id/delete', zValidator('json', z.object({ admin_password: z.string().min(1, 'كلمة مرور الإدمن مطلوبة') })), async (c) => {
     const id = c.req.param('id');
+    const { admin_password } = c.req.valid('json');
+    const admin = c.get('user');
+    const pwCheck = await verifyAdminPassword(admin, admin_password);
+    if (pwCheck) return c.json(pwCheck, 401);
     try {
       const result = await svc.deleteClass(id);
       return c.json(result);
@@ -68,6 +75,34 @@ export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): v
     } catch (err) {
       if (process.env.NODE_ENV !== 'production') console.error('admin createClass error:', err);
       return c.json({ success: false, message: 'Failed to create class' }, 500);
+    }
+  });
+
+  app.post('/classes/:id/freeze', zValidator('json', z.object({
+    reason: z.string().min(1).max(500),
+  })), async (c) => {
+    const classId = c.req.param('id');
+    const { reason } = c.req.valid('json');
+    const user = c.get('user');
+    try {
+      const result = await svc.freezeClassForAdmin(classId, reason, user.id);
+      if (!result.success) return c.json(result, 400);
+      return c.json(result);
+    } catch (err) {
+      if (process.env.NODE_ENV !== 'production') console.error('admin freezeClass error:', err);
+      return c.json({ success: false, message: 'Failed to freeze class' }, 500);
+    }
+  });
+
+  app.post('/classes/:id/unfreeze', async (c) => {
+    const classId = c.req.param('id');
+    try {
+      const result = await svc.unfreezeClassForAdmin(classId);
+      if (!result.success) return c.json(result, 400);
+      return c.json(result);
+    } catch (err) {
+      if (process.env.NODE_ENV !== 'production') console.error('admin unfreezeClass error:', err);
+      return c.json({ success: false, message: 'Failed to unfreeze class' }, 500);
     }
   });
 }

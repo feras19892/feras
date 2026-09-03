@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { computed, ref } from 'vue';
+
 
 interface Props {
   volume?: number;     // 0–10 mL drawn

@@ -1,5 +1,7 @@
 import { db } from '../../db/index.js';
 import { createSchoolNotification } from '../notifications/services.js';
+import { dispatchEvent } from '../notifications/dispatch.js';
+import { deleteUserCompletely } from '../../shared/delete-user.js';
 
 export async function adminGetSchoolUsers(schoolId: number): Promise<{ id: number; name: string; email: string; role: string; created_at: string; blocked_at: string | null }[]> {
   const rows = await db.all<{ id: number; name: string; email: string; role: string; created_at: string; blocked_at: string | null }[]>(
@@ -11,11 +13,12 @@ export async function adminGetSchoolUsers(schoolId: number): Promise<{ id: numbe
 
 export async function adminGetSchoolClasses(schoolId: number): Promise<{ id: string; name: string; code: string; teacher_name: string; student_count: number; created_at: string }[]> {
   const rows = await db.all<{ id: string; name: string; code: string; teacher_name: string; student_count: number; created_at: string }[]>(
-    `SELECT c.id, c.name, c.code, u.name as teacher_name,
+    `SELECT c.id, c.name, c.code, COALESCE(u.name, '—') as teacher_name,
      (SELECT COUNT(*) FROM class_students cs WHERE cs.class_id = c.id) as student_count,
      c.created_at
-     FROM classes c JOIN users u ON c.teacher_id = u.id
-     WHERE u.school_id = ? ORDER BY c.created_at DESC`,
+     FROM classes c
+     LEFT JOIN users u ON c.teacher_id = u.id
+     WHERE c.school_id = ? ORDER BY c.created_at DESC`,
     schoolId,
   );
   return rows;
@@ -38,7 +41,7 @@ export async function adminRemoveSchoolUser(schoolId: number, userId: number): P
   const user = await db.get<{ school_id: number | null; role: string; name: string; email: string }>('SELECT school_id, role, name, email FROM users WHERE id = ?', userId);
   if (!user) return { success: false, message: 'User not found' };
   if (user.school_id !== schoolId) return { success: false, message: 'User does not belong to this school' };
-  await db.run('DELETE FROM users WHERE id = ?', userId);
+  await deleteUserCompletely(userId);
   await createSchoolNotification({
     school_id: schoolId,
     type: 'user_removed',
@@ -67,8 +70,16 @@ export async function adminBlockSchoolUser(schoolId: number, userId: number, blo
 }
 
 export async function deleteSchool(schoolId: number): Promise<{ success: boolean; message?: string }> {
-  const school = await db.get<{ id: number }>('SELECT id FROM schools WHERE id = ?', schoolId);
+  const school = await db.get<{ id: number; name: string }>('SELECT id, name FROM schools WHERE id = ?', schoolId);
   if (!school) return { success: false, message: 'School not found' };
+
+  await dispatchEvent({
+    type: 'school_deleted',
+    actorId: schoolId,
+    actorName: school.name,
+    actorRole: 'admin',
+    payload: { schoolId },
+  });
 
   await db.run('BEGIN IMMEDIATE');
   try {
@@ -108,8 +119,23 @@ export async function deleteSchool(schoolId: number): Promise<{ success: boolean
     await db.run(`DELETE FROM approval_requests WHERE school_id = ?`, schoolId);
     await db.run('UPDATE users SET school_id = NULL WHERE school_id = ?', schoolId);
     await db.run('DELETE FROM school_refresh_tokens WHERE school_id = ?', schoolId);
-    await db.run('DELETE FROM schools WHERE id = ?', schoolId);
+    await db.run('DELETE FROM feedback WHERE school_id = ?', schoolId);
+    await db.run('DELETE FROM warnings WHERE school_id = ?', schoolId);
+    await db.run(`DELETE FROM email_change_requests WHERE requester_type = ? AND requester_id = ?`, 'school', schoolId);
+    await db.run('DELETE FROM tenant_memberships WHERE tenant_type = ? AND tenant_id = ?', 'school', schoolId);
+    await db.run('DELETE FROM invite_codes WHERE owner_type = ? AND owner_id = ?', 'school', schoolId);
+    await db.run('DELETE FROM subscriptions WHERE owner_type = ? AND owner_id = ?', 'school', schoolId);
+    const delSchool = await db.run('DELETE FROM schools WHERE id = ?', schoolId);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[deleteSchool] deleted school id', schoolId, 'changes:', delSchool?.changes);
+    }
+    if (!delSchool || delSchool.changes === 0) {
+      throw new Error(`DELETE FROM schools for id=${schoolId} had no effect`);
+    }
     await db.run('COMMIT');
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[deleteSchool] committed for school id', schoolId);
+    }
   } catch (err) {
     await db.run('ROLLBACK');
     throw err;

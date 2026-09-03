@@ -1,8 +1,10 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useProjectileExperiment } from '../../../../composables/projectile/useProjectileExperiment'
 import { useProjectileReport } from '../../../../composables/projectile/useProjectileReport'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import ProjectileMenuBar from '../../../../components/experiment/projectile/ProjectileMenuBar.vue'
 import ProjectileCanvas from '../../../../components/experiment/projectile/ProjectileCanvas.vue'
@@ -17,9 +19,13 @@ import ProjectileStatusBar from '../../../../components/experiment/projectile/Pr
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useProjectileExperiment()
 const rep = useProjectileReport()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

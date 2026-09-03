@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
 import type { StudentRow } from '../../composables/teacher/useTeacherDashboard'
 import CreateApprovalButton from '../shared/CreateApprovalButton.vue'
 
+
+
+
+
 const props = defineProps<{ rows: StudentRow[] }>()
-const { t } = useI18n()
 
 const filter = ref<'all' | 'pending' | 'missing'>('all')
 const searchQuery = ref('')

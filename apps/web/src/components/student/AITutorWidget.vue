@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, nextTick, watch } from 'vue';
-import { useI18n } from '../../composables/useI18n';
+
 import { useAITutor } from '../../composables/useAITutor';
 
-const { t } = useI18n();
+
+
+
+
 const bodyRef = ref<HTMLElement | null>(null);
 
 const {

@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction, locale } = useI18n();
 import { ref, onMounted, nextTick, watch } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import { getConversation, sendDirectMessage, type DirectMessage } from '../../services/admin.service';
 
-const { locale } = useI18n();
+
+
 
 const props = defineProps<{
   userId: number;
@@ -103,7 +105,10 @@ onMounted(() => {
           :class="{ sent: msg.sender_id !== userId, received: msg.sender_id === userId }"
         >
           <div class="dm-bubble" :class="{ 'dm-sent': msg.sender_id !== userId, 'dm-received': msg.sender_id === userId }">
-            <p>{{ msg.content }}</p>
+            <p class="dm-original">{{ msg.content }}</p>
+            <p v-if="msg.translated_content && msg.translated_content !== msg.content" class="dm-translation">
+              <span class="dm-translation-label">ترجمة:</span> {{ msg.translated_content }}
+            </p>
             <span class="dm-time">{{ formatTime(msg.created_at) }}</span>
           </div>
         </div>
@@ -237,6 +242,27 @@ onMounted(() => {
   margin: 0;
   font-size: 0.85rem;
   line-height: 1.4;
+}
+
+.dm-original {
+  margin: 0;
+}
+
+.dm-translation {
+  margin: 0.35rem 0 0;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  border-right: 3px solid rgba(99, 102, 241, 0.5);
+}
+
+.dm-translation-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  margin-inline-end: 0.3rem;
 }
 
 .dm-received {

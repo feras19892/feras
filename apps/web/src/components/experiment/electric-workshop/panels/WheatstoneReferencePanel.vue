@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const NOTES = [
   '⚖️ جسر ويستون اخترعه صموئيل هانتيجتون ويستون 1843',
   '📏 يقيس مقاومات من 1Ω إلى 1MΩ بدقة عالية جداً',

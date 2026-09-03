@@ -9,6 +9,9 @@ export interface UserPreferences {
   defaultExperimentType: string;
   showChartOnLoad: boolean;
   compactTables: boolean;
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  soundNotifications: boolean;
 }
 
 const STORAGE_KEY = 'modapp_preferences';
@@ -21,6 +24,9 @@ const defaults: UserPreferences = {
   defaultExperimentType: 'physics',
   showChartOnLoad: true,
   compactTables: false,
+  emailNotifications: true,
+  pushNotifications: true,
+  soundNotifications: false,
 };
 
 function loadFromStorage(): UserPreferences {
@@ -40,7 +46,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
   function save() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs.value));
-    } catch { /* ignore */ }
+    } catch { if (import.meta.env.DEV) console.warn('Failed to save preferences') }
   }
 
   function update<K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) {

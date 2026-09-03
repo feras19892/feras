@@ -1,7 +1,8 @@
 ﻿<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 interface Props { params: { stringLength: number; tension: number; harmonic: number; damping: number } }
+
 const props = defineProps<Props>()
 const emit = defineEmits<{ (e: 'update:params', p: { stringLength: number; tension: number; harmonic: number; damping: number }): void }>()
 function set(key: string, val: number) { emit('update:params', { ...props.params, [key]: val }) }

@@ -25,10 +25,14 @@ export async function getDetailedSystemStats(period: 'today' | 'week' | 'month' 
   const totalClasses = dateFilter ? await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM classes ${where}`, dp) : await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM classes`);
   const totalReports = dateFilter ? await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports ${whereReports}`, dp) : await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports`);
   const totalGraded = dateFilter ? await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'graded' AND graded_at >= ?`, dp) : await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'graded'`);
-  const totalPending = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted'`);
-  const totalOverdue = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted' AND submitted_at < datetime('now', '-3 days')`);
+  const totalPending = dateFilter
+    ? await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted' AND submitted_at >= ?`, dp)
+    : await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted'`);
+  const totalOverdue = dateFilter
+    ? await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted' AND submitted_at < datetime('now', '-3 days') AND submitted_at >= ?`, dp)
+    : await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM experiment_reports WHERE status = 'submitted' AND submitted_at < datetime('now', '-3 days')`);
   const totalSessions = dateFilter ? await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM session_log ${whereSessions}`, dp) : await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM session_log`);
-  const activeNow = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL`);
+  const activeNow = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL AND login_at > datetime('now', '-30 minutes')`);
   const activeUsers = dateFilter
     ? await db.get<{ count: number }>(`SELECT COUNT(DISTINCT user_id) as count FROM session_log WHERE login_at >= ?`, dp)
     : await db.get<{ count: number }>(`SELECT COUNT(DISTINCT user_id) as count FROM session_log`);
@@ -54,10 +58,10 @@ export async function getDetailedSystemStats(period: 'today' | 'week' | 'month' 
     ...(dateFilter ? [dp, dp] : []),
   );
 
-  // Reports by status
-  const reportsByStatus = await db.all(
-    `SELECT status, COUNT(*) as count FROM experiment_reports GROUP BY status`,
-  );
+  // Reports by status (respect period filter)
+  const reportsByStatus = dateFilter
+    ? await db.all(`SELECT status, COUNT(*) as count FROM experiment_reports WHERE submitted_at >= ? GROUP BY status`, dp)
+    : await db.all(`SELECT status, COUNT(*) as count FROM experiment_reports GROUP BY status`);
 
   // Users by role
   const usersByRole = await db.all(
@@ -66,13 +70,15 @@ export async function getDetailedSystemStats(period: 'today' | 'week' | 'month' 
 
   // Top schools by real activity (reports + classes + active sessions)
   const topSchools = await db.all(
-    `SELECT s.id, s.name,
-     (SELECT COUNT(*) FROM users u WHERE u.school_id = s.id) as user_count,
-     (SELECT COUNT(*) FROM classes c JOIN users u ON c.teacher_id = u.id WHERE u.school_id = s.id) as class_count,
-     (SELECT COUNT(*) FROM experiment_reports r JOIN users u ON r.student_id = u.id WHERE u.school_id = s.id) as report_count,
-     (SELECT COUNT(*) FROM session_log sl JOIN users u ON sl.user_id = u.id WHERE u.school_id = s.id) as session_count
-     FROM schools s
-     HAVING (report_count + class_count + session_count) > 0
+    `SELECT * FROM (
+       SELECT s.id, s.name,
+       (SELECT COUNT(*) FROM users u WHERE u.school_id = s.id) as user_count,
+       (SELECT COUNT(*) FROM classes c JOIN users u ON c.teacher_id = u.id WHERE u.school_id = s.id) as class_count,
+       (SELECT COUNT(*) FROM experiment_reports r JOIN users u ON r.student_id = u.id WHERE u.school_id = s.id) as report_count,
+       (SELECT COUNT(*) FROM session_log sl JOIN users u ON sl.user_id = u.id WHERE u.school_id = s.id) as session_count
+       FROM schools s
+     ) sub
+     WHERE (report_count + class_count + session_count) > 0
      ORDER BY (report_count * 3 + class_count * 2 + session_count) DESC LIMIT 10`,
   );
 

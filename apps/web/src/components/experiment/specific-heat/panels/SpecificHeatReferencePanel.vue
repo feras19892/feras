@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const METALS = [
   { name: 'ألمنيوم', symbol: 'Al', c: 900, color: '#a8a8a8' },
   { name: 'نحاس', symbol: 'Cu', c: 385, color: '#b87333' },

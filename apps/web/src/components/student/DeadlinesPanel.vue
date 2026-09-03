@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { getStudentDeadlines, type Deadline } from '../../services/deadline.service';
-import { useI18n } from '../../composables/useI18n';
+
 import { downloadICS, generateGoogleCalendarURL, type CalendarEvent } from '../../composables/useCalendarExport';
 
-const { t } = useI18n();
+
+
+
 
 const deadlines = ref<Deadline[]>([]);
 const loading = ref(false);

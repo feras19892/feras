@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import AdminNotificationCenter from './AdminNotificationCenter.vue';
 import AccountSettingsModal from '../shared/AccountSettingsModal.vue';
 import NameRequestBadge from '../shared/NameRequestBadge.vue';
-
-const { t } = useI18n();
 defineProps<{ title: string; dateStr: string }>();
 const emit = defineEmits<{ (e: 'back'): void; (e: 'search', q: string): void }>();
 const showBack = computed(() => window.history.state?.back !== null && window.history.state?.back !== undefined);

@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
+
 import { useReportTemplates } from '../../../composables/useReportTemplates';
 
-const { t } = useI18n();
+
+
+
+
 const { templates, applyTemplate } = useReportTemplates();
 const conclusion = ref('');
 const errors = ref('');

@@ -1,12 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { drawPrism } from '../../../composables/prism/usePrismRenderer'
 import { usePrismInteraction } from '../../../composables/prism/usePrismInteraction'
 import type { DrawResult } from '../../../composables/prism/usePrismInteraction'
 import { toDeg } from '../../../composables/prism/prism-geometry'
-import { useI18n } from '../../../composables/useI18n'
-
-const { t } = useI18n()
 
 interface Props {
   prismAngle: number

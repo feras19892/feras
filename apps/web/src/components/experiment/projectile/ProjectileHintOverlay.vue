@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed } from 'vue'
 import { useProjectileHints } from '../../../composables/projectile/useProjectileHints'
 
-const { t } = useI18n()
 const props = defineProps<{
   v0: number
   angleDeg: number

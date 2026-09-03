@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const ANGLES = [
   { angle: 15, sin2: Math.sin(30 * Math.PI / 180).toFixed(3), color: '#22c55e' },
   { angle: 30, sin2: Math.sin(60 * Math.PI / 180).toFixed(3), color: '#5B8DB8' },

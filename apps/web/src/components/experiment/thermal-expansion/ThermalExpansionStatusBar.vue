@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
+
 import { ALPHA } from '../../../composables/thermal-expansion/useThermalExpansionCalculations'
-const { t } = useI18n()
+
+
+
+
+
 const props = defineProps<{
   running: boolean
   paused: boolean

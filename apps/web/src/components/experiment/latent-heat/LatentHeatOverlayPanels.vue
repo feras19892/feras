@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { LatentHeatTrial } from '../../../composables/latent-heat/useLatentHeatTrials'
 import LatentHeatPanelBody from './LatentHeatPanelBody.vue'
+
 interface Props { maximized: Record<string, boolean>; panelTitle: (id: string) => string; trials: LatentHeatTrial[]; params: { mass: number; phaseType: 'fusion' | 'vaporization'; heatingPower: number }; currentQ: number; totalQ: number; meltedMass: number; remainingMass: number; ratio: number; currentTemp: number }
 defineProps<Props>()
 const emit = defineEmits<{

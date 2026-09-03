@@ -106,6 +106,8 @@ export function usePendulumExperiment() {
         { xKey: 'length', yKey: 'T2', xLabel: 'L (m)', yLabel: 'T² (s²)', type: 'scatter' },
         { xKey: 'length', yKey: 'T', xLabel: 'L (m)', yLabel: 'T (s)', type: 'scatter' },
       ],
+      theoretical: { value: params.g, label: 'g النظري', unit: 'm/s²' },
+      equipment: ['بندول بسيط', 'خيط', 'كرة', 'ساعة توقيت', 'مسطرة'],
     }
     sendToAnalysis(router, payload)
   }

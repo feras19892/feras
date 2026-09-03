@@ -58,7 +58,7 @@ ${studentHtml}${paramsHtml}${statsHtml}${imagesHtml}${tablesHtml}${blocksHtml}
   if (options.openPrintDialog) {
     win.addEventListener('load', () => {
       setTimeout(() => {
-        try { win.focus(); win.print() } catch { /* ignore */ }
+        try { win.focus(); win.print() } catch { if (import.meta.env.DEV) console.warn('Print dialog failed') }
       }, 450)
     })
   }

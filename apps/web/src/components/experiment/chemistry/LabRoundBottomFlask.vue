@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { computed, ref } from 'vue';
 import { useSpillDrops } from '../../../composables/chemistry/useSpillDrops';
 import ReactionEffects from './ReactionEffects.vue';
+
 
 interface Props {
   volume?: number;     // 0–250 mL

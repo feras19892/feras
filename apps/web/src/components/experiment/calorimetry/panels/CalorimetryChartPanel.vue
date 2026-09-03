@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue'
-import { useI18n } from '../../../../composables/useI18n'
+
 import type { CalorimetryTrial } from '../../../../composables/calorimetry/useCalorimetryTrials'
-const { t } = useI18n()
+
+
+
+
+
 const props = defineProps<{ trials: CalorimetryTrial[] }>()
 
 const pts = computed(() => props.trials.map(tr => ({ x: tr.tMetal, y: tr.tf, label: `#${tr.id}` })))

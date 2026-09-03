@@ -15,16 +15,20 @@ export const loginSchema = z.object({
 
 export const registerSchema = z.object({
   email: z.string().email(),
-  password: passwordComplexity,
+  password: z.string().min(1),
   name: z.string().min(2),
   role: z.enum(['student', 'teacher']).optional().default('student'),
   school_code: z.string().optional().nullable(),
+  invite_code: z.string().optional().nullable(),
+  age: z.number().int().min(5).max(120).optional().nullable(),
+  fingerprint: z.string().optional().nullable(),
+  consent: z.boolean().optional().default(false),
 });
 
 export const schoolRegisterSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  password: passwordComplexity,
+  password: z.string().min(1),
   max_students: z.number().int().min(1).max(10000).optional().default(50),
   max_teachers: z.number().int().min(1).max(500).optional().default(10),
 });

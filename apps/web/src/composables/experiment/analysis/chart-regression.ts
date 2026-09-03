@@ -16,11 +16,15 @@ export function useChartRegression(
     if (n < 2) return null
     const sx = sumX.value, sy = sumY.value, sxy = sumXY.value, sx2 = sumX2.value
     const sumY2 = points.value.reduce((s, p) => s + p.y * p.y, 0)
-    const slope = (n * sxy - sx * sy) / (n * sx2 - sx * sx)
+    const xDenominator = n * sx2 - sx * sx
+    if (Math.abs(xDenominator) < 1e-12) return null
+    const slope = (n * sxy - sx * sy) / xDenominator
     const intercept = (sy - slope * sx) / n
+    if (!Number.isFinite(slope) || !Number.isFinite(intercept)) return null
     const rNumerator = n * sxy - sx * sy
-    const rDenominator = Math.sqrt((n * sx2 - sx * sx) * (n * sumY2 - sy * sy))
-    const r = rDenominator === 0 ? 0 : rNumerator / rDenominator
+    const rDenominator = Math.sqrt(xDenominator * (n * sumY2 - sy * sy))
+    if (rDenominator === 0) return null
+    const r = rNumerator / rDenominator
     return { slope, intercept, r2: r * r }
   })
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useProjectileDraw } from '../../../composables/projectile/useProjectileDraw'
 import { useProjectileGrid } from '../../../composables/projectile/useProjectileGrid'
@@ -16,7 +17,6 @@ interface SimState {
   landingSpeed: number
 }
 
-const { t } = useI18n()
 const props = defineProps<{
   params: ProjectileParams
   simState: SimState

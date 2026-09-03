@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 defineEmits<{ (e: 'toggle-help'): void }>()
+
 </script>
 
 <template>
@@ -16,3 +16,4 @@ defineEmits<{ (e: 'toggle-help'): void }>()
     </button>
   </div>
 </template>
+

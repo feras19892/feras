@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue'
 import ExperimentReport from '../ExperimentReport.vue'
 import DeletableSection from '../DeletableSection.vue'
 import type { PendulumTrial } from '../../../composables/pendulum/usePendulumTrials'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{ trials: PendulumTrial[]; gTheoretical: number }>()
 const emit = defineEmits<{ (e: 'close'): void; (e: 'open-full-report'): void }>()
 

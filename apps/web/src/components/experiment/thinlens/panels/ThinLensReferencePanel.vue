@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const LENS_TYPES = [
   { name: 'مح_concave', fSign: '-', image: 'افتراضية، منتصبة، مصغرة', color: '#5B8DB8' },
   { name: 'مح_convex', fSign: '+', image: 'حقيقية/افتراضية حسب do', color: '#22c55e' },

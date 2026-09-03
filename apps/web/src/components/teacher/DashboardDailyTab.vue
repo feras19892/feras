@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import type { Report } from '../../services/report.service'
 
 const props = defineProps<{
@@ -9,7 +10,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{ (e: 'open-report', id: number): void }>()
-const { t } = useI18n()
 
 function daysSince(dateStr?: string): number {
   if (!dateStr) return 0

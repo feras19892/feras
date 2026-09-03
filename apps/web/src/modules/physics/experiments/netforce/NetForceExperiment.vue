@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useNetForceExperiment } from '../../../../composables/netforce/useNetForceExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import NetForceMenuBar from '../../../../components/experiment/netforce/NetForceMenuBar.vue'
 import NetForceCanvas from '../../../../components/experiment/netforce/NetForceCanvas.vue'
@@ -14,6 +16,7 @@ import NetForceStatusBar from '../../../../components/experiment/netforce/NetFor
 import NetForceReport from '../../../../components/experiment/netforce/NetForceReport.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
+
 
 const initError = ref<string | null>(null)
 let t: (key: string, fallback?: string) => string

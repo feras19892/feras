@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue';
 import { getSystemStatus, type SystemStatus } from '../../services/system-status.service';
-import { useI18n } from '../../composables/useI18n';
-
-const { t } = useI18n();
 const status = ref<SystemStatus | null>(null);
 let pollTimer: ReturnType<typeof setInterval> | null = null;
 

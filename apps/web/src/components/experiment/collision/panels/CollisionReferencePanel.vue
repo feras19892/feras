@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const TYPES = [
   { name: 'مرن تماماً', e: 1.0, desc: 'يحفظ الطاقة', color: '#22c55e' },
   { name: 'جزئي', e: 0.5, desc: 'بعض الطاقة تفقد', color: '#f59e0b' },

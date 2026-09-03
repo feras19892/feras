@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
-
-const { t } = useI18n()
 
 const props = defineProps<{
   mode: 'single' | 'grating'

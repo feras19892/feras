@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
 
 const props = defineProps<{
   currentMedium?: string
@@ -15,8 +16,6 @@ interface MediumOption {
   name: string
   n2: number
 }
-
-const { t } = useI18n()
 
 const mediums: MediumOption[] = [
   { name: 'air', n2: 1.0 },

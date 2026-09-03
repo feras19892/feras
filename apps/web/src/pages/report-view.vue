@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getReport, getGradeHistory, markReportSeen, markFeedbackSeen, gradeReport } from '../services/report.service'
 import type { Report, GradeHistoryEntry } from '../services/report.service'
-import { useI18n } from '../composables/useI18n'
+
 import { useAuthStore } from '../modules/auth/stores/auth'
 import { useReportParser } from '../composables/teacher/useReportParser'
 import ReportSidebar from '../components/teacher/ReportSidebar.vue'
@@ -11,12 +13,17 @@ import ReportReadingsSection from '../components/teacher/ReportReadingsSection.v
 import ReportCalculationsSection from '../components/teacher/ReportCalculationsSection.vue'
 import ReportConclusionSection from '../components/teacher/ReportConclusionSection.vue'
 import ReportAIAnalyzer from '../components/teacher/ReportAIAnalyzer.vue'
+import ReportQuestionsSection from '../components/teacher/ReportQuestionsSection.vue'
 import CreateApprovalButton from '../components/shared/CreateApprovalButton.vue'
 import { updateAvatar } from '../services/enhancements.service'
 
+
+
+
+
 const route = useRoute()
 const router = useRouter()
-const { t } = useI18n()
+
 const auth = useAuthStore()
 
 const isTeacher = computed(() => auth.isTeacher || auth.isAdmin)
@@ -105,7 +112,7 @@ async function loadHistory(id: number) {
   try {
     const res = await getGradeHistory(id)
     if (res.success) history.value = res.history
-  } catch { /* ignore */ }
+  } catch { if (import.meta.env.DEV) console.warn('Failed to load grade history') }
 }
 
 function scrollTo(id: string) {
@@ -174,6 +181,11 @@ watch(() => route.params.id, loadReport)
         <section id="ai" class="rp-section">
           <h3 class="sec-title">🎯 {{ t('report.assessment') }}</h3>
           <ReportAIAnalyzer :report="report" />
+        </section>
+
+        <!-- Experiment Questions -->
+        <section id="questions" class="rp-section" v-if="report.question_template_id">
+          <ReportQuestionsSection :report-id="report.id" :score="report.question_score" :max-score="report.question_max_score" />
         </section>
 
         <!-- Student Grade Appeal -->

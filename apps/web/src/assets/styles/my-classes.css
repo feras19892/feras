@@ -1,0 +1,42 @@
+.code-with-copy { display: inline-flex; align-items: center; gap: 4px; }
+.copy-btn { background: none; border: none; cursor: pointer; font-size: 14px; padding: 2px 4px; border-radius: 4px; transition: background 0.15s; }
+.copy-btn:hover { background: rgba(0,0,0,0.08); }
+.class-toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.toolbar-btn { padding: 6px 14px; border: 1px solid var(--border-color, #e5e7eb); border-radius: 6px; background: var(--bg-card, #fff); cursor: pointer; font-size: 13px; color: var(--text-primary, #1a2332); transition: all 0.15s; }
+.toolbar-btn:hover:not(:disabled) { background: var(--bg-hover, #f8fafc); border-color: var(--accent, #3b82f6); }
+.toolbar-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.toolbar-danger { color: var(--danger-text, #dc2626); }
+.toolbar-danger:hover:not(:disabled) { background: var(--danger-light, #fee2e2); border-color: var(--danger-text, #dc2626); }
+.row-selected { background: var(--bg-hover, #e0f2fe) !important; border-color: var(--accent, #3b82f6) !important; }
+.class-frozen { opacity: 0.6; border-right: 3px solid #dc2626 !important; }
+.frozen-badge { margin-inline-start: 8px; font-size: 10px; padding: 2px 8px; border-radius: 999px; background: rgba(220,38,38,0.15); color: #dc2626; font-weight: 700; }
+.students-inline { width: 100%; margin-top: 8px; padding: 8px 12px; border-top: 1px dashed var(--border-color, #e5e7eb); }
+.compact-row { flex-wrap: wrap; }
+.detail-table-wrap { overflow-x: auto; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.detail-table th { text-align: start; padding: 6px 10px; border-bottom: 2px solid var(--border-color, #e5e7eb); color: var(--text-secondary, #6b7280); font-size: 12px; }
+.detail-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-color, #e5e7eb); }
+.student-row { cursor: pointer; transition: background 0.12s; }
+.student-row:hover { background: var(--bg-hover, #f0f7ff); }
+.student-row.frozen { opacity: 0.6; }
+.freeze-icon { margin-inline-start: 6px; font-size: 13px; }
+.freeze-icon.frozen { filter: grayscale(0); }
+.freeze-icon:not(.frozen) { opacity: 0.5; }
+.sort-bar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+.sort-btn { padding: 4px 12px; border: 1px solid var(--border-color, #e5e7eb); border-radius: 6px; background: var(--bg-card, #fff); cursor: pointer; font-size: 12px; font-weight: 600; color: var(--text-secondary, #6b7280); transition: all 0.15s; }
+.sort-btn:hover { border-color: var(--accent, #3b82f6); color: var(--accent, #3b82f6); }
+.sort-btn.active { background: var(--accent, #3b82f6); color: #fff; border-color: var(--accent, #3b82f6); }
+.rating-icons { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.ri-good { font-size: 11px; font-weight: 700; color: #16a34a; background: #f0fdf4; padding: 2px 6px; border-radius: 8px; }
+.ri-badge { font-size: 11px; font-weight: 700; color: #f59e0b; background: #fffbeb; padding: 2px 6px; border-radius: 8px; }
+.ri-penalty { font-size: 11px; font-weight: 700; color: #dc2626; background: #fef2f2; padding: 2px 6px; border-radius: 8px; }
+.ri-points { font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 8px; }
+.ri-points.positive { color: #16a34a; background: #f0fdf4; }
+.ri-points.negative { color: #dc2626; background: #fef2f2; }
+.ri-neutral { color: var(--text-muted, #9ca3af); font-size: 12px; }
+.class-stats-bar { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.cs-stat { display: flex; flex-direction: column; align-items: center; padding: 6px 14px; border-radius: 8px; background: var(--bg-hover, #f8fafc); border: 1px solid var(--border-color, #e5e7eb); }
+.cs-stat__value { font-size: 18px; font-weight: 800; color: var(--accent, #3b82f6); }
+.cs-stat__label { font-size: 11px; color: var(--text-secondary, #6b7280); }
+.search-input { padding: 4px 10px; border: 1px solid var(--border-color, #e5e7eb); border-radius: 6px; font-size: 12px; min-width: 140px; outline: none; }
+.search-input:focus { border-color: var(--accent, #3b82f6); }

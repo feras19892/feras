@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import { computed } from 'vue';
 import type { ResolvedExperimentTheory } from '../../../composables/chemistry/experiments';
-import { useI18n } from '../../../composables/useI18n';
-
-const { t, locale } = useI18n();
 
 const props = defineProps<{
   theory: ResolvedExperimentTheory | null;

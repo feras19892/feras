@@ -1,8 +1,15 @@
 import { db } from '../../db/index.js';
+import { dispatchEvent } from '../notifications/dispatch.js';
+import { scheduleForSubscription, purgePendingForSubscription } from '../notifications/queue.js';
+import { getActiveSubscription, getSubscriptionById } from '../subscriptions/services.js';
 
 export async function getUserFullProfile(userId: number) {
-  const user = await db.get(`SELECT id, name, email, role, email_verified_at, created_at, blocked_at, block_reason FROM users WHERE id = ?`, userId);
+  const user = await db.get(`SELECT id, name, email, role, email_verified_at, created_at, blocked_at, block_reason, school_id FROM users WHERE id = ?`, userId);
   if (!user) return null;
+
+  const school = user.school_id ? await db.get<{ id: number; name: string }>(`SELECT id, name FROM schools WHERE id = ?`, user.school_id) : null;
+  const lastLogin = await db.get<{ login_at: string }>(`SELECT login_at FROM session_log WHERE user_id = ? ORDER BY login_at DESC LIMIT 1`, userId);
+  const sessions = await db.all(`SELECT id, login_at, ip as ip_address, user_agent FROM session_log WHERE user_id = ? AND logout_at IS NULL ORDER BY login_at DESC LIMIT 20`, userId);
 
   const classes = await db.all(
     `SELECT c.id, c.name, c.code, c.created_at, (SELECT COUNT(*) FROM class_students cs WHERE cs.class_id = c.id) as student_count
@@ -36,16 +43,45 @@ export async function getUserFullProfile(userId: number) {
     userId
   );
 
-  return { user, classes, joinedClasses, reports, activity, warnings, notes };
+  const subscription = await getActiveSubscription(userId, 'user');
+
+  const notifications = await db.all(
+    `SELECT id, type, title, message, is_read, created_at FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 30`,
+    userId
+  );
+
+  const notificationQueue = await db.all(
+    `SELECT id, event, event_date, scheduled_at, status, title, sent_at, created_at
+     FROM subscription_notification_queue
+     WHERE user_id = ?
+     ORDER BY scheduled_at DESC LIMIT 30`,
+    userId
+  );
+
+  return { user: { ...user, school }, classes, joinedClasses, reports, activity, warnings, notes, sessions, lastLogin: lastLogin?.login_at || null, subscription, notifications, notificationQueue };
 }
 
-export async function banUser(userId: number, reason: string) {
+export async function banUser(userId: number, reason: string, adminId: number, adminName: string) {
   await db.run(`UPDATE users SET blocked_at = datetime('now'), block_reason = ? WHERE id = ?`, reason, userId);
+  await dispatchEvent({
+    type: 'user_banned_admin',
+    actorId: adminId,
+    actorName: adminName,
+    actorRole: 'admin',
+    payload: { userId, reason },
+  });
   return { success: true };
 }
 
-export async function unbanUser(userId: number) {
+export async function unbanUser(userId: number, adminId: number, adminName: string) {
   await db.run(`UPDATE users SET blocked_at = NULL, block_reason = NULL WHERE id = ?`, userId);
+  await dispatchEvent({
+    type: 'user_unblocked',
+    actorId: adminId,
+    actorName: adminName,
+    actorRole: 'admin',
+    payload: { userId },
+  });
   return { success: true };
 }
 
@@ -59,5 +95,51 @@ export async function addNote(adminId: number, userId: number, note: string) {
 
 export async function deleteNote(noteId: number) {
   await db.run(`DELETE FROM admin_notes WHERE id = ?`, noteId);
+  return { success: true };
+}
+
+export async function extendTrial(userId: number, days: number, adminId: number, adminName: string) {
+  const sub = await getActiveSubscription(userId, 'user');
+  if (!sub) return { success: false, message: 'لا يوجد اشتراك نشط' };
+  const now = new Date().toISOString();
+  const currentExpiry = sub.expires_at ? new Date(sub.expires_at) : new Date();
+  const newExpiry = new Date(currentExpiry.getTime() + days * 24 * 60 * 60 * 1000).toISOString();
+  await db.run(
+    `UPDATE subscriptions SET expires_at = ?, next_billing_at = ?, updated_at = ? WHERE id = ?`,
+    newExpiry,
+    newExpiry,
+    now,
+    sub.id,
+  );
+  await dispatchEvent({
+    type: 'subscription_updated',
+    actorId: adminId,
+    actorName: adminName,
+    actorRole: 'admin',
+    payload: { userId, message: `مددت التجربة ${days} أيام` },
+  });
+  const refreshed = await getActiveSubscription(userId, 'user');
+  if (refreshed) void scheduleForSubscription(refreshed).catch(() => {});
+  return { success: true, expires_at: newExpiry };
+}
+
+export async function changeSubscription(userId: number, data: { status?: string; plan_id?: number | null }) {
+  const sub = await getActiveSubscription(userId, 'user');
+  if (!sub) return { success: false, message: 'لا يوجد اشتراك نشط' };
+  const fields: string[] = [];
+  const values: any[] = [];
+  if (data.status) { fields.push('status = ?'); values.push(data.status); }
+  if (data.plan_id !== undefined) { fields.push('plan_id = ?'); values.push(data.plan_id); }
+  if (!fields.length) return { success: false, message: 'لا توجد بيانات' };
+  values.push(sub.id);
+  await db.run(`UPDATE subscriptions SET ${fields.join(', ')}, updated_at = datetime('now') WHERE id = ?`, ...values);
+  const updated = await getSubscriptionById(sub.id);
+  if (updated) {
+    if (updated.status === 'TRIAL' || updated.status === 'ACTIVE') {
+      void scheduleForSubscription(updated).catch(() => {});
+    } else {
+      void purgePendingForSubscription(updated.owner_id, updated.owner_type).catch(() => {});
+    }
+  }
   return { success: true };
 }

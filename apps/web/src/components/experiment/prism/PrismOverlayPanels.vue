@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { PrismTrial } from '../../../composables/prism/usePrismTrials'
 import PrismPanelBody from './PrismPanelBody.vue'
+
 
 interface Props {
   maximized: Record<string, boolean>

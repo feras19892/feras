@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'
 
 interface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean; measurementPeriod: number | null }
 
-const { t } = useI18n()
 const props = defineProps<{ params: PendulumParams; simState: SimState; oscillationCount?: number }>()
 const emit = defineEmits<{ (e: 'snapshot', dataUrl: string): void }>()
 

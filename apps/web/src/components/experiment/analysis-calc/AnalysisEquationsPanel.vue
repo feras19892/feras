@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { watch } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
+
 import { useEquationSolver } from '../../../composables/experiment/analysis/useEquationSolver'
 import EquationDetail from './EquationDetail.vue'
 import type { AnalysisEquation } from '../../../types/physics'
+
+
+
+
 
 const props = defineProps<{
   equations: AnalysisEquation[];
@@ -13,8 +19,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'solved-equations', val: { equationName: string; formula: string; targetVar: string; varValues: Record<string, number>; result: string; timestamp: number }[]): void;
 }>();
-
-const { t } = useI18n()
 
 const {
   selectedIndex,

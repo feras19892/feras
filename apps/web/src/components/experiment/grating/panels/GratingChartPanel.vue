@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-
-const { t } = useI18n()
-
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 interface Props {
+
   orderPositions: { m: number; yMm: number; intensity: number }[]
 }
 defineProps<Props>()

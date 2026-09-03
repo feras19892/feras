@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
+
+import NewAnalysisButton from '../../experiment/NewAnalysisButton.vue';
+
+
+
+
 
 const props = defineProps<{
   sourceName: string;
@@ -10,8 +17,6 @@ const emit = defineEmits<{
   (e: 'clear'): void;
   (e: 'back'): void;
 }>();
-
-const { t } = useI18n();
 
 const title = computed(() => {
   return props.sourceName ? t('analysis.analysisTitle', { name: props.sourceName }) : t('analysis.defaultTitle');
@@ -25,6 +30,7 @@ const title = computed(() => {
       <span class="title">📊 {{ title }}</span>
     </div>
     <div class="right">
+      <NewAnalysisButton />
       <button class="btn-clear" @click="emit('clear')">{{ t('analysis.clearData') }}</button>
     </div>
   </nav>

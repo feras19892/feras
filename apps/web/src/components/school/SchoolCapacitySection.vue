@@ -1,16 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, onMounted, computed } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import { fetchJson } from '../../services/http';
 import type { School } from '../../services/school.service';
-
 const props = defineProps<{
   school: School | null;
   dateLocaleStr: string;
 }>();
-
-const { t } = useI18n();
-
 const capacityForm = ref({ requested_max_students: null as number | null, requested_max_teachers: null as number | null, reason: '' });
 const capacitySaving = ref(false);
 const capacityMsg = ref('');

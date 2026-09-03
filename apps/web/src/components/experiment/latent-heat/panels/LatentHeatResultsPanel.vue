@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { computed } from 'vue'
 import type { LatentHeatTrial } from '../../../../composables/latent-heat/useLatentHeatTrials'
+
 const props = defineProps<{ trials: LatentHeatTrial[] }>()
 
 // Calculate L from Q/m for each trial (measured value)

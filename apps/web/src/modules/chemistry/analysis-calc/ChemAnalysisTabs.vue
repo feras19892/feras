@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n';
+import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
 const props = defineProps<{ active: number }>();
+
 const emit = defineEmits<{ (e: 'change', index: number): void }>();
 const tabs = [
   { key: 0, label: t('analysis.dataTab') },

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const CONDITIONS = [
   { name: 'بناءي', condition: 'Δr = mλ', color: '#22c55e' },
   { name: 'هدام', condition: 'Δr = (m+½)λ', color: '#ef4444' },

@@ -1,16 +1,27 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import * as THREE from 'three';
-import { useI18n } from '../../../composables/useI18n';
+
 import { useProteinSynthesis3D } from '../../../composables/biology/useProteinSynthesis3D';
 import { proteinSynthesisExperiment, proteinSynthesisStages } from '../../../services/protein-synthesis-data';
 import type { HotspotState } from '../../../types/biology.types';
 import InfoPanel from './InfoPanel.vue';
 import StageStepper from './StageStepper.vue';
+import { useRoute } from 'vue-router';
+import BiologyReportButton from './BiologyReportButton.vue';
+import { resolveExperimentId } from '../../../composables/useExperimentId';
+
+
+
+
 
 const router = useRouter();
-const { t } = useI18n();
+
+const route = useRoute();
+const experimentId = computed(() => resolveExperimentId('biology', route.path.split('/').filter(Boolean).pop() ?? ''));
 const containerRef = ref<HTMLDivElement | null>(null);
 const { currentStageIndex, setStage, error, isLoading, autoRotate, toggleAutoRotate, resetCamera, resetAll } = useProteinSynthesis3D(containerRef);
 
@@ -50,15 +61,19 @@ const goBack = (): void => {
 
 const isFullscreen = ref(false);
 
-const toggleFullscreen = (): void => {
+const toggleFullscreen = async (): Promise<void> => {
   const el = document.querySelector('.experiment-page') as HTMLElement | null;
   if (!el) return;
-  if (!document.fullscreenElement) {
-    el.requestFullscreen();
-    isFullscreen.value = true;
-  } else {
-    document.exitFullscreen();
-    isFullscreen.value = false;
+  try {
+    if (!document.fullscreenElement) {
+      await el.requestFullscreen();
+      isFullscreen.value = true;
+    } else {
+      await document.exitFullscreen();
+      isFullscreen.value = false;
+    }
+  } catch {
+    isFullscreen.value = !!document.fullscreenElement;
   }
 };
 </script>
@@ -76,6 +91,7 @@ const toggleFullscreen = (): void => {
         <h1 class="experiment-title">{{ t(proteinSynthesisExperiment.titleKey) }}</h1>
         <p class="experiment-subtitle">{{ t(proteinSynthesisExperiment.subtitleKey) }}</p>
       </div>
+      <BiologyReportButton :experiment-id="experimentId" :experiment-name="t(proteinSynthesisExperiment.titleKey)" />
       <button class="header-action" @click="toggleFullscreen">
         <svg v-if="!isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />

@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
+export type HelpItem = string | { label: string; desc: string };
 defineProps<{
   title: string;
-  sections: { heading: string; items: { label: string; desc: string }[] }[];
+  sections: { heading: string; items: HelpItem[] }[];
 }>();
 const emit = defineEmits<{ close: [] }>();
+function isString(item: HelpItem): item is string {
+  return typeof item === 'string';
+}
 </script>
 
 <template>
@@ -17,8 +23,9 @@ const emit = defineEmits<{ close: [] }>();
         <div v-for="section in sections" :key="section.heading" class="help-section">
           <h3>{{ section.heading }}</h3>
           <ul>
-            <li v-for="item in section.items" :key="item.label">
-              <b>{{ item.label }}:</b> {{ item.desc }}
+            <li v-for="(item, i) in section.items" :key="i">
+              <template v-if="isString(item)">{{ item }}</template>
+              <template v-else><b>{{ item.label }}:</b> {{ item.desc }}</template>
             </li>
           </ul>
         </div>

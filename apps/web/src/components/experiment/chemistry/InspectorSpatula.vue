@@ -1,13 +1,17 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed } from 'vue';
 import {
+
   items, isContainer, getLiquid,
   spatulaSelectedSolid, solidMap,
 } from '../../../composables/chemistry/useChemistryLab';
-import { useI18n } from '../../../composables/useI18n';
+
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 
-const { t } = useI18n();
+
+
 
 const props = defineProps<{
   item: LabItem;

@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
-const { t } = useI18n()
+
 const props = defineProps<{ calcResult: string }>()
 const emit = defineEmits<{ (e: 'calcG'): void; (e: 'calcT'): void; (e: 'calcV'): void; (e: 'calcFitG'): void }>()
 

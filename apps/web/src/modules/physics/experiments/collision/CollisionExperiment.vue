@@ -1,8 +1,10 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useCollisionExperiment } from '../../../../composables/collision/useCollisionExperiment'
 import { useCollisionReport } from '../../../../composables/collision/useCollisionReport'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import CollisionMenuBar from '../../../../components/experiment/collision/CollisionMenuBar.vue'
 import CollisionCanvas from '../../../../components/experiment/collision/CollisionCanvas.vue'
@@ -16,7 +18,10 @@ import CollisionReport from '../../../../components/experiment/collision/Collisi
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
-const { t } = useI18n()
+
+
+
+
 const { confirmReset } = useResetConfirm()
 const ex = useCollisionExperiment()
 const rep = useCollisionReport()

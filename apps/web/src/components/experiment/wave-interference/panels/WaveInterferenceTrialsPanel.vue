@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { WaveInterferenceTrial } from '../../../../composables/wave-interference/useWaveInterferenceTrials'
-const { t } = useI18n()
+
 interface Props { trials: WaveInterferenceTrial[] }
 defineProps<Props>()
 const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()

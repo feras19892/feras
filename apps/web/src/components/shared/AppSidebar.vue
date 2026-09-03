@@ -1,9 +1,13 @@
 <script lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 export interface SidebarItem {
+
   id: string;
   icon: string;
   label: string;
   badge?: number;
+  dot?: boolean;
 }
 export interface SidebarGroup {
   id: string;
@@ -15,9 +19,7 @@ export interface SidebarGroup {
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 
-const { t } = useI18n();
 
 const props = defineProps<{
   groups: SidebarGroup[];
@@ -87,6 +89,7 @@ const navGroups = computed(() => props.groups.map(g => ({
             <span class="item-icon">{{ item.icon }}</span>
             <span class="item-label">{{ item.label }}</span>
             <span v-if="item.badge" class="item-badge">{{ item.badge }}</span>
+            <span v-if="item.dot" class="item-dot"></span>
           </button>
         </div>
       </div>
@@ -146,6 +149,7 @@ const navGroups = computed(() => props.groups.map(g => ({
 .item-icon { font-size: 0.85rem; flex-shrink: 0; }
 .item-label { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .item-badge { min-width: 16px; height: 16px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.58rem; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+.item-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; margin-inline-start: auto; }
 
 .sidebar-foot { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 1rem; border-top: 1px solid rgba(255,255,255,0.04); }
 .user-info { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }

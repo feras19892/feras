@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed, ref } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
+
 import { analyzeReport } from '../../../services/ai.service';
 import { sanitizeHtml } from '../../../utils/sanitizeHtml';
 import type { ChemAnalysisColumnMeta, ChemAnalysisEquation, ChemAnalysisPlotConfig } from '../../../types/chemistry';
 import type { ChemStudentInfo } from '../../../types/chemistry';
 import ChemAnalysisConclusionPanel from './ChemAnalysisConclusionPanel.vue';
 import ChemAnalysisReportExport from './ChemAnalysisReportExport.vue';
+
+
+
+
 
 const props = defineProps<{
   sourceName: string;
@@ -34,8 +40,6 @@ const emit = defineEmits<{
   (e: 'sendToTeacher'): void;
   (e: 'conclusionUpdate', data: { conclusion: string; errors: string; improvements: string }): void;
 }>();
-
-const { t } = useI18n();
 
 const conclusionData = ref({ conclusion: '', errors: '', improvements: '' });
 const showPreview = ref(false);

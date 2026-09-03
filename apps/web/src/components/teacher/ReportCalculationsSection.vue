@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
-
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 defineProps<{
+
   equations: Record<string, unknown>[]
   solvedEquations: Record<string, unknown>[]
   regressionData: { slope: number; intercept: number; r2: number } | null
@@ -9,8 +10,6 @@ defineProps<{
   axesData: { x: string; y: string; xLabel: string; yLabel: string } | null
   errorCalcData: { theoretical: number | null; experimental: number | null; errorPercent: number | null } | null
 }>()
-
-const { t } = useI18n()
 
 function r2Quality(r2: number): string {
   if (r2 >= 0.95) return 'excellent'

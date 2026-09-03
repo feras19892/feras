@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { computed, ref } from 'vue'
 import type { SpecificHeatTrial } from '../../../../composables/specific-heat/useSpecificHeatTrials'
 import { METAL_CATALOG } from '../../../../composables/specific-heat/useSpecificHeatCalculations'
+
 
 const props = defineProps<{
   trials: SpecificHeatTrial[]

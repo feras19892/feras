@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { toRef } from 'vue'
 import { usePrismMinDeviation } from '../../../../composables/prism/usePrismMinDeviation'
-import { useI18n } from '../../../../composables/useI18n'
-
-const { t } = useI18n()
 
 interface Props {
   prismAngle: number

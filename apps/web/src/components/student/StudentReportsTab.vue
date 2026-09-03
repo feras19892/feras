@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, locale: i18nLocale } = useI18n();
 import { ref, computed } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
+import StudentHelpButton from './StudentHelpButton.vue'
 import type { StudentReportRow } from '../../composables/student/useStudentDashboard'
+
+
+
+
 
 const props = defineProps<{ rows: StudentReportRow[]; locale?: string }>()
 const emit = defineEmits<{ (e: 'open-report', id: number): void }>()
-const { t, locale: i18nLocale } = useI18n()
-
 const filter = ref<'all' | 'graded' | 'pending' | 'draft'>('all')
 const searchQuery = ref('')
 const dateFilter = ref<'all' | 'week' | 'month' | 'semester'>('all')
@@ -72,6 +77,7 @@ function timeShort(dateStr: string | null): string {
     <div class="panel-card">
       <div class="pc-header">
         <h3>📋 {{ t('dashboard.myReportsTitle') }}</h3>
+        <StudentHelpButton tab-id="reports" />
         <div class="filter-pills">
           <button :class="['fp', { active: filter === 'all' }]" @click="filter = 'all'">{{ t('dashboard.dash.allReports') }}</button>
           <button :class="['fp', { active: filter === 'graded' }]" @click="filter = 'graded'">{{ t('dashboard.statusGraded') }}</button>

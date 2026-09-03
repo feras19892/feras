@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{
   trials: InclinedTrial[]
   params: { thetaDeg: number; length: number; mass: number; g: number; mu: number }

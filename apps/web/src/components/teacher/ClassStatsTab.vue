@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, watch } from 'vue'
 import { getClassStats, exportClassReports, downloadGradebook } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
-import { useI18n } from '../../composables/useI18n'
+
 import TeacherStatsSummary from './TeacherStatsSummary.vue'
 import TeacherStatsCharts from './TeacherStatsCharts.vue'
 import TeacherStatsExpTable from './TeacherStatsExpTable.vue'
 import TeacherStatsStudentTable from './TeacherStatsStudentTable.vue'
 import TeacherStatsComparison from './TeacherStatsComparison.vue'
 import TeacherStatsExport from './TeacherStatsExport.vue'
+
+
+
+
 
 interface StudentStat { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }
 interface ExperimentStat { name: string; avg: number; count: number; highest: number; lowest: number }
@@ -23,7 +29,6 @@ interface StatsData {
 }
 
 const props = defineProps<{ classId: string }>()
-const { t } = useI18n()
 
 const loading = ref(false)
 const stats = ref<StatsData | null>(null)

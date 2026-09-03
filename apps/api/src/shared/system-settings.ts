@@ -23,6 +23,15 @@ export async function getSystemSettingBool(key: string, defaultValue = false): P
   return value === 'true';
 }
 
+export async function setSystemSetting(key: string, value: string): Promise<void> {
+  await db.run(
+    `INSERT INTO system_settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)
+     ON CONFLICT(key) DO UPDATE SET value = ?, updated_at = CURRENT_TIMESTAMP`,
+    key, value, value,
+  );
+  invalidateSystemSetting(key);
+}
+
 export function invalidateSystemSetting(key?: string): void {
   if (key) {
     cache.delete(key);

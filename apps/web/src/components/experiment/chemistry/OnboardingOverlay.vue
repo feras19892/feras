@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, computed } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
-const { t } = useI18n();
 
 const STORAGE_KEY = 'chem-lab-onboarding-v1';
 const visible = ref(!localStorage.getItem(STORAGE_KEY));

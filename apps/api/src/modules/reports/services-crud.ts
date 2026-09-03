@@ -1,7 +1,9 @@
 import { db } from '../../db/index.js';
 import { createNotification } from '../notifications/services.js';
+import { dispatchEvent } from '../notifications/dispatch.js';
 import { broadcastEvent } from '../sse/event-bus.js';
 import { checkAutoBadges } from '../gamification/services.js';
+import type { User } from '@my-modern-app/shared-types';
 
 async function getTeacherId(classId: string): Promise<number | null> {
   const row = await db.get('SELECT teacher_id FROM classes WHERE id = ?', classId);
@@ -15,6 +17,7 @@ interface CreateReportData {
   student_info?: string; conclusion?: string; conclusion_errors?: string;
   conclusion_improvements?: string; columns?: string; equations?: string;
   plots?: string; chart_snapshot?: string;
+  question_template_id?: number | null;
 }
 
 function validateReportData(data: CreateReportData): { valid: boolean; message?: string } {
@@ -57,34 +60,27 @@ export async function createReport(data: CreateReportData) {
       `INSERT INTO experiment_reports
        (student_id, class_id, experiment_type, experiment_name, experiment_id, readings, params,
         student_info, conclusion, conclusion_errors, conclusion_improvements,
-        columns, equations, plots, chart_snapshot, status, submitted_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'submitted', CURRENT_TIMESTAMP)`,
+        columns, equations, plots, chart_snapshot, question_template_id, status, submitted_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'submitted', CURRENT_TIMESTAMP)`,
       data.student_id, data.class_id, data.experiment_type, data.experiment_name, data.experiment_id || null,
       data.readings, data.params || null,
       data.student_info || null, data.conclusion || null,
       data.conclusion_errors || null, data.conclusion_improvements || null,
       data.columns || null, data.equations || null,
-      data.plots || null, data.chart_snapshot || null
+      data.plots || null, data.chart_snapshot || null,
+      data.question_template_id ?? null
     );
     const reportId = Number(result.lastID);
 
-    // إشعار للمدرس
-    const teacherId = await getTeacherId(data.class_id);
-    if (teacherId) {
-      await createNotification({
-        user_id: teacherId,
-        type: 'report_submitted',
-        title: `تقرير جديد: ${data.experiment_name}`,
-        message: `أرسل طالب تقريرًا جديدًا للتجربة "${data.experiment_name}"`,
-        report_id: reportId,
-        class_id: data.class_id,
-      });
-      broadcastEvent({
-        type: 'report_submitted',
-        payload: { reportId, experimentName: data.experiment_name, classId: data.class_id },
-        targetUserId: teacherId,
-      });
-    }
+    // إشعار ذكي
+    const student = await db.get<{ name: string }>('SELECT name FROM users WHERE id = ?', data.student_id);
+    await dispatchEvent({
+      type: 'report_submitted',
+      actorId: data.student_id,
+      actorName: student?.name || 'طالب',
+      actorRole: 'student',
+      payload: { reportId, classId: data.class_id },
+    });
 
     return { id: reportId, ...data };
   } catch (err: unknown) {
@@ -99,6 +95,7 @@ export async function resubmitReport(reportId: number, data: CreateReportData) {
   const old = await getReportById(reportId);
   if (!old) return { success: false, message: 'التقرير غير موجود' };
   if (old.student_id !== data.student_id) return { success: false, message: 'غير مصرح — لا يمكنك إعادة إرسال تقرير لا يخصك' };
+  if (old.class_id !== data.class_id) return { success: false, message: 'غير مصرح — الفصل لا يتطابق مع التقرير الأصلي' };
   try {
     const result = await db.run(
       `INSERT INTO experiment_reports
@@ -116,20 +113,21 @@ export async function resubmitReport(reportId: number, data: CreateReportData) {
     );
     const newId = Number(result.lastID);
 
-    // إشعار للمدرس
+    // إشعار ذكي
+    await dispatchEvent({
+      type: 'report_resubmitted',
+      actorId: old.student_id,
+      actorName: old.student_name || 'طالب',
+      actorRole: 'student',
+      payload: { reportId: newId, classId: data.class_id },
+    });
+
+    // تحديث حي: أبلغ معلم الفصل فوراً عبر SSE
     const teacherId = await getTeacherId(data.class_id);
     if (teacherId) {
-      await createNotification({
-        user_id: teacherId,
-        type: 'report_resubmitted',
-        title: `إعادة إرسال: ${data.experiment_name}`,
-        message: `أعاد طالب إرسال تقرير "${data.experiment_name}"`,
-        report_id: newId,
-        class_id: data.class_id,
-      });
       broadcastEvent({
         type: 'report_resubmitted',
-        payload: { reportId: newId, parentReportId: reportId, experimentName: data.experiment_name, classId: data.class_id },
+        payload: { report_id: newId, class_id: data.class_id, student_id: old.student_id },
         targetUserId: teacherId,
       });
     }
@@ -197,12 +195,13 @@ export async function markReportAsSeen(id: number) {
   return { success: true };
 }
 
-export async function gradeReport(id: number, data: { grade: number; feedback?: string; grade_accuracy?: number; grade_presentation?: number; grade_conclusion?: number; grade_innovation?: number }, teacherId: number, teacherName: string) {
+export async function gradeReport(id: number, data: { grade: number; feedback?: string; grade_accuracy?: number; grade_presentation?: number; grade_conclusion?: number; grade_innovation?: number }, teacherId: number, teacherName: string, actorRole: User['role'] = 'teacher') {
   let old = await db.get<{ student_id?: number; experiment_name?: string; class_id?: string; grade?: number; feedback?: string }>(`SELECT * FROM experiment_reports WHERE id = ?`, id);
 
   const dims = (data.grade_accuracy ?? 0) + (data.grade_presentation ?? 0) + (data.grade_conclusion ?? 0) + (data.grade_innovation ?? 0);
   const hasDims = data.grade_accuracy != null || data.grade_presentation != null || data.grade_conclusion != null || data.grade_innovation != null;
-  const finalGrade = hasDims ? Math.min(100, dims) : data.grade;
+  const rawGrade = hasDims ? dims : (data.grade ?? 0);
+  const finalGrade = Math.min(100, Math.max(0, rawGrade));
 
   await db.run('BEGIN');
   try {
@@ -227,20 +226,14 @@ export async function gradeReport(id: number, data: { grade: number; feedback?: 
     throw err;
   }
 
-  // إشعار للطالب (خارج الـ transaction)
+  // إشعار ذكي (خارج الـ transaction)
   if (old?.student_id) {
-    await createNotification({
-      user_id: old.student_id,
+    await dispatchEvent({
       type: 'report_graded',
-      title: `تم تصحيح التقرير: ${old.experiment_name}`,
-      message: `حصلت على ${data.grade}/100 في "${old.experiment_name}"`,
-      report_id: id,
-      class_id: old.class_id,
-    });
-    broadcastEvent({
-      type: 'report_graded',
-      payload: { reportId: id, grade: data.grade, experimentName: old.experiment_name, classId: old.class_id },
-      targetUserId: old.student_id,
+      actorId: teacherId,
+      actorName: teacherName,
+      actorRole: actorRole as any,
+      payload: { reportId: id, studentId: old.student_id, classId: old.class_id },
     });
   }
 

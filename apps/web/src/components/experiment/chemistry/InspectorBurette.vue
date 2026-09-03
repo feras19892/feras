@@ -1,15 +1,20 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import {
+
   selectedChemical, hasSelectedChemicalMap,
 } from '../../../composables/chemistry/useChemistryLab';
 import { dripRateMode } from '../../../composables/chemistry/useLabSimulation';
 import type { DripRateMode } from '../../../composables/chemistry/useLabSimulation';
-import { useI18n } from '../../../composables/useI18n';
+
 import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
 
-const { t } = useI18n();
+
+
+
 const { getName, resolveLabel } = useChemicalLocale();
 
 const props = defineProps<{

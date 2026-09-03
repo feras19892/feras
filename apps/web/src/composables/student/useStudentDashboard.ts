@@ -1,10 +1,11 @@
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onActivated, onDeactivated, onMounted, onUnmounted } from 'vue'
 import { getReports, getStudentStats } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
 import { getMyClasses, getBatchStudentData, joinClass as apiJoinClass, leaveClass as apiLeaveClass } from '../../services/class.service'
 import type { ClassItem, ClassStudent } from '../../services/class.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import { useI18n } from '../useI18n'
+import { eventBus } from '../shared/useEventBus'
 
 export interface StudentKPI {
   totalReports: number
@@ -40,8 +41,10 @@ export function useStudentDashboard() {
   const reports = ref<Report[]>([])
   const classes = ref<ClassItem[]>([])
   const classStudentsMap = ref<Record<string, ClassStudent[]>>({})
-  const stats = ref({ total: 0, graded: 0, pending: 0, average: 0 })
+  const stats = ref<{ total: number; graded: number; pending: number; average: number; draft?: number; best_grade?: number; new_feedback?: number }>({ total: 0, graded: 0, pending: 0, average: 0 })
   const loading = ref(false)
+  let isMounted = true
+  let abortController: AbortController | null = null
 
   const kpi = computed<StudentKPI>(() => {
     let gradedCount = 0, pendingCount = 0, draftCount = 0
@@ -64,14 +67,15 @@ export function useStudentDashboard() {
     }
 
     return {
-      totalReports: reports.value.length,
-      gradedCount,
-      pendingCount,
-      draftCount,
-      avgGrade: gradeCount ? Math.round(gradeSum / gradeCount) : 0,
-      bestGrade: best,
+      // الأولوية لعدّادات السيرفر الدقيقة (شاملة كل التقارير) — والقائمة المقتطعة fallback فقط
+      totalReports: stats.value.total || reports.value.length,
+      gradedCount: stats.value.graded || gradedCount,
+      pendingCount: stats.value.pending || pendingCount,
+      draftCount: stats.value.draft ?? draftCount,
+      avgGrade: stats.value.average || (gradeCount ? Math.round(gradeSum / gradeCount) : 0),
+      bestGrade: stats.value.best_grade ?? best,
       totalClasses: classes.value.length,
-      newFeedback,
+      newFeedback: stats.value.new_feedback ?? newFeedback,
     }
   })
 
@@ -103,22 +107,27 @@ export function useStudentDashboard() {
   )
 
   async function loadAll() {
+    if (loading.value || !isMounted) return
+    if (abortController) { abortController.abort(); abortController = null }
+    abortController = new AbortController()
     loading.value = true
     try {
-      const [rRes, cRes, batchRes, sRes] = await Promise.all([
-        getReports(),
-        getMyClasses(),
-        getBatchStudentData(),
-        auth.user ? getStudentStats(auth.user.id) : Promise.resolve(null),
+      const [rRes, cRes, batchRes, sRes] = await Promise.allSettled([
+        getReports({ limit: 100 }, abortController.signal),
+        getMyClasses(abortController.signal),
+        getBatchStudentData(abortController.signal),
+        auth.user ? getStudentStats(auth.user.id, abortController.signal) : Promise.resolve(null),
       ])
-      if (rRes.success) reports.value = rRes.reports
-      if (cRes.success) classes.value = cRes.classes
-      if (batchRes.success) classStudentsMap.value = batchRes.studentsMap
-      if (sRes?.success) stats.value = sRes.stats
+      if (!isMounted) return
+      if (rRes.status === 'fulfilled' && rRes.value.success) reports.value = rRes.value.reports
+      if (cRes.status === 'fulfilled' && cRes.value.success) classes.value = cRes.value.classes
+      if (batchRes.status === 'fulfilled' && batchRes.value.success) classStudentsMap.value = batchRes.value.studentsMap
+      if (sRes.status === 'fulfilled' && sRes.value?.success) stats.value = sRes.value.stats
     } catch (err) {
+      if (err instanceof Error && err.name === 'AbortError') return;
       if (import.meta.env.DEV) console.error('student dashboard load failed:', err);
     } finally {
-      loading.value = false
+      if (isMounted) loading.value = false
     }
   }
 
@@ -139,12 +148,24 @@ export function useStudentDashboard() {
     return res
   }
 
+  const liveEvents = ['report:graded', 'class:created', 'dashboard:refresh'] as const
   let refreshTimer: ReturnType<typeof setInterval> | null = null
-  onMounted(() => {
-    loadAll()
-    refreshTimer = setInterval(() => { if (document.visibilityState === 'visible') loadAll() }, 300000)
-  })
-  onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer) })
+
+  function attach() {
+    for (const e of liveEvents) eventBus.on(e, loadAll)
+    refreshTimer = setInterval(() => { if (document.visibilityState === 'visible' && isMounted) loadAll() }, 300000)
+  }
+
+  function detach() {
+    for (const e of liveEvents) eventBus.off(e, loadAll)
+    if (abortController) { abortController.abort(); abortController = null }
+    if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null }
+  }
+
+  onMounted(() => { isMounted = true; attach(); loadAll() })
+  onActivated(() => { isMounted = true; attach(); loadAll() })
+  onDeactivated(() => { isMounted = false; detach() })
+  onUnmounted(() => { isMounted = false; detach() })
 
   return {
     reports, classes, classStudentsMap, stats, loading,

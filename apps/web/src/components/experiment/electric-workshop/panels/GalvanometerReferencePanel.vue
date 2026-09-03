@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const NOTES = [
   '📐 الجلفانوميتر يقيس تيارات صغيرة جداً (µA) بدقة عالية',
   '⚡ قانون فاراداي: ε = -N × ΔΦ/Δt — أساس المولدات الكهربائية',

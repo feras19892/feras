@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { pendingChemicalFill, pendingSolidSelect } from '../../composables/chemistry/useChemistryLab';
@@ -11,7 +13,6 @@ import ExperimentSelector from '../../components/experiment/chemistry/Experiment
 import { type ExperimentDefinition, type TitrationReading, type ResolvedExperimentTheory, validateSteps as validateRegistrySteps } from '../../composables/chemistry/experiments';
 import '../../composables/chemistry/experiments';
 import { undo, redo, canUndo, canRedo, canMicroUndo, canMicroRedo } from '../../composables/chemistry/useChemistryHistory';
-import { useI18n } from '../../composables/useI18n';
 import { useChemistryResizing } from '../../composables/chemistry/useChemistryResizing';
 import { useChemistryActions, expTheory } from '../../composables/chemistry/useChemistryActions';
 import { encourageStep, tipForStep, startIdleMessages, stopIdleMessages } from '../../composables/chemistry/useLabAssistant';
@@ -25,8 +26,6 @@ import TitrationCurveChart from '../../components/experiment/chemistry/Titration
 import ChemReportModal from '../../components/experiment/chemistry/ChemReportModal.vue';
 import OnboardingOverlay from '../../components/experiment/chemistry/OnboardingOverlay.vue';
 import { buretteWarning } from '../../composables/chemistry/useLabSimulation';
-
-const { t } = useI18n();
 const router = useRouter();
 const { leftWidth, rightWidth, onLeftDown, onRightDown } = useChemistryResizing();
 const activeTab = ref('glassware');

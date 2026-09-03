@@ -25,6 +25,11 @@ export function solveCircuit(
 
   const { terminalNodeIndex, nodeToIndex, numNodes, find } = buildNodeGraph(components, wires, 'battery')
 
+  for (const comp of components) {
+    componentCurrents.set(comp.id, NaN)
+    componentVoltages.set(comp.id, NaN)
+  }
+
   if (numNodes === 0) {
     return { nodeVoltages, componentCurrents, componentVoltages, converged: true, iterations: 0, faults: [] }
   }
@@ -202,9 +207,17 @@ export function solveCircuit(
       }
     }
 
+    // Fix the reference (ground) node voltage to 0
+    for (let j = 0; j < size; j++) {
+      G[j] = 0
+    }
+    G[0 * size + 0] = 1
+    RHS[0] = 0
+
     const X = solveLinear(G, RHS, size)
     if (!X) {
-      return { nodeVoltages, componentCurrents, componentVoltages, converged: false, iterations: iter, faults: [] }
+      const faults = detectFaultsDC(components, wires, componentCurrents, componentVoltages, find)
+      return { nodeVoltages, componentCurrents, componentVoltages, converged: false, iterations: iter, faults }
     }
     const XArr: number[] = Array.from(X)
 

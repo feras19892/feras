@@ -149,18 +149,16 @@ export async function approveRequest(
 
   // Verify the approver is authorized
   if (approverRole !== 'admin') {
-    if (req.approver_type === 'teacher' && req.approver_id !== approverId) {
+    if (req.approver_type === 'admin') {
+      return { success: false, message: 'Not authorized' };
+    }
+    if (req.approver_type === 'teacher' && (approverRole !== 'teacher' || req.approver_id !== approverId)) {
       return { success: false, message: 'Not authorized' };
     }
     if (req.approver_type === 'school' && (approverRole !== 'school' || req.school_id !== approverId)) {
       return { success: false, message: 'Not authorized' };
     }
   }
-
-  await db.run(
-    `UPDATE approval_requests SET status = 'approved', approver_response = ?, approver_responded_at = datetime('now'), approver_name = ?, updated_at = datetime('now') WHERE id = ?`,
-    response, approverName, requestId,
-  );
 
   // Notify the requester
   await createNotification({
@@ -193,7 +191,10 @@ export async function rejectRequest(
   if (!req) return { success: false, message: 'Request not found or already processed' };
 
   if (approverRole !== 'admin') {
-    if (req.approver_type === 'teacher' && req.approver_id !== approverId) {
+    if (req.approver_type === 'admin') {
+      return { success: false, message: 'Not authorized' };
+    }
+    if (req.approver_type === 'teacher' && (approverRole !== 'teacher' || req.approver_id !== approverId)) {
       return { success: false, message: 'Not authorized' };
     }
     if (req.approver_type === 'school' && (approverRole !== 'school' || req.school_id !== approverId)) {

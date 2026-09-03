@@ -1,10 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref } from 'vue';
 import { schoolCreateApproval } from '../../services/approval.service';
-import { useI18n } from '../../composables/useI18n';
-
-const { t } = useI18n();
-
 const props = defineProps<{
   type: 'class_creation' | 'class_deletion' | 'class_edit' | 'user_creation' | 'user_edit' | 'report_deletion';
   targetUserId: number;

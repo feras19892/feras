@@ -18,7 +18,7 @@ const authMiddleware = centralAuthMiddleware;
 
 // School auth middleware (sets schoolId for school-scoped routes)
 const schoolAuth = async (c: any, next: any) => {
-  const token = getCookie(c, 'access_token');
+  const token = getCookie(c, 'access_token') || (c.req.header('Authorization')?.startsWith('Bearer ') ? c.req.header('Authorization')!.slice(7) : undefined);
   if (!token) return c.json({ success: false, message: 'Unauthorized' }, 401);
   try {
     const payload = await verifyAccessToken(token);
@@ -164,7 +164,7 @@ approvalRoutes.get('/:id', authMiddleware, async (c) => {
 
 // ─── Approve Request ───
 const approveSchema = z.object({
-  response: z.string().min(1).max(1000),
+  response: z.string().max(1000).optional(),
 });
 
 approvalRoutes.post('/:id/approve', authMiddleware, zValidator('json', approveSchema), async (c) => {
@@ -175,7 +175,7 @@ approvalRoutes.post('/:id/approve', authMiddleware, zValidator('json', approveSc
   const requester = await db.get<{ name: string }>('SELECT name FROM users WHERE id = ?', user.id);
   const approverName = requester?.name || user.email;
 
-  const result = await approveRequest(id, user.id, approverName, user.role, response);
+  const result = await approveRequest(id, user.id, approverName, user.role, response ?? '');
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true, action: result.action });
 });
@@ -189,7 +189,7 @@ approvalRoutes.post('/:id/reject', authMiddleware, zValidator('json', approveSch
   const requester = await db.get<{ name: string }>('SELECT name FROM users WHERE id = ?', user.id);
   const approverName = requester?.name || user.email;
 
-  const result = await rejectRequest(id, user.id, approverName, user.role, response);
+  const result = await rejectRequest(id, user.id, approverName, user.role, response ?? '');
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true });
 });
@@ -231,7 +231,7 @@ approvalRoutes.post('/school/:id/approve', schoolAuth, zValidator('json', approv
   const { response } = c.req.valid('json');
 
   const school = await db.get<{ name: string }>('SELECT name FROM schools WHERE id = ?', schoolId);
-  const result = await approveRequest(id, schoolId, school?.name || 'School', 'school', response);
+  const result = await approveRequest(id, schoolId, school?.name || 'School', 'school', response ?? '');
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true, action: result.action });
 });
@@ -243,13 +243,28 @@ approvalRoutes.post('/school/:id/reject', schoolAuth, zValidator('json', approve
   const { response } = c.req.valid('json');
 
   const school = await db.get<{ name: string }>('SELECT name FROM schools WHERE id = ?', schoolId);
-  const result = await rejectRequest(id, schoolId, school?.name || 'School', 'school', response);
+  const result = await rejectRequest(id, schoolId, school?.name || 'School', 'school', response ?? '');
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true });
 });
 
 // ─── Admin: Get All Approvals ───
 const adminAuth = adminAuthMiddleware;
+
+approvalRoutes.get('/', adminAuth, async (c) => {
+  const approvals = await getAllApprovals();
+  const requests = approvals.map((a: any) => ({
+    id: a.id,
+    type: a.type,
+    status: a.status,
+    user_name: a.requester_name || '—',
+    user_email: '',
+    user_role: a.requester_type || '',
+    created_at: a.created_at,
+    data: a.description ? { description: a.description } : undefined,
+  }));
+  return c.json({ success: true, requests, total: requests.length });
+});
 
 approvalRoutes.get('/admin/all', adminAuth, async (c) => {
   const approvals = await getAllApprovals();
@@ -261,7 +276,7 @@ approvalRoutes.post('/admin/:id/approve', adminAuth, zValidator('json', approveS
   const user = c.get('user') as { id: number; name: string; email: string; role: string };
   const { response } = c.req.valid('json');
 
-  const result = await approveRequest(id, user.id, user.name, 'admin', response);
+  const result = await approveRequest(id, user.id, user.name, 'admin', response ?? '');
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true, action: result.action });
 });
@@ -271,7 +286,7 @@ approvalRoutes.post('/admin/:id/reject', adminAuth, zValidator('json', approveSc
   const user = c.get('user') as { id: number; name: string; email: string; role: string };
   const { response } = c.req.valid('json');
 
-  const result = await rejectRequest(id, user.id, user.name, 'admin', response);
+  const result = await rejectRequest(id, user.id, user.name, 'admin', response ?? '');
   if (!result.success) return c.json({ success: false, message: result.message }, 400);
   return c.json({ success: true });
 });

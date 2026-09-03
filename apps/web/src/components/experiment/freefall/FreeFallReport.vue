@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed, shallowRef, watch } from 'vue'
 import ExperimentReport from '../ExperimentReport.vue'
 import DeletableSection from '../DeletableSection.vue'
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{
   trials: FreeFallTrial[]
   params?: { h: number; g: number; mass: number; airResistance: boolean }

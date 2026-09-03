@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { getTeacherDeadlines, deleteDeadline, type TeacherDeadline } from '../../services/deadline.service';
-import { useI18n } from '../../composables/useI18n';
-
-const { t, locale } = useI18n();
 
 const deadlines = ref<TeacherDeadline[]>([]);
 const loading = ref(false);

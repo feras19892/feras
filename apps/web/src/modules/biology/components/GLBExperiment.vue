@@ -1,12 +1,21 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import * as THREE from 'three';
-import { useI18n } from '../../../composables/useI18n';
+
 import { useGLBModel } from '../../../composables/biology/useGLBModel';
 import type { ModelPart } from '../../../composables/biology/useGLBModel';
 import type { HotspotState } from '../../../types/biology.types';
 import InfoPanel from './InfoPanel.vue';
+import { useRoute } from 'vue-router';
+import BiologyReportButton from './BiologyReportButton.vue';
+import { resolveExperimentId } from '../../../composables/useExperimentId';
+
+
+
+
 
 const props = defineProps<{
   modelPath: string;
@@ -20,7 +29,9 @@ const props = defineProps<{
 }>();
 
 const router = useRouter();
-const { t } = useI18n();
+
+const route = useRoute();
+const experimentId = computed(() => resolveExperimentId('biology', route.path.split('/').filter(Boolean).pop() ?? ''));
 const containerRef = ref<HTMLDivElement | null>(null);
 const {
   error,
@@ -34,6 +45,7 @@ const {
   highlight,
   setHovered,
   resetCamera,
+  pickPart,
   toggleXRay,
   toggleCrossSection,
   setCrossSectionOffset,
@@ -68,8 +80,9 @@ const markerLabels = computed(() =>
   Object.fromEntries((props.parts ?? []).map((p) => [p.id, t(p.nameKey)])),
 );
 
-const onPointerDown = (_event: PointerEvent): void => {
-  // placeholder for future drag detection
+const handleCanvasClick = (event: MouseEvent): void => {
+  const id = pickPart(event.clientX, event.clientY);
+  if (id) select(id);
 };
 
 const select = (id: string | null): void => {
@@ -87,20 +100,26 @@ const downloadScreenshot = (): void => {
   const link = document.createElement('a');
   link.href = dataUrl;
   link.download = 'anatomy-screenshot.png';
+  document.body.appendChild(link);
   link.click();
+  link.remove();
 };
 
 const isFullscreen = ref(false);
 
-const toggleFullscreen = (): void => {
+const toggleFullscreen = async (): Promise<void> => {
   const el = document.querySelector('.experiment-page') as HTMLElement | null;
   if (!el) return;
-  if (!document.fullscreenElement) {
-    el.requestFullscreen();
-    isFullscreen.value = true;
-  } else {
-    document.exitFullscreen();
-    isFullscreen.value = false;
+  try {
+    if (!document.fullscreenElement) {
+      await el.requestFullscreen();
+      isFullscreen.value = true;
+    } else {
+      await document.exitFullscreen();
+      isFullscreen.value = false;
+    }
+  } catch {
+    isFullscreen.value = !!document.fullscreenElement;
   }
 };
 </script>
@@ -118,6 +137,7 @@ const toggleFullscreen = (): void => {
         <h1 class="experiment-title">{{ t(props.titleKey) }}</h1>
         <p class="experiment-subtitle">{{ t(props.subtitleKey) }}</p>
       </div>
+      <BiologyReportButton :experiment-id="experimentId" :experiment-name="t(props.titleKey)" />
       <button class="header-action" @click="toggleFullscreen">
         <svg v-if="!isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
@@ -146,7 +166,7 @@ const toggleFullscreen = (): void => {
 
       <section
         class="canvas-section"
-        @pointerdown="onPointerDown"
+        @click="handleCanvasClick"
       >
         <div ref="containerRef" class="cell-canvas" />
 

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useI18n } from '../../composables/useI18n';
-import { useSchoolExport } from '../../composables/useSchoolExport';
-
+import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
+import { ref } from 'vue';
+import { useSchoolExport } from '../../composables/useSchoolExport';
 const { download } = useSchoolExport();
 const exporting = ref<string | null>(null);
 

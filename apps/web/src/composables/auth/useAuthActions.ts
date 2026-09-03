@@ -1,4 +1,4 @@
-import { fetchJson, ApiError, setTokens, clearTokens } from '../../services/http'
+import { fetchJson, ApiError, setTokens, clearTokens, getAccessToken } from '../../services/http'
 import { useI18n } from '../useI18n'
 import { useClassActions } from './useClassActions'
 import type { User, School } from '@my-modern-app/shared-types'
@@ -24,15 +24,35 @@ export function useAuthActions(
     return msg.includes('Failed to fetch') || msg.includes('fetch failed')
   }
 
+  const NETWORK_RETRY_MAX = 3;
+  const NETWORK_RETRY_BASE_MS = 300;
+
+  /** Retry transient network failures (e.g. API not up yet at first load) with short backoff. */
+  async function withNetworkRetry<T>(fn: () => Promise<T>): Promise<T> {
+    for (let attempt = 1; ; attempt++) {
+      try {
+        return await fn();
+      } catch (err) {
+        const isTransient = isNetworkError(err) || err instanceof TypeError;
+        if (!isTransient || attempt >= NETWORK_RETRY_MAX) throw err;
+        await new Promise((r) => setTimeout(r, NETWORK_RETRY_BASE_MS * attempt));
+      }
+    }
+  }
+
   async function login(email: string, password: string) {
     loading.value = true
     error.value = null
     try {
-      const data = await fetchJson<{ success: boolean; user?: User; school?: School; accessToken?: string; refreshToken?: string }>('/api/auth/login', {
+      const data = await fetchJson<{ success: boolean; message?: string; user?: User; school?: School; accessToken?: string; refreshToken?: string }>('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: email.toLowerCase().trim(), password }),
       })
+      if (!data.success) {
+        error.value = data.message || t('auth.errors.invalidCredentials')
+        return false
+      }
       clearGuestState()
       if (data.accessToken || data.refreshToken) {
         setTokens(data.accessToken, data.refreshToken)
@@ -58,19 +78,30 @@ export function useAuthActions(
     }
   }
 
-  async function registerWithRole(email: string, password: string, name: string, roleVal: 'teacher' | 'student', schoolCode?: string) {
+  async function registerWithRole(
+    email: string,
+    password: string,
+    name: string,
+    roleVal: 'teacher' | 'student',
+    schoolCode?: string,
+    inviteCode?: string,
+    age?: number | null,
+    consent = false,
+  ) {
     loading.value = true
     error.value = null
     try {
-      const body: Record<string, string> = { email, password, name, role: roleVal }
+      const body: Record<string, string | number | boolean | undefined> = { email: email.toLowerCase().trim(), password, name, role: roleVal, consent }
       if (schoolCode) body.school_code = schoolCode
-      const data = await fetchJson<{ success: boolean; user?: User }>('/api/auth/register', {
+      if (inviteCode) body.invite_code = inviteCode
+      if (typeof age === 'number' && Number.isFinite(age) && Number.isInteger(age) && age >= 5) body.age = age
+      const data = await fetchJson<{ success: boolean; user?: User; message?: string }>('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
       if (!data.success || !data.user) {
-        error.value = t('auth.errors.registerFailed')
+        error.value = data.message || t('auth.errors.registerFailed')
         return { ok: false as const }
       }
       clearGuestState()
@@ -88,8 +119,10 @@ export function useAuthActions(
   }
 
   async function fetchMe() {
+    const accessToken = getAccessToken();
+    if (!accessToken) return;
     try {
-      const data = await fetchJson<{ success: boolean; user: User }>('/api/auth/me');
+      const data = await withNetworkRetry(() => fetchJson<{ success: boolean; user: User }>('/api/auth/me'));
       if (data.success && data.user) {
         if (setSchoolSession) setSchoolSession(null)
         user.value = data.user;
@@ -102,8 +135,16 @@ export function useAuthActions(
   }
 
   async function init() {
+    const hasSchoolSession = !!localStorage.getItem('school_session');
+    if (hasSchoolSession) {
+      return;
+    }
+    const accessToken = getAccessToken();
+    if (!accessToken) {
+      return;
+    }
     try {
-      const data = await fetchJson<{ success: boolean; user: User }>('/api/auth/me');
+      const data = await withNetworkRetry(() => fetchJson<{ success: boolean; user: User }>('/api/auth/me'));
       if (data.success && data.user) {
         if (setSchoolSession) setSchoolSession(null)
         user.value = data.user;
@@ -111,14 +152,13 @@ export function useAuthActions(
         user.value = null;
       }
     } catch {
-      // auth failed (token expired and refresh failed) — clear user to force re-login
       user.value = null;
     }
   }
 
   async function tryRestore() {
     try {
-      const data = await fetchJson<{ success: boolean; user: User }>('/api/auth/me');
+      const data = await withNetworkRetry(() => fetchJson<{ success: boolean; user: User }>('/api/auth/me'));
       if (data.success && data.user) {
         if (setSchoolSession) setSchoolSession(null)
         user.value = data.user;

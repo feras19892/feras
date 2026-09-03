@@ -1,13 +1,21 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch } from 'vue'
 import { getMyClasses } from '../../services/class.service'
 import { createReport } from '../../services/report.service'
+import { getStudentQuestions, submitAnswers } from '@/services/experiment-questions.service'
+import type { AnswerInput } from '@/services/experiment-questions.service'
+import StudentQuestionsModal from '@/components/experiment-questions/StudentQuestionsModal.vue'
 import { useAuthStore } from '../../modules/auth/stores/auth'
-import { useI18n } from '../../composables/useI18n'
+
 import type { ClassItem } from '../../services/class.service'
 
+
+
+
+
 const auth = useAuthStore()
-const { t } = useI18n()
 
 const props = defineProps<{
   show: boolean
@@ -39,6 +47,10 @@ const selectedClassId = ref('')
 const loading = ref(false)
 const error = ref('')
 const success = ref('')
+const showQuestions = ref(false)
+const questionTemplateId = ref<number | null>(null)
+const answers = ref<AnswerInput[]>([])
+const hasQuestions = ref(false)
 
 async function loadClasses() {
   if (!auth.isLoggedIn) {
@@ -66,6 +78,38 @@ function safeParse(str: string | undefined) {
   if (!str) return undefined
   try { return JSON.parse(str) } catch { return undefined }
 }
+
+function reset() {
+  classes.value = []
+  selectedClassId.value = ''
+  hasQuestions.value = false
+  questionTemplateId.value = null
+  answers.value = []
+  showQuestions.value = false
+  error.value = ''
+  success.value = ''
+  loading.value = false
+}
+
+async function loadQuestions() {
+  hasQuestions.value = false
+  questionTemplateId.value = null
+  answers.value = []
+  if (!props.experimentId || !selectedClassId.value) return
+  try {
+    const res = await getStudentQuestions(props.experimentId, selectedClassId.value)
+    if (res.success && res.questions && res.questions.length > 0 && res.id) {
+      hasQuestions.value = true
+      questionTemplateId.value = res.id
+    }
+  } catch (err) { console.error('[Questions] load failed:', err) }
+}
+
+watch(selectedClassId, () => { if (selectedClassId.value && props.experimentId) loadQuestions() })
+
+watch(() => props.experimentId, () => {
+  if (props.show && selectedClassId.value) loadQuestions()
+})
 
 async function submit() {
   if (!auth.isLoggedIn) { error.value = t('experiments.errorLogin'); return }
@@ -97,9 +141,13 @@ async function submit() {
       equations: props.equations,
       plots: props.plots,
       chart_snapshot: props.chartSnapshot,
+      question_template_id: questionTemplateId.value ?? undefined,
     }
     const res = await createReport(payload)
-    if (res.success) {
+    if (res.success && res.report?.id) {
+      if (questionTemplateId.value && answers.value.length) {
+        await submitAnswers(res.report.id, answers.value)
+      }
       success.value = t('experiments.successSubmit')
       setTimeout(() => { emit('update:show', false); emit('submitted') }, 1200)
     } else {
@@ -114,7 +162,7 @@ async function submit() {
 }
 
 watch(() => props.show, (val) => {
-  if (val) loadClasses()
+  if (val) { reset(); loadClasses() }
 })
 </script>
 
@@ -162,7 +210,13 @@ watch(() => props.show, (val) => {
       <p v-if="error" class="msg error">{{ error }}</p>
       <p v-if="success" class="msg success">{{ success }}</p>
 
-      <div class="actions">
+      <div v-if="hasQuestions && !answers.length" class="actions">
+        <button class="btn-cancel" @click="$emit('update:show', false)">{{ t('experiments.cancelBtn') }}</button>
+        <button class="btn-submit" :disabled="!auth.isLoggedIn || classes.length === 0" @click="showQuestions = true">
+          أسئلة التجربة
+        </button>
+      </div>
+      <div v-else class="actions">
         <button class="btn-cancel" @click="$emit('update:show', false)">{{ t('experiments.cancelBtn') }}</button>
         <button class="btn-submit" :disabled="loading || !auth.isLoggedIn || classes.length === 0" @click="submit">
           {{ loading ? '...' : t('experiments.submitBtn') }}
@@ -170,6 +224,13 @@ watch(() => props.show, (val) => {
       </div>
     </div>
   </div>
+
+  <StudentQuestionsModal
+    v-model:show="showQuestions"
+    :experiment-id="props.experimentId"
+    :class-id="selectedClassId"
+    @done="({ templateId, answers: a }) => { questionTemplateId = templateId; answers = a }"
+  />
 </template>
 
 <style scoped>

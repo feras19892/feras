@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { onMounted, onUnmounted } from 'vue'
 import { useSolenoidExperiment } from '../../../../composables/electromagnetism/useSolenoidExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import MenuBar from '../../../../components/experiment/electromagnetism/MenuBar.vue'
 import ControlBar from '../../../../components/experiment/electromagnetism/ControlBar.vue'
 import SolenoidCanvas from '../../../../components/experiment/electromagnetism/SolenoidCanvas.vue'
@@ -13,8 +15,12 @@ import ElectromagnetismHelpModal from '../../../../components/experiment/electro
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
+
+
+
+
 const ex = useSolenoidExperiment()
-const { t } = useI18n()
+
 const showGuide = ref(true)
 const helpOpen = ref(false)
 

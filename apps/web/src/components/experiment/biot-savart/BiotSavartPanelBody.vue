@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { BiotSavartTrial } from '../../../composables/biot-savart/useBiotSavartTrials'
 
-const { t } = useI18n()
 interface Props { id: string; trials: BiotSavartTrial[]; params: { I: number; r: number; R: number; n: number; shape: 'wire' | 'loop' | 'solenoid' }; B: number }
 defineProps<Props>()
 const emit = defineEmits<{

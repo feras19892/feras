@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const LAMP_TYPES = [
   { type: 'تنجستن (مصباح تقليدي)', efficiency: 5, color: '#fbbf24' },
   { type: 'هالوجين', efficiency: 10, color: '#f59e0b' },

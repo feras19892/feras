@@ -1,12 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, locale } = useI18n();
 import { ref, onMounted, computed } from 'vue';
 import { getSchoolDetailedReports, getOutstandingStudents, getStrugglingStudents, getTeacherEvaluation, type OutstandingStudent, type StrugglingStudent, type TeacherEvaluation } from '../../services/school.service';
-import { useI18n } from '../../composables/useI18n';
 import type { DailyReport } from './school-reports-types';
 import SchoolReportsDaily from './SchoolReportsDaily.vue';
 import SchoolReportsStudents from './SchoolReportsStudents.vue';
-
-const { t, locale } = useI18n();
 const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US');
 
 const loading = ref(false);

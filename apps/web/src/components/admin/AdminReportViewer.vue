@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { useI18n } from '../../composables/useI18n';
 import { useConfirmDialog } from '../../composables/useConfirmDialog';
 import { updateAdminReportGrade, deleteAdminReport } from '../../services/admin.service';
 import ReportPreviewModal from '../shared/ReportPreviewModal.vue';
-
 interface AdminReportItem {
   id: number;
   student_name: string;
@@ -22,7 +22,6 @@ const props = defineProps<{ reports: AdminReportItem[]; initialSearch?: string }
 const emit = defineEmits<{ (e: 'refresh'): void; (e: 'delete', id: number): void }>();
 
 const router = useRouter();
-const { t } = useI18n();
 const searchQuery = ref(props.initialSearch || '');
 watch(() => props.initialSearch, (v) => { if (v !== undefined) searchQuery.value = v; });
 const filterStatus = ref<'all' | 'submitted' | 'graded' | 'resubmitted' | 'draft'>('all');
@@ -57,10 +56,6 @@ function statusLabel(status: string) {
     case 'draft': return t('admin.statusDraft');
     default: return status;
   }
-}
-
-function openReport(id: number) {
-  router.push(`/report/${id}`);
 }
 
 const previewReportId = ref<number | null>(null);

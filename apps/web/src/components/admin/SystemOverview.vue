@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import { ref, onMounted, computed } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import { getAdminSystemHealth, getAdminActivity, getAdminActivityStats, getAdminAuditLog, type AdminSystemHealth, type AdminActivityItem, type AdminActivityStats, type AuditLogEntry } from '../../services/admin.service';
-
 const emit = defineEmits<{
   (e: 'navigate', section: string): void
   (e: 'back'): void
 }>();
 
-const { t, locale } = useI18n();
+
 const loading = ref(true);
 const error = ref('');
 

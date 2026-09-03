@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import LabStatsPanel from './LabStatsPanel.vue';
 import GuidePanel from './GuidePanel.vue';
 import LabAssistant from './LabAssistant.vue';
@@ -6,8 +8,6 @@ import ExperimentStepsPanel from './ExperimentStepsPanel.vue';
 import type { ExperimentDefinition } from '../../../composables/chemistry/experiments';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
-import { useI18n } from '../../../composables/useI18n';
-const { t } = useI18n();
 
 const props = defineProps<{
   selectedItem: LabItem | null;

@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { useI18n } from '../../composables/useI18n';
-import { useConfirmDialog } from '../../composables/useConfirmDialog';
 import { getActiveSessions } from '../../services/admin.service';
-
 interface AdminUser { id: number; name: string; email: string; role: string; created_at?: string }
 
 const props = defineProps<{
@@ -19,8 +18,6 @@ const emit = defineEmits<{
   (e: 'add', name: string, email: string, password: string, role: string): void;
   (e: 'view', id: number): void;
 }>();
-
-const { t } = useI18n();
 const searchQuery = ref(props.initialSearch || '');
 watch(() => props.initialSearch, (v) => { if (v !== undefined) searchQuery.value = v; });
 const roleFilter = ref('all');
@@ -83,21 +80,15 @@ onUnmounted(() => { if (pollTimer) clearInterval(pollTimer); });
 
 function isOnline(id: number) { return onlineUserIds.value.has(id); }
 
-const { confirmDialog } = useConfirmDialog();
 
 function confirmDelete(id: number) {
-  confirmDialog({ message: t('admin.confirmDeleteUser'), variant: 'danger' }).then(ok => {
-    if (ok) emit('delete', id);
-  });
+  emit('delete', id);
 }
 
 function bulkDelete() {
   if (selectedIds.value.size === 0) return;
-  confirmDialog({ message: t('admin.confirmBulkDelete', { count: selectedIds.value.size }), variant: 'danger' }).then(ok => {
-    if (!ok) return;
-    for (const id of selectedIds.value) emit('delete', id);
-    selectedIds.value = new Set();
-  });
+  for (const id of selectedIds.value) emit('delete', id);
+  selectedIds.value = new Set();
 }
 
 function bulkChangeRole() {

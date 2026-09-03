@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const COLORS = [
   { name: 'أحمر', lambda: 650, color: '#ef4444' },
   { name: 'أخضر', lambda: 530, color: '#22c55e' },

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { DashboardKPI } from '../../composables/teacher/useTeacherDashboard'
-
-const { t } = useI18n()
 
 defineProps<{
   kpi: DashboardKPI

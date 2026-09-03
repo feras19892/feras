@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import SpringPanelBody from './SpringPanelBody.vue'
 import type { PanelId } from '../../../composables/spring/useSpringLayout'
 import type { SpringTrial } from '../../../composables/spring/useSpringTrials'
 import type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'
+
 
 interface Measured {
   T: number | null; f: number | null; omega: number | null; kCalc: number | null; kCalcEff: number | null

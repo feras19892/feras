@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { CalorimetryTrial } from '../../../composables/calorimetry/useCalorimetryTrials'
 import CalorimetryPanelBody from './CalorimetryPanelBody.vue'
+
 
 interface Props {
   maximized: Record<string, boolean>

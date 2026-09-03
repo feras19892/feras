@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, locale } = useI18n();
 import { ref, computed } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import { useRouter } from 'vue-router';
 import {
   blockSchoolUser, unblockSchoolUser,
@@ -10,6 +11,8 @@ import SchoolApprovalButton from '../shared/SchoolApprovalButton.vue';
 import ConfirmModal from '../shared/ConfirmModal.vue';
 import SchoolExtraTabs from './SchoolExtraTabs.vue';
 
+
+
 interface SchoolReportRow {
   id: number;
   experiment_name: string;
@@ -17,7 +20,7 @@ interface SchoolReportRow {
   class_name?: string;
   status: string;
   grade?: number | null;
-  created_at: string;
+  created_at?: string;
 }
 
 interface SchoolSessionRow {
@@ -52,8 +55,6 @@ const emit = defineEmits<{
   freeze: [string];
   unfreeze: [string];
 }>();
-
-const { t } = useI18n();
 const router = useRouter();
 
 const actionError = ref('');
@@ -248,7 +249,7 @@ function cancelConfirm() {
           <td>{{ r.class_name || '—' }}</td>
           <td><span class="status-tag" :class="r.status">{{ r.status }}</span></td>
           <td>{{ r.grade != null ? r.grade : '—' }}</td>
-          <td>{{ new Date(r.created_at).toLocaleDateString(dateLocaleStr) }}</td>
+          <td>{{ r.created_at ? new Date(r.created_at).toLocaleDateString(dateLocaleStr) : '—' }}</td>
           <td @click.stop>
             <button class="mini-btn view" @click="router.push(`/report/${r.id}`)" :title="t('school.btnOpen')">👁️</button>
             <SchoolApprovalButton
@@ -278,6 +279,7 @@ function cancelConfirm() {
   <!-- Confirmation Modal -->
   <ConfirmModal
     v-if="confirmTarget"
+    :open="!!confirmTarget"
     :icon="confirmTarget.action === 'block' ? '🚫' : '🔓'"
     :title="confirmTarget.action === 'block' ? t('school.confirmBlockTitle') : t('school.confirmUnblockTitle')"
     :message="(confirmTarget.action === 'block' ? t('school.confirmBlockMsg') : t('school.confirmUnblockMsg')) + ' <strong>' + confirmTarget.userName + '</strong>؟'"

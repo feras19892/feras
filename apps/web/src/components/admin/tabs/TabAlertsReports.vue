@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { Insights } from '../dashboard/useAdminDashboard';
 import { roleLabel, roleColor } from '../dashboard/useAdminDashboard';
+
 
 defineProps<{
   insights: Insights | null;

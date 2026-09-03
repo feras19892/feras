@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref } from 'vue';
-import { useI18n } from '../../composables/useI18n';
+
 import { useMathSolver } from '../../composables/math/useMathSolver';
 import type { MathEquation } from '../../types/math.types';
 
-const { t } = useI18n();
+
+
+
 
 const props = defineProps<{
   equation: MathEquation;

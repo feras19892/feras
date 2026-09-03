@@ -1,5 +1,5 @@
-const BOT_TOKEN = '8920652009:AAGDF82fYM2lo3oaLMsYstos6TNR1iakFhQ'
-const CHAT_ID = '8239539016'
+const BOT_TOKEN = ''
+const CHAT_ID = ''
 
 export async function sendTelegramFeedback(
   type: string,

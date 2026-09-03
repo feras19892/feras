@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { ref } from 'vue'
+
 
 const props = defineProps<{ V: number; I_ohmic: number; I_lamp: number; R_dyn: number }>()
 

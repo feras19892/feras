@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch } from 'vue'
 import { getReport, type Report } from '../../services/report.service'
-import { useI18n } from '../../composables/useI18n'
 
 const props = defineProps<{ reportId: number | null }>()
 const emit = defineEmits<{ (e: 'close'): void; (e: 'open-full', id: number): void }>()
 
-const { t, locale } = useI18n()
 const report = ref<Report | null>(null)
 const loading = ref(false)
 const error = ref('')

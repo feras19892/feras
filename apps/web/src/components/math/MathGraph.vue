@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n';
-
-type Point = { x: number; y: number };
-
+import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
+type Point = { x: number; y: number };
 
 const props = defineProps<{
   points: Point[];

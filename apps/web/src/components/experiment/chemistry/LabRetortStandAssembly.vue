@@ -148,7 +148,7 @@ const {
 
     <!-- 4. الأدوات الملتصقة بالمشبك العلوي -->
     <div
-      v-for="{ uid, slotOffset, slotIndex, item } in attachedItems.filter(({ uid }) => uid !== props.draggingUid)"
+      v-for="{ uid, slotOffset, item } in attachedItems.filter(({ uid }) => uid !== props.draggingUid)"
       :key="uid"
       class="attached-item"
       :class="{ selected: props.selectedBuretteUid === uid }"

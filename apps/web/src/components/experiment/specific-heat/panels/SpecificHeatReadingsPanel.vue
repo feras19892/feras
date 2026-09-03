@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { computed } from 'vue'
 import { METAL_CATALOG } from '../../../../composables/specific-heat/useSpecificHeatCalculations'
+
 
 const props = defineProps<{
   metalType: string

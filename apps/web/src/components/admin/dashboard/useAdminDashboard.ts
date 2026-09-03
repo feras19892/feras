@@ -1,5 +1,6 @@
-import { ref, computed, onMounted, onUnmounted, type ComputedRef } from 'vue';
+import { ref, computed, onActivated, onDeactivated, onMounted, onUnmounted, type ComputedRef } from 'vue';
 import { useI18n } from '../../../composables/useI18n';
+import { eventBus } from '../../../composables/shared/useEventBus';
 import {
   getDetailedStats, getAcademicTracking, getAdminSystemHealth, getAdminInsights,
   type AdminStats,
@@ -109,24 +110,33 @@ export function useAdminDashboard(stats: ComputedRef<AdminStats | null>) {
   const loading = ref(false);
   const error = ref('');
 
+  let isMounted = true;
+  let loadController: AbortController | null = null;
+
   async function load() {
+    if (!isMounted) return;
+    if (loadController) { loadController.abort(); loadController = null; }
+    loadController = new AbortController();
     loading.value = true;
     error.value = '';
     try {
       const [d, a, h, i] = await Promise.all([
-        getDetailedStats('all'),
-        getAcademicTracking(),
-        getAdminSystemHealth(),
-        getAdminInsights(),
+        getDetailedStats('all', loadController.signal),
+        getAcademicTracking(loadController.signal),
+        getAdminSystemHealth(loadController.signal),
+        getAdminInsights(loadController.signal),
       ]);
+      if (!isMounted) return;
       if (d.success) detailed.value = d.stats as unknown as DetailedStats;
       if (a.success) academic.value = a.tracking as unknown as AcademicTracking;
       if (h.success) health.value = h.health as unknown as SystemHealth;
       if (i.success) insights.value = i.insights as unknown as Insights;
     } catch (err: unknown) {
-      error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
+      if (err instanceof Error && err.name === 'AbortError') return;
+      if (isMounted) error.value = (err instanceof Error ? err.message : '') || t('admin.loadError');
     } finally {
-      loading.value = false;
+      loadController = null;
+      if (isMounted) loading.value = false;
     }
   }
 
@@ -203,15 +213,26 @@ export function useAdminDashboard(stats: ComputedRef<AdminStats | null>) {
       .slice(0, 8);
   });
 
+  const liveEvents = ['report:submitted', 'class:created', 'user:banned', 'user:unbanned', 'dashboard:refresh'] as const;
   let pollTimer: ReturnType<typeof setInterval> | null = null;
-  onMounted(() => {
+
+  function attach() {
+    for (const e of liveEvents) eventBus.on(e, load);
     pollTimer = setInterval(() => {
-      if (document.visibilityState === 'visible') load();
+      if (document.visibilityState === 'visible' && isMounted) load();
     }, 60000);
-  });
-  onUnmounted(() => {
-    if (pollTimer) clearInterval(pollTimer);
-  });
+  }
+
+  function detach() {
+    for (const e of liveEvents) eventBus.off(e, load);
+    if (loadController) { loadController.abort(); loadController = null; }
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  }
+
+  onMounted(() => { isMounted = true; attach(); load(); });
+  onActivated(() => { isMounted = true; attach(); load(); });
+  onDeactivated(() => { isMounted = false; detach(); });
+  onUnmounted(() => { isMounted = false; detach(); });
 
   return {
     activeTab, detailed, academic, health, insights, loading, error, load,

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { Report } from '../../services/report.service'
 
 defineProps<{
@@ -8,7 +9,6 @@ defineProps<{
   plots: Record<string, unknown>[]
 }>()
 
-const { t } = useI18n()
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useSpringDraw } from '../../../composables/spring/useSpringDraw'
 import type { SpringParams } from '../../../modules/physics/experiments/spring/useSpringPhysics'
@@ -8,7 +9,6 @@ interface SimState {
   x: number; v: number; t: number; running: boolean; paused: boolean;
 }
 
-const { t } = useI18n()
 const props = defineProps<{
   params: SpringParams
   simState: SimState

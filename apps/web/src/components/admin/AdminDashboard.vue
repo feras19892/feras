@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed, onMounted } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import type { AdminStats } from '../../services/admin.service';
 import { useAdminDashboard } from './dashboard/useAdminDashboard';
 import TabOverview from './tabs/TabOverview.vue';
@@ -8,9 +9,7 @@ import TabPerformance from './tabs/TabPerformance.vue';
 import TabAlerts from './tabs/TabAlerts.vue';
 import TabAnalytics from './tabs/TabAnalytics.vue';
 import TabAcademic from './tabs/TabAcademic.vue';
-
 const props = defineProps<{ stats: AdminStats | null }>();
-const { t } = useI18n();
 const stats = computed(() => props.stats);
 
 const {

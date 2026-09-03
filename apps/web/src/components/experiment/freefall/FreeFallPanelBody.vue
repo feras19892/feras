@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue'
 import FreeFallTablePanel from './FreeFallTablePanel.vue'
 import FreeFallScatterPanel from './FreeFallScatterPanel.vue'
@@ -7,7 +9,6 @@ import FreeFallParamsPanel from './FreeFallParamsPanel.vue'
 import FreeFallReportPanel from './FreeFallReportPanel.vue'
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
 import type { FreeFallParams } from '../../../modules/physics/experiments/freefall/useFreeFallPhysics'
-import { useI18n } from '../../../composables/useI18n'
 
 interface SimState {
   t: number
@@ -25,7 +26,6 @@ interface TrialStats {
   g_std: number
 }
 
-const { t } = useI18n()
 const props = defineProps<{
   id: string
   trials: FreeFallTrial[]

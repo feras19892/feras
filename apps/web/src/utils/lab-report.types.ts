@@ -32,6 +32,8 @@ export interface OpenLabReportOptions {
   title: string
   icon?: string
   experimentName?: string
+  /** API experiment_type value used when sending the report to the teacher (defaults to 'physics'). */
+  experimentType?: string
   dir?: 'rtl' | 'ltr'
   dateLocale?: string
   meta?: Record<string, string>

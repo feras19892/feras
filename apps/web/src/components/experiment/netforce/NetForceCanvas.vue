@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import type { NetForceParams, NetForceState, NetForceMeasured } from '../../../modules/physics/experiments/netforce/useNetForcePhysics'
 import { toRad, calcEquilibrium, calcCentripetal } from '../../../composables/netforce/netforceUtils'
+
 
 const props = defineProps<{
   params: NetForceParams

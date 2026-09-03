@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useInterferenceExperiment } from '../../../../composables/interference/useInterferenceExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import InterferenceMenuBar from '../../../../components/experiment/interference/InterferenceMenuBar.vue'
 import InterferenceCanvas from '../../../../components/experiment/interference/InterferenceCanvas.vue'
@@ -14,8 +16,12 @@ import InterferenceOverlayPanels from '../../../../components/experiment/interfe
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useInterferenceExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

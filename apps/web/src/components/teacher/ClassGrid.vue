@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import type { ClassItem } from '../../services/class.service'
 import CreateApprovalButton from '../shared/CreateApprovalButton.vue'
@@ -18,7 +19,6 @@ const emit = defineEmits<{
   (e: 'rename', cls: ClassItem): void
 }>()
 
-const { t } = useI18n()
 const auth = useAuthStore()
 </script>
 

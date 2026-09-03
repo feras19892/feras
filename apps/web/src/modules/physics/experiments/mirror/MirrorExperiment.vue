@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useMirrorExperiment } from '../../../../composables/mirror/useMirrorExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import MirrorCanvas from '../../../../components/experiment/mirror/MirrorCanvas.vue'
 import MirrorPanelBody from '../../../../components/experiment/mirror/MirrorPanelBody.vue'
@@ -13,7 +15,10 @@ import MirrorGuidePanel from '../../../../components/experiment/mirror/MirrorGui
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
-const { t } = useI18n()
+
+
+
+
 const { confirmReset } = useResetConfirm()
 const ex = useMirrorExperiment()
 const helpOpen = ref(false)

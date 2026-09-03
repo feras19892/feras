@@ -5,6 +5,9 @@ import { settings } from './settings'
 import { account } from './account'
 import { legal, privacy, terms } from './legal'
 
+import { subscriptions } from './subscriptions'
+import { hardcoded } from './hardcoded'
+
 export default {
   auth: auth.ar,
   landing: landingAr,
@@ -14,4 +17,6 @@ export default {
   legal: legal.ar,
   privacy: privacy.ar,
   terms: terms.ar,
+  subscriptions: subscriptions.ar,
+  hardcoded: hardcoded.ar,
 } as const

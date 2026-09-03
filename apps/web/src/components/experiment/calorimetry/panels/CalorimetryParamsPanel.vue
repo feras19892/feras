@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 const props = defineProps<{
+
   params: { mWater: number; tWater: number; mMetal: number; tMetal: number; cMetal: number; mCup: number; metalType: string }
   metalOptions?: Record<string, { c: number; nameAr: string; nameEn: string }>
 }>()

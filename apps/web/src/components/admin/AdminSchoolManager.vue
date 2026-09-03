@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, locale } = useI18n();
 import { ref, onMounted } from 'vue';
 import {
   adminGetAllSchools, adminToggleSchool, adminGetSchoolDetail,
@@ -8,8 +10,7 @@ import {
   type AdminSchool, type CapacityRequest, type SchoolUser, type SchoolClass, type SchoolReportItem, type SchoolStats,
 } from '../../services/school.service';
 import { fetchJson } from '../../services/http';
-import { useI18n } from '../../composables/useI18n';
-import { useConfirmDialog } from '../../composables/useConfirmDialog';
+import { useAdminPasswordConfirm } from '../../composables/useAdminPasswordConfirm';
 import AdminSchoolList from './schools/AdminSchoolList.vue';
 import AdminSchoolOverview from './schools/AdminSchoolOverview.vue';
 import AdminSchoolUsers from './schools/AdminSchoolUsers.vue';
@@ -17,7 +18,10 @@ import AdminSchoolClasses from './schools/AdminSchoolClasses.vue';
 import AdminSchoolReports from './schools/AdminSchoolReports.vue';
 import AdminSchoolEdit from './schools/AdminSchoolEdit.vue';
 
-const { t, locale } = useI18n();
+
+
+
+const { adminPasswordConfirm } = useAdminPasswordConfirm();
 const schools = ref<AdminSchool[]>([]);
 const loading = ref(true);
 const errorMsg = ref('');
@@ -73,7 +77,9 @@ function closeDetail() {
 }
 
 async function handleToggle(id: number) {
-  const res = await adminToggleSchool(id);
+  const adminPassword = await requestAdminPassword('أدخل كلمة مرور الأدمن لتأكيد تغيير حالة المدرسة');
+  if (!adminPassword) return;
+  const res = await adminToggleSchool(id, adminPassword);
   if (res.success) {
     const s = schools.value.find(s => s.id === id);
     if (s) s.is_active = !s.is_active;
@@ -82,7 +88,9 @@ async function handleToggle(id: number) {
 
 async function handleSaveEdit(data: { name: string; email: string; max_students: number; max_teachers: number }) {
   if (!selectedSchool.value) return;
-  const res = await adminUpdateSchool(selectedSchool.value.id, data);
+  const adminPassword = await requestAdminPassword('أدخل كلمة مرور الأدمن لتأكيد تعديل المدرسة');
+  if (!adminPassword) return;
+  const res = await adminUpdateSchool(selectedSchool.value.id, data, adminPassword);
   if (res.success) {
     const s = schools.value.find(s => s.id === selectedSchool.value!.id);
     if (s) { s.name = data.name; s.email = data.email; s.max_students = data.max_students; s.max_teachers = data.max_teachers; }
@@ -90,13 +98,16 @@ async function handleSaveEdit(data: { name: string; email: string; max_students:
   }
 }
 
-const { confirmDialog } = useConfirmDialog();
+
+async function requestAdminPassword(message: string): Promise<string | null> {
+  return adminPasswordConfirm({ message });
+}
 
 async function handleDelete() {
   if (!selectedSchool.value) return;
-  const ok = await confirmDialog({ message: t('admin.schoolConfirmDelete', { name: selectedSchool.value.name }), variant: 'danger' });
-  if (!ok) return;
-  const res = await adminDeleteSchool(selectedSchool.value.id);
+  const adminPassword = await adminPasswordConfirm({ message: t('admin.schoolConfirmDelete', { name: selectedSchool.value.name }), variant: 'danger' });
+  if (!adminPassword) return;
+  const res = await adminDeleteSchool(selectedSchool.value.id, adminPassword);
   if (res.success) {
     schools.value = schools.value.filter(s => s.id !== selectedSchool.value!.id);
     closeDetail();
@@ -105,21 +116,25 @@ async function handleDelete() {
 
 async function handleRemoveUser(userId: number) {
   if (!selectedSchool.value) return;
-  const ok = await confirmDialog({ message: t('admin.schoolRemoveUser'), variant: 'danger' });
-  if (!ok) return;
-  const res = await adminRemoveSchoolUser(selectedSchool.value.id, userId);
+  const adminPassword = await adminPasswordConfirm({ message: t('admin.schoolRemoveUser', 'أدخل كلمة مرور الأدمن لتأكيد إزالة المستخدم'), variant: 'danger' });
+  if (!adminPassword) return;
+  const res = await adminRemoveSchoolUser(selectedSchool.value.id, userId, adminPassword);
   if (res.success) schoolUsers.value = schoolUsers.value.filter(u => u.id !== userId);
 }
 
 async function handleBlockUser(userId: number) {
   if (!selectedSchool.value) return;
-  const res = await adminBlockSchoolUser(selectedSchool.value.id, userId);
+  const adminPassword = await adminPasswordConfirm({ message: t('admin.schoolConfirmBlock', 'أدخل كلمة مرور الأدمن لتأكيد حظر المستخدم'), variant: 'danger' });
+  if (!adminPassword) return;
+  const res = await adminBlockSchoolUser(selectedSchool.value.id, userId, adminPassword);
   if (res.success) { const u = schoolUsers.value.find(u => u.id === userId); if (u) u.blocked_at = new Date().toISOString(); }
 }
 
 async function handleUnblockUser(userId: number) {
   if (!selectedSchool.value) return;
-  const res = await adminUnblockSchoolUser(selectedSchool.value.id, userId);
+  const adminPassword = await adminPasswordConfirm({ message: t('admin.schoolConfirmUnblock', 'أدخل كلمة مرور الأدمن لتأكيد إلغاء الحظر'), variant: 'success' });
+  if (!adminPassword) return;
+  const res = await adminUnblockSchoolUser(selectedSchool.value.id, userId, adminPassword);
   if (res.success) { const u = schoolUsers.value.find(u => u.id === userId); if (u) u.blocked_at = null; }
 }
 

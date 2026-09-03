@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { Report, GradeHistoryEntry } from '../../services/report.service'
 import { useAuthStore } from '../../modules/auth/stores/auth'
 import ReportCommentThread from '../shared/ReportCommentThread.vue'
@@ -16,7 +17,6 @@ const emit = defineEmits<{
   (e: 'back'): void
 }>()
 
-const { t } = useI18n()
 const auth = useAuthStore()
 
 const sections = [

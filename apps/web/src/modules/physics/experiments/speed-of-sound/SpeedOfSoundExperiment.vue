@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useSpeedOfSoundExperiment } from '../../../../composables/speed-of-sound/useSpeedOfSoundExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import SpeedOfSoundMenuBar from '../../../../components/experiment/speed-of-sound/SpeedOfSoundMenuBar.vue'
 import SpeedOfSoundCanvas from '../../../../components/experiment/speed-of-sound/SpeedOfSoundCanvas.vue'
@@ -14,8 +16,12 @@ import SpeedOfSoundOverlayPanels from '../../../../components/experiment/speed-o
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useSpeedOfSoundExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

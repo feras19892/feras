@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useCalorimetryExperiment } from '../../../../composables/calorimetry/useCalorimetryExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import CalorimetryMenuBar from '../../../../components/experiment/calorimetry/CalorimetryMenuBar.vue'
 import CalorimetryCanvas from '../../../../components/experiment/calorimetry/CalorimetryCanvas.vue'
@@ -14,8 +16,12 @@ import CalorimetryHelpModal from '../../../../components/experiment/calorimetry/
 import CalorimetryGuidePanel from '../../../../components/experiment/calorimetry/CalorimetryGuidePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useCalorimetryExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

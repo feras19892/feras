@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, defineAsyncComponent } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
 import type { ClassRow } from '../../composables/teacher/useTeacherDashboard'
 
-const { t } = useI18n()
+
+
+
 
 defineProps<{
   classRows: ClassRow[]

@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { usePolarizationExperiment } from '../../../../composables/polarization/usePolarizationExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import PolarizationMenuBar from '../../../../components/experiment/polarization/PolarizationMenuBar.vue'
 import PolarizationCanvas from '../../../../components/experiment/polarization/PolarizationCanvas.vue'
@@ -14,8 +16,12 @@ import PolarizationOverlayPanels from '../../../../components/experiment/polariz
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = usePolarizationExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

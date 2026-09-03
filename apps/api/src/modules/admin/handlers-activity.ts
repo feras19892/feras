@@ -5,7 +5,7 @@ import * as activitySvc from '../activity/service.js';
 import * as feedbackSvc from './feedback-service.js';
 import * as warnSvc from './warning-service.js';
 import * as detailSvc from './user-detail-service.js';
-import { createNotification } from '../notifications/services.js';
+import { dispatchEvent } from '../notifications/dispatch.js';
 import type { User } from '@my-modern-app/shared-types';
 
 export function registerActivityRoutes(app: Hono<{ Variables: { user: User } }>): void {
@@ -71,16 +71,40 @@ export function registerActivityRoutes(app: Hono<{ Variables: { user: User } }>)
     const admin = c.get('user') as User;
     const { userId, title, message, severity } = c.req.valid('json');
     const result = await warnSvc.createWarning(admin.id, userId, title, message, severity);
-    if (result.success) {
-      const sevEmoji = severity === 'critical' ? '🚨' : severity === 'high' ? '⚠️' : severity === 'normal' ? '🔔' : '📝';
-      await createNotification({
-        user_id: userId,
-        type: 'warning',
-        title: `${sevEmoji} تنبيه من الإدارة: ${title}`,
-        message: message.slice(0, 150),
-      });
-    }
     return c.json(result, 201);
+  });
+
+  app.post('/announcements', zValidator('json', z.object({
+    title: z.string().max(200).optional(),
+    message: z.string().min(1).max(2000),
+  })), async (c) => {
+    const admin = c.get('user') as User;
+    const { title, message } = c.req.valid('json');
+    await dispatchEvent({
+      type: 'global_announcement',
+      actorId: admin.id,
+      actorName: admin.name,
+      actorRole: 'admin',
+      payload: { message: title ? `${title}: ${message}` : message },
+    });
+    return c.json({ success: true });
+  });
+
+  app.post('/alerts', zValidator('json', z.object({
+    targetType: z.enum(['admin', 'school', 'teacher', 'student', 'all']),
+    schoolId: z.number().int().positive().optional(),
+    message: z.string().min(1).max(2000),
+  })), async (c) => {
+    const admin = c.get('user') as User;
+    const { targetType, schoolId, message } = c.req.valid('json');
+    await dispatchEvent({
+      type: 'system_alert',
+      actorId: admin.id,
+      actorName: admin.name,
+      actorRole: 'admin',
+      payload: { targetType, schoolId, message },
+    });
+    return c.json({ success: true });
   });
 
   app.get('/warnings', async (c) => {

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 interface CollisionTrialItem {
+
   id: number; m1: number; m2: number; v1i: number; v2i: number; e: number; v1f: number; v2f: number; lossPercent: number
 }
 interface CollisionStats {
   avgV1f: number; avgV2f: number; avgLoss: number
 }
 
-const { t } = useI18n()
 const props = defineProps<{
   trials: CollisionTrialItem[]
   params?: Record<string, number>

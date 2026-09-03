@@ -1,0 +1,331 @@
+/* ============================================================
+   Admin HUD Theme — Floating Layers / Smart Workspace
+   ============================================================ */
+
+.hud-shell,
+[data-hud="admin"] {
+  --hud-bg: #0b0f19;
+  --hud-bg-deep: #070a10;
+  --hud-surface: rgba(30, 41, 59, 0.72);
+  --hud-surface-solid: #111827;
+  --hud-border: rgba(148, 163, 184, 0.12);
+  --hud-border-glow: rgba(167, 139, 250, 0.18);
+  --hud-accent: #a78bfa;
+  --hud-accent-hover: #c4b5fd;
+  --hud-accent-glow: rgba(167, 139, 250, 0.35);
+  --hud-text: #f8fafc;
+  --hud-text-soft: #cbd5e1;
+  --hud-text-muted: #94a3b8;
+  --hud-danger: #f87171;
+  --hud-success: #4ade80;
+  --hud-warning: #fbbf24;
+  --hud-info: #60a5fa;
+  --hud-glass-blur: 16px;
+}
+
+.hud-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 80% 10%, rgba(109, 40, 217, 0.12) 0%, transparent 35%),
+    radial-gradient(circle at 15% 85%, rgba(167, 139, 250, 0.08) 0%, transparent 30%),
+    var(--hud-bg);
+  color: var(--hud-text);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  direction: rtl;
+}
+
+.hud-shell * {
+  box-sizing: border-box;
+}
+
+/* ---------- Header ---------- */
+.hud-header {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--hud-border);
+  background: var(--hud-surface);
+  backdrop-filter: blur(var(--hud-glass-blur));
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.hud-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hud-brand-icon {
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--hud-accent-glow);
+  border: 1px solid var(--hud-border-glow);
+}
+
+.hud-brand-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--hud-text);
+}
+
+.hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hud-conn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--hud-surface-solid);
+  border: 1px solid var(--hud-border);
+  color: var(--hud-text-muted);
+}
+
+.hud-conn::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hud-text-muted);
+}
+
+.hud-conn.sse::before { background: var(--hud-success); box-shadow: 0 0 8px var(--hud-success); }
+.hud-conn.polling::before { background: var(--hud-warning); }
+
+/* ---------- Main Content ---------- */
+.hud-main {
+  flex: 1;
+  padding: 140px 24px 40px;
+  overflow-y: auto;
+}
+
+.hud-main > * {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---------- Placeholder Dock ---------- */
+.hud-dock-placeholder {
+  height: 80px;
+  flex-shrink: 0;
+}
+
+/* ---------- Base card style ---------- */
+.hud-card {
+  border-radius: 16px;
+  border: 1px solid var(--hud-border);
+  background: var(--hud-surface);
+  backdrop-filter: blur(12px);
+  padding: 16px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.hud-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--hud-border-glow);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--hud-border-glow) inset;
+}
+
+/* ---------- Loading state ---------- */
+.hud-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--hud-text-muted);
+}
+
+/* ---------- Grid ---------- */
+.hud-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .hud-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Status Orb ---------- */
+.hud-orb {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--hud-text-muted);
+  box-shadow: 0 0 8px currentColor;
+}
+
+.hud-orb.active { background: var(--hud-success); color: var(--hud-success); }
+.hud-orb.inactive { background: var(--hud-text-muted); color: var(--hud-text-muted); }
+.hud-orb.blocked { background: var(--hud-danger); color: var(--hud-danger); }
+.hud-orb.pending { background: var(--hud-warning); color: var(--hud-warning); }
+.hud-orb.graded { background: var(--hud-success); color: var(--hud-success); }
+.hud-orb.draft { background: var(--hud-info); color: var(--hud-info); }
+.hud-orb.submitted { background: var(--hud-info); color: var(--hud-info); }
+.hud-orb.resubmitted { background: var(--hud-warning); color: var(--hud-warning); }
+.hud-orb.warning { background: var(--hud-warning); color: var(--hud-warning); }
+.hud-orb.info { background: var(--hud-info); color: var(--hud-info); }
+.hud-orb.success { background: var(--hud-success); color: var(--hud-success); }
+.hud-orb.danger { background: var(--hud-danger); color: var(--hud-danger); }
+
+/* ---------- Card Parts ---------- */
+.hud-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hud-card.clickable {
+  cursor: pointer;
+}
+
+.hud-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.hud-card__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--hud-surface-solid);
+  font-size: 18px;
+}
+
+.hud-card__title-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.hud-card__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--hud-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hud-card__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 10px;
+}
+
+.hud-card__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--hud-surface-solid);
+}
+
+.hud-card__stat-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--hud-text);
+}
+
+.hud-card__stat-label {
+  font-size: 11px;
+  color: var(--hud-text-muted);
+}
+
+.hud-card__stat.highlight .hud-card__stat-value {
+  color: var(--hud-accent);
+}
+
+.hud-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.15s ease;
+}
+
+.hud-card:hover .hud-card__actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hud-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--hud-border);
+  border-radius: 8px;
+  background: var(--hud-surface-solid);
+  color: var(--hud-text-soft);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.hud-card__action:hover {
+  background: var(--hud-accent-glow);
+  border-color: var(--hud-accent);
+  color: var(--hud-text);
+}
+
+.hud-card__action.danger:hover {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: var(--hud-danger);
+  color: var(--hud-danger);
+}
+
+/* ---------- Mini Bar ---------- */
+.hud-mini-bar {
+  height: 6px;
+  width: 100%;
+  border-radius: 3px;
+  background: var(--hud-surface-solid);
+  overflow: hidden;
+}
+
+.hud-mini-bar__fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--hud-accent);
+  transition: width 0.4s ease;
+}
+

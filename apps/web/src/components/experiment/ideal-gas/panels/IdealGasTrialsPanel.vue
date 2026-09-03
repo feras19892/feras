@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { IdealGasTrial } from '../../../../composables/ideal-gas/useIdealGasTrials'
-const { t } = useI18n()
+
 defineProps<{ trials: IdealGasTrial[] }>()
 const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()
 </script>

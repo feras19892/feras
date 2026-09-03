@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
@@ -16,12 +18,12 @@ import { handleDropExited } from '../../../composables/chemistry/useDropPhysics'
 import { undo, redo, canUndo, canRedo, clearHistory } from '../../../composables/chemistry/useChemistryHistory';
 import { pipetteDraw, pipetteDispense, pipetteDrawAmount, pipetteDispenseAmount, pipetteDrawFrom, pipetteDispenseTo, pipetteFill, pipetteEmpty } from '../../../composables/chemistry/usePipetteActions';
 import { execAction, toggleBuretteValve, toggleSepFunnelValve, toggleBurner, tareBalance, tareContainer, buretteDropOne, spatulaSelectSolid, spatulaAddSolid } from '../../../composables/chemistry/useExecActions';
-import { useI18n } from '../../../composables/useI18n';
-const { t } = useI18n();
 import { useWorkspaceDrag } from '../../../composables/chemistry/useWorkspaceDrag';
 import FloatingInspector from './FloatingInspector.vue';
 import LabItemRenderer from './LabItemRenderer.vue';
 import WorkspaceOverlays from './WorkspaceOverlays.vue';
+
+
 
 const emit = defineEmits<{ select: [item: LabItem | null, state: ToolState | null] }>();
 

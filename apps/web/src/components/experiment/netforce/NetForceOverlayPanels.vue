@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { NetForceParams, NetForceState, NetForceMeasured } from '../../../modules/physics/experiments/netforce/useNetForcePhysics'
 import type { NetForceTrial } from '../../../composables/netforce/useNetForceTrials'
 import NetForcePanelBody from './NetForcePanelBody.vue'
+
 
 defineProps<{
   maximized: Record<string, boolean>

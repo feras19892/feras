@@ -1,20 +1,24 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import * as THREE from 'three';
-import { useI18n } from '../../../composables/useI18n';
 import { useHeartGLB } from '../../../composables/biology/useHeartGLB';
 import type { HeartPart } from '../../../composables/biology/useHeartGLB';
 import type { HotspotState } from '../../../types/biology.types';
 import InfoPanel from './InfoPanel.vue';
 import HeartToolbar from './HeartToolbar.vue';
-
+import BiologyReportButton from './BiologyReportButton.vue';
+import { useRoute } from 'vue-router';
+import { resolveExperimentId } from '../../../composables/useExperimentId';
 const props = defineProps<{
   parts: HeartPart[];
 }>();
 
 const router = useRouter();
-const { t } = useI18n();
+const route = useRoute();
+const experimentId = computed(() => resolveExperimentId('biology', route.path.split('/').filter(Boolean).pop() ?? ''));
 const goBack = (): void => {
   router.push('/biology/anatomy');
 };
@@ -131,6 +135,7 @@ const toggleFullscreen = (): void => {
       <div class="header-content">
         <h1 class="experiment-title">{{ t('biology.heartTitle') }}</h1>
       </div>
+      <BiologyReportButton :experiment-id="experimentId" :experiment-name="t('biology.heartTitle')" />
       <button class="header-action" @click="toggleFullscreen">
         <svg v-if="!isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />

@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { onMounted, onUnmounted } from 'vue'
 import { useStraightWireExperiment } from '../../../../composables/electromagnetism/useStraightWireExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import MenuBar from '../../../../components/experiment/electromagnetism/MenuBar.vue'
 import ControlBar from '../../../../components/experiment/electromagnetism/ControlBar.vue'
 import StraightWireCanvas from '../../../../components/experiment/electromagnetism/StraightWireCanvas.vue'
@@ -13,8 +15,12 @@ import StraightWireGuidePanel from '../../../../components/experiment/electromag
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
 import { ref } from 'vue'
 
+
+
+
+
 const ex = useStraightWireExperiment()
-const { t } = useI18n()
+
 const showGuide = ref(true)
 const helpOpen = ref(false)
 

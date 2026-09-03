@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const MATERIALS = [
   { name: 'فضة (Silver)',   rho: 1.59e-8,  color: '#c0c0c0' },
   { name: 'نحاس (Copper)',   rho: 1.68e-8,  color: '#b87333' },

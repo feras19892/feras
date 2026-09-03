@@ -1,7 +1,9 @@
 import { db, dbRun, dbGet } from '../../db/index.js';
 import { createNotification } from '../notifications/services.js';
+import { getSystemSettingBool } from '../../shared/system-settings.js';
 import { broadcastEvent } from '../sse/event-bus.js';
 import { filterMessage } from './filter.js';
+import { translateToArabic } from '../../shared/translation.js';
 
 const SPAM_WINDOW_MS = 10_000; // 10 seconds
 const SPAM_MAX_MESSAGES = 5; // max 5 messages per 10s
@@ -14,6 +16,7 @@ export interface ClassMessage {
   user_name: string;
   user_role: string;
   content: string;
+  translated_content: string | null;
   is_flagged: number;
   flagged_reason: string | null;
   created_at: string;
@@ -92,7 +95,7 @@ export async function sendMessage(
   userName: string,
   userRole: string,
   content: string
-): Promise<{ success: boolean; message?: ClassMessage; flagged?: boolean; reason?: string; muted?: boolean }> {
+): Promise<{ success: boolean; message?: ClassMessage; flagged?: boolean; reason?: string; muted?: boolean; flaggedWords?: string[]; language?: string }> {
   const trimmed = content.trim();
   if (!trimmed) return { success: false, reason: 'empty' };
   if (trimmed.length > 500) return { success: false, reason: 'too_long' };
@@ -118,8 +121,8 @@ export async function sendMessage(
       await createNotification({
         user_id: admin.id,
         type: 'chat_flagged',
-        title: `تنبيه: رسالة مخالفة في الدردشة`,
-        message: `المستخدم "${userName}" (${userRole}) حاول إرسال كلمات غير لائقة في دردشة الفصل. الكلمات: ${result.flaggedWords.join(', ')}`,
+        title: `تنبيه: رسالة مخالفة من ${userName}`,
+        message: `المستخدم "${userName}" (${userRole}) أرسل كلمات محظورة في الفصل ${classId}: ${result.flaggedWords.join(', ')}. تم حظر الرسالة.`,
         class_id: classId,
       });
       broadcastEvent({
@@ -130,11 +133,15 @@ export async function sendMessage(
     }
   }
 
+  const finalContent = flagged ? result.cleanedContent : trimmed;
+  const translatedContent = await translateToArabic(finalContent);
+
   const insertResult = await db.run(
-    `INSERT INTO class_messages (class_id, user_id, user_name, user_role, content, is_flagged, flagged_reason)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO class_messages (class_id, user_id, user_name, user_role, content, translated_content, is_flagged, flagged_reason)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     classId, userId, userName, userRole,
-    flagged ? result.cleanedContent : trimmed,
+    finalContent,
+    translatedContent,
     flagged, flaggedReason
   );
 
@@ -144,7 +151,7 @@ export async function sendMessage(
   }
 
   const msg = await db.get(`SELECT * FROM class_messages WHERE id = ?`, Number(insertResult.lastID));
-  return { success: true, message: msg, flagged: flagged === 1, reason: flaggedReason || undefined };
+  return { success: true, message: msg, flagged: flagged === 1, reason: flaggedReason || undefined, flaggedWords: result.flaggedWords, language: result.language };
 }
 
 export async function getFlaggedMessages(limit = 50): Promise<ClassMessage[]> {
@@ -177,6 +184,7 @@ export async function getChatStatsForAdmin() {
   return {
     total: total?.count || 0,
     flagged: flagged?.count || 0,
+    chatEnabled: await getSystemSettingBool('chat_enabled', true),
     byClass: byClass.map((r: Record<string, unknown>) => ({
       id: r.id,
       name: r.name,
@@ -208,6 +216,14 @@ export async function deleteMessage(messageId: number, userId: number, userRole:
   return { success: true };
 }
 
+export async function unflagMessage(messageId: number): Promise<{ success: boolean }> {
+  const result = await db.run(
+    `UPDATE class_messages SET is_flagged = 0, flagged_reason = NULL WHERE id = ?`,
+    messageId,
+  );
+  return { success: (result.changes ?? 0) > 0 };
+}
+
 export async function getUnreadCounts(userId: number, role: string): Promise<Record<string, number>> {
   let classIdsQuery: string;
   let classIdsParams: (string | number)[];
@@ -216,7 +232,7 @@ export async function getUnreadCounts(userId: number, role: string): Promise<Rec
     classIdsQuery = `SELECT id FROM classes WHERE teacher_id = ?`;
     classIdsParams = [userId];
   } else if (role === 'student') {
-    classIdsQuery = `SELECT class_id FROM class_students WHERE student_id = ?`;
+    classIdsQuery = `SELECT class_id AS id FROM class_students WHERE student_id = ?`;
     classIdsParams = [userId];
   } else if (role === 'admin') {
     classIdsQuery = `SELECT id FROM classes`;

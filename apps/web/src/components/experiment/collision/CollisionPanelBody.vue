@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import CollisionParamsPanel from './CollisionParamsPanel.vue'
 import CollisionDataPanel from './CollisionDataPanel.vue'
 import CollisionSignalPanel from './CollisionSignalPanel.vue'
@@ -6,9 +8,7 @@ import CollisionScatterChart from './CollisionScatterChart.vue'
 import type { CollisionSignalPoint } from '../../../composables/collision/useCollisionLab'
 import type { CollisionParams, CollisionState } from '../../../modules/physics/experiments/collision/useCollisionPhysics'
 import type { CollisionTrial } from '../../../composables/collision/useCollisionTrials'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{
   id: string
   params: CollisionParams

@@ -101,13 +101,14 @@ export async function refreshAccessToken(
       try {
         await db.run('DELETE FROM refresh_tokens WHERE token_hash = ?', hash);
 
-        const u = await db.get<{ id: number; email: string; name: string; role: string; blocked_at: string | null }>(
-          'SELECT id, email, name, role, blocked_at FROM users WHERE id = ?', userId
+        const u = await db.get<{ id: number; email: string; name: string; role: string; school_id: number | null; blocked_at: string | null; block_until: string | null }>(
+          'SELECT id, email, name, role, school_id, blocked_at, block_until FROM users WHERE id = ?', userId
         );
         if (!u) { await db.run('ROLLBACK'); return { success: false, message: 'المستخدم غير موجود' }; }
-        if (u.blocked_at) { await db.run('ROLLBACK'); return { success: false, message: 'الحساب محظور' }; }
+        const now = new Date().toISOString();
+        if (u.blocked_at && (!u.block_until || u.block_until > now)) { await db.run('ROLLBACK'); return { success: false, message: 'الحساب محظور' }; }
 
-        token = await signAccessToken({ sub: String(u.id), email: u.email, role: u.role as User['role'] });
+        token = await signAccessToken({ sub: String(u.id), email: u.email, name: u.name, role: u.role as User['role'], school_id: u.school_id });
         newRefreshToken = generateRefreshToken();
         await db.run(
           'INSERT INTO refresh_tokens (token_hash, user_id, expires_at) VALUES (?, ?, ?)',

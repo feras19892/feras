@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import { ref } from 'vue';
 import { addComment, getComments } from '../../services/report.service';
-import { useI18n } from '../../composables/useI18n';
+
 import type { ReportComment } from '../../services/report.service';
 import VoiceRecorderButton from './VoiceRecorderButton.vue';
+
+
+
+
 
 const props = defineProps<{
   reportId: number;
@@ -11,7 +17,7 @@ const props = defineProps<{
   userName: string;
 }>();
 
-const { t, locale } = useI18n();
+
 const comments = ref<ReportComment[]>([]);
 const newComment = ref('');
 const loading = ref(false);

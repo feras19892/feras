@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { ColumnStat, DataQuality } from '../../composables/teacher/useReportParser'
 
 defineProps<{
@@ -8,8 +9,6 @@ defineProps<{
   columnStats: ColumnStat[]
   quality: DataQuality
 }>()
-
-const { t } = useI18n()
 
 function fmt(v: unknown): string {
   if (typeof v === 'number') return v.toFixed(4).replace(/\.?0+$/, '')

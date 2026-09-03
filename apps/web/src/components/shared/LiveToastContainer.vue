@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { ref, watch, onUnmounted } from 'vue';
 import { useNotifications } from '../../composables/useNotifications';
+
 
 const { notifications } = useNotifications();
 

@@ -37,7 +37,7 @@ export async function getActivityStats() {
     `SELECT COUNT(*) as count FROM feedback WHERE date(created_at) = date('now')`
   );
   const todayLogins = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE date(login_at) = date('now')`);
-  const activeNow = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL`);
+  const activeNow = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL AND login_at > datetime('now', '-30 minutes')`);
 
   return {
     today: (todayLogins?.count || 0) + (todayReports?.count || 0) + (todayClasses?.count || 0) + (todayFeedback?.count || 0),
@@ -56,7 +56,7 @@ export async function getSmartInsights() {
      WHERE role != 'admin'
      AND id NOT IN (SELECT DISTINCT user_id FROM session_log WHERE login_at > datetime('now', '-7 days'))
      AND id NOT IN (SELECT DISTINCT student_id FROM experiment_reports WHERE submitted_at > datetime('now', '-7 days'))
-     AND id NOT IN (SELECT DISTINCT teacher_id FROM classes c
+     AND id NOT IN (SELECT DISTINCT c.teacher_id FROM classes c
                     JOIN experiment_reports r ON c.id = r.class_id
                     WHERE r.submitted_at > datetime('now', '-7 days'))
      ORDER BY created_at DESC LIMIT 20`
@@ -78,16 +78,16 @@ export async function getSmartInsights() {
      WHERE u.role = 'teacher'
      AND u.id NOT IN (
        SELECT DISTINCT c.teacher_id FROM classes c
-       JOIN experiment_reports r ON c.id = r.class_id
+       WHERE c.id IN (SELECT class_id FROM experiment_reports)
      )
      LIMIT 20`
   );
 
   const topUsers = await db.all(
     `SELECT u.id, u.name, u.role, COUNT(r.id) as report_count
-     FROM users u LEFT JOIN experiment_reports r ON u.id = r.student_id
-     WHERE r.submitted_at > datetime('now', '-30 days') OR r.id IS NULL
-     GROUP BY u.id HAVING COUNT(r.id) > 0
+     FROM users u INNER JOIN experiment_reports r ON u.id = r.student_id
+     WHERE r.submitted_at > datetime('now', '-30 days')
+     GROUP BY u.id
      ORDER BY report_count DESC LIMIT 10`
   );
 
@@ -98,7 +98,7 @@ export async function getSmartInsights() {
      ORDER BY a.created_at DESC LIMIT 10`
   );
 
-  const activeNow = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL`);
+  const activeNow = await db.get(`SELECT COUNT(*) as count FROM session_log WHERE logout_at IS NULL AND login_at > datetime('now', '-30 minutes')`);
 
   return { inactiveUsers, emptyClasses, ungradedCount: ungradedReports?.count || 0, noReportsTeachers, topUsers, recentActivity, activeNow: activeNow?.count || 0 };
 }

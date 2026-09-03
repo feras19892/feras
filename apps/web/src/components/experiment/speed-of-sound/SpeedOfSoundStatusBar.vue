@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue'
-import { useI18n } from '../../../composables/useI18n'
-const { t } = useI18n()
+
 interface Props {
   running: boolean
   paused: boolean

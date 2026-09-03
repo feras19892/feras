@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { direction, t } = useI18n();
 import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'
 import { linearRegression } from '../spring/linearRegression'
 
-const { t } = useI18n()
+
 const props = defineProps<{
   trials: InclinedTrial[]
 }>()

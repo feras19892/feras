@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
   keyField: 'id',
 })
 
-const slots = useSlots()
+const _slots = useSlots()
 const containerRef = ref<HTMLElement | null>(null)
 const visibleHeight = ref(props.height)
 

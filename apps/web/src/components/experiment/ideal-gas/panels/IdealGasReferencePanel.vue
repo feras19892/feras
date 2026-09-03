@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const PROCESSES = [
   { name: 'حجم ثابت', formula: 'V = const', color: '#22c55e' },
   { name: 'حرارة ثابتة', formula: 'T = const', color: '#3b82f6' },

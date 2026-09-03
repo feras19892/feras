@@ -1,11 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, computed } from 'vue';
 import AccountSettingsModal from './AccountSettingsModal.vue';
 import NotificationBell from './NotificationBell.vue';
-import { useI18n } from '../../composables/useI18n';
-
-const { t } = useI18n();
-
 export interface DockItem {
   id: string;
   icon: string;

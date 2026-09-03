@@ -1,8 +1,9 @@
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onActivated, onDeactivated, onMounted, onUnmounted } from 'vue'
 import { getMyClasses, getBatchClassData } from '../../services/class.service'
 import type { ClassItem, ClassStudent } from '../../services/class.service'
-import { getReports } from '../../services/report.service'
+import { getReports, getTeacherStats } from '../../services/report.service'
 import type { Report } from '../../services/report.service'
+import { eventBus } from '../shared/useEventBus'
 
 export interface DashboardKPI {
   totalClasses: number
@@ -44,8 +45,9 @@ export interface ClassRow {
 function isToday(dateStr?: string): boolean {
   if (!dateStr) return false
   const d = new Date(dateStr)
+  if (Number.isNaN(d.getTime())) return false
   const now = new Date()
-  return d.getDate() === now.getDate() && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
+  return d.toISOString().split('T')[0] === now.toISOString().split('T')[0]
 }
 
 function daysSince(dateStr?: string): number {
@@ -68,6 +70,10 @@ export function useTeacherDashboard() {
   const loading = ref(false)
   const classStatsMap = ref<Record<string, ClassStats>>({})
   const classStudentsMap = ref<Record<string, ClassStudent[]>>({})
+  // عدّادات حية دقيقة من السيرفر — لا تعتمد على القائمة المقتطعة (100)
+  const liveStats = ref<{ pending: number; unopened: number; overdue: number; submitted_today: number; graded_today: number } | null>(null)
+  let isMounted = true
+  let abortController: AbortController | null = null
 
   const kpi = computed<DashboardKPI>(() => {
     let totalStudents = 0, totalReports = 0, avgAccum = 0, avgCount = 0
@@ -92,12 +98,13 @@ export function useTeacherDashboard() {
       totalClasses: classes.value.length,
       totalStudents,
       totalReports,
-      pendingCount: allReports.value.filter(r => r.status === 'submitted' || r.status === 'resubmitted').length,
-      unopenedCount,
-      overdueCount,
+      // الأولوية لعدّادات السيرفر الدقيقة — والقائمة المقتطعة fallback فقط
+      pendingCount: liveStats.value?.pending ?? allReports.value.filter(r => r.status === 'submitted' || r.status === 'resubmitted').length,
+      unopenedCount: liveStats.value?.unopened ?? unopenedCount,
+      overdueCount: liveStats.value?.overdue ?? overdueCount,
       avgGrade: avgCount ? Math.round(avgAccum / avgCount) : 0,
-      gradedToday,
-      submittedToday,
+      gradedToday: liveStats.value?.graded_today ?? gradedToday,
+      submittedToday: liveStats.value?.submitted_today ?? submittedToday,
     }
   })
 
@@ -163,32 +170,51 @@ export function useTeacherDashboard() {
   )
 
   async function loadAll() {
+    if (loading.value || !isMounted) return
+    if (abortController) { abortController.abort(); abortController = null }
+    abortController = new AbortController()
     loading.value = true
     try {
-      const [clsRes, batchRes, rRes] = await Promise.all([
-        getMyClasses(),
-        getBatchClassData(),
-        getReports(),
+      const [clsRes, batchRes, rRes, sRes] = await Promise.allSettled([
+        getMyClasses(abortController.signal),
+        getBatchClassData(abortController.signal),
+        getReports({ limit: 100 }, abortController.signal),
+        getTeacherStats(abortController.signal),
       ])
-      if (clsRes.success) classes.value = clsRes.classes
-      if (batchRes.success) {
-        classStatsMap.value = batchRes.statsMap
-        classStudentsMap.value = batchRes.studentsMap
+      if (!isMounted) return
+      if (clsRes.status === 'fulfilled' && clsRes.value.success) classes.value = clsRes.value.classes
+      if (batchRes.status === 'fulfilled' && batchRes.value.success) {
+        classStatsMap.value = batchRes.value.statsMap
+        classStudentsMap.value = batchRes.value.studentsMap
       }
-      if (rRes.success) allReports.value = rRes.reports
+      if (rRes.status === 'fulfilled' && rRes.value.success) allReports.value = rRes.value.reports
+      if (sRes.status === 'fulfilled' && sRes.value.success) liveStats.value = sRes.value.stats
     } catch (err) {
+      if (err instanceof Error && err.name === 'AbortError') return;
       if (import.meta.env.DEV) console.error('dashboard load failed:', err);
     } finally {
-      loading.value = false
+      if (isMounted) loading.value = false
     }
   }
 
+  const liveEvents = ['report:submitted', 'class:created', 'class:updated', 'dashboard:refresh'] as const
   let refreshTimer: ReturnType<typeof setInterval> | null = null
-  onMounted(() => {
-    loadAll()
-    refreshTimer = setInterval(() => { if (document.visibilityState === 'visible') loadAll() }, 300000)
-  })
-  onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer) })
+
+  function attach() {
+    for (const e of liveEvents) eventBus.on(e, loadAll)
+    refreshTimer = setInterval(() => { if (document.visibilityState === 'visible' && isMounted) loadAll() }, 300000)
+  }
+
+  function detach() {
+    for (const e of liveEvents) eventBus.off(e, loadAll)
+    if (abortController) { abortController.abort(); abortController = null }
+    if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null }
+  }
+
+  onMounted(() => { isMounted = true; attach(); loadAll() })
+  onActivated(() => { isMounted = true; attach(); loadAll() })
+  onDeactivated(() => { isMounted = false; detach() })
+  onUnmounted(() => { isMounted = false; detach() })
 
   return {
     classes, allReports, loading, classStatsMap,

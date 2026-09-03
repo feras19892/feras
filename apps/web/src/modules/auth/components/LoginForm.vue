@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref } from 'vue';
 import { useAuth } from '../composables/useAuth';
-import { useI18n } from '../../../composables/useI18n';
 
-const { t } = useI18n();
 const { login } = useAuth();
 const email = ref('');
 const password = ref('');

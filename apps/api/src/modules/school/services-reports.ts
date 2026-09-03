@@ -230,4 +230,4 @@ export async function getStrugglingStudents(schoolId: number, limit = 20) {
   return students;
 }
 
-export { getTeacherEvaluation } from './services-evaluation.js';
+export { getTeacherEvaluation, getStudentEvaluation } from './services-evaluation.js';

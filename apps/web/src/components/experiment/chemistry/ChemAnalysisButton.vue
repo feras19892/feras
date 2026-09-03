@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { sendToAnalysis } from '../../../composables/chemistry/sendToAnalysis';
 import { buildTitrationPayload, hasTitrationData } from '../../../composables/chemistry/useTitrationRecorder';
-import { useI18n } from '../../../composables/useI18n';
-const { t } = useI18n();
 
 const router = useRouter();
 const canAnalyze = computed(() => hasTitrationData());

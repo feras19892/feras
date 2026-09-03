@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { computed, ref, watch } from 'vue';
+
 
 interface Props {
   volume?: number;     // remaining in burette (0–50)

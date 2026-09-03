@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useMagneticFluxExperiment } from '../../../../composables/electromagnetism/useMagneticFluxExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import MenuBar from '../../../../components/experiment/electromagnetism/MenuBar.vue'
 import ControlBar from '../../../../components/experiment/electromagnetism/ControlBar.vue'
 import MagneticFluxCanvas from '../../../../components/experiment/electromagnetism/MagneticFluxCanvas.vue'
@@ -12,8 +14,12 @@ import MagneticFluxGuidePanel from '../../../../components/experiment/electromag
 import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 
+
+
+
+
 const ex = useMagneticFluxExperiment()
-const { t } = useI18n()
+
 const showGuide = ref(true)
 const helpOpen = ref(false)
 

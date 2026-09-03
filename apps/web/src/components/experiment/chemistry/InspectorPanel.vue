@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import type { ToolState } from '../../../composables/chemistry/chemLabTypes';
-import { useI18n } from '../../../composables/useI18n';
-const { t } = useI18n();
 
 interface Props {
   item: LabItem | null;

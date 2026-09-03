@@ -1,14 +1,19 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { onMounted, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from '../../../composables/useI18n';
+
 import { useMathStore } from '../../../stores/math.store';
 import { useMathGraph } from '../../../composables/math/useMathGraph';
 import MathExplanation from '../../../components/math/MathExplanation.vue';
 import MathSolver from '../../../components/math/MathSolver.vue';
 import MathGraph from '../../../components/math/MathGraph.vue';
 
-const { t } = useI18n();
+
+
+
+
 const route = useRoute();
 const router = useRouter();
 const store = useMathStore();

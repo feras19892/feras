@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { DetailedStats } from '../dashboard/useAdminDashboard';
 import { safeDivide, roleLabel, roleColor, statusLabel, statusColor } from '../dashboard/useAdminDashboard';
+
 
 defineProps<{
   detailed: DetailedStats | null;

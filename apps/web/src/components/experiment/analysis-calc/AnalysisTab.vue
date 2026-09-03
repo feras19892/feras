@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { ref } from 'vue';
 import type { AnalysisColumnMeta, AnalysisEquation, AnalysisPlotConfig } from '../../../types/physics';
 import AnalysisChartWorkspace from './AnalysisChartWorkspace.vue';
 import AnalysisEquationsPanel from './AnalysisEquationsPanel.vue';
 import AnalysisErrorPanel from './AnalysisErrorPanel.vue';
 import AnalysisMediumPanel from './AnalysisMediumPanel.vue';
+
 
 const props = defineProps<{
   readings: Record<string, number>[];

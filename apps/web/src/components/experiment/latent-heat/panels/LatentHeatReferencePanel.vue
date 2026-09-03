@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const PHASES = [
   { name: 'انصهار', L: 334000, temp: 0, color: '#3b82f6' },
   { name: 'تبخر', L: 2260000, temp: 100, color: '#ef4444' },

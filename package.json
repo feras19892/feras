@@ -1,25 +1,8 @@
 {
-  "name": "my-modern-app",
+  "name": "feras",
   "private": true,
-  "packageManager": "pnpm@9.0.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "version": "0.0.1",
   "scripts": {
-    "start": "node node_modules/turbo/bin/turbo run dev",
-    "build": "turbo run build",
-    "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck",
-    "clean": "turbo run clean && node toolbox/scripts/clean.js",
-    "gen": "node toolbox/generators/index.js"
-  },
-  "devDependencies": {
-    "terser": "^5.50.0",
-    "turbo": "^2.10.8",
-    "typescript": "^5.4.0"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0"
+    "start": "node ./scripts/dev.cjs"
   }
 }

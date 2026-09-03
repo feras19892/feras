@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { items, liquidMap, burnerMap, hotPlateMap, isContainer } from '../../../composables/chemistry/useChemistryLab';
 import { getEnvironmentTemp } from '../../../composables/chemistry/useThermometer';
+
 
 interface Props {
   variant: 'mercury' | 'digital';

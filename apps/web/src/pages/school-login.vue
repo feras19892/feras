@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useI18n } from '../composables/useI18n';
+
 import { useAuthStore } from '../modules/auth/stores/auth';
 import { loginSchool } from '../services/school.service';
 
+
+
+
+
 const router = useRouter();
-const { t } = useI18n();
+
 const auth = useAuthStore();
 
 const email = ref('');

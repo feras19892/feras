@@ -1,10 +1,11 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { useWorkshop } from '../shared/useWorkshop'
 import { WIRE_COLOR_NAMES } from '../shared/types'
 import { getComponentsByCategory } from '../shared/componentDefs'
 import ComponentIconCanvas from './ComponentIconCanvas.vue'
 import { computed, ref } from 'vue'
-
 const props = defineProps<{
   t: (key: string, vars?: Record<string, string>) => string
   workshop: ReturnType<typeof useWorkshop>

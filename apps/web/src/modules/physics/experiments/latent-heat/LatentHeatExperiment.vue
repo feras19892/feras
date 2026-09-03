@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useLatentHeatExperiment } from '../../../../composables/latent-heat/useLatentHeatExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import LatentHeatMenuBar from '../../../../components/experiment/latent-heat/LatentHeatMenuBar.vue'
 import LatentHeatCanvas from '../../../../components/experiment/latent-heat/LatentHeatCanvas.vue'
@@ -14,8 +16,12 @@ import LatentHeatOverlayPanels from '../../../../components/experiment/latent-he
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = useLatentHeatExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

@@ -5,6 +5,7 @@
 import { runAutoEscalation } from '../modules/approvals/services.js';
 import { db } from '../db/index.js';
 import { createNotification } from '../modules/notifications/services.js';
+import { autoExpireSubscriptions } from '../modules/subscriptions/services.js';
 
 const CHECK_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 let intervalId: ReturnType<typeof setInterval> | null = null;
@@ -198,6 +199,15 @@ async function runExpiredTokenCleanup(): Promise<void> {
   if ((oldSpamEntries.changes || 0) > 0) {
     console.log(`[worker] Cleaned up ${oldSpamEntries.changes} old spam tracker entries`);
   }
+
+  // Auto-expire stale sessions (login > 30 min ago, no logout recorded)
+  const staleSessions = await db.run(
+    `UPDATE session_log SET logout_at = datetime('now')
+     WHERE logout_at IS NULL AND login_at < datetime('now', '-30 minutes')`,
+  );
+  if ((staleSessions.changes || 0) > 0) {
+    console.log(`[worker] Auto-expired ${staleSessions.changes} stale sessions`);
+  }
 }
 
 async function runWorkerTasks(): Promise<void> {
@@ -223,6 +233,13 @@ async function runWorkerTasks(): Promise<void> {
     await runExpiredTokenCleanup();
   } catch (err) {
     console.error('[worker] token-cleanup failed:', err);
+  }
+
+  try {
+    const expired = await autoExpireSubscriptions();
+    if (expired > 0) console.log(`[worker] Auto-expired ${expired} subscriptions`);
+  } catch (err) {
+    console.error('[worker] subscription-expire failed:', err);
   }
 }
 

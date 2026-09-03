@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
+import { ref } from 'vue'
+
 import type { Report } from '../../services/report.service'
-import type { ClassRow } from '../../composables/teacher/useTeacherDashboard'
+import type { ClassRow, DashboardKPI } from '../../composables/teacher/useTeacherDashboard'
+import TeacherOverviewKPIs from './TeacherOverviewKPIs.vue'
+import TeacherOverviewAnalytics from './TeacherOverviewAnalytics.vue'
+import TeacherOverviewAlerts from './TeacherOverviewAlerts.vue'
+
+
+
+
 
 const props = defineProps<{
-  pendingCount: number
+  kpi: DashboardKPI
+  allReports: Report[]
   unopened: Report[]
   overdue: Report[]
   classRows: ClassRow[]
@@ -19,7 +30,8 @@ const emit = defineEmits<{
   (e: 'open-chat', cls: { id: string; name: string }): void
 }>()
 
-const { t } = useI18n()
+type TabKey = 'overview' | 'analytics' | 'alerts'
+const activeTab = ref<TabKey>('overview')
 
 function daysSince(dateStr?: string): number {
   if (!dateStr) return 0
@@ -37,77 +49,100 @@ function timeShort(dateStr?: string): string {
 
 <template>
   <div class="tab-panel">
-    <!-- Pending alert -->
-    <div v-if="pendingCount > 0" class="alert-banner" @click="emit('navigate', 'grading')">
-      <span>⏳</span>
-      <span>{{ pendingCount }} {{ t('dashboard.dash.pendingAlertMsg') }}</span>
-      <span class="alert-arrow">←</span>
+    <div class="tabs-nav">
+      <button class="tab-btn" :class="{ active: activeTab === 'overview' }" @click="activeTab = 'overview'">
+        <span class="tab-icon">📊</span>
+        <span class="tab-label">{{ t('shared.navOverview') }}</span>
+      </button>
+      <button class="tab-btn" :class="{ active: activeTab === 'analytics' }" @click="activeTab = 'analytics'">
+        <span class="tab-icon">📈</span>
+        <span class="tab-label">تحليلات</span>
+      </button>
+      <button class="tab-btn" :class="{ active: activeTab === 'alerts' }" @click="activeTab = 'alerts'">
+        <span class="tab-icon">🚨</span>
+        <span class="tab-label">تنبيهات</span>
+        <span v-if="kpi.unopenedCount + kpi.overdueCount + (kpi.pendingCount) > 0" class="tab-count">{{ kpi.unopenedCount + kpi.overdueCount + kpi.pendingCount }}</span>
+      </button>
     </div>
 
-    <!-- Two columns: unopened + overdue -->
-    <div class="dual-col">
-      <div class="panel-card">
-        <div class="pc-header">
-          <h3>📬 {{ t('dashboard.dash.unopenedReports') }}</h3>
-          <span v-if="unopened.length > 0" class="pc-badge warn">{{ unopened.length }}</span>
-        </div>
-        <div v-if="unopened.length === 0" class="pc-empty">✅ {{ t('dashboard.dash.allOpened') }}</div>
-        <div v-else class="pc-list">
-          <div v-for="r in unopened.slice(0, 5)" :key="r.id" class="pc-row" @click="emit('open-report', r.id)">
-            <span class="pc-dot warn"></span>
-            <div class="pc-info"><span class="pc-name">{{ r.student_name }}</span><span class="pc-sub">{{ r.experiment_name }}</span></div>
-            <span class="pc-time">{{ timeShort(r.submitted_at) }}</span>
+    <div v-show="activeTab === 'overview'">
+      <TeacherOverviewKPIs :kpi="kpi" />
+      <div class="dual-col">
+        <div class="panel-card">
+          <div class="pc-header">
+            <h3>📬 {{ t('dashboard.dash.unopenedReports') }}</h3>
+            <span v-if="unopened.length > 0" class="pc-badge warn">{{ unopened.length }}</span>
           </div>
-          <button v-if="unopened.length > 5" class="pc-more" @click="emit('open-tab', 'daily')">{{ t('dashboard.seeAll') }}</button>
+          <div v-if="unopened.length === 0" class="pc-empty">✅ {{ t('dashboard.dash.allOpened') }}</div>
+          <div v-else class="pc-list">
+            <div v-for="r in unopened.slice(0, 5)" :key="r.id" class="pc-row" @click="emit('open-report', r.id)">
+              <span class="pc-dot warn"></span>
+              <div class="pc-info"><span class="pc-name">{{ r.student_name }}</span><span class="pc-sub">{{ r.experiment_name }}</span></div>
+              <span class="pc-time">{{ timeShort(r.submitted_at) }}</span>
+            </div>
+            <button v-if="unopened.length > 5" class="pc-more" @click="emit('open-tab', 'daily')">{{ t('dashboard.seeAll') }}</button>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="pc-header">
+            <h3>🚨 {{ t('dashboard.dash.overdueUngraded') }}</h3>
+            <span v-if="overdue.length > 0" class="pc-badge danger">{{ overdue.length }}</span>
+          </div>
+          <div v-if="overdue.length === 0" class="pc-empty">✅ {{ t('dashboard.dash.allGraded') }}</div>
+          <div v-else class="pc-list">
+            <div v-for="r in overdue.slice(0, 5)" :key="r.id" class="pc-row" @click="emit('open-report', r.id)">
+              <span class="pc-dot danger"></span>
+              <div class="pc-info"><span class="pc-name">{{ r.student_name }}</span><span class="pc-sub">{{ r.experiment_name }}</span></div>
+              <span class="pc-days">{{ daysSince(r.submitted_at) }} {{ t('dashboard.daysAgo') }}</span>
+            </div>
+            <button v-if="overdue.length > 5" class="pc-more" @click="emit('open-tab', 'daily')">{{ t('dashboard.seeAll') }}</button>
+          </div>
         </div>
       </div>
 
       <div class="panel-card">
-        <div class="pc-header">
-          <h3>🚨 {{ t('dashboard.dash.overdueUngraded') }}</h3>
-          <span v-if="overdue.length > 0" class="pc-badge danger">{{ overdue.length }}</span>
-        </div>
-        <div v-if="overdue.length === 0" class="pc-empty">✅ {{ t('dashboard.dash.allGraded') }}</div>
-        <div v-else class="pc-list">
-          <div v-for="r in overdue.slice(0, 5)" :key="r.id" class="pc-row" @click="emit('open-report', r.id)">
-            <span class="pc-dot danger"></span>
-            <div class="pc-info"><span class="pc-name">{{ r.student_name }}</span><span class="pc-sub">{{ r.experiment_name }}</span></div>
-            <span class="pc-days">{{ daysSince(r.submitted_at) }} {{ t('dashboard.daysAgo') }}</span>
+        <div class="pc-header"><h3>🏫 {{ t('dashboard.dash.classesReport') }}</h3></div>
+        <div class="mini-table">
+          <div class="mt-head">
+            <span>{{ t('dashboard.dash.className') }}</span><span>🎓</span><span>📄</span><span>⏳</span><span>📊</span><span>💬</span>
           </div>
-          <button v-if="overdue.length > 5" class="pc-more" @click="emit('open-tab', 'daily')">{{ t('dashboard.seeAll') }}</button>
+          <div v-for="c in classRows.slice(0, 5)" :key="c.id" class="mt-row" @click="emit('navigate', 'classes')">
+            <span class="mt-name">{{ c.name }} <code>{{ c.code }}</code><span v-if="c.isFrozen" class="mt-freeze">🧊</span></span>
+            <span>{{ c.studentCount }}</span>
+            <span>{{ c.totalReports }}</span>
+            <span :class="{ 'mt-warn': c.pendingCount > 0 }">{{ c.pendingCount }}</span>
+            <span :class="{ 'mt-avg': c.classAverage > 0 }">{{ c.classAverage > 0 ? c.classAverage + '%' : '—' }}</span>
+            <span class="mt-chat-cell" @click.stop="emit('open-chat', { id: c.id, name: c.name })">
+              <button class="mt-chat-btn">
+                💬
+                <span v-if="unreadChatCounts && unreadChatCounts[c.id] > 0" class="mt-chat-badge">{{ unreadChatCounts[c.id] }}</span>
+              </button>
+            </span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Classes mini-table -->
-    <div class="panel-card">
-      <div class="pc-header"><h3>🏫 {{ t('dashboard.dash.classesReport') }}</h3></div>
-      <div class="mini-table">
-        <div class="mt-head">
-          <span>{{ t('dashboard.dash.className') }}</span><span>🎓</span><span>📄</span><span>⏳</span><span>📊</span><span>💬</span>
-        </div>
-        <div v-for="c in classRows.slice(0, 5)" :key="c.id" class="mt-row" @click="emit('navigate', 'classes')">
-          <span class="mt-name">{{ c.name }} <code>{{ c.code }}</code><span v-if="c.isFrozen" class="mt-freeze">🧊</span></span>
-          <span>{{ c.studentCount }}</span>
-          <span>{{ c.totalReports }}</span>
-          <span :class="{ 'mt-warn': c.pendingCount > 0 }">{{ c.pendingCount }}</span>
-          <span :class="{ 'mt-avg': c.classAverage > 0 }">{{ c.classAverage > 0 ? c.classAverage + '%' : '—' }}</span>
-          <span class="mt-chat-cell" @click.stop="emit('open-chat', { id: c.id, name: c.name })">
-            <button class="mt-chat-btn">
-              💬
-              <span v-if="unreadChatCounts && unreadChatCounts[c.id] > 0" class="mt-chat-badge">{{ unreadChatCounts[c.id] }}</span>
-            </button>
-          </span>
-        </div>
-      </div>
+    <div v-show="activeTab === 'analytics'">
+      <TeacherOverviewAnalytics :all-reports="allReports" :class-rows="classRows" />
+    </div>
+
+    <div v-show="activeTab === 'alerts'">
+      <TeacherOverviewAlerts :unopened="unopened" :overdue="overdue" :class-rows="classRows" :unread-chat-counts="unreadChatCounts" @open-report="emit('open-report', $event)" @open-tab="emit('open-tab', $event)" @open-chat="emit('open-chat', $event)" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.alert-banner { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.8rem; border-radius: 4px; margin-bottom: 0.8rem; background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.15); cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #fbbf24; transition: opacity 0.12s; }
-.alert-banner:hover { opacity: 0.8; }
-.alert-arrow { margin-inline-start: auto; }
+.tab-panel { color: #e2e8f0; }
+.tabs-nav { display: flex; gap: 0.3rem; margin-bottom: 1rem; padding: 0.3rem; background: #0f172a; border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; overflow-x: auto; }
+.tab-btn { flex: 1; min-width: 120px; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.6rem 0.8rem; background: transparent; border: 1px solid transparent; border-radius: 4px; color: #64748b; cursor: pointer; transition: background 0.12s, color 0.12s; position: relative; }
+.tab-btn:hover { background: rgba(255,255,255,0.03); color: #e2e8f0; }
+.tab-btn.active { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.15); color: #e2e8f0; }
+.tab-icon { font-size: 1.1rem; }
+.tab-label { font-size: 0.78rem; font-weight: 600; }
+.tab-count { position: absolute; top: 0.25rem; right: 0.25rem; font-size: 0.65rem; padding: 0.05rem 0.35rem; background: rgba(239,68,68,0.15); border-radius: 999px; color: #f87171; font-weight: 800; }
 .dual-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem; }
 @media (max-width: 768px) { .dual-col { grid-template-columns: 1fr; } }
 .panel-card { background: #0f172a; border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 1rem; margin-bottom: 0.8rem; }

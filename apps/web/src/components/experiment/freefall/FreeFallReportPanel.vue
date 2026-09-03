@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{ trials: FreeFallTrial[]; trialStats: { time_mean: number; time_std: number; g_mean: number; g_std: number } | null; gTheoretical: number }>()
 const emit = defineEmits<{ (e: 'printReport'): void; (e: 'openFullReport'): void }>()
 </script>

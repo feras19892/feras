@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed, ref, watch } from 'vue';
 import type { HotspotState } from '../../../types/biology.types';
-import { useI18n } from '../../../composables/useI18n';
 
 const props = defineProps<{
   hotspot: HotspotState | null;
 }>();
 
-const { t } = useI18n();
 const expanded = ref(false);
 const panelKey = computed(() => (props.hotspot ? props.hotspot.partId : 'empty'));
 const hasDetails = computed(() =>

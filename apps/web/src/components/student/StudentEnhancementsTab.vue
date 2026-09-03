@@ -1,11 +1,18 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import { ref, onMounted, watch, computed } from 'vue';
 import { getMyBadges, getLeaderboard, type StudentBadge, type LeaderboardEntry } from '../../services/gamification.service';
 import { getMyPenalties, type Penalty } from '../../services/enhancements.service';
 import { getMyClasses } from '../../services/class.service';
-import { useI18n } from '../../composables/useI18n';
 
-const { t, locale } = useI18n();
+import StudentHelpButton from './StudentHelpButton.vue';
+
+
+
+
+
+
 const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US');
 
 const badges = ref<StudentBadge[]>([]);
@@ -23,10 +30,10 @@ async function load() {
   loading.value = true;
   error.value = '';
   try {
-    const [b, p, c] = await Promise.all([getMyBadges(), getMyPenalties(), getMyClasses()]);
-    if (b.success) badges.value = b.badges;
-    if (p.success) penalties.value = p.penalties;
-    if (c.success) myClasses.value = c.classes;
+    const [b, p, c] = await Promise.allSettled([getMyBadges(), getMyPenalties(), getMyClasses()]);
+    if (b.status === 'fulfilled' && b.value.success) badges.value = b.value.badges;
+    if (p.status === 'fulfilled' && p.value.success) penalties.value = p.value.penalties;
+    if (c.status === 'fulfilled' && c.value.success) myClasses.value = c.value.classes;
     if (myClasses.value.length > 0) {
       selectedClass.value = myClasses.value[0].id;
     }
@@ -66,6 +73,7 @@ onMounted(load);
 <template>
   <div class="enhancements-tab">
     <div class="sub-tabs">
+      <StudentHelpButton :tab-id="activeTab" />
       <button :class="{ active: activeTab === 'badges' }" @click="activeTab = 'badges'">{{ t('dashboard.dash.enhBadges') }}</button>
       <button :class="{ active: activeTab === 'penalties' }" @click="activeTab = 'penalties'">{{ t('dashboard.dash.enhPenalties') }}</button>
       <button :class="{ active: activeTab === 'leaderboard' }" @click="activeTab = 'leaderboard'">{{ t('dashboard.dash.enhLeaderboard') }}</button>

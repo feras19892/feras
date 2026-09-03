@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const FORMULAS = [
   { formula: 'P = V × I', desc: 'الصيغة الأساسية', color: '#f87171' },
   { formula: 'P = I² × R', desc: 'باستخدام التيار والمقاومة', color: '#fbbf24' },

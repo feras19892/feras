@@ -1,7 +1,8 @@
 ﻿<script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 interface Props { params: { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number } }
+
 const props = defineProps<Props>()
 const emit = defineEmits<{ (e: 'update:params', p: { sourceDistance: number; wavelength: number; frequency: number; screenDistance: number }): void }>()
 function set(key: string, val: number) { emit('update:params', { ...props.params, [key]: val }) }

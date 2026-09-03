@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import { computed } from 'vue';
 import { listExperiments, type ExperimentDefinition, type ExperimentLevel } from '../../../composables/chemistry/experiments';
-import { useI18n } from '../../../composables/useI18n';
+
 import '../../../composables/chemistry/experiments'; // side-effect: registers all definitions
-const { t, locale } = useI18n();
+
+
 
 const emit = defineEmits<{ select: [exp: ExperimentDefinition]; close: [] }>();
 

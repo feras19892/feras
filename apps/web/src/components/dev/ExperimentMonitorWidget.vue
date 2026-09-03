@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { ref } from 'vue';
 import { useExperimentMonitor } from '../../composables/useExperimentMonitor';
+
 
 const { fps, memoryUsed, memoryLimit, consoleErrors, physicsHealth } = useExperimentMonitor();
 const expanded = ref(false);

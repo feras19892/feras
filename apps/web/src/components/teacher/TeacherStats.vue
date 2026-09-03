@@ -1,16 +1,22 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, computed, watch, onMounted } from 'vue';
 import { getMyClasses } from '../../services/class.service';
 import { getClassStats, exportClassReports } from '../../services/report.service';
 import type { ClassItem } from '../../services/class.service';
 import type { Report } from '../../services/report.service';
-import { useI18n } from '../../composables/useI18n';
+
 import TeacherStatsSummary from './TeacherStatsSummary.vue';
 import TeacherStatsCharts from './TeacherStatsCharts.vue';
 import TeacherStatsExpTable from './TeacherStatsExpTable.vue';
 import TeacherStatsStudentTable from './TeacherStatsStudentTable.vue';
 import TeacherStatsComparison from './TeacherStatsComparison.vue';
 import TeacherStatsExport from './TeacherStatsExport.vue';
+
+
+
+
 
 interface StudentStat { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }
 interface ExperimentStat { name: string; avg: number; count: number; highest: number; lowest: number }
@@ -24,7 +30,6 @@ interface StatsData {
   average: number;
 }
 
-const { t } = useI18n();
 const classes = ref<ClassItem[]>([]);
 const selectedClassId = ref('');
 const loading = ref(false);

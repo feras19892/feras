@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const SolveSchema = z.object({
   expression: z.string().min(1),
-  operation: z.enum(['solve', 'factor', 'expand', 'differentiate', 'simplify', 'pythagoras', 'evaluate']).default('solve'),
+  operation: z.enum(['solve', 'factor', 'expand', 'differentiate', 'simplify']).default('solve'),
   variable: z.string().default('x'),
   branch: z.string().optional(),
 });

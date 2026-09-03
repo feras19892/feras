@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n';
-
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 const props = defineProps<{
+
   xRayMode: boolean;
   insideView: boolean;
   crossSectionMode: boolean;
@@ -16,8 +17,6 @@ const emit = defineEmits<{
   (e: 'resetAll'): void;
   (e: 'crossSectionInput', value: number): void;
 }>();
-
-const { t } = useI18n();
 
 const onCrossSectionInput = (event: Event): void => {
   const value = Number((event.target as HTMLInputElement).value);

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const NOTES = [
   '📊 مقسم الجهد أساس إلكترونيات كثير — من البوتشيومتر للـ ADC',
   '⚖️ V_out = V × R2/(R1+R2) — الجهد يتناسب مع نسبة المقاومة',

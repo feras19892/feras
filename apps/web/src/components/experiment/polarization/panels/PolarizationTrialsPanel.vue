@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from '../../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { PolarizationTrial } from '../../../../composables/polarization/usePolarizationTrials'
-
-const { t } = useI18n()
 
 interface Props {
   trials: PolarizationTrial[]

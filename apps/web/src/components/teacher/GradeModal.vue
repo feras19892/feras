@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch, computed } from 'vue';
 import { gradeReport } from '../../services/report.service';
 import type { Report } from '../../services/report.service';
 import { analyzeReport } from '../../services/ai.service';
-import { useI18n } from '../../composables/useI18n';
 
 const props = defineProps<{
   report: Report | null;
@@ -15,7 +16,6 @@ const emit = defineEmits<{
   (e: 'graded'): void;
 }>();
 
-const { t } = useI18n();
 const grade = ref(0);
 const feedback = ref('');
 const gradeAccuracy = ref<number | null>(null);

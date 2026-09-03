@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted } from 'vue';
-import { useI18n } from '../../composables/useI18n';
 import { getAdminInsights, getAdminActivity, getAdminActivityStats } from '../../services/admin.service';
-
 const loading = ref(false);
 const error = ref('');
 interface InactiveUser { id: number; name: string; role: string }
@@ -26,8 +26,6 @@ interface ActivityItem {
   created_at?: string;
 }
 interface ActivityStatsData { today: number; logins: number; signups: number; reports: number; classes: number; feedback: number; activeNow: number }
-
-const { t } = useI18n();
 const insights = ref<InsightsData | null>(null);
 const activities = ref<ActivityItem[]>([]);
 const activityStats = ref<ActivityStatsData | null>(null);

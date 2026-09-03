@@ -38,6 +38,7 @@ export const ar3 = {
     sendToTeacherBtn: '📤 إرسال للمدرس',
     guestStudent: 'طالب ضيف',
     joinClassFirst: 'يجب الانضمام لفصل أولاً',
+    loginFirst: 'سجّل الدخول وانضم لفصل لمشاركة تقريرك',
     branchPhysics: 'فيزياء',
     sentSuccessfully: '✅ تم الإرسال',
     reportSentSuccess: 'تم إرسال التقرير للمدرس بنجاح!',

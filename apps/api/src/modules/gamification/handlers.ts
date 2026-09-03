@@ -5,6 +5,7 @@ import { authMiddleware } from '../auth/middleware.js';
 import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 import * as svc from './services.js';
+import { dispatchEvent } from '../notifications/dispatch.js';
 
 type Variables = { user: User };
 const gameRoutes = new Hono<{ Variables: Variables }>();
@@ -87,6 +88,12 @@ gameRoutes.post('/badges/award', zValidator('json', awardBadgeSchema), async (c)
   }
   const ok = await svc.awardBadge(student_id, badge_id, user.id, user.role, note || null);
   if (!ok) return c.json({ success: false, message: 'Already awarded' }, 409);
+  const badge = await db.get<{ name: string; icon: string }>('SELECT name, icon FROM badges WHERE id = ?', badge_id);
+  await dispatchEvent({
+    type: 'badge_awarded',
+    actorId: user.id, actorName: user.name, actorRole: user.role as any,
+    payload: { studentId: student_id, message: badge ? `${badge.icon} ${badge.name}` : 'وسام جديد' },
+  }).catch(() => {});
   return c.json({ success: true });
 });
 

@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { useRouter } from 'vue-router';
-import { useI18n } from '../../composables/useI18n';
+
 import { biologySections } from '../../services/biology-sections';
 import type { BiologySection } from '../../types/biology.types';
 
+
+
+
+
 const router = useRouter();
-const { t } = useI18n();
 
 const goHome = (): void => {
   router.push('/home');

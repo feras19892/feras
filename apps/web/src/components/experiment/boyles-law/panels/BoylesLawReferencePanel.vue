@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const GAS_LAWS = [
   { name: 'بويل', formula: 'PV = const', color: '#22c55e' },
   { name: 'شارل', formula: 'V/T = const', color: '#3b82f6' },

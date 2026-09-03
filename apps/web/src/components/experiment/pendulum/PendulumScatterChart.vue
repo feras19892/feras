@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed, ref, watch, onMounted } from 'vue'
 import { linearRegression } from '../spring/linearRegression'
-import { useI18n } from '../../../composables/useI18n'
 
 interface Trial { length: number; g: number; T: number; f: number; omega: number; gCalc: number }
 
-const { t } = useI18n()
 const props = defineProps<{ trials: Trial[] }>()
 
 const scatterXKey = ref<'length'|'g'|'T'|'f'|'omega'>('length')

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { sendTelegramFeedback } from '../../services/telegram-feedback';
-import { useI18n } from '../../composables/useI18n';
-
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { createFeedback } from '../../services/feedback.service';
+import { useToast } from '../../composables/useToast';
 const props = defineProps<{
   show: boolean;
   experimentId?: string;
@@ -12,32 +14,70 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:show', val: boolean): void;
 }>();
+const toast = useToast();
+const route = useRoute();
 
-const { t } = useI18n();
-const type = ref<'complaint' | 'rating' | 'suggestion'>('complaint');
+const categories = [
+  { key: 'not-working', label: 'شيء لا يعمل', type: 'complaint' as const },
+  { key: 'wrong-values', label: 'قيم غير صحيحة', type: 'complaint' as const },
+  { key: 'design-error', label: 'خطأ في التصميم/الرسم', type: 'complaint' as const },
+  { key: 'page-unresponsive', label: 'الصفحة لا تستجيب', type: 'complaint' as const },
+  { key: 'suggestion', label: 'اقتراح تحسين', type: 'suggestion' as const },
+  { key: 'other', label: 'أخرى', type: 'complaint' as const },
+];
+
+const selectedCategory = ref('');
 const message = ref('');
-const rating = ref(5);
 const loading = ref(false);
-const error = ref('');
-const success = ref('');
+const pageTitle = computed(() => props.experimentName || (typeof document !== 'undefined' ? document.title : ''));
+const pagePath = computed(() => route.fullPath);
+
+function buildDeviceInfo() {
+  if (typeof navigator === 'undefined') return '';
+  const screen = `${window.innerWidth || 0}x${window.innerHeight || 0}`;
+  const platform = navigator.platform || 'unknown';
+  const ua = navigator.userAgent || 'unknown';
+  return `${screen} | ${platform} | ${ua.slice(0, 120)}`;
+}
+
+function selectedType() {
+  const found = categories.find((c) => c.key === selectedCategory.value);
+  return found ? found.type : 'complaint';
+}
+
+function selectedLabel() {
+  return categories.find((c) => c.key === selectedCategory.value)?.label || '';
+}
+
+function reset() {
+  selectedCategory.value = '';
+  message.value = '';
+}
+
+function close() {
+  reset();
+  emit('update:show', false);
+}
 
 async function send() {
-  if (!message.value.trim()) { error.value = t('common.writeMessage'); return; }
-  loading.value = true; error.value = ''; success.value = '';
+  if (!selectedCategory.value) { toast.error('اختر نوع البلاغ'); return; }
+  if (!message.value.trim()) { toast.error('أدخل وصفاً'); return; }
+  loading.value = true;
   try {
-    const res = await sendTelegramFeedback(
-      type.value,
-      message.value,
-      props.experimentId,
-      props.experimentName,
-      type.value === 'rating' ? rating.value : undefined
-    );
-    if (res.success) {
-      success.value = t('common.thanks');
-      setTimeout(() => { emit('update:show', false); message.value = ''; }, 1200);
-    }
-  } catch (err: unknown) {
-    error.value = (err instanceof Error ? err.message : '') || t('common.submitFailed');
+    await createFeedback({
+      type: selectedType(),
+      message: message.value.trim(),
+      category: selectedLabel(),
+      experimentId: props.experimentId || (typeof route.name === 'string' ? route.name : route.fullPath),
+      experimentName: pageTitle.value,
+      pagePath: pagePath.value,
+      deviceInfo: buildDeviceInfo(),
+    });
+    toast.success('تم إرسال البلاغ، شكراً لك');
+    close();
+  } catch (err: any) {
+    console.error('[feedback] send error:', err);
+    toast.error(err?.message || t('common.submitFailed'));
   } finally {
     loading.value = false;
   }
@@ -45,37 +85,49 @@ async function send() {
 </script>
 
 <template>
-  <div v-if="show" class="modal-overlay" @click.self="$emit('update:show', false)">
-    <div class="modal-content">
-      <h3>{{ t('common.feedbackTitle') }}</h3>
+  <div v-if="show" class="modal-overlay" @click.self="close">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
+      <h3 id="feedback-title">إبلاغ عن مشكلة</h3>
 
-      <div class="form-row">
-        <label>{{ t('common.typeLabel') }}</label>
-        <div class="type-buttons">
-          <button :class="{ active: type === 'complaint' }" @click="type = 'complaint'">{{ t('common.complaint') }}</button>
-          <button :class="{ active: type === 'rating' }" @click="type = 'rating'">{{ t('common.rating') }}</button>
-          <button :class="{ active: type === 'suggestion' }" @click="type = 'suggestion'">{{ t('common.suggestion') }}</button>
-        </div>
-      </div>
-
-      <div v-if="type === 'rating'" class="form-row">
-        <label>{{ t('common.ratingLabel') }}</label>
-        <div class="stars">
-          <button v-for="n in 5" :key="n" @click="rating = n" :class="{ filled: n <= rating }">⭐</button>
-        </div>
+      <div class="context-box">
+        <div class="context-label">أنت الآن في:</div>
+        <div class="context-value" :title="pagePath">{{ pageTitle || pagePath }}</div>
       </div>
 
       <div class="form-row">
-        <label>{{ t('common.messageLabel') }}</label>
-        <textarea v-model="message" rows="4" :placeholder="t('common.messagePlaceholder')"></textarea>
+        <label>نوع البلاغ</label>
+        <div class="category-chips">
+          <button
+            v-for="c in categories"
+            :key="c.key"
+            type="button"
+            class="category-chip"
+            :class="{ active: selectedCategory === c.key }"
+            @click="selectedCategory = c.key"
+          >
+            {{ c.label }}
+          </button>
+        </div>
       </div>
 
-      <p v-if="error" class="msg error">{{ error }}</p>
-      <p v-if="success" class="msg success">{{ success }}</p>
+      <div class="form-row">
+        <label for="feedback-message">الوصف</label>
+        <textarea
+          id="feedback-message"
+          v-model="message"
+          rows="4"
+          maxlength="5000"
+          placeholder="اشرح ما حدث باختصار..."
+        ></textarea>
+        <div class="hint">{{ message.length }}/5000</div>
+      </div>
 
       <div class="modal-actions">
-        <button class="btn-cancel" @click="$emit('update:show', false)">{{ t('common.cancel') }}</button>
-        <button class="btn-submit" :disabled="loading" @click="send">{{ loading ? '...' : t('common.submit') }}</button>
+        <button class="btn-cancel" @click="close">{{ t('common.cancel') }}</button>
+        <button class="btn-submit" :disabled="loading" @click="send">
+          <span v-if="loading" class="spinner">...</span>
+          <span v-else>{{ t('common.submit') }}</span>
+        </button>
       </div>
     </div>
   </div>
@@ -100,4 +152,13 @@ textarea { width: 100%; padding: 0.5rem; border-radius: 0.4rem; border: 1px soli
 .btn-submit { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; }
 .msg.error { color: #f87171; font-size: 0.85rem; margin: 0.5rem 0; }
 .msg.success { color: #4ade80; font-size: 0.85rem; margin: 0.5rem 0; }
+.context-box { margin-bottom: 1rem; padding: 0.6rem 0.75rem; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.12); border-radius: 0.5rem; }
+.context-label { font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.2rem; }
+.context-value { font-size: 0.9rem; font-weight: 700; color: #c7d2fe; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.category-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.category-chip { padding: 0.4rem 0.75rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: #94a3b8; cursor: pointer; font-size: 0.8rem; transition: all 0.15s; }
+.category-chip:hover { background: rgba(99,102,241,0.12); }
+.category-chip.active { background: rgba(99,102,241,0.2); border-color: #6366f1; color: #e0e7ff; }
+.hint { font-size: 0.75rem; color: #64748b; margin-top: 0.3rem; text-align: left; }
+.spinner { display: inline-block; }
 </style>

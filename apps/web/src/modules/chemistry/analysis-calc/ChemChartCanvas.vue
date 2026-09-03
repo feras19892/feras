@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
-import { useI18n } from '../../../composables/useI18n';
+import { useI18n } from '@/composables/useI18n';
 const { t } = useI18n();
+import { ref, watch, onMounted } from 'vue';
 
 interface Point { x: number; y: number }
 const props = defineProps<{

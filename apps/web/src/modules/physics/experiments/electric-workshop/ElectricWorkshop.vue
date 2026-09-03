@@ -1,11 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, watch } from 'vue'
-import { useI18n } from '../../../../composables/useI18n'
 import DCLab from './dc/DCLab.vue'
 import ACLab from './ac/ACLab.vue'
-
-const { t } = useI18n()
-
 type TabId = 'dc' | 'ac'
 
 const STORAGE_KEY_TAB = 'electric-workshop-active-tab'

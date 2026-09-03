@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const NOTES = [
   '🔋 كل بطارية حقيقية لها مقاومة داخلية r صغيرة',
   '⚡ Vt = ε - I×r — الجهد الطرفي أقل من EMF عند مرور التيار',

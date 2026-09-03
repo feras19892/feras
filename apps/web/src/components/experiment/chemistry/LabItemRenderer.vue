@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { computed } from 'vue';
 import type { LabItem } from '../../../composables/chemistry/useChemistryTools';
 import {
@@ -9,7 +11,6 @@ import {
 } from '../../../composables/chemistry/useChemistryLab';
 import { getBalanceReading, getPhReading, isHeated } from '../../../composables/chemistry/useLabSimulation';
 import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
-import { useI18n } from '../../../composables/useI18n';
 import LabTestTubeRack from './LabTestTubeRack.vue';
 import ContainerRenderers from './ContainerRenderers.vue';
 import LabBeaker from './LabBeaker.vue';
@@ -32,6 +33,7 @@ import LabBeakerClamp from './LabBeakerClamp.vue';
 import LabHotPlate from './LabHotPlate.vue';
 import LabRetortStandAssembly from './LabRetortStandAssembly.vue';
 import LabThermometer from './LabThermometer.vue';
+
 
 
 const props = defineProps<{
@@ -85,8 +87,6 @@ function onBuretteClick(e: MouseEvent, uid: string) {
 }
 
 const { resolveLabel } = useChemicalLocale();
-const { t } = useI18n();
-
 </script>
 
 <template>

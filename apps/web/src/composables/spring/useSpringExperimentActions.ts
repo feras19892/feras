@@ -126,6 +126,8 @@ export function useSpringExperimentActions(
         { xKey: 'mass', yKey: 'T2', xLabel: 'm (kg)', yLabel: 'T² (s²)', type: 'scatter' as const },
         { xKey: 'mass', yKey: 'T', xLabel: 'm (kg)', yLabel: 'T (s)', type: 'scatter' as const },
       ],
+      theoretical: { value: state.params.k, label: 'k النظري', unit: 'N/m' },
+      equipment: ['زنبرك', 'كتل معلقة', 'ساعة توقيت', 'مسطرة'],
     }
 
     sendToAnalysis(router, payload)

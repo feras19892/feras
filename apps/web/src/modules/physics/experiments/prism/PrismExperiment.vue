@@ -1,7 +1,9 @@
 ﻿<script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, onMounted, onUnmounted } from 'vue'
 import { usePrismExperiment } from '../../../../composables/prism/usePrismExperiment'
-import { useI18n } from '../../../../composables/useI18n'
+
 import { useResetConfirm } from '../../../../composables/useResetConfirm'
 import PrismMenuBar from '../../../../components/experiment/prism/PrismMenuBar.vue'
 import PrismCanvas from '../../../../components/experiment/prism/PrismCanvas.vue'
@@ -14,8 +16,12 @@ import PrismOverlayPanels from '../../../../components/experiment/prism/PrismOve
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
 
+
+
+
+
 const ex = usePrismExperiment()
-const { t } = useI18n()
+
 const { confirmReset } = useResetConfirm()
 const helpOpen = ref(false)
 const showGuide = ref(true)

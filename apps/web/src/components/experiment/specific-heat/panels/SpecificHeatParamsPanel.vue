@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { METAL_CATALOG } from '../../../../composables/specific-heat/useSpecificHeatCalculations'
+
 const props = defineProps<{
   params: { metalType: string; metalMass: number; waterMass: number; waterTemp: number }
   unknownMode?: boolean

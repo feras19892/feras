@@ -27,7 +27,15 @@ export async function createEmailChangeRequest(
 
 export async function getEmailChangeRequests(): Promise<any[]> {
   return db.all<any[]>(
-    'SELECT * FROM email_change_requests ORDER BY created_at DESC',
+    `SELECT id,
+            requester_type as account_type,
+            requester_id as account_id,
+            current_email,
+            requested_email,
+            status,
+            created_at
+     FROM email_change_requests
+     ORDER BY created_at DESC`,
   );
 }
 

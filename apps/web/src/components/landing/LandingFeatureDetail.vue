@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
-
-const { t, tArray } = useI18n()
-
+import { useI18n } from '@/composables/useI18n';
+const { t, tArray, direction } = useI18n();
 defineProps<{
+
   activeFeat: number | null
   featColors: string[]
 }>()

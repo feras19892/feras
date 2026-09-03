@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'
 import type { InclinedParams } from '../../../modules/physics/experiments/inclined/useInclinedPhysics'
 import InclinedParamsPanel from './InclinedParamsPanel.vue'
@@ -7,9 +9,7 @@ import InclinedScatterPanel from './InclinedScatterPanel.vue'
 import InclinedSignalPanel from './InclinedSignalPanel.vue'
 import InclinedEquationsPanel from './InclinedEquationsPanel.vue'
 import InclinedStatsPanel from './InclinedStatsPanel.vue'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{
   id: string
   trials: InclinedTrial[]

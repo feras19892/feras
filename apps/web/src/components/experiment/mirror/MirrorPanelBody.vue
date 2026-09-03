@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue'
 import type { MirrorTrial } from '../../../composables/mirror/useMirrorExperiment'
-import { useI18n } from '../../../composables/useI18n'
 
 interface Props {
   id: string
@@ -17,7 +18,6 @@ interface Props {
   rSquared: number
 }
 
-const { t } = useI18n()
 const props = defineProps<Props>()
 
 const emit = defineEmits<{

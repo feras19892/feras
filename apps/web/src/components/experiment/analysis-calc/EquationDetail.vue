@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import type { AnalysisEquation } from '../../../types/physics'
 
 const props = defineProps<{
@@ -14,8 +15,6 @@ const emit = defineEmits<{
   (e: 'update:targetVar', val: string): void
   (e: 'solve'): void
 }>()
-
-const { t } = useI18n()
 
 function updateVar(symbol: string, value: number) {
   emit('update:varValues', { ...props.varValues, [symbol]: value })

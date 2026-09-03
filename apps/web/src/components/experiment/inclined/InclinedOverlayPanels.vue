@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { InclinedTrial } from '../../../composables/inclined/useInclinedTrials'
 import type { InclinedParams } from '../../../modules/physics/experiments/inclined/useInclinedPhysics'
 import InclinedPanelBody from './InclinedPanelBody.vue'
 import type { PanelId } from '../../../composables/inclined/useInclinedLayout'
+
 
 const props = defineProps<{
   maximized: Record<string, boolean>

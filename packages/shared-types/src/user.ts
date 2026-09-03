@@ -16,6 +16,9 @@ export interface RegisterCredentials {
   name: string
   role: 'student' | 'teacher'
   school_code?: string
+  age?: number
+  invite_code?: string
+  consent?: boolean
 }
 
 export interface School {

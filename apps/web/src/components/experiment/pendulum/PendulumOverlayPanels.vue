@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import PendulumPanelBody from './PendulumPanelBody.vue'
 import type { PanelId } from '../../../composables/pendulum/usePendulumLayout'
 import type { PendulumTrial } from '../../../composables/pendulum/usePendulumTrials'
 import type { PendulumParams } from '../../../modules/physics/experiments/pendulum/usePendulumPhysics'
+
 
 interface Measured { T: number | null; f: number | null; omega: number | null; gCalc: number | null }
 interface SimState { theta: number; omega: number; t: number; running: boolean; paused: boolean; signalSeries: { t: number; theta: number }[]; measurementPeriod: number | null }

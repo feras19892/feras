@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { ProjectileTrial } from '../../../composables/projectile/useProjectileTrials'
 import type { ProjectileParams } from '../../../modules/physics/experiments/projectile/useProjectilePhysics'
 
@@ -35,6 +37,8 @@ const emit = defineEmits<{
 }>()
 
 import ProjectilePanelBody from './ProjectilePanelBody.vue'
+
+
 </script>
 
 <template>

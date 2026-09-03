@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n';
-
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 const props = defineProps<{
+
   xRayMode: boolean;
   insideView: boolean;
   crossSectionMode: boolean;
@@ -22,7 +23,6 @@ const emit = defineEmits<{
   resetAll: [];
 }>();
 
-const { t } = useI18n();
 </script>
 
 <template>
@@ -74,3 +74,4 @@ const { t } = useI18n();
     </button>
   </div>
 </template>
+

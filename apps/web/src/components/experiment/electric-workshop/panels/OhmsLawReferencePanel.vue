@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const RELATIONS = [
   { relation: 'V ∝ I', desc: 'عند ثبوت R، الجهد يتناسب طردياً مع التيار', color: '#fbbf24' },
   { relation: 'I ∝ 1/R', desc: 'عند ثبوت V، التيار يتناسب عكسياً مع المقاومة', color: '#67e8f9' },

@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useI18n } from '../composables/useI18n';
+
 import { registerSchool } from '../services/school.service';
 
+
+
+
+
 const router = useRouter();
-const { t } = useI18n();
 
 const name = ref('');
 const email = ref('');
@@ -49,8 +54,8 @@ async function handleRegister() {
   const result = await registerSchool(name.value.trim(), email.value.trim(), password.value, maxStudents.value, maxTeachers.value);
   loading.value = false;
 
-  if (result.success && result.code) {
-    successCode.value = result.code;
+  if (result.success) {
+    goToLogin();
   } else {
     formError.value = result.message || t('auth.errors.registerFailed');
   }

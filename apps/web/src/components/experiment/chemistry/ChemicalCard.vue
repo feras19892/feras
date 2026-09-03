@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import type { Chemical } from '../../../composables/chemistry/useChemistryLab';
 import { useChemicalLocale } from '../../../composables/chemistry/useChemicalLocale';
+
 
 const props = defineProps<{ chem: Chemical; selected: boolean; clickable: boolean }>();
 const emit = defineEmits<{ click: [] }>();

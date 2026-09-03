@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { FreeFallTrial } from '../../../composables/freefall/useFreeFallTrials'
-import { useI18n } from '../../../composables/useI18n'
 
-const { t } = useI18n()
 const props = defineProps<{ trials: FreeFallTrial[]; enableNoise?: boolean }>()
 const emit = defineEmits<{ (e: 'remove', id: number): void; (e: 'clear'): void }>()
 </script>

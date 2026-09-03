@@ -3,16 +3,16 @@ import type { BiologyTopic } from '../types/biology.types';
 export const cellBiologyTopics: BiologyTopic[] = [
   {
     id: 'dna-structure',
-    titleKey: 'biology.topic.dnaStructure.title',
-    descriptionKey: 'biology.topic.dnaStructure.description',
-    icon: '�',
+    titleKey: 'biology.dnaStructureTitle',
+    descriptionKey: 'biology.dnaStructureSubtitle',
+    icon: '🧬',
     route: '/biology/cell/dna-structure',
     available: true,
   },
   {
     id: 'plant-cell',
-    titleKey: 'biology.topic.plantCell.title',
-    descriptionKey: 'biology.topic.plantCell.description',
+    titleKey: 'biology.plantCellTitle',
+    descriptionKey: 'biology.plantCellSubtitle',
     icon: '🌱',
     route: '/biology/cell/plant-cell',
     available: true,

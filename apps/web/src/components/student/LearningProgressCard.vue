@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 import { onMounted, computed } from 'vue'
 import { useLearningProgress } from '../../composables/useLearningProgress'
+
 
 const { progress, loading, loadProgress } = useLearningProgress()
 

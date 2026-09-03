@@ -1,14 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction, t } = useI18n();
 import { computed, ref, watch, onMounted } from 'vue'
 import { linearRegression } from '../spring/linearRegression'
-import { useI18n } from '../../../composables/useI18n'
+
 
 interface Trial {
   m1: number; m2: number; v1i: number; v2i: number; e: number
   v1f: number; v2f: number; Pi: number; Pf: number
 }
 
-const { t } = useI18n()
 const props = defineProps<{ trials: Trial[] }>()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 

@@ -1,0 +1,1647 @@
+﻿=== I18N AUDIT REPORT ===
+
+Total files scanned: 1674
+  Vue files: 984
+  TS files: 690
+Files > 300 lines: 64
+Files with hardcoded text: 321
+
+
+=== FILES > 300 LINES ===
+  locales/experiments/ar-4a.ts                                 877 lines
+  locales/experiments/en-4a.ts                                 877 lines
+  locales/experiments/es-4a.ts                                 877 lines
+  locales/experiments/ar-4b.ts                                 713 lines
+  locales/experiments/en-4b.ts                                 713 lines
+  locales/experiments/es-4b.ts                                 713 lines
+  locales/electricWorkshop_ar_b.ts                             633 lines
+  components/experiment/electromagnetism/LorentzForceCanvas.vue 552 lines
+  locales/electricWorkshop_en_b.ts                             552 lines
+  locales/electricWorkshop_es_b.ts                             551 lines
+  composables/school/useSchoolHelp.ts                          518 lines
+  components/experiment/electromagnetism/StraightWireCanvas.vue 497 lines
+  pages/math/equations-physics.ts                              495 lines
+  pages/math/index.vue                                         491 lines
+  composables/student/studentHelpData.ts                       482 lines
+  composables/teacher/useTeacherHelp.ts                        442 lines
+  locales/biology-en_a.ts                                      438 lines
+  locales/biology-es_a.ts                                      438 lines
+  components/experiment/electromagnetism/FaradayLawCanvas.vue  436 lines
+  locales/biology-ar_a.ts                                      420 lines
+  components/experiment/electromagnetism/TorqueCoilCanvas.vue  399 lines
+  components/experiment/latent-heat/LatentHeatCanvas.vue       385 lines
+  components/experiment/electromagnetism/SolenoidCanvas.vue    377 lines
+  components/experiment/electromagnetism/GeneratorCanvas.vue   374 lines
+  components/experiment/electromagnetism/MagneticFluxCanvas.vue 366 lines
+  pages/math/equations-advanced/number-theory.ts               363 lines
+  modules/physics/experiments/electric-workshop/shared/solver-transient.ts 361 lines
+  services/core/admin.api.ts                                   355 lines
+  components/shared/AccountSettingsModal.vue                   346 lines
+  modules/physics/experiments/electric-workshop/shared/componentSpecsBasic.ts 344 lines
+  modules/physics/experiments/electric-workshop/shared/solver-ac.ts 343 lines
+  components/teacher/GradeModal.vue                            336 lines
+  components/experiment/chemistry/InspectorPanel.vue           334 lines
+  locales/experiments/ar-1.ts                                  334 lines
+  locales/experiments/en-1.ts                                  334 lines
+  locales/experiments/es-1.ts                                  334 lines
+  modules/physics/experiments/electric-workshop/ac/ACLab.vue   330 lines
+  pages/math/equations-basic/algebra.ts                        329 lines
+  components/admin/AdminDirectMessage.vue                      326 lines
+  components/teacher/ReportAIAnalyzer.vue                      325 lines
+  pages/admin/tabs/AdminUsersV2.vue                            325 lines
+  modules/physics/experiments/electric-workshop/shared/useWorkshopCanvas.ts 322 lines
+  components/teacher/QuizBuilder.vue                           321 lines
+  locales/biology-ar_b.ts                                      321 lines
+  locales/biology-en_b.ts                                      321 lines
+  locales/biology-es_b.ts                                      321 lines
+  locales/electricWorkshop_ar_a.ts                             319 lines
+  modules/physics/experiments/electric-workshop/ac/acMouseEvents.ts 318 lines
+  pages/math/equations-advanced/geometry.ts                    318 lines
+  components/experiment/netforce/NetForceCanvas.vue            317 lines
+  modules/physics/experiments/electric-workshop/shared/componentSpecsAdvanced.ts 317 lines
+  modules/physics/experiments/electric-workshop/shared/solver-dc.ts 317 lines
+  pages/admin/tabs/UserDetailV3.vue                            316 lines
+  components/teacher/TeacherEnhancementsTab.vue                315 lines
+  modules/physics/experiments/electric-workshop/shared/useWorkshop.ts 315 lines
+  components/admin/SystemOverview.vue                          314 lines
+  modules/physics/experiments/electric-workshop/shared/smartWireHelpers.ts 314 lines
+  pages/admin/tabs/subscriptions/NotificationUserManager.vue   308 lines
+  components/experiment/electric-workshop/panels/GenericWorksheetPanel.vue 306 lines
+  locales/common.ts                                            306 lines
+  pages/school/tabs/SchoolFeedback.vue                         304 lines
+  modules/chemistry/analysis-calc/ChemAnalysisPage.vue         303 lines
+  pages/admin/tabs/AdminOverviewV2.vue                         302 lines
+  composables/chemistry/useLabSimulation.ts                    301 lines
+
+=== FILES WITH HARDCODED TEXT (Vue templates) ===
+
+  components/admin/AdminHelpModal.vue (141 lines, 8 hardcoded strings):
+    Line 16: "­ƒôä PDF:"
+    Line 16: "┘è┘üÏ¬Ï¡ ÏÀÏ¿ÏºÏ╣Ï® Ïº┘äÏÁ┘üÏ¡Ï® Ïº┘äÏ¡Ïº┘ä┘èÏ® ┘äÏ¬ÏÁÏ»┘èÏ▒┘çÏº Ïú┘ê Ï¡┘üÏ©┘çÏº ┘â┘à┘ä┘ü PDF."
+    Line 19: "┘è┘êÏÂÏ¡ ÏÀÏ▒┘è┘éÏ® Ïº┘äÏºÏ¬ÏÁÏº┘ä Ï¿Ïº┘äÏ«ÏºÏ»┘à: "┘àÏ¿ÏºÏ┤Ï▒" Ï╣Ï¿Ï▒ SSEÏî "Ï¬Ï¡Ï»┘èÏ½ Ï»┘êÏ▒┘è" Ï╣┘å"
+    Line 48: "Ï│Ï¼┘ä Ïº┘ä┘åÏ┤ÏºÏÀÏºÏ¬ (Audit Log)Ïî ÏÁÏ¡Ï® Ïº┘ä┘åÏ©Ïº┘àÏî Ïº┘äÏÑÏ╣Ï»ÏºÏ»ÏºÏ¬ Ïº┘äÏ╣Ïº┘àÏ®Ïî Ïº┘ä┘åÏ│"
+    Line 62: "Alt + Ï▒┘é┘à (1ÔÇô9):"
+    ... and 3 more
+
+  components/admin/tabs/TabAcademic.vue (172 lines, 2 hardcoded strings):
+    Line 104: "= 70, warn: cls.avg_grade"
+    Line 104: "= 50, danger: cls.avg_grade"
+
+  components/dev/ExperimentMonitorPage.vue (253 lines, 1 hardcoded strings):
+    Line 34: "­ƒÄ«  Ïº┘äÏ│Ï▒Ï╣Ï® (FPS)"
+
+  components/dev/ExperimentMonitorWidget.vue (147 lines, 1 hardcoded strings):
+    Line 33: "­ƒÄ« FPS"
+
+  components/experiment/analysis-calc/AnalysisErrorPanel.vue (106 lines, 1 hardcoded strings):
+    Line 48: "= 5 && errorPercent"
+
+  components/experiment/analysis-calc/AnalysisReportPreview.vue (264 lines, 2 hardcoded strings):
+    Line 91: "R┬▓:"
+    Line 149: "= 5 && errorCalcData.errorPercent"
+
+  components/experiment/biot-savart/BiotSavartControlBar.vue (41 lines, 1 hardcoded strings):
+    Line 25: "­ƒÆ¥ CSV"
+
+  components/experiment/biot-savart/BiotSavartPanelBody.vue (78 lines, 3 hardcoded strings):
+    Line 44: "B = ╬╝ÔéÇI / 2¤Çr"
+    Line 45: "B = ╬╝ÔéÇIR┬▓ / 2(R┬▓+x┬▓)^┬│ÔüäÔéé"
+    Line 46: "B = ╬╝ÔéÇnI"
+
+  components/experiment/boyles-law/BoylesLawControlBar.vue (42 lines, 3 hardcoded strings):
+    Line 21: "Ctrl+Z"
+    Line 22: "Ctrl+Y"
+    Line 25: "­ƒÆ¥ CSV"
+
+  components/experiment/boyles-law/BoylesLawGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "PÔéü ┬À VÔéü = PÔéé ┬À VÔéé (at constant T)"
+    Line 28: "P ┬À V = constant"
+
+  components/experiment/boyles-law/BoylesLawHelpModal.vue (39 lines, 3 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 20: "Ctrl+Z"
+    Line 21: "Ctrl+Y"
+
+  components/experiment/boyles-law/BoylesLawOverlayPanels.vue (52 lines, 1 hardcoded strings):
+    Line 29: "&#x2715;"
+
+  components/experiment/boyles-law/panels/BoylesLawLawsPanel.vue (81 lines, 4 hardcoded strings):
+    Line 27: "P ├ù V = constant"
+    Line 32: "P┬ÀV"
+    Line 39: "P┬ÀV = n┬ÀR┬ÀT"
+    Line 41: "n┬ÀR┬ÀT"
+
+  components/experiment/boyles-law/panels/BoylesLawParamsPanel.vue (40 lines, 2 hardcoded strings):
+    Line 21: "n (mol)"
+    Line 25: "T (K)"
+
+  components/experiment/boyles-law/panels/BoylesLawReadingsPanel.vue (38 lines, 1 hardcoded strings):
+    Line 16: "P┬ÀV"
+
+  components/experiment/boyles-law/panels/BoylesLawTrialsPanel.vue (39 lines, 1 hardcoded strings):
+    Line 13: "P┬ÀV"
+
+  components/experiment/boyles-law/panels/BoylesLawWorksheetPanel.vue (50 lines, 1 hardcoded strings):
+    Line 29: "P ├ù V = constant"
+
+  components/experiment/calorimetry/CalorimetryControlBar.vue (42 lines, 3 hardcoded strings):
+    Line 21: "Ctrl+Z"
+    Line 22: "Ctrl+Y"
+    Line 25: "­ƒÆ¥ CSV"
+
+  components/experiment/calorimetry/CalorimetryGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "Q = m ┬À c ┬À ╬öT"
+    Line 28: "Q_lost = Q_gained"
+
+  components/experiment/calorimetry/CalorimetryHelpModal.vue (30 lines, 2 hardcoded strings):
+    Line 14: "Ctrl+Z"
+    Line 15: "Ctrl+Y"
+
+  components/experiment/calorimetry/CalorimetryOverlayPanels.vue (42 lines, 1 hardcoded strings):
+    Line 29: "&#x2715;"
+
+  components/experiment/calorimetry/panels/CalorimetryChartPanel.vue (59 lines, 1 hardcoded strings):
+    Line 32: "Tf vs T_metal"
+
+  components/experiment/calorimetry/panels/CalorimetryLawsPanel.vue (62 lines, 4 hardcoded strings):
+    Line 25: "Q_lost = Q_gained"
+    Line 29: "╬öQ"
+    Line 35: "c = Q / (m ┬À ╬öT)"
+    Line 39: "╬öT"
+
+  components/experiment/calorimetry/panels/CalorimetryReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 12: "­ƒôè Ïº┘äÏ¡Ï▒ÏºÏ▒Ï® Ïº┘ä┘å┘êÏ╣┘èÏ® (J/kg┬ÀK)"
+
+  components/experiment/calorimetry/panels/CalorimetryResultsPanel.vue (50 lines, 3 hardcoded strings):
+    Line 31: "T╠äf"
+    Line 32: "c╠ä"
+    Line 33: "¤â(c)"
+
+  components/experiment/calorimetry/panels/CalorimetryTrialsPanel.vue (47 lines, 1 hardcoded strings):
+    Line 21: "&#x2715;"
+
+  components/experiment/calorimetry/panels/CalorimetryWorksheetPanel.vue (57 lines, 2 hardcoded strings):
+    Line 34: "Q_┘à┘ü┘é┘êÏ» = Q_┘à┘âÏ¬Ï│Ï¿"
+    Line 36: "mMetal┬ÀcMetal┬À(tMetal - tf) = mWater┬ÀcWater┬À(tf - tWater)"
+
+  components/experiment/chemistry/InspectorSpatula.vue (82 lines, 4 hardcoded strings):
+    Line 66: "­ƒÑä +0.5g"
+    Line 67: "­ƒÑä +1g"
+    Line 68: "­ƒÑä +2g"
+    Line 69: "­ƒÑä +5g"
+
+  components/experiment/chemistry/LabHotPlate.vue (68 lines, 1 hardcoded strings):
+    Line 38: "HOT PLATE"
+
+  components/experiment/chemistry/LabPhMeter.vue (212 lines, 1 hardcoded strings):
+    Line 161: "ON/OFF"
+
+  components/experiment/chemistry/LabRetortStandAssembly.vue (227 lines, 1 hardcoded strings):
+    Line 104: "Snap!"
+
+  components/experiment/chemistry/LabStatsPanel.vue (106 lines, 1 hardcoded strings):
+    Line 38: "­ƒôƒ pH"
+
+  components/experiment/chemistry/LabThermometer.vue (266 lines, 2 hardcoded strings):
+    Line 174: "┬░C"
+    Line 202: "┬░C"
+
+  components/experiment/collision/CollisionControlBar.vue (67 lines, 1 hardcoded strings):
+    Line 45: "&#x1F4BE; CSV"
+
+  components/experiment/collision/CollisionDataPanel.vue (55 lines, 7 hardcoded strings):
+    Line 22: "mÔéü"
+    Line 22: "mÔéé"
+    Line 22: "vÔéüi"
+    Line 22: "vÔééi"
+    Line 22: "vÔéüf"
+    ... and 2 more
+
+  components/experiment/collision/CollisionEquationsPanel.vue (38 lines, 5 hardcoded strings):
+    Line 16: "vÔéüf = [(mÔéü ÔêÆ e┬ÀmÔéé)vÔéüi + (1+e)mÔéé┬ÀvÔééi] / (mÔéü+mÔéé)"
+    Line 17: "vÔééf = [(mÔéé ÔêÆ e┬ÀmÔéü)vÔééi + (1+e)mÔéü┬ÀvÔéüi] / (mÔéü+mÔéé)"
+    Line 18: "P = m┬Àv"
+    Line 19: "KE = ┬¢┬Àm┬Àv┬▓"
+    Line 20: "Loss% = (KEi ÔêÆ KEf) / KEi ├ù 100"
+
+  components/experiment/collision/CollisionGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "mÔéüvÔéü + mÔéévÔéé = mÔéüvÔéü' + mÔéévÔéé'"
+    Line 28: "e = (vÔéé' ÔêÆ vÔéü') / (vÔéü ÔêÆ vÔéé)"
+    Line 30: "╬öKE = ┬¢mÔéüvÔéü┬▓ + ┬¢mÔéévÔéé┬▓ ÔêÆ ┬¢mÔéüvÔéü'┬▓ ÔêÆ ┬¢mÔéévÔéé'┬▓"
+
+  components/experiment/collision/CollisionHelpModal.vue (134 lines, 7 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 35: "m1┬Àv1ßÁó + m2┬Àv2ßÁó = m1┬Àv1f + m2┬Àv2f"
+    Line 38: "m1┬Àv1ßÁó + m2┬Àv2ßÁó = (m1 + m2)┬Àv_f"
+    Line 40: "v_f = (m1┬Àv1ßÁó + m2┬Àv2ßÁó) / (m1 + m2)"
+    Line 64: "Slope = ╬öp / ╬öv_f"
+    ... and 2 more
+
+  components/experiment/collision/CollisionParamsPanel.vue (104 lines, 6 hardcoded strings):
+    Line 41: "mÔéü (kg)"
+    Line 46: "mÔéé (kg)"
+    Line 51: "vÔéüi (m/s)"
+    Line 56: "vÔééi (m/s)"
+    Line 61: "rÔéü (m)"
+    ... and 1 more
+
+  components/experiment/collision/CollisionReport.vue (76 lines, 7 hardcoded strings):
+    Line 35: "mÔéü (kg)"
+    Line 35: "mÔéé (kg)"
+    Line 35: "vÔéüi (m/s)"
+    Line 35: "vÔééi (m/s)"
+    Line 35: "vÔéüf (m/s)"
+    ... and 2 more
+
+  components/experiment/collision/CollisionStatsPanel.vue (65 lines, 2 hardcoded strings):
+    Line 17: "kg┬Àm/s"
+    Line 21: "kg┬Àm/s"
+
+  components/experiment/collision/panels/CollisionWorksheetPanel.vue (79 lines, 4 hardcoded strings):
+    Line 41: "mÔéüvÔéüi + mÔéévÔééi = mÔéüvÔéüf + mÔéévÔééf"
+    Line 55: "e = (vÔééf ÔêÆ vÔéüf) / (vÔéüi ÔêÆ vÔééi)"
+    Line 59: "ÏºÏÁÏÀÏ»Ïº┘à ┘àÏ▒┘å (e Ôëê 1)"
+    Line 60: "ÏºÏÁÏÀÏ»Ïº┘à Ï║┘èÏ▒ ┘àÏ▒┘å (e Ôëê 0)"
+
+  components/experiment/diffraction/DiffractionControlBar.vue (57 lines, 5 hardcoded strings):
+    Line 35: "&#x21A9;"
+    Line 35: "Ctrl+Z"
+    Line 36: "&#x21AA;"
+    Line 36: "Ctrl+Y"
+    Line 39: "&#x1F4BE; CSV"
+
+  components/experiment/diffraction/DiffractionGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "d ┬À sin ╬© = m ┬À ╬╗"
+    Line 28: "╬╗ = (d ┬À sin ╬©) / m"
+
+  components/experiment/diffraction/DiffractionHelpModal.vue (144 lines, 7 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 46: "a ┬À sin(╬©) = m ┬À ╬╗"
+    Line 49: "sin(╬©) Ôëê tan(╬©) = y / D"
+    Line 51: "y = (╬╗D) ┬À (1/a)"
+    Line 74: "Slope = ╬öy / ╬ö(1/a)"
+    ... and 2 more
+
+  components/experiment/diffraction/DiffractionOverlayPanels.vue (76 lines, 1 hardcoded strings):
+    Line 42: "&#x2715;"
+
+  components/experiment/diffraction/DiffractionStatusBar.vue (59 lines, 5 hardcoded strings):
+    Line 34: "a ="
+    Line 35: "N ="
+    Line 35: "lines/mm"
+    Line 36: "D ="
+    Line 38: "w ="
+
+  components/experiment/diffraction/panels/DiffractionLawsPanel.vue (70 lines, 3 hardcoded strings):
+    Line 23: "w = 2╬╗D / a"
+    Line 33: "a┬Àsin╬© = m╬╗"
+    Line 37: "I = IÔéÇ sinc┬▓(¤Ça┬Àsin╬©/╬╗)"
+
+  components/experiment/diffraction/panels/DiffractionReadingsPanel.vue (94 lines, 2 hardcoded strings):
+    Line 34: "1/a"
+    Line 74: "d = 1/N"
+
+  components/experiment/diffraction/panels/DiffractionReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 16: "╬╗ (nm)"
+
+  components/experiment/diffraction/panels/DiffractionResultsPanel.vue (74 lines, 1 hardcoded strings):
+    Line 37: "R┬▓"
+
+  components/experiment/diffraction/panels/DiffractionTrialsPanel.vue (59 lines, 4 hardcoded strings):
+    Line 24: "a (mm)"
+    Line 25: "1/a"
+    Line 28: "yÔéü"
+    Line 41: "&#x00D7;"
+
+  components/experiment/diffraction/panels/DiffractionWorksheetPanel.vue (55 lines, 1 hardcoded strings):
+    Line 33: "w = 2╬╗D / a"
+
+  components/experiment/electric-workshop/panels/CapacitorsComboReferencePanel.vue (42 lines, 7 hardcoded strings):
+    Line 16: "1/Ceq = 1/C1 + 1/C2 (Ï¬┘êÏº┘ä┘è)"
+    Line 17: "Ceq = C1 + C2 (Ï¬┘êÏºÏ▓┘è)"
+    Line 18: "¤ä = R ├ù C"
+    Line 19: "V(t) = V0(1 - e^(-t/¤ä))"
+    Line 24: "­ƒöè ┘àÏ▒Ï┤Ï¡ÏºÏ¬ Ïº┘äÏÁ┘êÏ¬ (crossover)"
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/CapacitorsComboWorksheetPanel.vue (81 lines, 7 hardcoded strings):
+    Line 20: "Ïº┘ä┘à┘âÏ½┘ü ┘èÏ«Ï▓┘å Ïº┘äÏ┤Ï¡┘åÏ® Ïº┘ä┘â┘çÏ▒Ï¿ÏºÏª┘èÏ®. Ï│Ï╣Ï¬┘ç C Ï¬┘éÏºÏ│ Ï¿Ïº┘ä┘üÏºÏ▒ÏºÏ» (F)."
+    Line 22: "1/Ceq = 1/C1 + 1/C2"
+    Line 24: "Ceq = C1 + C2"
+    Line 46: "¤ä = R ├ù Ceq"
+    Line 59: "V(t) = V0 ├ù (1 - e^(-t/¤ä))"
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/GalvanometerReferencePanel.vue (50 lines, 6 hardcoded strings):
+    Line 20: "╬Á = -N ├ù ╬ö╬ª/╬öt"
+    Line 21: "I = ╬Á / R"
+    Line 22: "╬ª = B ├ù A ├ù cos(╬©)"
+    Line 23: "╬Á = N ├ù v ├ù B ├ù L"
+    Line 30: "Ïú┘üÏ▒Ïº┘å Ïº┘äÏ¡Ï½ (Induction)"
+    ... and 1 more
+
+  components/experiment/electric-workshop/panels/GalvanometerWorksheetPanel.vue (133 lines, 19 hardcoded strings):
+    Line 38: "┘ç┘ê Ï¬┘ê┘ä┘èÏ» ┘é┘êÏ® Ï»Ïº┘üÏ╣Ï® ┘â┘çÏ▒Ï¿ÏºÏª┘èÏ® (EMF) ┘ü┘è ┘à┘êÏÁ┘ä Ï╣┘åÏ» Ï¬Ï║┘èÏ▒ Ïº┘äÏ¬Ï»┘ü┘é Ïº┘ä"
+    Line 40: "Ï¼┘çÏºÏ▓ Ï¡Ï│ÏºÏ│ ┘è┘âÏ┤┘ü Ï¬┘èÏºÏ▒ÏºÏ¬ ÏÁÏ║┘èÏ▒Ï® Ï¼Ï»Ïº┘ï (┬ÁA) ┘ê┘èÏ©┘çÏ▒┘çÏº ┘âÏº┘åÏ¡Ï▒Ïº┘ü ┘àÏñÏ┤Ï▒."
+    Line 55: "╬Á = -N ├ù ╬ö╬ª/╬öt"
+    Line 56: "┘ü┘è Ï¬Ï¼Ï▒Ï¿Ï¬┘åÏº: ╬ö╬ª/╬öt ÔêØ Ï│Ï▒Ï╣Ï® Ïº┘ä┘àÏ║┘åÏºÏÀ┘èÏ│"
+    Line 57: "╬Á = N ├ù v ├ù k"
+    ... and 14 more
+
+  components/experiment/electric-workshop/panels/InternalResistanceReferencePanel.vue (40 lines, 5 hardcoded strings):
+    Line 16: "Vt = ╬Á - I ├ù r"
+    Line 17: "I = ╬Á / (R + r)"
+    Line 18: "P_load = Vt┬▓ / R"
+    Line 22: "­ƒöï Ï¿ÏÀÏºÏ▒┘èÏºÏ¬ Ïº┘äÏ│┘èÏºÏ▒Ï® (r ÏÁÏ║┘èÏ▒Ï® Ï¼Ï»Ïº┘ï)"
+    Line 23: "­ƒô▒ Ï¿ÏÀÏºÏ▒┘èÏºÏ¬ Ïº┘ä┘çÏºÏ¬┘ü (r Ï¬Ï▓Ï»ÏºÏ» ┘àÏ╣ Ïº┘äÏ╣┘àÏ▒)"
+
+  components/experiment/electric-workshop/panels/InternalResistanceWorksheetPanel.vue (82 lines, 10 hardcoded strings):
+    Line 20: "┘à┘éÏº┘ê┘àÏ® Ï»ÏºÏ«┘ä┘èÏ® r"
+    Line 21: "Ïº┘äÏ¼┘çÏ» Ïº┘äÏ¡┘é┘è┘é┘è (EMF) ┘è┘å┘éÏ│┘à: Ï¼Ï▓Ïí Ï╣┘ä┘ë Ïº┘ä┘à┘éÏº┘ê┘àÏ® Ïº┘äÏ»ÏºÏ«┘ä┘èÏ®Ïî ┘êÏ¼Ï▓Ïí Ï╣"
+    Line 22: "Vt = ╬Á - I ├ù r"
+    Line 23: "Ï¡┘èÏ½: ╬Á = Ïº┘ä┘é┘êÏ® Ïº┘äÏ»Ïº┘üÏ╣Ï®Ïî r = Ïº┘ä┘à┘éÏº┘ê┘àÏ® Ïº┘äÏ»ÏºÏ«┘ä┘èÏ®Ïî Vt = Ïº┘äÏ¼┘çÏ» Ïº┘ä"
+    Line 33: "I = ╬Á / (R + r)"
+    ... and 5 more
+
+  components/experiment/electric-workshop/panels/KirchhoffReferencePanel.vue (88 lines, 1 hardcoded strings):
+    Line 44: "ÏÑÏ┤ÏºÏ▒ÏºÏ¬ Ïº┘äÏ¼┘çÏ» ┘ü┘è KVL"
+
+  components/experiment/electric-workshop/panels/KirchhoffWorksheetPanel.vue (229 lines, 18 hardcoded strings):
+    Line 55: "┘äÏ»┘è┘åÏº Ï»ÏºÏªÏ▒Ï® ┘â┘çÏ▒Ï¿ÏºÏª┘èÏ® Ï¿Ï¡┘ä┘éÏ¬┘è┘å Ï¬Ï¬Ï┤ÏºÏ▒┘âÏº┘å Ïº┘ä┘à┘éÏº┘ê┘àÏ® RÔéâ:"
+    Line 66: "Ïº┘ä┘àÏ¼Ïº┘ç┘è┘ä: IÔéü (Ïº┘äÏ¬┘èÏºÏ▒ ┘ü┘è Ïº┘äÏ¡┘ä┘éÏ® Ïº┘ä┘èÏ│Ï▒┘ë)Ïî IÔéé (Ïº┘äÏ¬┘èÏºÏ▒ ┘ü┘è Ïº┘äÏ¡┘ä┘éÏ®"
+    Line 79: "IÔéü + IÔéé = IÔéâ  ÔåÉ  IÔéâ = IÔéü + IÔéé"
+    Line 80: "┘çÏ░Ïº ┘èÏ╣┘å┘è Ïú┘å Ïº┘äÏ¬┘èÏºÏ▒ ┘ü┘è RÔéâ ┘èÏ│Ïº┘ê┘è ┘àÏ¼┘à┘êÏ╣ Ïº┘äÏ¬┘èÏºÏ▒┘è┘å Ïº┘ä┘éÏºÏ»┘à┘è┘å ┘à┘å Ïº┘ä"
+    Line 94: "┘åÏ¿Ï»Ïú ┘à┘å VÔéü ┘ê┘åÏ»┘êÏ▒ ┘àÏ╣ ÏºÏ¬Ï¼Ïº┘ç Ïº┘äÏ¬┘èÏºÏ▒:"
+    ... and 13 more
+
+  components/experiment/electric-workshop/panels/LampReferencePanel.vue (63 lines, 4 hardcoded strings):
+    Line 25: "P = V ├ù I"
+    Line 26: "P_light = P ├ù ╬À"
+    Line 27: "P_heat = P ├ù (1 - ╬À)"
+    Line 28: "╬À = P_light / P ├ù 100%"
+
+  components/experiment/electric-workshop/panels/LampWorksheetPanel.vue (150 lines, 6 hardcoded strings):
+    Line 42: "LED: ~40% ÏÂ┘êÏíÏî ~60% Ï¡Ï▒ÏºÏ▒Ï® (Ïú┘âÏ½Ï▒ ┘â┘üÏºÏíÏ®)"
+    Line 56: "P = V ├ù I"
+    Line 70: "P_light = P ├ù 0.05"
+    Line 84: "P_heat = P ├ù 0.95"
+    Line 97: "P_light + P_heat = P"
+    ... and 1 more
+
+  components/experiment/electric-workshop/panels/NonOhmicReferencePanel.vue (41 lines, 5 hardcoded strings):
+    Line 16: "Ïú┘ê┘à┘è: V = I ├ù R"
+    Line 17: "┘äÏº Ïú┘ê┘à┘è: R = f(V, I)"
+    Line 18: "R_dyn = dV/dI"
+    Line 23: "­ƒöî Ïº┘äÏÁ┘àÏº┘à (Diode)"
+    Line 25: "­ƒîí´©Å Ïº┘äÏ½Ï▒┘àÏ│Ï¬┘êÏ▒ (NTC/PTC)"
+
+  components/experiment/electric-workshop/panels/NonOhmicWorksheetPanel.vue (82 lines, 9 hardcoded strings):
+    Line 20: ": V = I├ùR (Ï╣┘äÏº┘éÏ® Ï«ÏÀ┘èÏ®)Ïî R Ï½ÏºÏ¿Ï¬Ï® (┘àÏ½┘ä Ïº┘ä┘à┘éÏº┘ê┘àÏ® Ïº┘ä┘àÏ╣Ï»┘å┘èÏ®)."
+    Line 21: ": V Ôëá I├ùRÏî R Ï¬Ï¬Ï║┘èÏ▒ ┘àÏ╣ Ïº┘äÏ¬┘èÏºÏ▒/Ïº┘äÏ¡Ï▒ÏºÏ▒Ï® (┘àÏ½┘ä Ïº┘ä┘àÏÁÏ¿ÏºÏ¡Ïî Ïº┘äÏÁ┘àÏº┘à)."
+    Line 22: "Ïú┘ê┘à┘è: V = I ├ù R (Ï«ÏÀ ┘àÏ│Ï¬┘é┘è┘à)"
+    Line 23: "┘äÏº Ïú┘ê┘à┘è: V Ôëá I ├ù R (┘à┘åÏ¡┘å┘ë)"
+    Line 32: "I = V / R"
+    ... and 4 more
+
+  components/experiment/electric-workshop/panels/OhmsLawWorksheetPanel.vue (91 lines, 3 hardcoded strings):
+    Line 41: "R = V / I"
+    Line 55: "V = I ├ù R"
+    Line 69: "I = V / R"
+
+  components/experiment/electric-workshop/panels/ParallelReferencePanel.vue (59 lines, 7 hardcoded strings):
+    Line 19: "­ƒôè ┘à┘éÏºÏ▒┘åÏ®: Ï¬┘êÏº┘ä┘è vs Ï¬┘êÏºÏ▓┘è"
+    Line 36: "V = VÔéü = VÔéé = ..."
+    Line 37: "= IÔéü + IÔéé + ..."
+    Line 38: "1/R"
+    Line 38: "= 1/RÔéü + 1/RÔéé + ..."
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/ParallelWorksheetPanel.vue (186 lines, 16 hardcoded strings):
+    Line 52: "┘ü┘è Ïº┘äÏ¬┘êÏºÏ▓┘è: Ïº┘äÏ¼┘çÏ» V ┘êÏºÏ¡Ï» Ï╣┘ä┘ë Ïº┘ä┘à┘éÏº┘ê┘àÏ¬┘è┘åÏî ┘êÏº┘äÏ¬┘èÏºÏ▒ ┘èÏ¬┘êÏ▓Ï╣."
+    Line 53: "Ïº┘ä┘àÏ¼Ïº┘ç┘è┘ä: IÔéü, IÔéé, I"
+    Line 53: ", R"
+    Line 62: "┘ü┘è Ïº┘äÏ¬┘êÏºÏ▓┘èÏî ┘å┘üÏ│ Ïº┘äÏ¼┘çÏ» V Ï╣┘ä┘ë Ïº┘ä┘à┘éÏº┘ê┘àÏ¬┘è┘å:"
+    Line 63: "I = V / R"
+    ... and 11 more
+
+  components/experiment/electric-workshop/panels/PotentiometerReferencePanel.vue (40 lines, 3 hardcoded strings):
+    Line 16: "╬Áx = (Lx / L) ├ù ╬Áref"
+    Line 17: "Vslide = I ├ù R_sliding"
+    Line 18: "Ï╣┘åÏ» Ïº┘äÏ¬┘êÏºÏ▓┘å: Ig = 0"
+
+  components/experiment/electric-workshop/panels/PotentiometerWorksheetPanel.vue (83 lines, 4 hardcoded strings):
+    Line 20: "Ï¼┘çÏºÏ▓ Ï»┘é┘è┘é ┘ä┘é┘èÏºÏ│ Ïº┘äÏ¼┘çÏ» (EMF) Ï¿Ï»┘ê┘å Ï│Ï¡Ï¿ Ï¬┘èÏºÏ▒ ┘à┘å Ïº┘ä┘àÏÁÏ»Ï▒ Ïº┘ä┘àÏ¼┘ç┘ê┘ä."
+    Line 22: "Vslide = (Lx / L) ├ù Vref"
+    Line 23: "Ï╣┘åÏ» Ïº┘äÏ¬┘êÏºÏ▓┘å: Ïº┘äÏú┘à┘èÏ¬Ï▒ ┘è┘éÏ▒Ïú ÏÁ┘üÏ▒Ïº┘ï ÔåÆ ╬Áx = Vslide"
+    Line 58: "╬Áx = Vslide (Ï╣┘åÏ» Ïº┘äÏ¬┘êÏºÏ▓┘å)"
+
+  components/experiment/electric-workshop/panels/PowerWorksheetPanel.vue (188 lines, 11 hardcoded strings):
+    Line 42: "Ïº┘ä┘éÏ»Ï▒Ï® Ïº┘ä┘â┘çÏ▒Ï¿ÏºÏª┘èÏ® P"
+    Line 43: "┘êÏ¡Ï»Ï¬┘çÏº: Ïº┘ä┘êÏºÏÀ (Watt) = Ï¼┘ê┘ä/Ï½Ïº┘å┘èÏ®"
+    Line 49: "Ïº┘ä┘àÏ¼┘ç┘ê┘ä: P (Ïº┘ä┘éÏ»Ï▒Ï® Ï¿Ïº┘ä┘êÏºÏÀ)"
+    Line 59: "P = V ├ù I"
+    Line 72: "Ï¿ÏºÏ│Ï¬Ï«Ï»Ïº┘à V = I├ùR (┘éÏº┘å┘ê┘å Ïú┘ê┘à)Ïî ┘åÏ╣┘ê┘æÏÂ ┘ü┘è P = V├ùI:"
+    ... and 6 more
+
+  components/experiment/electric-workshop/panels/RCReferencePanel.vue (61 lines, 5 hardcoded strings):
+    Line 22: "­ƒöî Ï»ÏºÏªÏ▒Ï® RC"
+    Line 37: "¤ä = R ├ù C"
+    Line 38: "Ï┤Ï¡┘å: Vc = VÔéÇ(1 - e^(-t/¤ä))"
+    Line 39: "Ï¬┘üÏ▒┘èÏ║: Vc = VÔéÇ ├ù e^(-t/¤ä)"
+    Line 40: "Q = C ├ù V"
+
+  components/experiment/electric-workshop/panels/RCWorksheetPanel.vue (150 lines, 15 hardcoded strings):
+    Line 45: "Ïº┘ä┘à┘âÏ½┘ü (Capacitor)"
+    Line 46: "Ï╣┘åÏ» Ï¬┘êÏÁ┘è┘ä┘ç Ï¿Ï¿ÏÀÏºÏ▒┘èÏ® Ï╣Ï¿Ï▒ ┘à┘éÏº┘ê┘àÏ®Ïî ┘èÏ┤Ï¡┘å Ï¬Ï»Ï▒┘èÏ¼┘èÏº┘ï Ï¡Ï¬┘ë Vc = VÔéÇ."
+    Line 61: "¤ä = R ├ù C"
+    Line 76: "Vc(t) = VÔéÇ ├ù (1 - e^(-t/¤ä))"
+    Line 77: "I(t) = (VÔéÇ/R) ├ù e^(-t/¤ä)"
+    ... and 10 more
+
+  components/experiment/electric-workshop/panels/ResistivityReferencePanel.vue (67 lines, 3 hardcoded strings):
+    Line 32: "R = ¤ü ├ù L / A"
+    Line 33: "¤ü = R ├ù A / L"
+    Line 41: "¤ü (╬®┬Àm)"
+
+  components/experiment/electric-workshop/panels/ResistivityWorksheetPanel.vue (192 lines, 10 hardcoded strings):
+    Line 82: "┘à┘å ┘éÏº┘å┘ê┘å Ïú┘ê┘à: R = V / I"
+    Line 83: "R = V / I"
+    Line 97: "R = ¤ü ├ù L / A"
+    Line 100: "¤ü = Ïº┘ä┘à┘éÏº┘ê┘à┘èÏ® (╬®┬Àm) ÔÇö Ï«ÏºÏÁ┘èÏ® Ïº┘ä┘àÏºÏ»Ï®"
+    Line 101: "L = ÏÀ┘ê┘ä Ïº┘äÏ│┘ä┘â (m)"
+    ... and 5 more
+
+  components/experiment/electric-workshop/panels/SeriesReferencePanel.vue (40 lines, 5 hardcoded strings):
+    Line 16: "Req = R1 + R2 + R3"
+    Line 17: "I = V / Req"
+    Line 18: "Vn = I ├ù Rn"
+    Line 22: "Ïº┘äÏ¬┘êÏº┘ä┘è: Req Ïú┘âÏ¿Ï▒Ïî I ┘êÏºÏ¡Ï»"
+    Line 23: "Ïº┘äÏ¬┘êÏºÏ▓┘è: Req ÏúÏÁÏ║Ï▒Ïî V ┘êÏºÏ¡Ï»"
+
+  components/experiment/electric-workshop/panels/SeriesWorksheetPanel.vue (83 lines, 4 hardcoded strings):
+    Line 22: "V = V1 + V2 + V3"
+    Line 23: "Req = R1 + R2 + R3"
+    Line 32: "Req = R1 + R2 + R3"
+    Line 44: "I = V / Req"
+
+  components/experiment/electric-workshop/panels/VoltageDividerReferencePanel.vue (60 lines, 16 hardcoded strings):
+    Line 19: "V_out = V ├ù R2/(R1+R2)"
+    Line 20: "V1 = V ├ù R1/(R1+R2)"
+    Line 21: "I = V / (R1+R2)"
+    Line 26: "R1 = R2"
+    Line 26: "V_out = V/2"
+    ... and 11 more
+
+  components/experiment/electric-workshop/panels/VoltageDividerWorksheetPanel.vue (129 lines, 7 hardcoded strings):
+    Line 45: "R1:"
+    Line 46: "R2:"
+    Line 47: "R_total:"
+    Line 57: "R_total = R1 + R2"
+    Line 70: "I = V / R_total"
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/WheatstoneReferencePanel.vue (47 lines, 7 hardcoded strings):
+    Line 19: "R1/R2 = R3/Rx"
+    Line 20: "Rx = R2 ├ù R3 / R1"
+    Line 21: "Vg = V ├ù (R2/(R1+R2) - Rx/(R3+Rx))"
+    Line 26: "ÏºÏÂÏ¿ÏÀ R3 Ï¡Ï¬┘ë ┘è┘éÏ▒Ïú Ïº┘äÏ¼┘ä┘üÏº┘å┘ê┘à┘èÏ¬Ï▒ ÏÁ┘üÏ▒Ïº┘ï"
+    Line 27: "Ï│Ï¼┘æ┘ä ┘é┘è┘àÏ® R3 Ï╣┘åÏ» Ïº┘äÏ¬┘êÏºÏ▓┘å"
+    ... and 2 more
+
+  components/experiment/electric-workshop/panels/WheatstoneWorksheetPanel.vue (135 lines, 14 hardcoded strings):
+    Line 40: "Ï»ÏºÏªÏ▒Ï® ┘ä┘é┘èÏºÏ│ Ïº┘ä┘à┘éÏº┘ê┘àÏ® Ïº┘ä┘àÏ¼┘ç┘ê┘äÏ® (Rx) Ï¿Ï»┘éÏ® Ï╣Ïº┘ä┘èÏ® Ï¼Ï»Ïº┘ï."
+    Line 42: ": Ïº┘äÏ¼┘ä┘üÏº┘å┘ê┘à┘èÏ¬Ï▒ ┘è┘éÏ▒Ïú ÏÁ┘üÏ▒Ïº┘ï ÔåÆ Rx = R2 ├ù R3 / R1"
+    Line 44: "R1:"
+    Line 45: "R2:"
+    Line 46: "R3 (ÏÂÏ¿ÏÀ):"
+    ... and 9 more
+
+  components/experiment/electromagnetism/CircularCoilDataPanel.vue (65 lines, 3 hardcoded strings):
+    Line 31: "I (A)"
+    Line 33: "R (cm)"
+    Line 34: "B (╬╝T)"
+
+  components/experiment/electromagnetism/CircularCoilGuidePanel.vue (115 lines, 1 hardcoded strings):
+    Line 90: "B = ╬╝ÔéÇNI / (2R)"
+
+  components/experiment/electromagnetism/CircularCoilParamPanel.vue (57 lines, 2 hardcoded strings):
+    Line 39: "B = ╬╝ÔéÇNI / (2R)"
+    Line 40: "╬╝ÔéÇ = 4¤Ç ├ù 10Ôü╗ÔüÀ T┬Àm/A"
+
+  components/experiment/electromagnetism/CircularCoilReadingsPanel.vue (71 lines, 1 hardcoded strings):
+    Line 37: "╬╝T"
+
+  components/experiment/electromagnetism/ElectromagnetismHelpModal.vue (36 lines, 1 hardcoded strings):
+    Line 14: "&#x2715;"
+
+  components/experiment/electromagnetism/FaradayLawGuidePanel.vue (127 lines, 3 hardcoded strings):
+    Line 98: "╬ª = B ┬À A"
+    Line 100: "EMF = -N ┬À d╬ª/dt"
+    Line 102: "I = EMF / R"
+
+  components/experiment/electromagnetism/FaradayLawParamPanel.vue (90 lines, 2 hardcoded strings):
+    Line 72: "EMF = -N ┬À d╬ª/dt"
+    Line 73: "╬ª = B┬ÀA &nbsp;|&nbsp; I = EMF / R"
+
+  components/experiment/electromagnetism/FaradayLawReadingsPanel.vue (106 lines, 2 hardcoded strings):
+    Line 38: "m/s"
+    Line 59: "R (╬®)"
+
+  components/experiment/electromagnetism/GeneratorGuidePanel.vue (123 lines, 5 hardcoded strings):
+    Line 90: "╬ª = N ┬À B ┬À A ┬À cos(¤ët)"
+    Line 92: "EMF = N┬ÀB┬ÀA┬À¤ë┬Àsin(¤ët)"
+    Line 94: "EMF_peak = N┬ÀB┬ÀA┬À¤ë"
+    Line 96: "f = ¤ë / (2¤Ç)"
+    Line 98: "I = EMF / R &nbsp;|&nbsp; P = EMF┬▓ / R"
+
+  components/experiment/electromagnetism/GeneratorParamPanel.vue (80 lines, 3 hardcoded strings):
+    Line 62: "EMF = N┬ÀB┬ÀA┬À¤ë┬Àsin(¤ët)"
+    Line 63: "EMF_peak = N┬ÀB┬ÀA┬À¤ë"
+    Line 64: "I = EMF / R &nbsp;|&nbsp; f = ¤ë / 2¤Ç"
+
+  components/experiment/electromagnetism/GeneratorReadingsPanel.vue (96 lines, 1 hardcoded strings):
+    Line 37: "rad/s"
+
+  components/experiment/electromagnetism/GuidePanel.vue (112 lines, 3 hardcoded strings):
+    Line 79: "­ƒÆ¥ Ï¬ÏÁÏ»┘èÏ▒ CSV"
+    Line 84: "B = ╬╝ÔéÇI / (2¤Çr)"
+    Line 85: "Ïº┘ä┘à┘è┘ä ┘ü┘è Ï▒Ï│┘à B vs 1/r ┘èÏ│Ïº┘ê┘è ╬╝ÔéÇI / 2¤Ç ÔÇö ÏºÏ│Ï¬Ï«Ï»┘à┘ç ┘äÏ¡Ï│ÏºÏ¿ ╬╝ÔéÇ"
+
+  components/experiment/electromagnetism/LorentzForceDataPanel.vue (67 lines, 1 hardcoded strings):
+    Line 35: "e/m"
+
+  components/experiment/electromagnetism/LorentzForceGuidePanel.vue (121 lines, 4 hardcoded strings):
+    Line 90: "B = 8╬╝ÔéÇNI / (5ÔêÜ5 ┬À R)"
+    Line 92: "v = ÔêÜ(2eV/m)"
+    Line 94: "r = mv / (eB)"
+    Line 96: "e/m = 2V / (B┬▓r┬▓)"
+
+  components/experiment/electromagnetism/LorentzForceParamPanel.vue (74 lines, 3 hardcoded strings):
+    Line 52: "B = 8╬╝ÔéÇNI / (5ÔêÜ5 ┬À R)"
+    Line 53: "v = ÔêÜ(2eV/m) &nbsp;|&nbsp; r = mv/(eB)"
+    Line 54: "e/m = 2V / (B┬▓r┬▓)"
+
+  components/experiment/electromagnetism/LorentzForceReadingsPanel.vue (106 lines, 2 hardcoded strings):
+    Line 49: "m/s"
+    Line 65: "C/kg"
+
+  components/experiment/electromagnetism/MagneticFluxDataPanel.vue (67 lines, 1 hardcoded strings):
+    Line 34: "cos ╬©"
+
+  components/experiment/electromagnetism/MagneticFluxGuidePanel.vue (105 lines, 3 hardcoded strings):
+    Line 76: "╬ª = B ┬À A ┬À cos(╬©)"
+    Line 78: "╬ª_max = B ┬À A"
+    Line 80: "╬ª = 0 at ╬© = 90┬░"
+
+  components/experiment/electromagnetism/MagneticFluxParamPanel.vue (63 lines, 1 hardcoded strings):
+    Line 44: "╬ª = B ┬À A ┬À cos(╬©)"
+
+  components/experiment/electromagnetism/MagneticFluxReadingsPanel.vue (94 lines, 2 hardcoded strings):
+    Line 30: "cm┬▓"
+    Line 46: "cos ╬©"
+
+  components/experiment/electromagnetism/SolenoidDataPanel.vue (65 lines, 3 hardcoded strings):
+    Line 31: "I (A)"
+    Line 33: "L (cm)"
+    Line 34: "B (╬╝T)"
+
+  components/experiment/electromagnetism/SolenoidGuidePanel.vue (115 lines, 1 hardcoded strings):
+    Line 90: "B = ╬╝ÔéÇNI / L"
+
+  components/experiment/electromagnetism/SolenoidParamPanel.vue (57 lines, 2 hardcoded strings):
+    Line 39: "B = ╬╝ÔéÇNI / L"
+    Line 40: "╬╝ÔéÇ = 4¤Ç ├ù 10Ôü╗ÔüÀ T┬Àm/A"
+
+  components/experiment/electromagnetism/SolenoidReadingsPanel.vue (71 lines, 1 hardcoded strings):
+    Line 37: "╬╝T"
+
+  components/experiment/electromagnetism/StraightWireDataPanel.vue (63 lines, 3 hardcoded strings):
+    Line 31: "I (A)"
+    Line 32: "r (cm)"
+    Line 33: "B (╬╝T)"
+
+  components/experiment/electromagnetism/StraightWireGuidePanel.vue (114 lines, 1 hardcoded strings):
+    Line 86: "B = ╬╝ÔéÇI / (2¤Çr)"
+
+  components/experiment/electromagnetism/StraightWireParamPanel.vue (48 lines, 2 hardcoded strings):
+    Line 30: "B = ╬╝ÔéÇI / (2¤Çr)"
+    Line 31: "╬╝ÔéÇ = 4¤Ç ├ù 10Ôü╗ÔüÀ T┬Àm/A"
+
+  components/experiment/electromagnetism/StraightWireReadingsPanel.vue (63 lines, 1 hardcoded strings):
+    Line 31: "╬╝T"
+
+  components/experiment/electromagnetism/TorqueCoilGuidePanel.vue (117 lines, 2 hardcoded strings):
+    Line 90: "╬╝ = NIA"
+    Line 92: "¤ä = ╬╝B sin(╬©) = NIAB sin(╬©)"
+
+  components/experiment/electromagnetism/TorqueCoilParamPanel.vue (88 lines, 2 hardcoded strings):
+    Line 71: "¤ä = NIAB sin(╬©)"
+    Line 72: "╬╝ = NIA &nbsp;|&nbsp; A = a ├ù b"
+
+  components/experiment/electromagnetism/TorqueCoilReadingsPanel.vue (96 lines, 3 hardcoded strings):
+    Line 45: "m┬▓"
+    Line 50: "A┬Àm┬▓"
+    Line 60: "N┬Àm"
+
+  components/experiment/EquationsPanel.vue (45 lines, 3 hardcoded strings):
+    Line 24: "T = 2¤ÇÔêÜ(m/k)"
+    Line 25: "¤ëÔéÇ = ÔêÜ(k/m)"
+    Line 26: "E = ┬¢kA┬▓"
+
+  components/experiment/faraday/FaradayControlBar.vue (41 lines, 1 hardcoded strings):
+    Line 25: "­ƒÆ¥ CSV"
+
+  components/experiment/faraday/FaradayPanelBody.vue (76 lines, 5 hardcoded strings):
+    Line 38: "B (T)"
+    Line 39: "A (m┬▓)"
+    Line 40: "¤ë (rad/s)"
+    Line 43: "╬Á = -N ┬À d╬ª/dt"
+    Line 44: "╬ª = B ┬À A ┬À cos(╬©)"
+
+  components/experiment/freefall/FreeFallControlBar.vue (80 lines, 1 hardcoded strings):
+    Line 47: "&#x1F4BE; CSV"
+
+  components/experiment/freefall/FreeFallGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "h = ┬¢ ┬À g ┬À t┬▓"
+    Line 28: "v = g ┬À t"
+    Line 30: "g = 2h / t┬▓"
+
+  components/experiment/freefall/FreeFallHelpModal.vue (136 lines, 4 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 28: "y = ┬¢ ┬À g ┬À t┬▓"
+    Line 60: "Slope = ╬öy / ╬öt┬▓"
+    Line 64: "Slope = ┬¢ ┬À g  ÔåÆ  g = 2 ├ù Slope"
+
+  components/experiment/freefall/FreeFallOverlayPanels.vue (93 lines, 1 hardcoded strings):
+    Line 59: "&#x2715;"
+
+  components/experiment/freefall/FreeFallPanelBody.vue (133 lines, 7 hardcoded strings):
+    Line 80: "v(t)"
+    Line 80: "v = -g┬Àt"
+    Line 81: "y(t)"
+    Line 81: "y = yÔéÇ - ┬¢ g t┬▓"
+    Line 82: "t = ÔêÜ(2h / g)"
+    ... and 2 more
+
+  components/experiment/freefall/FreeFallParamsPanel.vue (34 lines, 1 hardcoded strings):
+    Line 16: "g (m/s┬▓)"
+
+  components/experiment/freefall/FreeFallReport.vue (101 lines, 5 hardcoded strings):
+    Line 69: "h (m)"
+    Line 69: "t (s)"
+    Line 69: "t┬▓ (s┬▓)"
+    Line 69: "v_impact (m/s)"
+    Line 69: "g_calc (m/s┬▓)"
+
+  components/experiment/freefall/FreeFallTablePanel.vue (48 lines, 4 hardcoded strings):
+    Line 17: "h (m)"
+    Line 17: "t (s)"
+    Line 17: "t┬▓ (s┬▓)"
+    Line 17: "v (m/s)"
+
+  components/experiment/freefall/panels/FreeFallReferencePanel.vue (39 lines, 2 hardcoded strings):
+    Line 13: "­ƒôè ┘àÏ▒Ï¼Ï╣ ┘é┘è┘à g"
+    Line 17: "g (m/s┬▓)"
+
+  components/experiment/freefall/panels/FreeFallWorksheetPanel.vue (91 lines, 8 hardcoded strings):
+    Line 34: "­ƒôÉ Ï«ÏÀ┘êÏºÏ¬ Ï¡Ï│ÏºÏ¿ Ï¬Ï│ÏºÏ▒Ï╣ Ïº┘äÏ¼ÏºÏ░Ï¿┘èÏ® g"
+    Line 41: "h = ┬¢gt┬▓"
+    Line 42: "Ï¡┘èÏ½ h = Ïº┘äÏºÏ▒Ï¬┘üÏºÏ╣Ïî t = Ï▓┘à┘å Ïº┘äÏ│┘é┘êÏÀÏî g = Ï¬Ï│ÏºÏ▒Ï╣ Ïº┘äÏ¼ÏºÏ░Ï¿┘èÏ®"
+    Line 51: "g = 2h / t┬▓"
+    Line 66: "g Ïº┘ä┘àÏ¡Ï│┘êÏ¿:"
+    ... and 3 more
+
+  components/experiment/grating/GratingControlBar.vue (57 lines, 5 hardcoded strings):
+    Line 35: "&#x21A9;"
+    Line 35: "Ctrl+Z"
+    Line 36: "&#x21AA;"
+    Line 36: "Ctrl+Y"
+    Line 39: "&#x1F4BE; CSV"
+
+  components/experiment/grating/GratingHelpModal.vue (41 lines, 3 hardcoded strings):
+    Line 16: "&#x2715;"
+    Line 22: "Ctrl+Z"
+    Line 23: "Ctrl+Y"
+
+  components/experiment/grating/GratingOverlayPanels.vue (60 lines, 1 hardcoded strings):
+    Line 34: "&#x2715;"
+
+  components/experiment/grating/GratingStatusBar.vue (54 lines, 3 hardcoded strings):
+    Line 31: "N ="
+    Line 31: "lines/mm"
+    Line 32: "D ="
+
+  components/experiment/grating/panels/GratingLawsPanel.vue (51 lines, 4 hardcoded strings):
+    Line 19: "d┬Àsin╬© = m┬À╬╗"
+    Line 28: "╬©Ôéü = arcsin(╬╗/d)"
+    Line 35: "y = D┬Àtan╬©"
+    Line 39: "m_max = floor(d/╬╗)"
+
+  components/experiment/grating/panels/GratingReadingsPanel.vue (70 lines, 1 hardcoded strings):
+    Line 50: "d = 1/N"
+
+  components/experiment/grating/panels/GratingTrialsPanel.vue (47 lines, 2 hardcoded strings):
+    Line 20: "yÔéü"
+    Line 29: "&#x00D7;"
+
+  components/experiment/ideal-gas/IdealGasControlBar.vue (44 lines, 5 hardcoded strings):
+    Line 22: "&#x21A9;"
+    Line 22: "Ctrl+Z"
+    Line 23: "&#x21AA;"
+    Line 23: "Ctrl+Y"
+    Line 26: "&#x1F4BE; CSV"
+
+  components/experiment/ideal-gas/IdealGasGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "P ┬À V = n ┬À R ┬À T"
+    Line 28: "PÔéüVÔéü/TÔéü = PÔééVÔéé/TÔéé"
+
+  components/experiment/ideal-gas/IdealGasHelpModal.vue (37 lines, 2 hardcoded strings):
+    Line 17: "Ctrl+Z"
+    Line 18: "Ctrl+Y"
+
+  components/experiment/ideal-gas/IdealGasOverlayPanels.vue (52 lines, 1 hardcoded strings):
+    Line 29: "&#x2715;"
+
+  components/experiment/ideal-gas/panels/IdealGasChartPanel.vue (66 lines, 3 hardcoded strings):
+    Line 48: "P-V Diagram"
+    Line 51: "V (m┬│)"
+    Line 52: "P (Pa)"
+
+  components/experiment/ideal-gas/panels/IdealGasLawsPanel.vue (36 lines, 2 hardcoded strings):
+    Line 16: "P ┬À V = n ┬À R ┬À T"
+    Line 22: "P = nRT / V"
+
+  components/experiment/ideal-gas/panels/IdealGasResultsPanel.vue (48 lines, 6 hardcoded strings):
+    Line 27: "P╠ä"
+    Line 28: "T╠ä"
+    Line 29: "V╠ä"
+    Line 30: "R╠ä (PV/nT)"
+    Line 31: "¤â(R)"
+    ... and 1 more
+
+  components/experiment/ideal-gas/panels/IdealGasTrialsPanel.vue (40 lines, 1 hardcoded strings):
+    Line 20: "&#x2715;"
+
+  components/experiment/ideal-gas/panels/IdealGasWorksheetPanel.vue (52 lines, 1 hardcoded strings):
+    Line 31: "P = nRT / V"
+
+  components/experiment/inclined/InclinedEquationsPanel.vue (61 lines, 8 hardcoded strings):
+    Line 38: "a = g┬Àsin(╬©) ÔêÆ ╬╝┬Àg┬Àcos(╬©)"
+    Line 39: "s = ┬¢┬Àa┬Àt┬▓"
+    Line 40: "v = a┬Àt"
+    Line 41: "t = ÔêÜ(2L/a)"
+    Line 42: "v = ÔêÜ(2aL)"
+    ... and 3 more
+
+  components/experiment/inclined/InclinedGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "a = g ┬À (sin ╬© ÔêÆ ╬╝ ┬À cos ╬©)"
+    Line 28: "F_ÔêÑ = m ┬À g ┬À sin ╬©"
+    Line 30: "F_f = ╬╝ ┬À m ┬À g ┬À cos ╬©"
+
+  components/experiment/inclined/InclinedHelpModal.vue (137 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 28: "f_k = ╬╝_k ┬À N = ╬╝_k ┬À m ┬À g ┬À cos(╬©)"
+    Line 34: "a = g (sin╬© ÔêÆ ╬╝_k┬Àcos╬©)"
+    Line 67: "Slope = ╬öa / ╬ösin(╬©)"
+    Line 71: "Slope = g"
+
+  components/experiment/inclined/InclinedParamsPanel.vue (114 lines, 1 hardcoded strings):
+    Line 55: "g (m/s┬▓)"
+
+  components/experiment/inclined/InclinedTablePanel.vue (67 lines, 9 hardcoded strings):
+    Line 22: "L (m)"
+    Line 23: "m (kg)"
+    Line 25: "a (m/s┬▓)"
+    Line 26: "t (s)"
+    Line 27: "v (m/s)"
+    ... and 4 more
+
+  components/experiment/inclined/panels/InclinedWorksheetPanel.vue (72 lines, 1 hardcoded strings):
+    Line 38: "a = g(sin╬© ÔêÆ ╬╝┬Àcos╬©)"
+
+  components/experiment/interference/InterferenceControlBar.vue (55 lines, 5 hardcoded strings):
+    Line 33: "&#x21A9;"
+    Line 33: "Ctrl+Z"
+    Line 34: "&#x21AA;"
+    Line 34: "Ctrl+Y"
+    Line 37: "&#x1F4BE; CSV"
+
+  components/experiment/interference/InterferenceGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "╬öy = (╬╗ ┬À L) / d"
+    Line 28: "╬╗ = (╬öy ┬À d) / L"
+
+  components/experiment/interference/InterferenceHelpModal.vue (143 lines, 7 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 45: "d ┬À sin(╬©) = m ┬À ╬╗"
+    Line 48: "╬öy = ╬╗ ┬À D / d"
+    Line 50: "╬öy = (╬╗D) ┬À (1/d)"
+    Line 73: "Slope = ╬ö(╬öy) / ╬ö(1/d)"
+    ... and 2 more
+
+  components/experiment/interference/InterferenceOverlayPanels.vue (64 lines, 1 hardcoded strings):
+    Line 36: "&#x2715;"
+
+  components/experiment/interference/InterferenceStatusBar.vue (54 lines, 3 hardcoded strings):
+    Line 31: "d ="
+    Line 32: "D ="
+    Line 34: "╬öy ="
+
+  components/experiment/interference/panels/InterferenceLawsPanel.vue (56 lines, 4 hardcoded strings):
+    Line 19: "╬öy = ╬╗D / d"
+    Line 29: "d┬Àsin╬© = m╬╗"
+    Line 37: "d┬Àsin╬© = (m + ┬¢)╬╗"
+    Line 44: "I = IÔéÇ cos┬▓(¤Çd┬Àsin╬©/╬╗)"
+
+  components/experiment/interference/panels/InterferenceReadingsPanel.vue (79 lines, 5 hardcoded strings):
+    Line 26: "1/d"
+    Line 44: "Central fringe (m=0)"
+    Line 45: "Max intensity"
+    Line 48: "Dark fringes"
+    Line 49: "Between bright fringes"
+
+  components/experiment/interference/panels/InterferenceReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 16: "╬╗ (nm)"
+
+  components/experiment/interference/panels/InterferenceResultsPanel.vue (58 lines, 7 hardcoded strings):
+    Line 30: "Slope (= ╬╗┬ÀD/1000)"
+    Line 31: "D (screen dist)"
+    Line 32: "╬╗ (from slope)"
+    Line 33: "╬╗ (theory)"
+    Line 34: "R┬▓"
+    ... and 2 more
+
+  components/experiment/interference/panels/InterferenceTrialsPanel.vue (47 lines, 3 hardcoded strings):
+    Line 20: "d (mm)"
+    Line 20: "1/d"
+    Line 20: "╬öy"
+
+  components/experiment/interference/panels/InterferenceWorksheetPanel.vue (55 lines, 1 hardcoded strings):
+    Line 33: "╬öy = ╬╗D / d"
+
+  components/experiment/latent-heat/LatentHeatControlBar.vue (42 lines, 3 hardcoded strings):
+    Line 21: "Ctrl+Z"
+    Line 22: "Ctrl+Y"
+    Line 25: "­ƒÆ¥ CSV"
+
+  components/experiment/latent-heat/LatentHeatGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "Q = m ┬À L_f"
+    Line 28: "L_f = Q / m"
+
+  components/experiment/latent-heat/LatentHeatHelpModal.vue (30 lines, 2 hardcoded strings):
+    Line 14: "Ctrl+Z"
+    Line 15: "Ctrl+Y"
+
+  components/experiment/latent-heat/LatentHeatOverlayPanels.vue (37 lines, 1 hardcoded strings):
+    Line 20: "&#x2715;"
+
+  components/experiment/latent-heat/panels/LatentHeatLawsPanel.vue (46 lines, 6 hardcoded strings):
+    Line 16: "Q = m ├ù L"
+    Line 23: "Ïº┘åÏÁ┘çÏºÏ▒ Ïº┘äÏ½┘äÏ¼ (L_f)"
+    Line 23: "334 kJ/kg"
+    Line 24: "Ï¬Ï¿Ï«Ï▒ Ïº┘ä┘àÏºÏí (L_v)"
+    Line 24: "2260 kJ/kg"
+    ... and 1 more
+
+  components/experiment/latent-heat/panels/LatentHeatParamsPanel.vue (34 lines, 2 hardcoded strings):
+    Line 8: "Ïº┘ä┘âÏ¬┘äÏ® (kg)"
+    Line 20: "┘é┘êÏ® Ïº┘äÏ¬Ï│Ï«┘è┘å (W)"
+
+  components/experiment/latent-heat/panels/LatentHeatReferencePanel.vue (36 lines, 1 hardcoded strings):
+    Line 14: "L (J/kg)"
+
+  components/experiment/latent-heat/panels/LatentHeatResultsPanel.vue (73 lines, 2 hardcoded strings):
+    Line 39: "┘àÏ¬┘êÏ│ÏÀ L Ïº┘ä┘à┘éÏºÏ│"
+    Line 43: "L Ïº┘äÏ¡┘é┘è┘é┘è"
+
+  components/experiment/latent-heat/panels/LatentHeatTrialsPanel.vue (49 lines, 2 hardcoded strings):
+    Line 24: "&#x2715;"
+    Line 29: "ÏºÏÂÏ║ÏÀ S ┘äÏ¬Ï│Ï¼┘è┘ä ┘åÏ¬┘èÏ¼Ï® Ï¿Ï╣Ï» Ï¬Ï┤Ï║┘è┘ä Ïº┘äÏ¬Ï¼Ï▒Ï¿Ï®"
+
+  components/experiment/latent-heat/panels/LatentHeatWorksheetPanel.vue (53 lines, 1 hardcoded strings):
+    Line 31: "Q = m ┬À L"
+
+  components/experiment/lightray/LightRayControlBar.vue (47 lines, 1 hardcoded strings):
+    Line 34: "&#x1F4BE; CSV"
+
+  components/experiment/lightray/LightRayGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "nÔéü ┬À sin ╬©Ôéü = nÔéé ┬À sin ╬©Ôéé"
+    Line 28: "╬©_r = ╬©_i (Law of Reflection)"
+
+  components/experiment/lightray/LightRayHelpModal.vue (38 lines, 2 hardcoded strings):
+    Line 18: "Ctrl+Z"
+    Line 19: "Ctrl+Y"
+
+  components/experiment/lightray/LightRayStatusBar.vue (37 lines, 1 hardcoded strings):
+    Line 22: "­ƒö┤ TIR"
+
+  components/experiment/lightray/panels/LightRayWorksheetPanel.vue (71 lines, 3 hardcoded strings):
+    Line 37: "nÔéü sin ╬©ßÁó = nÔéé sin ╬©Ôé£"
+    Line 38: "nÔéü = ┘àÏ╣Ïº┘à┘ä Ïº┘å┘âÏ│ÏºÏ▒ Ïº┘ä┘êÏ│ÏÀ Ïº┘äÏú┘ê┘äÏî nÔéé = ┘àÏ╣Ïº┘à┘ä Ïº┘å┘âÏ│ÏºÏ▒ Ïº┘ä┘êÏ│ÏÀ Ïº┘äÏ½Ïº┘å"
+    Line 47: "nÔéé = nÔéü sin ╬©ßÁó / sin ╬©Ôé£"
+
+  components/experiment/mirror/MirrorGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "1/f = 1/d_o + 1/d_i"
+    Line 28: "m = -d_i / d_o = h_i / h_o"
+
+  components/experiment/mirror/MirrorHelpModal.vue (136 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 34: "1/f = 1/u + 1/v"
+    Line 43: "M = hßÁó/hÔéÆ = ÔêÆv/u"
+    Line 67: "Slope = ÔêÆ1"
+    Line 71: "f = 1/C"
+
+  components/experiment/mirror/panels/MirrorWorksheetPanel.vue (82 lines, 2 hardcoded strings):
+    Line 46: "1/f = 1/do + 1/di"
+    Line 60: "m = -di/do = hi/ho"
+
+  components/experiment/netforce/NetForceControlBar.vue (56 lines, 1 hardcoded strings):
+    Line 34: "­ƒôè CSV"
+
+  components/experiment/netforce/NetForceGuidePanel.vue (47 lines, 4 hardcoded strings):
+    Line 17: "Ï╣┘åÏ» Ïº┘äÏ¬┘êÏºÏ▓┘åÏî ÏºÏÂÏ║ÏÀ ­ƒôØ Ï¬Ï│Ï¼┘è┘ä (S)."
+    Line 22: "F_net = ÔêÜ(╬úFx┬▓ + ╬úFy┬▓)"
+    Line 24: "f Ôëñ ╬╝ ├ù N"
+    Line 26: "Fc = m ┬À ¤ë┬▓ ┬À r"
+
+  components/experiment/netforce/NetForceHelpModal.vue (56 lines, 7 hardcoded strings):
+    Line 13: "┘àÏ¡ÏÁ┘äÏ® Ïº┘ä┘é┘ê┘ë ┘ç┘è Ïº┘ä┘é┘êÏ® Ïº┘ä┘êÏºÏ¡Ï»Ï® Ïº┘ä┘à┘âÏº┘üÏªÏ® ┘äÏ¼┘à┘èÏ╣ Ïº┘ä┘é┘ê┘ë Ïº┘ä┘àÏñÏ½Ï▒Ï® Ï╣┘ä"
+    Line 18: "Ï▒Ïº┘éÏ¿ ÏúÏ│┘ç┘à Ïº┘ä┘é┘ê┘ë Ï╣┘ä┘ë Canvas ÔÇö ┘â┘ä Ï│┘ç┘à ┘à┘ä┘ê┘å ┘è┘àÏ½┘ä ┘é┘êÏ®."
+    Line 27: "Ïº┘ä┘éÏº┘å┘ê┘å: Fc = m ├ù ¤ë┬▓ ├ù r"
+    Line 33: "ÏÁÏ»┘æÏ▒ Ïº┘äÏ¿┘èÏº┘åÏºÏ¬ CSV Ïú┘ê ÏúÏ▒Ï│┘ä┘çÏº ┘äÏ¬Ï¡┘ä┘è┘ä Ïº┘äÏ¿┘èÏº┘åÏºÏ¬."
+    Line 37: "Space: Ï¬Ï┤Ï║┘è┘ä/ÏÑ┘è┘éÏº┘ü"
+    ... and 2 more
+
+  components/experiment/netforce/NetForcePanelBody.vue (262 lines, 3 hardcoded strings):
+    Line 75: "Ï¡Ï│ÏºÏ¿ Ïº┘ä┘àÏ¡ÏÁ┘äÏ® / Fc"
+    Line 76: "Ï¡Ï│ÏºÏ¿ Fc = mv┬▓/r"
+    Line 77: "Ïº┘åÏ¡Ï»ÏºÏ▒ Fc vs ¤ë┬▓"
+
+  components/experiment/netforce/NetForceReport.vue (163 lines, 13 hardcoded strings):
+    Line 58: "Ïº┘ä┘é┘è┘àÏ® (N)"
+    Line 60: "Ïº┘ä┘êÏ▓┘å (W)"
+    Line 61: "Ïº┘ä┘é┘êÏ® Ïº┘äÏ╣┘à┘êÏ»┘èÏ® (N)"
+    Line 62: "Ïº┘äÏºÏ¡Ï¬┘âÏº┘â (f)"
+    Line 63: "Ïº┘ä┘é┘êÏ® Ïº┘ä┘àÏÀÏ¿┘éÏ® (F)"
+    ... and 8 more
+
+  components/experiment/pendulum/panels/PendulumReferencePanel.vue (39 lines, 2 hardcoded strings):
+    Line 13: "­ƒôè ┘àÏ▒Ï¼Ï╣ ┘é┘è┘à g"
+    Line 17: "g (m/s┬▓)"
+
+  components/experiment/pendulum/panels/PendulumWorksheetPanel.vue (91 lines, 8 hardcoded strings):
+    Line 34: "­ƒôÉ Ï«ÏÀ┘êÏºÏ¬ Ï¡Ï│ÏºÏ¿ Ï¬Ï│ÏºÏ▒Ï╣ Ïº┘äÏ¼ÏºÏ░Ï¿┘èÏ® g"
+    Line 41: "T = 2¤ÇÔêÜ(L/g)"
+    Line 42: "Ï¡┘èÏ½ T = Ïº┘äÏ»┘êÏ▒Ï® Ïº┘äÏ▓┘à┘å┘èÏ®Ïî L = ÏÀ┘ê┘ä Ïº┘äÏ«┘èÏÀÏî g = Ï¬Ï│ÏºÏ▒Ï╣ Ïº┘äÏ¼ÏºÏ░Ï¿┘èÏ®"
+    Line 51: "g = 4¤Ç┬▓L / T┬▓"
+    Line 66: "g Ïº┘ä┘àÏ¡Ï│┘êÏ¿:"
+    ... and 3 more
+
+  components/experiment/pendulum/PendulumControlBar.vue (73 lines, 1 hardcoded strings):
+    Line 46: "&#x1F4BE; CSV"
+
+  components/experiment/pendulum/PendulumDataPanel.vue (48 lines, 1 hardcoded strings):
+    Line 22: "&#xD7;"
+
+  components/experiment/pendulum/PendulumFFTPanel.vue (110 lines, 3 hardcoded strings):
+    Line 83: "100 Hz"
+    Line 83: "200 Hz"
+    Line 83: "500 Hz"
+
+  components/experiment/pendulum/PendulumGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "T = 2¤Ç ÔêÜ(L / g)"
+    Line 28: "T┬▓ = (4¤Ç┬▓ / g) ┬À L"
+    Line 30: "g = 4¤Ç┬▓ / Slope"
+
+  components/experiment/pendulum/PendulumHelpModal.vue (130 lines, 9 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 24: "F = -m ┬À g ┬À sin(╬©)"
+    Line 32: "T = 2¤Ç ÔêÜ(L / g)"
+    Line 34: "T┬▓ = (4¤Ç┬▓ / g) ┬À L"
+    Line 36: "f = 1/T = (1/2¤Ç) ÔêÜ(g/L)"
+    ... and 4 more
+
+  components/experiment/pendulum/PendulumOverlayPanels.vue (49 lines, 1 hardcoded strings):
+    Line 31: "&#x2715;"
+
+  components/experiment/pendulum/PendulumPanelBody.vue (57 lines, 3 hardcoded strings):
+    Line 41: "T = 2¤ÇÔêÜ(L/g)"
+    Line 41: "Ïº┘äÏ▓┘à┘å Ïº┘äÏ»┘êÏ▒┘è (T) ┘äÏº ┘èÏ╣Ï¬┘àÏ» Ï╣┘ä┘ë ┘âÏ¬┘äÏ® Ïº┘äÏ¼Ï│┘à Ïº┘ä┘àÏ╣┘ä┘é"
+    Line 42: "Ï¼Ï▒┘æÏ¿ Ï¬Ï║┘è┘èÏ▒ ┘âÏ¬┘äÏ® Ïº┘äÏ¿┘åÏ»┘ê┘ä ┘à┘å ┘ä┘êÏ¡Ï® Ïº┘ä┘àÏ¬Ï║┘èÏ▒ÏºÏ¬ ÔÇö Ï│Ï¬Ï¼Ï» Ïú┘å T Ï½ÏºÏ¿Ï¬ Ï¬"
+
+  components/experiment/pendulum/PendulumPhotogate.vue (109 lines, 1 hardcoded strings):
+    Line 75: "t (s)"
+
+  components/experiment/pendulum/PendulumReport.vue (51 lines, 4 hardcoded strings):
+    Line 31: "L (m)"
+    Line 31: "T (s)"
+    Line 31: "f (Hz)"
+    Line 31: "g (m/s┬▓)"
+
+  components/experiment/pendulum/PendulumScatterChart.vue (86 lines, 12 hardcoded strings):
+    Line 54: "&#x1F4C8; Scatter"
+    Line 56: "L (m)"
+    Line 56: "g (m/s┬▓)"
+    Line 56: "T (s)"
+    Line 56: "f (Hz)"
+    ... and 7 more
+
+  components/experiment/polarization/panels/PolarizationLawsPanel.vue (51 lines, 4 hardcoded strings):
+    Line 20: "I = IÔéÇ cos┬▓(╬©Ôéé ÔêÆ ╬©Ôéü)"
+    Line 31: "I_max = IÔéÇ  (when ╬ö╬© = 0┬░)"
+    Line 35: "I = 0  (when ╬ö╬© = 90┬░)"
+    Line 39: "T = cos┬▓(╬ö╬©) ├ù 100%"
+
+  components/experiment/polarization/panels/PolarizationReadingsPanel.vue (69 lines, 1 hardcoded strings):
+    Line 34: "cos┬▓(╬ö╬©)"
+
+  components/experiment/polarization/panels/PolarizationReferencePanel.vue (37 lines, 1 hardcoded strings):
+    Line 15: "I/IÔéÇ (%)"
+
+  components/experiment/polarization/panels/PolarizationResultsPanel.vue (55 lines, 1 hardcoded strings):
+    Line 32: "R┬▓"
+
+  components/experiment/polarization/panels/PolarizationTrialsPanel.vue (48 lines, 3 hardcoded strings):
+    Line 20: "cos┬▓╬©"
+    Line 20: "IÔéÇ"
+    Line 30: "&#x00D7;"
+
+  components/experiment/polarization/panels/PolarizationWorksheetPanel.vue (59 lines, 1 hardcoded strings):
+    Line 35: "I = IÔéÇ cos┬▓(╬ö╬©)"
+
+  components/experiment/polarization/PolarizationControlBar.vue (57 lines, 5 hardcoded strings):
+    Line 35: "&#x21A9;"
+    Line 35: "Ctrl+Z"
+    Line 36: "&#x21AA;"
+    Line 36: "Ctrl+Y"
+    Line 39: "&#x1F4BE; CSV"
+
+  components/experiment/polarization/PolarizationGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "I = IÔéÇ ┬À cos┬▓╬© (Malus's Law)"
+    Line 28: "IÔéÇ = Slope"
+
+  components/experiment/polarization/PolarizationHelpModal.vue (137 lines, 4 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 46: "I = IÔéÇ ┬À cos┬▓(╬©)"
+    Line 69: "Slope = ╬öI / ╬öcos┬▓╬©"
+    Line 73: "Slope = IÔéÇ"
+
+  components/experiment/polarization/PolarizationOverlayPanels.vue (68 lines, 1 hardcoded strings):
+    Line 38: "&#x2715;"
+
+  components/experiment/polarization/PolarizationStatusBar.vue (54 lines, 2 hardcoded strings):
+    Line 33: "I ="
+    Line 34: "T ="
+
+  components/experiment/prism/panels/PrismLawsPanel.vue (58 lines, 3 hardcoded strings):
+    Line 27: "nÔéü sin ╬©Ôéü = nÔéé sin ╬©Ôéé"
+    Line 34: "n = sin((A+D)/2) / sin(A/2)"
+    Line 41: "n = sin((A+╬┤_min)/2) / sin(A/2)"
+
+  components/experiment/prism/panels/PrismResultsPanel.vue (43 lines, 4 hardcoded strings):
+    Line 26: "A (Y-intercept)"
+    Line 27: "B (Slope)"
+    Line 28: "R┬▓"
+    Line 29: "n = A + B/╬╗┬▓"
+
+  components/experiment/prism/panels/PrismTrialsPanel.vue (50 lines, 1 hardcoded strings):
+    Line 31: "&#x1F5D1;"
+
+  components/experiment/prism/panels/PrismWorksheetPanel.vue (58 lines, 1 hardcoded strings):
+    Line 36: "sin ╬©Ôéé = sin ╬©Ôéü / n"
+
+  components/experiment/prism/PrismControlBar.vue (55 lines, 5 hardcoded strings):
+    Line 33: "&#x21A9;"
+    Line 33: "Ctrl+Z"
+    Line 34: "&#x21AA;"
+    Line 34: "Ctrl+Y"
+    Line 37: "&#x1F4BE; CSV"
+
+  components/experiment/prism/PrismGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "n ┬À sin ╬©_c = 1 (Critical Angle)"
+    Line 28: "n = c / v (Refractive Index)"
+
+  components/experiment/prism/PrismHelpModal.vue (133 lines, 7 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 24: "n(╬╗) = A + B / ╬╗┬▓"
+    Line 37: "nÔéü ┬À sin(╬©Ôéü) = nÔéé ┬À sin(╬©Ôéé)"
+    Line 39: "n = sin((A + ╬┤Ôéÿ)/2) / sin(A/2)"
+    Line 63: "Slope = ╬ön / ╬ö(1/╬╗┬▓) = B"
+    ... and 2 more
+
+  components/experiment/prism/PrismOverlayPanels.vue (75 lines, 1 hardcoded strings):
+    Line 42: "&#x2715;"
+
+  components/experiment/prism/PrismStatusBar.vue (64 lines, 4 hardcoded strings):
+    Line 34: "A ="
+    Line 36: "n ="
+    Line 38: "╬©c ="
+    Line 39: "ÔÜá TIR"
+
+  components/experiment/projectile/panels/ProjectileReferencePanel.vue (39 lines, 1 hardcoded strings):
+    Line 17: "sin(2╬©)"
+
+  components/experiment/projectile/panels/ProjectileWorksheetPanel.vue (95 lines, 2 hardcoded strings):
+    Line 44: "R = vÔéÇ┬▓┬Àsin(2╬©) / g"
+    Line 58: "H = vÔéÇ┬▓┬Àsin┬▓(╬©) / (2g)"
+
+  components/experiment/projectile/ProjectileGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "R = (vÔéÇ┬▓ ┬À sin 2╬©) / g"
+    Line 28: "H = (vÔéÇ┬▓ ┬À sin┬▓╬©) / (2g)"
+    Line 30: "t_flight = (2 ┬À vÔéÇ ┬À sin╬©) / g"
+
+  components/experiment/projectile/ProjectileHelpModal.vue (129 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 28: "vÔéÇÔéô = vÔéÇ ┬À cos(╬©) &nbsp;&nbsp;&nbsp;&nbsp; vÔéÇßÁº = vÔéÇ ┬À sin(╬©)"
+    Line 58: "Slope = ╬öR / ╬ösin(2╬©)"
+    Line 62: "vÔéÇ┬▓ / g"
+    Line 63: "vÔéÇ = ÔêÜ(Slope ├ù g)"
+
+  components/experiment/projectile/ProjectileHintOverlay.vue (72 lines, 1 hardcoded strings):
+    Line 43: "vÔéÇ"
+
+  components/experiment/projectile/ProjectilePanelBody.vue (276 lines, 4 hardcoded strings):
+    Line 166: "vÔéÇ (m/s)"
+    Line 168: "g (m/s┬▓)"
+    Line 169: "xÔéÇ (m)"
+    Line 170: "yÔéÇ (m)"
+
+  components/experiment/projectile/ProjectileReport.vue (122 lines, 5 hardcoded strings):
+    Line 29: "vÔéÇ"
+    Line 42: "vÔéÇ (m/s)"
+    Line 81: "z = vÔéÇ sin ╬© / g"
+    Line 82: "H = (vÔéÇ sin ╬©)┬▓ / 2g"
+    Line 83: "R = vÔéÇ┬▓ sin(2╬©) / g"
+
+  components/experiment/resonance/panels/ResonanceLawsPanel.vue (35 lines, 3 hardcoded strings):
+    Line 12: "f_n = n v / (2L)"
+    Line 17: "╬╗_n = 2L / n"
+    Line 22: "v = f ├ù ╬╗"
+
+  components/experiment/resonance/panels/ResonanceTrialsPanel.vue (36 lines, 1 hardcoded strings):
+    Line 18: "&#x00D7;"
+
+  components/experiment/resonance/panels/ResonanceWorksheetPanel.vue (58 lines, 1 hardcoded strings):
+    Line 35: "f = n┬Àv / (2L) = n┬ÀÔêÜ(T/╬╝) / (2L)"
+
+  components/experiment/resonance/ResonanceControlBar.vue (46 lines, 5 hardcoded strings):
+    Line 24: "&#x21A9;"
+    Line 24: "Ctrl+Z"
+    Line 25: "&#x21AA;"
+    Line 25: "Ctrl+Y"
+    Line 28: "&#x1F4BE; CSV"
+
+  components/experiment/resonance/ResonanceGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "f_n = n ┬À v / (2L)"
+    Line 28: "v = f_n ┬À 2L / n"
+
+  components/experiment/resonance/ResonanceHelpModal.vue (39 lines, 3 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 20: "Ctrl+Z"
+    Line 21: "Ctrl+Y"
+
+  components/experiment/resonance/ResonanceOverlayPanels.vue (58 lines, 1 hardcoded strings):
+    Line 32: "&#x2715;"
+
+  components/experiment/resonance/ResonanceStatusBar.vue (44 lines, 5 hardcoded strings):
+    Line 20: "L ="
+    Line 21: "T ="
+    Line 22: "n ="
+    Line 23: "f ="
+    Line 24: "lambda ="
+
+  components/experiment/shared/DraggablePanel.vue (88 lines, 2 hardcoded strings):
+    Line 64: "&#x26F6;"
+    Line 65: "&#x2715;"
+
+  components/experiment/specific-heat/panels/SpecificHeatLawsPanel.vue (55 lines, 6 hardcoded strings):
+    Line 19: "m_m┬Àc_m┬À(T_m ÔêÆ T_f) = m_w┬Àc_w┬À(T_f ÔêÆ T_w)"
+    Line 24: "ÏºÏ│Ï¬Ï«Ï▒ÏºÏ¼ c_m"
+    Line 25: "c_m = m_w┬Àc_w┬À(T_f ÔêÆ T_w) / (m_m┬À(T_m ÔêÆ T_f))"
+    Line 30: "Q_lost = m_m┬Àc_m┬À(T_m ÔêÆ T_f)"
+    Line 35: "Q_gained = m_w┬Àc_w┬À(T_f ÔêÆ T_w)"
+    ... and 1 more
+
+  components/experiment/specific-heat/panels/SpecificHeatParamsPanel.vue (45 lines, 3 hardcoded strings):
+    Line 19: "┘âÏ¬┘äÏ® Ïº┘ä┘àÏ╣Ï»┘å m_m (g)"
+    Line 24: "┘âÏ¬┘äÏ® Ïº┘ä┘àÏºÏí m_w (g)"
+    Line 29: "Ï¡Ï▒ÏºÏ▒Ï® Ïº┘ä┘àÏºÏí Ïº┘äÏ¿ÏºÏ▒Ï» T_w (┬░C)"
+
+  components/experiment/specific-heat/panels/SpecificHeatReadingsPanel.vue (34 lines, 5 hardcoded strings):
+    Line 19: "m_m (┘âÏ¬┘äÏ® Ïº┘ä┘àÏ╣Ï»┘å)"
+    Line 20: "m_w (┘âÏ¬┘äÏ® Ïº┘ä┘àÏºÏí)"
+    Line 21: "T_w (Ï¡Ï▒ÏºÏ▒Ï® Ïº┘ä┘àÏºÏí Ïº┘äÏú┘ê┘ä┘èÏ®)"
+    Line 22: "T_m (Ï¡Ï▒ÏºÏ▒Ï® Ïº┘ä┘àÏ╣Ï»┘å)"
+    Line 23: "T_f (Ï¡Ï▒ÏºÏ▒Ï® Ïº┘äÏºÏ¬Ï▓Ïº┘å)"
+
+  components/experiment/specific-heat/panels/SpecificHeatReferencePanel.vue (71 lines, 2 hardcoded strings):
+    Line 28: "c (J/kg┬À┬░C)"
+    Line 43: "ÏºÏ¡Ï│Ï¿ c_m ┘à┘å Ï¬Ï¼Ï▒Ï¿Ï¬┘â"
+
+  components/experiment/specific-heat/panels/SpecificHeatResultsPanel.vue (100 lines, 4 hardcoded strings):
+    Line 36: "c_m (┘à┘å Ïº┘ä┘à┘è┘ä)"
+    Line 43: "R┬▓"
+    Line 47: "c_m (ÏóÏ«Ï▒ Ï¬Ï¼Ï▒Ï¿Ï®)"
+    Line 51: "c_m (Ïº┘äÏ¡┘é┘è┘é┘è)"
+
+  components/experiment/specific-heat/panels/SpecificHeatWorksheetPanel.vue (169 lines, 10 hardcoded strings):
+    Line 60: "= m"
+    Line 60: "├ù c"
+    Line 60: "├ù (T"
+    Line 60: "ÔêÆ T"
+    Line 77: "= Q"
+    ... and 5 more
+
+  components/experiment/specific-heat/SpecificHeatControlBar.vue (51 lines, 3 hardcoded strings):
+    Line 24: "Ctrl+Z"
+    Line 25: "Ctrl+Y"
+    Line 30: "­ƒÆ¥ CSV"
+
+  components/experiment/specific-heat/SpecificHeatGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "c_m = (m_w ┬À c_w ┬À ╬öT_w) / (m_m ┬À ╬öT_m)"
+    Line 28: "Slope = c_m"
+
+  components/experiment/specific-heat/SpecificHeatHelpModal.vue (112 lines, 4 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 35: "Q_lost = Q_gained"
+    Line 37: "Q_lost = m_m ┬À c_m ┬À (T_m - T_f)"
+    Line 39: "Q_gained = m_w ┬À c_w ┬À (T_f - T_w)"
+
+  components/experiment/specific-heat/SpecificHeatLab.vue (223 lines, 1 hardcoded strings):
+    Line 76: "­ƒöÑ Ï¼ÏºÏ▒┘è Ï¬Ï│Ï«┘è┘å Ïº┘ä┘àÏ╣Ï»┘å ÔÇö Ïº┘åÏ¬Ï©Ï▒ Ï¡Ï¬┘ë 100┬░C"
+
+  components/experiment/specific-heat/SpecificHeatOverlayPanels.vue (68 lines, 1 hardcoded strings):
+    Line 37: "&#x2715;"
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundLawsPanel.vue (53 lines, 7 hardcoded strings):
+    Line 18: "Resonance Wavelength"
+    Line 23: "Speed of Sound"
+    Line 24: "v = f ┬À ╬╗"
+    Line 32: "Theoretical Speed (Air)"
+    Line 33: "v = 331.3 + 0.6┬ÀT"
+    ... and 2 more
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundParamsPanel.vue (68 lines, 5 hardcoded strings):
+    Line 20: "L ÔÇö Tube length"
+    Line 29: "f ÔÇö Frequency"
+    Line 38: "T ÔÇö Temperature"
+    Line 50: "1st (╬╗/4)"
+    Line 51: "3rd (3╬╗/4)"
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundReadingsPanel.vue (71 lines, 6 hardcoded strings):
+    Line 20: "L ÔÇö Tube length"
+    Line 24: "f ÔÇö Frequency"
+    Line 28: "T ÔÇö Temperature"
+    Line 33: "╬╗ ÔÇö Wavelength"
+    Line 38: "v ÔÇö Measured"
+    ... and 1 more
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundReferencePanel.vue (37 lines, 2 hardcoded strings):
+    Line 14: "T (┬░C)"
+    Line 15: "v (m/s)"
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundResultsPanel.vue (57 lines, 7 hardcoded strings):
+    Line 31: "Slope (v/4)"
+    Line 32: "v = 4├ùSlope"
+    Line 33: "R┬▓"
+    Line 34: "End correction e"
+    Line 38: "Avg v (meas)"
+    ... and 2 more
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundTrialsPanel.vue (47 lines, 1 hardcoded strings):
+    Line 19: "1/f"
+
+  components/experiment/speed-of-sound/panels/SpeedOfSoundWorksheetPanel.vue (55 lines, 1 hardcoded strings):
+    Line 32: "v = 331.4 + 0.6T"
+
+  components/experiment/speed-of-sound/SpeedOfSoundControlBar.vue (44 lines, 5 hardcoded strings):
+    Line 22: "&#x21A9;"
+    Line 22: "Ctrl+Z"
+    Line 23: "&#x21AA;"
+    Line 23: "Ctrl+Y"
+    Line 26: "&#x1F4BE; CSV"
+
+  components/experiment/speed-of-sound/SpeedOfSoundGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "v = f ┬À ╬╗"
+    Line 28: "v = 331 + 0.6 ┬À T"
+
+  components/experiment/speed-of-sound/SpeedOfSoundHelpModal.vue (149 lines, 8 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 41: "L = ╬╗ / 4"
+    Line 43: "L + e = ╬╗ / 4 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; L = ╬╗/4 ÔêÆ e"
+    Line 50: "v = f ┬À ╬╗ &nbsp;&nbsp;&rArr;&nbsp;&nbsp; ╬╗ = v / f"
+    Line 53: "L = (v/4) ┬À (1/f) ÔêÆ e"
+    ... and 3 more
+
+  components/experiment/speed-of-sound/SpeedOfSoundOverlayPanels.vue (68 lines, 1 hardcoded strings):
+    Line 37: "&#x2715;"
+
+  components/experiment/speed-of-sound/SpeedOfSoundStatusBar.vue (52 lines, 7 hardcoded strings):
+    Line 28: "L ="
+    Line 29: "f ="
+    Line 30: "v ="
+    Line 30: "m/s"
+    Line 31: "vÔé£ ="
+    ... and 2 more
+
+  components/experiment/spring/DraggablePanel.vue (88 lines, 2 hardcoded strings):
+    Line 64: "&#x26F6;"
+    Line 65: "&#x2715;"
+
+  components/experiment/spring/panels/SpringReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 16: "k (N/m)"
+
+  components/experiment/spring/panels/SpringWorksheetPanel.vue (91 lines, 8 hardcoded strings):
+    Line 34: "­ƒôÉ Ï«ÏÀ┘êÏºÏ¬ Ï¡Ï│ÏºÏ¿ Ï½ÏºÏ¿Ï¬ Ïº┘ä┘åÏºÏ¿ÏÂ k"
+    Line 41: "T = 2¤ÇÔêÜ(m/k)"
+    Line 42: "Ï¡┘èÏ½ T = Ïº┘äÏ»┘êÏ▒Ï® Ïº┘äÏ▓┘à┘å┘èÏ®Ïî m = Ïº┘ä┘âÏ¬┘äÏ®Ïî k = Ï½ÏºÏ¿Ï¬ Ïº┘ä┘åÏºÏ¿ÏÂ"
+    Line 51: "k = 4¤Ç┬▓m / T┬▓"
+    Line 66: "k Ïº┘ä┘àÏ¡Ï│┘êÏ¿:"
+    ... and 3 more
+
+  components/experiment/spring/SpringControlBar.vue (67 lines, 1 hardcoded strings):
+    Line 45: "&#x1F4BE; CSV"
+
+  components/experiment/spring/SpringDataPanel.vue (57 lines, 1 hardcoded strings):
+    Line 32: "&#xD7;"
+
+  components/experiment/spring/SpringFFTPanel.vue (136 lines, 3 hardcoded strings):
+    Line 105: "100 Hz"
+    Line 105: "200 Hz"
+    Line 105: "500 Hz"
+
+  components/experiment/spring/SpringGuidePanel.vue (51 lines, 3 hardcoded strings):
+    Line 26: "F = -k ┬À x"
+    Line 28: "T = 2¤Ç ÔêÜ(m / k)"
+    Line 30: "T┬▓ = (4¤Ç┬▓ / k) ┬À m"
+
+  components/experiment/spring/SpringHelpModal.vue (129 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 24: "F = -k ┬À x"
+    Line 58: "Slope = ╬öT┬▓ / ╬öm"
+    Line 62: "Slope = 4¤Ç┬▓ / k"
+    Line 63: "k = 4¤Ç┬▓ / Slope"
+
+  components/experiment/spring/SpringOverlayPanels.vue (84 lines, 1 hardcoded strings):
+    Line 56: "&#x2715;"
+
+  components/experiment/spring/SpringPhotogate.vue (145 lines, 1 hardcoded strings):
+    Line 109: "t (s)"
+
+  components/experiment/spring/SpringReport.vue (172 lines, 9 hardcoded strings):
+    Line 112: "m (g)"
+    Line 112: "╬öy (cm)"
+    Line 112: "F (N)"
+    Line 131: "m (g)"
+    Line 131: "tÔéü (s)"
+    ... and 4 more
+
+  components/experiment/spring/SpringScatterChart.vue (95 lines, 3 hardcoded strings):
+    Line 64: "&#x1F4C8; T┬▓ vs m"
+    Line 74: "k = 4¤Ç┬▓ / Slope ="
+    Line 74: "N/m"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionChartPanel.vue (47 lines, 3 hardcoded strings):
+    Line 32: "╬öL vs tÔéü"
+    Line 35: "tÔéü (┬░C)"
+    Line 36: "╬öL (mm)"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionLawsPanel.vue (45 lines, 7 hardcoded strings):
+    Line 8: "╬öL = ╬▒ ├ù LÔéÇ ├ù ╬öT"
+    Line 10: "LÔéÇ"
+    Line 11: "╬öT"
+    Line 13: "╬öL"
+    Line 18: "╬▒ = ╬öL / (LÔéÇ ├ù ╬öT)"
+    ... and 2 more
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionParamsPanel.vue (59 lines, 3 hardcoded strings):
+    Line 26: "LÔéÇ (m)"
+    Line 31: "tÔéÇ (┬░C)"
+    Line 36: "tÔéü (┬░C)"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionReadingsPanel.vue (47 lines, 5 hardcoded strings):
+    Line 23: "LÔéÇ"
+    Line 24: "tÔéÇ"
+    Line 25: "tÔéü"
+    Line 27: "╬öL"
+    Line 28: "LÔéü"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionReferencePanel.vue (38 lines, 1 hardcoded strings):
+    Line 12: "­ƒôè ┘àÏ╣Ïº┘à┘ä Ïº┘äÏ¬┘àÏ»Ï» (├ù10Ôü╗ÔüÂ/K)"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionResultsPanel.vue (52 lines, 1 hardcoded strings):
+    Line 27: "┘àÏ¬┘êÏ│ÏÀ ╬öL"
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionTrialsPanel.vue (50 lines, 6 hardcoded strings):
+    Line 14: "LÔéÇ"
+    Line 14: "tÔéÇ"
+    Line 14: "tÔéü"
+    Line 14: "╬öL"
+    Line 24: "&#x2715;"
+    ... and 1 more
+
+  components/experiment/thermal-expansion/panels/ThermalExpansionWorksheetPanel.vue (55 lines, 1 hardcoded strings):
+    Line 32: "╬öL = ╬▒ ┬À LÔéÇ ┬À ╬öT"
+
+  components/experiment/thermal-expansion/ThermalExpansionControlBar.vue (42 lines, 3 hardcoded strings):
+    Line 21: "Ctrl+Z"
+    Line 22: "Ctrl+Y"
+    Line 25: "­ƒÆ¥ CSV"
+
+  components/experiment/thermal-expansion/ThermalExpansionGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "╬öL = ╬▒ ┬À LÔéÇ ┬À ╬öT"
+    Line 28: "╬▒ = ╬öL / (LÔéÇ ┬À ╬öT)"
+
+  components/experiment/thermal-expansion/ThermalExpansionHelpModal.vue (30 lines, 2 hardcoded strings):
+    Line 14: "Ctrl+Z"
+    Line 15: "Ctrl+Y"
+
+  components/experiment/thermal-expansion/ThermalExpansionOverlayPanels.vue (40 lines, 1 hardcoded strings):
+    Line 27: "&#x2715;"
+
+  components/experiment/thinlens/panels/ThinLensWorksheetPanel.vue (82 lines, 2 hardcoded strings):
+    Line 46: "1/f = 1/do + 1/di"
+    Line 60: "m = -di/do = hi/ho"
+
+  components/experiment/thinlens/ThinLensGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "1/f = 1/d_o + 1/d_i"
+    Line 28: "m = -d_i / d_o"
+
+  components/experiment/thinlens/ThinLensHelpModal.vue (135 lines, 5 hardcoded strings):
+    Line 15: "&#x2715;"
+    Line 34: "1/f = 1/u + 1/v"
+    Line 42: "M = hßÁó/hÔéÆ = ÔêÆv/u"
+    Line 66: "Slope = ÔêÆ1"
+    Line 70: "f = 1/C"
+
+  components/experiment/wave-interference/panels/WaveInterferenceLawsPanel.vue (35 lines, 3 hardcoded strings):
+    Line 12: "v = f ├ù ╬╗"
+    Line 17: "╬ör = m ├ù ╬╗"
+    Line 22: "╬ör = (m + 1/2) ├ù ╬╗"
+
+  components/experiment/wave-interference/panels/WaveInterferenceTrialsPanel.vue (36 lines, 1 hardcoded strings):
+    Line 18: "&#x00D7;"
+
+  components/experiment/wave-interference/panels/WaveInterferenceWorksheetPanel.vue (54 lines, 1 hardcoded strings):
+    Line 32: "v = f┬À╬╗"
+
+  components/experiment/wave-interference/WaveInterferenceControlBar.vue (46 lines, 5 hardcoded strings):
+    Line 24: "&#x21A9;"
+    Line 24: "Ctrl+Z"
+    Line 25: "&#x21AA;"
+    Line 25: "Ctrl+Y"
+    Line 28: "&#x1F4BE; CSV"
+
+  components/experiment/wave-interference/WaveInterferenceGuidePanel.vue (49 lines, 2 hardcoded strings):
+    Line 26: "╬ö¤å = (2¤Ç/╬╗) ┬À ╬öx"
+    Line 28: "A_result = 2A ┬À cos(╬ö¤å/2)"
+
+  components/experiment/wave-interference/WaveInterferenceHelpModal.vue (39 lines, 3 hardcoded strings):
+    Line 14: "&#x2715;"
+    Line 20: "Ctrl+Z"
+    Line 21: "Ctrl+Y"
+
+  components/experiment/wave-interference/WaveInterferenceOverlayPanels.vue (58 lines, 1 hardcoded strings):
+    Line 32: "&#x2715;"
+
+  components/experiment/wave-interference/WaveInterferenceStatusBar.vue (43 lines, 5 hardcoded strings):
+    Line 20: "d ="
+    Line 21: "lambda ="
+    Line 22: "f ="
+    Line 23: "v ="
+    Line 23: "m/s"
+
+  components/landing/LandingLoginSide.vue (131 lines, 1 hardcoded strings):
+    Line 24: "ÔÜø´©Å PhysLab"
+
+  components/school/SchoolHelpModal.vue (127 lines, 3 hardcoded strings):
+    Line 15: "┘è┘êÏÂÏ¡ Ï¡Ïº┘äÏ® Ïº┘äÏºÏ¬ÏÁÏº┘ä Ï¿Ïº┘äÏ«ÏºÏ»┘à: ┘àÏ¿ÏºÏ┤Ï▒ (SSE)Ïî Ï¬Ï¡Ï»┘èÏ½ Ï»┘êÏ▒┘èÏî Ïú┘ê Ï║┘èÏ▒ ┘à"
+    Line 50: "Alt + Ï▒┘é┘à (1ÔÇô9):"
+    Line 51: "Ctrl/Cmd + K:"
+
+  components/school/SchoolTables.vue (295 lines, 1 hardcoded strings):
+    Line 284: "' + confirmTarget.userName + '"
+
+  components/student/DeadlinesPanel.vue (123 lines, 1 hardcoded strings):
+    Line 95: "­ƒôÑ Ï¬ÏÁÏ»┘èÏ▒ Ïº┘ä┘â┘ä ÏÑ┘ä┘ë Ïº┘äÏ¬┘é┘ê┘è┘à (.ics)"
+
+  components/student/StudentHelpModal.vue (129 lines, 6 hardcoded strings):
+    Line 15: "┘è┘êÏÂÏ¡ Ï¡Ïº┘äÏ® Ïº┘äÏºÏ¬ÏÁÏº┘ä Ï¿Ïº┘äÏ«ÏºÏ»┘à: ┘àÏ¿ÏºÏ┤Ï▒ (SSE)Ïî Ï¬Ï¡Ï»┘èÏ½ Ï»┘êÏ▒┘èÏî Ïú┘ê Ï║┘èÏ▒ ┘à"
+    Line 39: "┘èÏ¬┘èÏ¡ Ï¬Ï║┘è┘èÏ▒ ┘é┘è┘à ┘àÏ½┘ä Ïº┘äÏ¬┘èÏºÏ▒ IÏî Ï╣Ï»Ï» Ïº┘ä┘ä┘üÏºÏ¬ NÏî Ïº┘äÏ¼┘çÏ» VÏî Ïº┘ä┘à┘éÏº┘ê┘àÏ®"
+    Line 41: "┘àÏñÏ┤Ï▒ Ïº┘ä┘é┘èÏºÏ│ (Probe):"
+    Line 42: "ÏºÏ¿Ï»Ïú Ïº┘ä┘àÏ¡Ïº┘âÏºÏ®Ïî Ïú┘ê┘é┘ü┘çÏº ┘àÏñ┘éÏ¬┘ïÏº (Pause)Ïî Ïú┘ê ÏúÏ╣Ï» Ï¬Ï┤Ï║┘è┘ä┘çÏº."
+    Line 50: "Alt + Ï▒┘é┘à (1ÔÇô9):"
+    ... and 1 more
+
+  components/teacher/QuizBuilder.vue (321 lines, 4 hardcoded strings):
+    Line 286: "Ïº┘äÏ«┘èÏºÏ▒ A"
+    Line 287: "Ïº┘äÏ«┘èÏºÏ▒ B"
+    Line 290: "Ïº┘äÏ«┘èÏºÏ▒ C (ÏºÏ«Ï¬┘èÏºÏ▒┘è)"
+    Line 291: "Ïº┘äÏ«┘èÏºÏ▒ D (ÏºÏ«Ï¬┘èÏºÏ▒┘è)"
+
+  components/teacher/QuizManager.vue (224 lines, 1 hardcoded strings):
+    Line 150: "­ƒôÑ Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  components/teacher/ReportAIAnalyzer.vue (325 lines, 2 hardcoded strings):
+    Line 96: "= 80 && aiGrade"
+    Line 97: "= 70 && aiGrade"
+
+  components/teacher/ReportCalculationsSection.vue (181 lines, 2 hardcoded strings):
+    Line 72: "R┬▓"
+    Line 103: "= 5 && errorCalcData.errorPercent"
+
+  components/teacher/ReportReadingsSection.vue (134 lines, 1 hardcoded strings):
+    Line 79: "= 50 && cs.consistency"
+
+  components/teacher/TeacherGrading.vue (251 lines, 1 hardcoded strings):
+    Line 135: "Ôî¿´©Å ÔåæÔåô: Ï¬┘å┘é┘ä ÔÇó Enter: ┘üÏ¬Ï¡ ÔÇó G: Ï¬ÏÁÏ¡┘èÏ¡ ÔÇó P: ┘àÏ╣Ïº┘è┘åÏ®"
+
+  components/teacher/TeacherHelpModal.vue (127 lines, 3 hardcoded strings):
+    Line 15: "┘è┘êÏÂÏ¡ Ï¡Ïº┘äÏ® Ïº┘äÏºÏ¬ÏÁÏº┘ä Ï¿Ïº┘äÏ«ÏºÏ»┘à: ┘àÏ¿ÏºÏ┤Ï▒ (SSE)Ïî Ï¬Ï¡Ï»┘èÏ½ Ï»┘êÏ▒┘èÏî Ïú┘ê Ï║┘èÏ▒ ┘à"
+    Line 49: "Alt + Ï▒┘é┘à (1ÔÇô9):"
+    Line 50: "Ctrl/Cmd + K:"
+
+  components/teacher/TeacherQuizBuilder.vue (265 lines, 4 hardcoded strings):
+    Line 200: "Ïº┘äÏ«┘èÏºÏ▒ A"
+    Line 204: "Ïº┘äÏ«┘èÏºÏ▒ B"
+    Line 210: "Ïº┘äÏ«┘èÏºÏ▒ C (ÏºÏ«Ï¬┘èÏºÏ▒┘è)"
+    Line 214: "Ïº┘äÏ«┘èÏºÏ▒ D (ÏºÏ«Ï¬┘èÏºÏ▒┘è)"
+
+  modules/biology/components/AnatomyViewerExperiment.vue (222 lines, 1 hardcoded strings):
+    Line 138: "3D Model on Sketchfab"
+
+  modules/chemistry/analysis-calc/ChemAnalysisTab.vue (225 lines, 6 hardcoded strings):
+    Line 151: "(mL)"
+    Line 165: "[HÔü║]"
+    Line 166: "[OHÔü╗]"
+    Line 169: "pH:"
+    Line 170: "pOH:"
+    ... and 1 more
+
+  modules/chemistry/analysis-calc/ChemReportTab.vue (226 lines, 3 hardcoded strings):
+    Line 164: "V (mL)"
+    Line 164: "[HÔü║] (M)"
+    Line 164: "[OHÔü╗] (M)"
+
+  modules/physics/experiment-template/ExperimentShell.vue (229 lines, 1 hardcoded strings):
+    Line 71: "­ƒôè FFT"
+
+  modules/physics/experiments/electric-workshop/ac/ACBottomBar.vue (108 lines, 4 hardcoded strings):
+    Line 45: "RL Circuit"
+    Line 46: "RC Circuit"
+    Line 47: "RLC Circuit"
+    Line 50: "Low-Pass Filter"
+
+  modules/physics/experiments/electric-workshop/ac/ACDialogs.vue (298 lines, 2 hardcoded strings):
+    Line 217: "Ctrl+Z"
+    Line 218: "Ctrl+Y"
+
+  modules/physics/experiments/electric-workshop/dc/DCDialogs.vue (279 lines, 2 hardcoded strings):
+    Line 202: "Ctrl+Z"
+    Line 203: "Ctrl+Y"
+
+  pages/admin/tabs/AdminUsersV2.vue (325 lines, 1 hardcoded strings):
+    Line 6: "­ƒôè Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  pages/admin/tabs/ClassesV2.vue (274 lines, 1 hardcoded strings):
+    Line 6: "­ƒôè Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  pages/admin/tabs/SchoolsV2.vue (212 lines, 1 hardcoded strings):
+    Line 6: "­ƒôè Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  pages/admin/tabs/subscriptions/SubscriptionList.vue (216 lines, 1 hardcoded strings):
+    Line 26: "­ƒôä CSV"
+
+  pages/admin/tabs/subscriptions/SubscriptionOverview.vue (286 lines, 1 hardcoded strings):
+    Line 55: "­ƒÆ░ Ïº┘äÏÑ┘èÏ▒ÏºÏ»ÏºÏ¬ Ïº┘ä┘àÏ¬┘âÏ▒Ï▒Ï® (MRR)"
+
+  pages/report-view.vue (249 lines, 1 hardcoded strings):
+    Line 216: "┘è┘à┘â┘å┘â Ï▒┘üÏ╣ ÏÁ┘êÏ▒Ï® Ï¿Ï▒┘ê┘üÏº┘è┘ä (JPG, PNG - Ïú┘é┘ä ┘à┘å 2MB)"
+
+  pages/school/tabs/SchoolClasses.vue (254 lines, 1 hardcoded strings):
+    Line 6: "­ƒôè Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  pages/school/tabs/SchoolFeedback.vue (304 lines, 1 hardcoded strings):
+    Line 182: "­ƒôè Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  pages/school/tabs/SchoolReports.vue (223 lines, 1 hardcoded strings):
+    Line 17: "­ƒôè Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  pages/school/tabs/SchoolStudents.vue (224 lines, 1 hardcoded strings):
+    Line 6: "­ƒôè Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  pages/school/tabs/SchoolTeachers.vue (224 lines, 1 hardcoded strings):
+    Line 6: "­ƒôè Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  pages/school/tabs/SchoolWarnings.vue (152 lines, 1 hardcoded strings):
+    Line 13: "­ƒôè Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+  pages/teacher/tabs/Grading.vue (292 lines, 1 hardcoded strings):
+    Line 89: "­ƒÆí Ctrl+Enter ┘ä┘äÏ¡┘üÏ© Ïº┘äÏ│Ï▒┘èÏ╣"
+
+  pages/teacher/tabs/QuizDetailResults.vue (162 lines, 1 hardcoded strings):
+    Line 105: "­ƒôÑ Ï¬ÏÁÏ»┘èÏ▒ CSV"
+
+=== LOCALE COVERAGE ===
+  Locale files: account, admin-ar, admin-en, admin-es, admin-extras, admin-reports, admin-user, ai, approval, ar-admin, ar-core, ar-misc, ar-science, auth, biology-ar_a, biology-ar_b, biology-ar_c, biology-en_a, biology-en_b, biology-en_c, biology-es_a, biology-es_b, biology-es_c, chemistry-analysis, chemistry-ar, chemistry-assistant, chemistry-chemicals, chemistry-en, chemistry-es, chemistry-experiments-ar, chemistry-experiments-en, chemistry-experiments-es, chemistry-lab, chemistry-report, chemistry-shelf, chemistry-tools, common, dashboard-ar, dashboard-en, dashboard-es, electricWorkshop, electricWorkshop_ar_a, electricWorkshop_ar_b, electricWorkshop_en_a, electricWorkshop_en_b, electricWorkshop_es_a, electricWorkshop_es_b, en-admin, en-core, en-misc, en-science, es-admin, es-core, es-misc, es-science, index, landing-ar, landing-en, landing-es, legal, lens, math, report, school-dashboard-ar, school-dashboard-en, school-dashboard-es, school-reports-locale, school, settings, shared-locale-ar, shared-locale-en, shared-locale-es, subscriptions, system, teacher-ar, teacher-en, teacher-es, types
+
+=== DONE ===

@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { locale } = useI18n();
 import { ref, onMounted } from 'vue';
-import { useI18n } from '../../composables/useI18n';
+
 import { useConfirmDialog } from '../../composables/useConfirmDialog';
 import { createQuiz, addQuestion, publishQuiz, closeQuiz, deleteQuiz, getMyQuizzes, getQuizSubmissions, type Quiz, type QuizSubmission } from '../../services/quiz.service';
+import { getMyClasses } from '../../services/class.service';
+import type { ClassItem } from '../../services/class.service';
 
-const { locale } = useI18n();
+
+
 
 const quizzes = ref<Quiz[]>([]);
+const classes = ref<ClassItem[]>([]);
 const loading = ref(false);
 const error = ref('');
 
@@ -18,6 +24,7 @@ const builderTime = ref(30);
 const builderQuestions = ref<{ question_text: string; option_a: string; option_b: string; option_c: string; option_d: string; correct_answer: string; points: number }[]>([]);
 const newQ = ref({ question_text: '', option_a: '', option_b: '', option_c: '', option_d: '', correct_answer: 'a', points: 10 });
 const saving = ref(false);
+const editingIndex = ref(-1);
 
 const viewSubmissions = ref<Quiz | null>(null);
 const submissions = ref<QuizSubmission[]>([]);
@@ -25,8 +32,9 @@ const submissions = ref<QuizSubmission[]>([]);
 async function load() {
   loading.value = true;
   try {
-    const res = await getMyQuizzes();
-    if (res.success) quizzes.value = res.quizzes;
+    const [qRes, cRes] = await Promise.allSettled([getMyQuizzes(), getMyClasses()]);
+    if (qRes.status === 'fulfilled' && qRes.value.success) quizzes.value = qRes.value.quizzes;
+    if (cRes.status === 'fulfilled' && cRes.value.success) classes.value = cRes.value.classes;
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : 'Failed to load';
   }
@@ -41,12 +49,23 @@ function openBuilder() {
 
 function addQuestionLocal() {
   if (!newQ.value.question_text.trim() || !newQ.value.option_a.trim() || !newQ.value.option_b.trim()) return;
-  builderQuestions.value.push({ ...newQ.value });
+  if (editingIndex.value >= 0) {
+    builderQuestions.value[editingIndex.value] = { ...newQ.value };
+    editingIndex.value = -1;
+  } else {
+    builderQuestions.value.push({ ...newQ.value });
+  }
   newQ.value = { question_text: '', option_a: '', option_b: '', option_c: '', option_d: '', correct_answer: 'a', points: 10 };
+}
+
+function editQuestionLocal(i: number) {
+  editingIndex.value = i;
+  newQ.value = { ...builderQuestions.value[i] };
 }
 
 function removeQuestionLocal(i: number) {
   builderQuestions.value.splice(i, 1);
+  if (editingIndex.value === i) editingIndex.value = -1;
 }
 
 async function saveQuiz() {
@@ -151,8 +170,11 @@ onMounted(load);
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>معرف الفصل (Class ID)</label>
-          <input v-model="builderClassId" placeholder="أدخل معرف الفصل" />
+          <label>الفصل</label>
+          <select v-model="builderClassId">
+            <option value="" disabled>— اختر فصل —</option>
+            <option v-for="cls in classes" :key="cls.id" :value="cls.id">{{ cls.name }}</option>
+          </select>
         </div>
         <div class="form-group">
           <label>الوقت (دقائق)</label>
@@ -166,6 +188,7 @@ onMounted(load);
         <span class="q-text">{{ q.question_text }}</span>
         <span class="q-answer">الإجابة: {{ q.correct_answer.toUpperCase() }}</span>
         <span class="q-points">{{ q.points }} نقطة</span>
+        <button class="btn-mini edit" @click="editQuestionLocal(i)">✏️</button>
         <button class="btn-mini delete" @click="removeQuestionLocal(i)">✕</button>
       </div>
 
@@ -210,10 +233,10 @@ onMounted(load);
             <input v-model.number="newQ.points" type="number" min="1" max="100" />
           </div>
         </div>
-        <button class="btn-add-q" @click="addQuestionLocal">+ إضافة السؤال</button>
+        <button class="btn-add-q" @click="addQuestionLocal">{{ editingIndex >= 0 ? '✏️ تحديث السؤال' : '+ إضافة السؤال' }}</button>
       </div>
 
-      <button class="btn-save" @click="saveQuiz" :disabled="saving || !builderTitle.trim() || !builderClassId.trim() || builderQuestions.length === 0">
+      <button class="btn-save" @click="saveQuiz" :disabled="saving || !builderTitle.trim() || !builderClassId || builderQuestions.length === 0">
         {{ saving ? 'جاري الحفظ...' : 'حفظ ونشر الامتحان' }}
       </button>
     </div>
@@ -241,53 +264,4 @@ onMounted(load);
   </div>
 </template>
 
-<style scoped>
-.quizzes-tab { color: #e2e8f0; }
-.header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.header-row h3 { margin: 0; font-size: 1.1rem; }
-.loading, .empty { text-align: center; color: #64748b; padding: 2rem; }
-.error-box { background: rgba(239,68,68,0.1); color: #f87171; padding: 1rem; border-radius: 0.5rem; text-align: center; }
-
-.btn-create { padding: 0.5rem 1rem; border-radius: 0.5rem; border: none; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; cursor: pointer; font-weight: 700; font-family: inherit; font-size: 0.85rem; }
-.btn-cancel { padding: 0.4rem 0.9rem; border-radius: 0.4rem; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #94a3b8; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
-.btn-save { margin-top: 1rem; padding: 0.6rem 1.5rem; border-radius: 0.5rem; border: none; background: linear-gradient(135deg, #16a34a, #22c55e); color: #fff; cursor: pointer; font-weight: 700; font-family: inherit; font-size: 0.9rem; width: 100%; }
-.btn-save:disabled { opacity: 0.5; }
-.btn-add-q { padding: 0.4rem 0.9rem; border-radius: 0.4rem; border: 1px dashed rgba(99,102,241,0.4); background: rgba(99,102,241,0.05); color: #a5b4fc; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
-
-.quiz-list { display: flex; flex-direction: column; gap: 0.6rem; }
-.quiz-card { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.6rem; padding: 1rem; }
-.quiz-header { display: flex; justify-content: space-between; align-items: center; }
-.quiz-header h4 { margin: 0; font-size: 0.95rem; color: #f1f5f9; }
-.quiz-status { padding: 0.15rem 0.5rem; border-radius: 0.3rem; font-size: 0.7rem; font-weight: 700; }
-.quiz-status.draft { background: rgba(100,116,139,0.15); color: #94a3b8; }
-.quiz-status.published { background: rgba(34,197,94,0.15); color: #4ade80; }
-.quiz-status.closed { background: rgba(239,68,68,0.15); color: #f87171; }
-.quiz-desc { font-size: 0.8rem; color: #94a3b8; margin: 0.3rem 0; }
-.quiz-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: #64748b; margin-bottom: 0.5rem; }
-.quiz-actions { display: flex; gap: 0.3rem; }
-.btn-mini { padding: 0.25rem 0.6rem; border-radius: 0.3rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.6); cursor: pointer; font-size: 0.72rem; font-family: inherit; }
-.btn-mini.publish { color: #4ade80; }
-.btn-mini.close { color: #fca5a5; }
-.btn-mini.view { color: #67e8f9; }
-.btn-mini.delete { color: #f87171; }
-.btn-mini:hover { opacity: 0.8; }
-
-.builder { background: rgba(15,23,42,0.4); border-radius: 0.8rem; padding: 1.2rem; }
-.form-group { margin-bottom: 0.8rem; }
-.form-group label { display: block; font-size: 0.78rem; color: #94a3b8; margin-bottom: 0.3rem; }
-.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.5rem 0.7rem; border-radius: 0.4rem; border: 1px solid #334155; background: #0f172a; color: #e2e8f0; font-size: 0.85rem; box-sizing: border-box; font-family: inherit; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-.builder h4 { font-size: 0.9rem; color: #cbd5e1; margin: 1rem 0 0.5rem; }
-
-.saved-q { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem; background: rgba(255,255,255,0.03); border-radius: 0.4rem; margin-bottom: 0.3rem; font-size: 0.8rem; }
-.q-num { color: #a5b4fc; font-weight: 700; }
-.q-text { flex: 1; color: #e2e8f0; }
-.q-answer { color: #4ade80; font-size: 0.75rem; }
-.q-points { color: #64748b; font-size: 0.72rem; }
-
-.new-q-form { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
-
-.subs-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-.subs-table th { text-align: start; padding: 0.5rem; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.78rem; }
-.subs-table td { padding: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: #cbd5e1; }
-</style>
+<style scoped src="./teacher-quiz-builder.css"></style>

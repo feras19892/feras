@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const MIRROR_TYPES = [
   { name: 'مقعر', fSign: '+', image: 'حقيقية/افتراضية حسب do', color: '#22c55e' },
   { name: 'مح_convex', fSign: '-', image: 'افتراضية، منتصبة، مصغرة', color: '#5B8DB8' },

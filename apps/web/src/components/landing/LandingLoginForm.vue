@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref } from 'vue'
-import { useI18n } from '../../composables/useI18n'
+
 import { fetchJson } from '../../services/http'
 
-const { t } = useI18n()
+
+
+
 
 const email = ref('')
 const password = ref('')

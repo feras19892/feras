@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import type { useWorkshop } from '../shared/useWorkshop'
 import { componentDefs } from '../shared/componentDefs'
 import { getSpec } from '../shared/componentSpecs'

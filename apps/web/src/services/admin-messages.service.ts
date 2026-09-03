@@ -5,6 +5,7 @@ export interface DirectMessage {
   sender_id: number;
   receiver_id: number;
   content: string;
+  translated_content: string | null;
   is_read: number;
   created_at: string;
   sender_name: string;

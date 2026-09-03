@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed, ref, onMounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAnalysisStore } from '../../../../stores/analysis.store';
 import { consumePendingPayload } from '../../../../composables/analysis/sendToAnalysis';
-import { useI18n } from '../../../../composables/useI18n';
+
+import { resolveExperimentId } from '../../../../composables/useExperimentId';
 import AnalysisMenuBar from '../../../../components/experiment/analysis-calc/AnalysisMenuBar.vue';
 import AnalysisTabs from '../../../../components/experiment/analysis-calc/AnalysisTabs.vue';
 import DataTab from '../../../../components/experiment/analysis-calc/DataTab.vue';
@@ -12,7 +15,10 @@ import ReportTab from '../../../../components/experiment/analysis-calc/ReportTab
 import SubmitReportModal from '../../../../components/experiment/SubmitReportModal.vue';
 import CalcTabContent from '../../../../components/experiment/analysis-calc/CalcTabContent.vue';
 
-const { t } = useI18n();
+
+
+
+
 const router = useRouter();
 const store = useAnalysisStore();
 const activeTab = ref(0);
@@ -28,10 +34,7 @@ onMounted(() => {
 
 const hasData = computed(() => store.hasData);
 const sourceName = computed(() => store.sourceName);
-const experimentId = computed(() => {
-  const source = store.payload?.sourceExperiment;
-  return source ? `physics-${source}` : undefined;
-});
+const experimentId = computed(() => resolveExperimentId('physics', store.payload?.sourceExperiment));
 const readings = computed(() => store.readings);
 const columns = computed(() => store.columns);
 const equations = computed(() => store.equations);

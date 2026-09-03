@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 import { ref, watch } from 'vue';
-import { useI18n } from '../../composables/useI18n';
-
 const props = defineProps<{
   showWarningModal: boolean;
   showReportModal: boolean;
@@ -21,9 +21,6 @@ const emit = defineEmits<{
   (e: 'update:warningForm', value: { title: string; message: string; severity: string }): void
   (e: 'update:reportForm', value: { reason: string; details: string }): void
 }>();
-
-const { t } = useI18n();
-
 const localWarningForm = ref({ ...props.warningForm });
 const localReportForm = ref({ ...props.reportForm });
 

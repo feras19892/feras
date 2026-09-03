@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { computed } from 'vue'
 import type { NetForceParams, NetForceState, NetForceMeasured } from '../../../modules/physics/experiments/netforce/useNetForcePhysics'
 import type { NetForceTrial } from '../../../composables/netforce/useNetForceTrials'
-import { useI18n } from '../../../composables/useI18n'
+
 import { sanitizeHtml } from '../../../utils/sanitizeHtml'
 
-const { t } = useI18n()
+
+
+
 
 const props = defineProps<{
   id: string

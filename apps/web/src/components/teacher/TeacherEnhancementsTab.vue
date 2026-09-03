@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction, locale } = useI18n();
 import { ref, computed, onMounted, watch } from 'vue';
 import { getAllBadges, awardBadge, removeBadge, getStudentBadges, getLeaderboard, type Badge, type StudentBadge, type LeaderboardEntry } from '../../services/gamification.service';
 import { createPenalty, getClassPenalties, dismissPenalty, deletePenalty, type Penalty } from '../../services/enhancements.service';
 import { fetchJson } from '../../services/http';
-import { useI18n } from '../../composables/useI18n';
 
-const { t, locale } = useI18n();
 const dateLocaleStr = computed(() => locale.value === 'ar' ? 'ar-SA' : locale.value === 'es' ? 'es-ES' : 'en-US');
 
 const props = defineProps<{
@@ -39,7 +39,7 @@ async function loadClassStudents() {
   try {
     const data = await fetchJson<{ success: boolean; students: { id: number; name: string }[] }>(`/api/classes/${selectedClass.value}/students`);
     if (data.success) classStudents.value = data.students;
-  } catch { /* ignore */ }
+  } catch { if (import.meta.env.DEV) console.warn('Failed to load class students') }
 }
 
 async function loadStudentBadges(studentId: number) {

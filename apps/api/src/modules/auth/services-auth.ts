@@ -1,8 +1,12 @@
 import type { User, RegisterCredentials, School } from '@my-modern-app/shared-types';
+import { randomBytes, createHash } from 'crypto';
 import { db } from '../../db/index.js';
 import { hashPassword, comparePassword, generateRefreshToken, hashRefreshToken, generateVerificationCode, hashVerificationCode } from './crypto.js';
 import { signAccessToken } from './jwt.js';
+import { recordConsent } from './services-consent.js';
 import { sendVerificationEmail } from '../../shared/email.js';
+import { validateInviteCode, useInviteCode } from '../invite-codes/services.js';
+import { createSubscription } from '../subscriptions/services.js';
 
 const DUMMY_HASH = '$2a$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy';
 const MAX_FAILED_ATTEMPTS = 5;
@@ -23,13 +27,17 @@ async function logLoginAttempt(email: string, ip: string, success: boolean): Pro
       `INSERT INTO login_attempts (email, ip, success, created_at) VALUES (?, ?, ?, ?)`,
       email.toLowerCase(), ip, success ? 1 : 0, new Date().toISOString()
     );
-  } catch { /* table may not exist yet */ }
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('[logLoginAttempt] DB error:', err);
+  }
 }
 
 async function clearFailedAttempts(email: string): Promise<void> {
   try {
     await db.run(`DELETE FROM login_attempts WHERE email = ? AND success = 0`, email.toLowerCase());
-  } catch { /* ignore */ }
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') console.error('[clearFailedAttempts] DB error:', err);
+  }
 }
 
 export { checkLockout, logLoginAttempt, clearFailedAttempts };
@@ -38,7 +46,9 @@ export async function issueTokensForUser(user: User): Promise<{ token: string; r
   const token = await signAccessToken({
     sub: String(user.id),
     email: user.email,
+    name: user.name,
     role: user.role,
+    school_id: user.school_id,
   });
 
   const refreshToken = generateRefreshToken();
@@ -74,18 +84,59 @@ export async function createEmailVerificationCode(userId: number, email?: string
   return { code };
 }
 
-export async function register(credentials: RegisterCredentials): Promise<{ success: boolean; message?: string; user?: User }> {
+function computeFingerprint(ip: string, userAgent: string, input?: string | null): string {
+  if (input) return createHash('sha256').update(input).digest('hex').slice(0, 32);
+  return createHash('sha256').update(`${ip}:${userAgent}`).digest('hex').slice(0, 32);
+}
+
+function getTrialDays(role: string): number {
+  if (role === 'student') return 3;
+  return 7;
+}
+
+export async function register(credentials: RegisterCredentials, ip: string = 'unknown', userAgent: string = '', fingerprint?: string): Promise<{ success: boolean; message?: string; user?: User }> {
   try {
+    if (credentials.consent !== true) {
+      return { success: false, message: 'يجب الموافقة على سياسة الخصوصية وشروط الاستخدام' };
+    }
+    if (credentials.age === undefined || credentials.age === null || credentials.age < 14) {
+      return { success: false, message: 'يجب أن يكون العمر 14 عاماً أو أكثر، أو التسجيل عبر المدرسة بموافقة ولي الأمر' };
+    }
     const existing = await db.get<{ id: number }>('SELECT id FROM users WHERE email = ?', credentials.email);
     if (existing) {
       return { success: false, message: 'البريد الإلكتروني مسجل بالفعل' };
     }
 
+    const regFingerprint = computeFingerprint(ip, userAgent, fingerprint);
+    if (process.env.NODE_ENV === 'production') {
+      const existingDevice = await db.get<{ id: number }>(
+        'SELECT id FROM users WHERE registration_fingerprint = ? AND trial_used = 1',
+        regFingerprint,
+      );
+      if (existingDevice) {
+        return { success: false, message: 'هذا الجهاز/المتصفح استُخدم للتجربة من قبل' };
+      }
+    }
+
     let schoolId: number | null = null;
-    if (credentials.school_code) {
+    let inviteUsed = false;
+    const inviteCode: string | undefined = credentials.invite_code || undefined;
+    const schoolCode: string | undefined = credentials.school_code || undefined;
+
+    if (inviteCode) {
+      const validation = await validateInviteCode(inviteCode);
+      if (validation.ok) {
+        if (validation.invite.owner_type === 'school') {
+          schoolId = validation.invite.owner_id;
+        }
+        inviteUsed = true;
+      }
+    }
+
+    if (!schoolId && schoolCode) {
       const school = await db.get<{ id: number; is_active: number; max_students: number; max_teachers: number }>(
         'SELECT id, is_active, max_students, max_teachers FROM schools WHERE code = ?',
-        credentials.school_code,
+        schoolCode,
       );
       if (!school) {
         return { success: false, message: 'رمز المدرسة غير صالح' };
@@ -93,7 +144,6 @@ export async function register(credentials: RegisterCredentials): Promise<{ succ
       if (!school.is_active) {
         return { success: false, message: 'المدرسة غير مفعلة' };
       }
-      // Count current users in this school
       const counts = await db.get<{ students: number; teachers: number }>(
         `SELECT SUM(CASE WHEN role = 'student' THEN 1 ELSE 0 END) as students, SUM(CASE WHEN role = 'teacher' THEN 1 ELSE 0 END) as teachers FROM users WHERE school_id = ?`,
         school.id,
@@ -111,13 +161,22 @@ export async function register(credentials: RegisterCredentials): Promise<{ succ
     }
 
     const passwordHash = await hashPassword(credentials.password);
+    const now = new Date().toISOString();
     const result = await db.run(
-      'INSERT INTO users (email, name, password_hash, role, school_id) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO users (email, name, password_hash, role, school_id, age, email_verified_at, registration_ip, registration_user_agent, registration_fingerprint, trial_used, last_login_ip, last_login_fingerprint) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       credentials.email,
       credentials.name,
       passwordHash,
       credentials.role || 'student',
       schoolId,
+      credentials.age ?? null,
+      now,
+      ip,
+      userAgent,
+      regFingerprint,
+      1,
+      ip,
+      regFingerprint,
     );
 
     const user: User = {
@@ -128,11 +187,57 @@ export async function register(credentials: RegisterCredentials): Promise<{ succ
       school_id: schoolId,
     };
 
-    try {
-      await createEmailVerificationCode(user.id, user.email, user.name);
-    } catch (e) {
-      if (process.env.NODE_ENV !== 'production') console.error('createEmailVerificationCode error:', e);
-      return { success: false, message: 'فشل إرسال رمز التحقق. يرجى المحاولة مرة أخرى.' };
+    await recordConsent(Number(result.lastID), 'terms_and_privacy', '1.0', ip, userAgent);
+
+    if (inviteUsed) {
+      await useInviteCode({ member_id: user.id, code: inviteCode! }).catch((err) => {
+        if (process.env.NODE_ENV !== 'production') console.error('useInviteCode error:', err);
+      });
+    }
+
+    if (schoolId && !inviteUsed) {
+      await db.run(
+        `INSERT INTO tenant_memberships (member_id, tenant_id, tenant_type, invite_code_id, joined_at, status)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        user.id,
+        schoolId,
+        'school',
+        null,
+        new Date().toISOString(),
+        'active',
+      );
+    }
+
+    const role = (credentials.role || 'student') as 'student' | 'teacher';
+    const plan = await db.get<{ id: number; features: string | null }>('SELECT id, features FROM plans WHERE type = ? LIMIT 1', role);
+    if (plan) {
+      const startsAt = new Date().toISOString();
+      const trialDays = getTrialDays(role);
+      const expiresAt = new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000).toISOString();
+      let maxStudents: number | null = null;
+      let maxTeachers: number | null = null;
+      if (plan.features) {
+        try {
+          const parsed = JSON.parse(plan.features) as Record<string, unknown>;
+          if (typeof parsed.free_threshold === 'number') maxStudents = parsed.free_threshold;
+          if (typeof parsed.free_teachers === 'number') maxTeachers = parsed.free_teachers;
+        } catch {
+          // ignore malformed features
+        }
+      }
+      await createSubscription({
+        owner_id: user.id,
+        owner_type: 'user',
+        plan_id: plan.id,
+        status: 'TRIAL',
+        starts_at: startsAt,
+        expires_at: expiresAt,
+        next_billing_at: expiresAt,
+        max_students: role === 'teacher' ? maxStudents : null,
+        max_teachers: role === 'teacher' ? (maxTeachers ?? 1) : null,
+      }).catch((err) => {
+        if (process.env.NODE_ENV !== 'production') console.error('createSubscription error:', err);
+      });
     }
 
     return { success: true, user };
@@ -146,6 +251,8 @@ export async function login(
   email: string,
   password: string,
   ip: string = 'unknown',
+  userAgent: string = '',
+  fingerprint?: string,
 ): Promise<{ success: boolean; message?: string; user?: User; token?: string; refreshToken?: string; school?: School }> {
   try {
     if (await checkLockout(email)) {
@@ -157,35 +264,41 @@ export async function login(
       email: string;
       name: string;
       role: string;
+      school_id: number | null;
       password_hash: string;
       blocked_at: string | null;
+      block_until: string | null;
       email_verified_at: string | null;
     }>(
-      'SELECT id, email, name, role, password_hash, blocked_at, email_verified_at FROM users WHERE email = ?',
+      'SELECT id, email, name, role, school_id, password_hash, blocked_at, block_until, email_verified_at FROM users WHERE email = ?',
       email
     );
 
     if (row) {
-      if (row.blocked_at) {
-        return { success: false, message: 'بيانات الدخول غير صحيحة' };
+      const now = new Date().toISOString();
+      if (row.blocked_at && (!row.block_until || row.block_until > now)) {
+        const block = await db.get<{ block_reason: string | null }>('SELECT block_reason FROM users WHERE id = ?', row.id);
+        const reason = block?.block_reason || 'الحساب محظور';
+        return { success: false, message: `أنت معاقب: ${reason}` };
       }
       const valid = await comparePassword(password, row.password_hash);
       if (!valid) {
         await logLoginAttempt(email, ip, false);
         return { success: false, message: 'بيانات الدخول غير صحيحة' };
       }
-      if (!row.email_verified_at && row.role !== 'admin') {
-        return { success: false, message: 'يرجى تأكيد بريدك الإلكتروني أولاً' };
-      }
 
       await clearFailedAttempts(email);
       await logLoginAttempt(email, ip, true);
+
+      const loginFingerprint = computeFingerprint(ip, userAgent, fingerprint);
+      await db.run('UPDATE users SET last_login_ip = ?, last_login_fingerprint = ? WHERE id = ?', ip, loginFingerprint, row.id);
 
       const user: User = {
         id: Number(row.id),
         email: row.email,
         name: row.name,
         role: row.role as User['role'],
+        school_id: row.school_id,
       };
 
       const { token, refreshToken } = await issueTokensForUser(user);
@@ -216,6 +329,9 @@ export async function login(
 
       await clearFailedAttempts(email);
       await logLoginAttempt(email, ip, true);
+
+      const loginFingerprint = computeFingerprint(ip, userAgent, fingerprint);
+      await db.run('UPDATE schools SET last_login_ip = ?, last_login_fingerprint = ? WHERE id = ?', ip, loginFingerprint, schoolRow.id);
 
       const school = {
         id: Number(schoolRow.id),

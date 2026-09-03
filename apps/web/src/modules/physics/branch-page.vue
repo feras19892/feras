@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, locale } = useI18n();
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getBranch } from './catalog';
-import { useI18n } from '../../composables/useI18n';
 
-const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
 

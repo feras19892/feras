@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
-
+import { useI18n } from '@/composables/useI18n';
+const { t } = useI18n();
 interface StudentStat { id: number; name: string; reports: number; avg: number; lastSubmitted?: string }
 
 interface Props {
@@ -12,8 +12,6 @@ const props = defineProps<Props>()
 const emit = defineEmits<{
   (e: 'toggleCompare', id: number): void
 }>()
-
-const { t } = useI18n()
 
 function isChecked(id: number) {
   return props.comparisonIds.includes(id)

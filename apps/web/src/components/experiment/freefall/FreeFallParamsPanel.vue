@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useI18n } from '../../../composables/useI18n'
-
-const { t } = useI18n()
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 const props = defineProps<{
+
   params: { h: number; g: number; mass: number; airResistance: boolean; dragCoeff: number }
 }>()
 const emit = defineEmits<{

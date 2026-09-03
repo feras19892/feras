@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { direction } = useI18n();
 const LAWS = [
   { law: 'KCL', name: 'قانون العقدة', desc: 'مجموع التيارات الداخلة = مجموع التيارات الخارجة', color: '#4ade80', formula: 'ΣI(in) = ΣI(out)' },
   { law: 'KVL', name: 'قانون الحلقة', desc: 'مجموع فروق الجهد في حلقة مغلقة = صفر', color: '#fbbf24', formula: 'ΣV = 0' },

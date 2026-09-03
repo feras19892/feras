@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n';
+const { t, direction } = useI18n();
 import { ref, computed, watch } from 'vue';
 import type { ChemAnalysisColumnMeta, ChemAnalysisEquation, ChemAnalysisPlotConfig } from '../../../types/chemistry';
 import { useChemCalculations } from '../../../composables/chemistry/useChemCalculations';
-import { useI18n } from '../../../composables/useI18n';
+
 import ChemChartCanvas from './ChemChartCanvas.vue';
 
-const { t } = useI18n();
+
+
+
 
 const props = defineProps<{
   readings: Record<string, number>[];

@@ -7,9 +7,7 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://wafery-veristic-samiyah.ngrok-free.dev/api/$1" },
-    { "source": "/assets/:path*", "destination": "/assets/:path*" },
-    { "source": "/sw.js", "destination": "/sw.js" },
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {

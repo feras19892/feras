@@ -82,8 +82,14 @@ document.documentElement.setAttribute('data-theme', preferences.prefs.theme);
   }
 
   if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch((e) => {
-      if (import.meta.env.DEV) console.warn('[SW] registration failed:', e);
-    });
+    // أزل أي خدمة عامل قديمة من النشر السابق (كانت تسبب تحذير preload و cross-world mismatch)
+    // مع hash mode لا حاجة لـ SW — المتصفح يدير كل المسارات داخل التطبيق
+    try {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (const reg of registrations) {
+        await reg.unregister();
+      }
+    } catch { /* ignore */ }
+    // نلغي تسجيل SW — ملف /sw.js غير موجود والـ hash mode لا يحتاجه
   }
 })();

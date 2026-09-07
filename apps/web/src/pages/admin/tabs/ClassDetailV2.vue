@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onActivated, ref, watch } from 'vue'
 import { useAdminStore } from '@/stores/admin.store'
 import { useSelectedClass } from '@/composables/shared/useSelectedClass'
 import { useSelectedSchool } from '@/composables/shared/useSelectedSchool'
@@ -131,8 +131,11 @@ async function loadStudents() {
 }
 
 async function loadTeachers() {
+  // عزل البيانات: لا نجلب كل المعلمين عند غياب سياق المدرسة — نكتفي بقائمة فارغة
+  const schoolId = selectedSchoolId.value
+  if (!schoolId) { teachers.value = []; return }
   try {
-    const res = await getAdminTeachers(selectedSchoolId.value || undefined)
+    const res = await getAdminTeachers(schoolId)
     if (res.success) teachers.value = res.teachers
   } catch (e: any) { toast.error(e?.message || 'فشل تحميل المعلمين'); teachers.value = [] }
 }
@@ -206,7 +209,9 @@ async function confirmDelete() {
 }
 
 async function load() { await store.loadAll(); await loadStudents(); await loadTeachers() }
-onMounted(load)
+// KeepAlive: أعد التحميل عند العودة للتبويب، وأعد جلب الطلاب عند تغيّر الفصل المختار
+onActivated(load)
+watch(selectedClassId, () => { if (selectedClassId.value) loadStudents() })
 </script>
 
 <style scoped>

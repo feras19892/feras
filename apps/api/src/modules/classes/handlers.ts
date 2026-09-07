@@ -303,12 +303,13 @@ app.get('/:id/students/:studentId/profile', async (c) => {
 app.get('/:id/frozen-status', async (c) => {
   const user = c.get('user');
   const classId = c.req.param('id');
-  const cls = await db.get<{ is_frozen: number; teacher_id: number }>('SELECT is_frozen, teacher_id FROM classes WHERE id = ?', classId);
+  const cls = await db.get<{ is_frozen: number; teacher_id: number; school_id: number | null }>('SELECT is_frozen, teacher_id, school_id FROM classes WHERE id = ?', classId);
   if (!cls) return c.json({ success: false, message: 'الفصل غير موجود' }, 404);
   if (user.role === 'admin') {
     return c.json({ success: true, is_frozen: cls.is_frozen });
   }
   if (user.role === 'school') {
+    if (cls.school_id !== user.id) return c.json({ success: false, message: 'غير مصرح' }, 403);
     return c.json({ success: true, is_frozen: cls.is_frozen });
   }
   if (user.role === 'student') {

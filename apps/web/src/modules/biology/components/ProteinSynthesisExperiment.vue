@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n';
+import BiologyHelpModal from '../../../components/experiment/biology/BiologyHelpModal.vue';
 const { t } = useI18n();
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { useFullscreen } from '../../../composables/shared/useFullscreen';
 import { useRouter } from 'vue-router';
 import * as THREE from 'three';
 
 import { useProteinSynthesis3D } from '../../../composables/biology/useProteinSynthesis3D';
+import { useBiologyTracking } from '../../../composables/biology/useBiologyTracking';
 import { proteinSynthesisExperiment, proteinSynthesisStages } from '../../../services/protein-synthesis-data';
 import type { HotspotState } from '../../../types/biology.types';
 import InfoPanel from './InfoPanel.vue';
 import StageStepper from './StageStepper.vue';
 import { useRoute } from 'vue-router';
 import BiologyReportButton from './BiologyReportButton.vue';
+import BiologyGoals from './BiologyGoals.vue';
 import { resolveExperimentId } from '../../../composables/useExperimentId';
 
 
@@ -23,7 +27,16 @@ const router = useRouter();
 const route = useRoute();
 const experimentId = computed(() => resolveExperimentId('biology', route.path.split('/').filter(Boolean).pop() ?? ''));
 const containerRef = ref<HTMLDivElement | null>(null);
-const { currentStageIndex, setStage, error, isLoading, autoRotate, toggleAutoRotate, resetCamera, resetAll } = useProteinSynthesis3D(containerRef);
+const { currentStageIndex, setStage, error, isLoading, autoRotate, toggleAutoRotate, resetCamera, resetAll, screenshot } = useProteinSynthesis3D(containerRef);
+
+// تتبّع المراحل التي وصل إليها الطالب لتغذية التقرير الحقيقي
+const tracking = useBiologyTracking();
+watch(currentStageIndex, (idx) => {
+  const s = proteinSynthesisStages[idx];
+  if (!s) return;
+  tracking.trackStage(s.id);
+  tracking.trackPart(s.id, t(s.titleKey));
+}, { immediate: true });
 
 const stage = computed(() => proteinSynthesisStages[currentStageIndex.value]);
 
@@ -44,6 +57,15 @@ const stageItems = computed(() =>
   }))
 );
 
+const visitedStageIds = computed(() => new Set(tracking.stagesVisited.value));
+const goals = computed(() => [
+  {
+    id: 'visitAllStages',
+    label: t('biology.goalVisitAllStages'),
+    completed: visitedStageIds.value.size >= proteinSynthesisStages.length,
+  },
+]);
+
 const nextStage = (): void => {
   setStage(currentStageIndex.value + 1);
 };
@@ -55,27 +77,24 @@ const previousStage = (): void => {
 const isFirstStage = computed(() => currentStageIndex.value === 0);
 const isLastStage = computed(() => currentStageIndex.value === proteinSynthesisStages.length - 1);
 
+
+const downloadScreenshot = (): void => {
+  const data = screenshot();
+  if (!data) return;
+  const link = document.createElement('a');
+  link.href = data;
+  link.download = `${experimentId.value ?? 'biology'}-screenshot.png`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};
+
 const goBack = (): void => {
   router.push('/biology/cell');
 };
 
-const isFullscreen = ref(false);
-
-const toggleFullscreen = async (): Promise<void> => {
-  const el = document.querySelector('.experiment-page') as HTMLElement | null;
-  if (!el) return;
-  try {
-    if (!document.fullscreenElement) {
-      await el.requestFullscreen();
-      isFullscreen.value = true;
-    } else {
-      await document.exitFullscreen();
-      isFullscreen.value = false;
-    }
-  } catch {
-    isFullscreen.value = !!document.fullscreenElement;
-  }
-};
+const { isFullscreen, toggleFullscreen } = useFullscreen();
+const helpOpen = ref(false);
 </script>
 
 <template>
@@ -91,7 +110,19 @@ const toggleFullscreen = async (): Promise<void> => {
         <h1 class="experiment-title">{{ t(proteinSynthesisExperiment.titleKey) }}</h1>
         <p class="experiment-subtitle">{{ t(proteinSynthesisExperiment.subtitleKey) }}</p>
       </div>
-      <BiologyReportButton :experiment-id="experimentId" :experiment-name="t(proteinSynthesisExperiment.titleKey)" />
+      <BiologyReportButton
+        :experiment-id="experimentId"
+        :experiment-name="t(proteinSynthesisExperiment.titleKey)"
+        :tracking="tracking"
+        :get-screenshot="screenshot"
+      />
+      <button class="header-action" :title="t('biology.bioHelpTitle')" :aria-label="t('biology.bioHelpTitle')" @click="helpOpen = true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      </button>
       <button class="header-action" @click="toggleFullscreen">
         <svg v-if="!isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
@@ -107,6 +138,7 @@ const toggleFullscreen = async (): Promise<void> => {
         <div class="info-card">
           <InfoPanel :hotspot="hotspot" />
         </div>
+        <BiologyGoals v-if="goals.length" :title="t('biology.goalsTitle')" :goals="goals" />
       </aside>
 
       <section class="canvas-section">
@@ -130,7 +162,13 @@ const toggleFullscreen = async (): Promise<void> => {
               <path d="M21 3v5h-5" />
             </svg>
           </button>
-          <div class="tool-divider" />
+          <button
+            class="tool-btn"
+            :title="t('biology.screenshot')"
+            @click.stop="downloadScreenshot"
+          >
+            📸
+          </button>          <div class="tool-divider" />
           <button
             class="tool-btn"
             :title="t('biology.resetCameraLabel')"
@@ -197,6 +235,11 @@ const toggleFullscreen = async (): Promise<void> => {
         </div>
       </aside>
     </main>
+  <BiologyHelpModal
+    :open="helpOpen"
+    :context="{ topic: experimentId ?? '', titleKey: proteinSynthesisExperiment.titleKey, subtitleKey: proteinSynthesisExperiment.subtitleKey, parts: proteinSynthesisStages.map((s) => ({ id: s.id, nameKey: s.titleKey })) }"
+    @close="helpOpen = false"
+  />
   </div>
 </template>
 

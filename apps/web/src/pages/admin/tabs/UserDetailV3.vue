@@ -155,7 +155,7 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n';
 const { t, locale } = useI18n();
-import { ref, onMounted } from 'vue'
+import { ref, onActivated, watch } from 'vue'
 
 import { useI18nStore } from '@/stores/i18n.store'
 import { eventBus } from '@/composables/shared/useEventBus'
@@ -207,7 +207,9 @@ const extendDays = ref(7)
 const extendLoading = ref(false)
 const newStatus = ref('')
 
-onMounted(() => { if (selectedUserId.value) load(selectedUserId.value) })
+onActivated(() => { if (selectedUserId.value) load(selectedUserId.value) })
+// KeepAlive: أعد التحميل عند تغيّر المستخدم المختار دون إعادة تركيب المكوّن
+watch(selectedUserId, (id) => { if (id) load(id) })
 
 function goBack() { clearSelectedUser(); eventBus.emit('admin:switch-tab', { tabId: 'users' }) }
 function retryLoad() { if (selectedUserId.value) load(selectedUserId.value) }
@@ -265,7 +267,7 @@ async function handleImpersonate() {
   impersonateLoading.value = true
   try {
     const res = await impersonateUser(selectedUserId.value, impersonatePassword.value)
-    if (res.success && res.token) { setTokens(res.token, res.refreshToken); localStorage.setItem('auth_user', JSON.stringify(res.user)); localStorage.removeItem('school_session'); showImpersonateModal.value = false; window.location.href = `/#/${res.user.role}` }
+    if (res.success && res.token) { setTokens(res.token); localStorage.setItem('auth_user', JSON.stringify(res.user)); localStorage.removeItem('school_session'); showImpersonateModal.value = false; window.location.href = `/#/${res.user.role}` }
     else toast.error(t('dashboard.dashNew.adminCheckFailed'))
   } catch (e: any) { toast.error(e?.message || t('dashboard.dashNew.checkFailed')) }
   finally { impersonateLoading.value = false }

@@ -248,6 +248,11 @@
   z-index: 14;
 }
 
+/* عند وجود شريطين متعددين، ارفع الثاني للأعلى لمنع التداخل */
+.floating-slider:nth-of-type(2) {
+  bottom: 8.5rem;
+}
+
 .floating-slider label {
   font-size: 0.8rem;
   color: #94a3b8;

@@ -185,7 +185,19 @@ export async function getPlagiarismFlags(
   status?: string,
   limit = 100,
   schoolId?: number,
+  teacherId?: number,
 ): Promise<any[]> {
+  if (teacherId) {
+    let sql = `SELECT pf.* FROM plagiarism_flags pf
+      JOIN classes c ON pf.class_id = c.id
+      WHERE c.teacher_id = ?`;
+    const params: (string | number)[] = [teacherId];
+    if (classId) { sql += ' AND pf.class_id = ?'; params.push(classId); }
+    if (status) { sql += ' AND pf.status = ?'; params.push(status); }
+    sql += ' ORDER BY pf.created_at DESC LIMIT ?';
+    params.push(limit);
+    return db.all(sql, ...params);
+  }
   if (schoolId) {
     let sql = `SELECT pf.* FROM plagiarism_flags pf
       JOIN classes c ON pf.class_id = c.id

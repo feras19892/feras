@@ -1,30 +1,98 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n';
+import ExperimentHelpModal from '../shared/ExperimentHelpModal.vue';
+import type { HelpSection } from '../shared/experiment-help-types';
 const { t } = useI18n();
-defineProps<{ open: boolean }>()
 
-const emit = defineEmits<{ (e: 'close'): void }>()
+defineProps<{ open: boolean }>();
+const emit = defineEmits<{ (e: 'close'): void }>();
+
+const sections: HelpSection[] = [
+  {
+    title: t('experiments.lhHelpS1Title'),
+    blocks: [
+      { type: 'p', text: t('experiments.lhHelpS1P1') },
+      { type: 'p', text: t('experiments.lhHelpS1P2') },
+      { type: 'p', text: t('experiments.lhHelpS1P3') },
+    ],
+  },
+  {
+    title: t('experiments.lhHelpS2Title'),
+    blocks: [
+      { type: 'p', text: t('experiments.lhHelpS2P1') },
+      { type: 'formula', text: t('experiments.lhHelpS2F1') },
+      { type: 'p', text: t('experiments.lhHelpS2P2') },
+      { type: 'formula', text: t('experiments.lhHelpS2F2') },
+      { type: 'p', text: t('experiments.lhHelpS2P3') },
+      { type: 'formula', text: t('experiments.lhHelpS2F3') },
+      { type: 'p', text: t('experiments.lhHelpS2P4') },
+    ],
+  },
+  {
+    title: t('experiments.lhHelpS3Title'),
+    blocks: [
+      { type: 'p', text: t('experiments.lhHelpS3P1') },
+      {
+        type: 'ordered',
+        items: [
+          t('experiments.lhHelpS3L1'),
+          t('experiments.lhHelpS3L2'),
+          t('experiments.lhHelpS3L3'),
+          t('experiments.lhHelpS3L4'),
+          t('experiments.lhHelpS3L5'),
+        ],
+      },
+    ],
+  },
+  {
+    title: t('experiments.lhHelpS4Title'),
+    blocks: [
+      { type: 'p', text: t('experiments.lhHelpS4P1') },
+      {
+        type: 'list',
+        items: [
+          t('experiments.lhHelpS4L1'),
+          t('experiments.lhHelpS4L2'),
+          t('experiments.lhHelpS4L3'),
+          t('experiments.lhHelpS4L4'),
+        ],
+      },
+    ],
+  },
+  {
+    title: t('experiments.lhHelpS5Title'),
+    blocks: [
+      {
+        type: 'cards',
+        items: [
+          t('experiments.lhHelpS5E1'),
+          t('experiments.lhHelpS5E2'),
+          t('experiments.lhHelpS5E3'),
+        ],
+      },
+    ],
+  },
+  {
+    title: t('experiments.lhHelpS6Title'),
+    blocks: [
+      {
+        type: 'list',
+        items: [
+          t('experiments.lhHelpS6L1'),
+          t('experiments.lhHelpS6L2'),
+          t('experiments.lhHelpS6L3'),
+        ],
+      },
+    ],
+  },
+];
 </script>
+
 <template>
-  <Teleport to="body">
-    <div v-if="open" class="help-overlay" @click="emit('close')">
-      <div class="help-box" @click.stop>
-        <h3>{{ t('experiments.helpTitle') }}</h3>
-        <p><b>Space</b> — {{ t('experiments.helpSpace') }}</p>
-        <p><b>S</b> — {{ t('experiments.helpS') }}</p>
-        <p><b>Ctrl+Z</b> — {{ t('experiments.helpUndo') }}</p>
-        <p><b>Ctrl+Y</b> — {{ t('experiments.helpRedo') }}</p>
-        <p><b>R</b> — {{ t('experiments.helpR') }}</p>
-        <button class="close-btn" @click="emit('close')">{{ t('experiments.helpQuestion') }}</button>
-      </div>
-    </div>
-  </Teleport>
+  <ExperimentHelpModal
+    :open="open"
+    :title="t('experiments.lhHelpTitle')"
+    :sections="sections"
+    @close="emit('close')"
+  />
 </template>
-<style scoped>
-.help-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:10000; }
-.help-box { background:#1A1F27; border:1px solid #2D3645; border-radius:10px; padding:1.2rem 1.5rem; min-width:280px; color:#D1D7E0; }
-.help-box h3 { margin:0 0 .6rem; color:#5B8DB8; font-size:.95rem; }
-.help-box p { margin:.35rem 0; font-size:.8rem; color:#8B95A5; }
-.close-btn { margin-top:.8rem; padding:.4rem 1rem; border-radius:6px; border:1px solid #2D3645; background:#161B22; color:#8B95A5; cursor:pointer; font-size:.78rem; }
-.close-btn:hover { background:#1e2530; color:#D1D7E0; }
-</style>

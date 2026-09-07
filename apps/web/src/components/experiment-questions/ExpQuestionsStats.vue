@@ -18,8 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '@/composables/useI18n';
-const { direction } = useI18n();
 import { ref, onMounted } from 'vue'
 import * as api from '@/services/experiment-questions.service'
 import type { ExpQuestionsStats } from '@/services/experiment-questions.service'

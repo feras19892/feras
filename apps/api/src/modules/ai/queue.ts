@@ -1,8 +1,11 @@
+// eslint-disable-next-line no-unused-vars
 type QueueTask<T> = (signal?: AbortSignal) => Promise<T>;
 
 interface QueueItem<T> {
   task: QueueTask<T>;
+  // eslint-disable-next-line no-unused-vars
   resolve: (value: T) => void;
+  // eslint-disable-next-line no-unused-vars
   reject: (reason: unknown) => void;
 }
 

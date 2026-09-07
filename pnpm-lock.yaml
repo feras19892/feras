@@ -92,6 +92,9 @@ importers:
       '@box2d/particles':
         specifier: ^0.11.0
         version: 0.11.0
+      '@my-modern-app/biology-engine':
+        specifier: workspace:*
+        version: link:../../packages/biology-engine
       '@my-modern-app/chemistry-engine':
         specifier: workspace:*
         version: link:../../packages/chemistry-engine
@@ -119,6 +122,9 @@ importers:
       chart.js:
         specifier: ^4.5.1
         version: 4.5.1
+      html-to-image:
+        specifier: 1.11.11
+        version: 1.11.11
       katex:
         specifier: ^0.17.0
         version: 0.17.0
@@ -222,6 +228,15 @@ importers:
       vue-tsc:
         specifier: ^2.0.0
         version: 2.2.12(typescript@5.9.3)
+
+  packages/biology-engine:
+    devDependencies:
+      '@my-modern-app/config':
+        specifier: workspace:*
+        version: link:../config
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
 
   packages/chemistry-engine:
     devDependencies:
@@ -2417,6 +2432,9 @@ packages:
 
   html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
+
+  html-to-image@1.11.11:
+    resolution: {integrity: sha512-9gux8QhvjRO/erSnDPv28noDZcPZmYE7e1vFsBLKLlRlKDSqNJYebj6Qz1TGd5lsRV+X+xYyjCKjuZdABinWjA==}
 
   http-cache-semantics@4.2.0:
     resolution: {integrity: sha512-dTxcvPXqPvXBQpq5dUr6mEMJX4oIEFv6bwom3FDwKRDsuIjjJGANqhBuoAn9c1RQJIdAKav33ED65E2ys+87QQ==}
@@ -6173,6 +6191,8 @@ snapshots:
       whatwg-encoding: 3.1.1
 
   html-escaper@2.0.2: {}
+
+  html-to-image@1.11.11: {}
 
   http-cache-semantics@4.2.0:
     optional: true

@@ -154,32 +154,56 @@ export async function sendMessage(
   return { success: true, message: msg, flagged: flagged === 1, reason: flaggedReason || undefined, flaggedWords: result.flaggedWords, language: result.language };
 }
 
-export async function getFlaggedMessages(limit = 50): Promise<ClassMessage[]> {
+export async function getFlaggedMessages(limit = 50, schoolId?: number): Promise<ClassMessage[]> {
+  if (schoolId) {
+    return db.all(
+      `SELECT m.* FROM class_messages m
+       LEFT JOIN classes c ON m.class_id = c.id
+       LEFT JOIN users t ON c.teacher_id = t.id
+       WHERE m.is_flagged = 1 AND COALESCE(c.school_id, t.school_id) = ?
+       ORDER BY m.created_at DESC LIMIT ?`,
+      schoolId, limit
+    );
+  }
   return db.all(
     `SELECT * FROM class_messages WHERE is_flagged = 1 ORDER BY created_at DESC LIMIT ?`,
     limit
   );
 }
 
-export async function getAllChatMessagesForAdmin(limit = 200) {
+export async function getAllChatMessagesForAdmin(limit = 200, schoolId?: number) {
+  const where = schoolId ? `WHERE COALESCE(c.school_id, t.school_id) = ?` : '';
+  const params: (string | number)[] = schoolId ? [schoolId, limit] : [limit];
   return db.all(
     `SELECT m.*, c.name as class_name FROM class_messages m
      LEFT JOIN classes c ON m.class_id = c.id
+     LEFT JOIN users t ON c.teacher_id = t.id
+     ${where}
      ORDER BY m.created_at DESC LIMIT ?`,
-    limit
+    ...params
   );
 }
 
-export async function getChatStatsForAdmin() {
-  const total = await db.get(`SELECT COUNT(*) as count FROM class_messages`);
-  const flagged = await db.get(`SELECT COUNT(*) as count FROM class_messages WHERE is_flagged = 1`);
+export async function getChatStatsForAdmin(schoolId?: number) {
+  const schoolJoin = `FROM class_messages m
+    LEFT JOIN classes c ON m.class_id = c.id
+    LEFT JOIN users t ON c.teacher_id = t.id`;
+  const total = schoolId
+    ? await db.get(`SELECT COUNT(*) as count ${schoolJoin} WHERE COALESCE(c.school_id, t.school_id) = ?`, schoolId)
+    : await db.get(`SELECT COUNT(*) as count FROM class_messages`);
+  const flagged = schoolId
+    ? await db.get(`SELECT COUNT(*) as count ${schoolJoin} WHERE m.is_flagged = 1 AND COALESCE(c.school_id, t.school_id) = ?`, schoolId)
+    : await db.get(`SELECT COUNT(*) as count FROM class_messages WHERE is_flagged = 1`);
   const byClass = await db.all(
     `SELECT c.id, c.name, COUNT(m.id) as msg_count, SUM(m.is_flagged) as flagged_count
      FROM classes c
+     LEFT JOIN users t ON c.teacher_id = t.id
      LEFT JOIN class_messages m ON c.id = m.class_id
+     ${schoolId ? 'WHERE COALESCE(c.school_id, t.school_id) = ?' : ''}
      GROUP BY c.id
      ORDER BY msg_count DESC
-     LIMIT 20`
+     LIMIT 20`,
+    ...(schoolId ? [schoolId] : []),
   );
   return {
     total: total?.count || 0,

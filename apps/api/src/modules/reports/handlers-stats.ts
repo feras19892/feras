@@ -22,7 +22,7 @@ function escapeCsvValue(v: unknown): string {
   if (v === null || v === undefined) return '';
   let s = String(v).replace(/"/g, '""');
   if (/^[=+\-@\t\r]/.test(s)) {
-    s = `\'${s}`;
+    s = `'${s}`;
   }
   if (s.includes(',') || s.includes('\n') || s.includes('\r')) {
     return `"${s}"`;
@@ -193,8 +193,15 @@ app.patch('/:id/feedback-seen', async (c) => {
   if (!id) return c.json({ success: false, message: 'معرف غير صالح' }, 400);
   const report = await svc.getReportById(id);
   if (!report) return c.json({ success: false, message: 'التقرير غير موجود' }, 404);
-  if (user.role === 'student' && report.student_id !== user.id) {
-    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  // FIX: Only the student who owns the report can mark feedback as seen
+  // Teachers/school/admin should not be able to mark feedback as seen for other students
+  if (user.role === 'student') {
+    if (report.student_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
+  } else {
+    // Only the student can mark feedback as seen
+    return c.json({ success: false, message: 'غير مصرح — فقط الطلاب يمكنهم تعيين الملاحظات كمنظرة' }, 403);
   }
   await svc.markFeedbackSeen(id);
   return c.json({ success: true });

@@ -1,5 +1,6 @@
 import { db } from '../../db/index.js';
 import { pushToUser, pushToSchool } from './sse.js';
+import { broadcastEvent } from '../sse/event-bus.js';
 
 export async function createNotification(data: {
   user_id: number; type: string; title: string; message?: string; report_id?: number; class_id?: string; priority?: string; quiz_id?: number;
@@ -12,7 +13,10 @@ export async function createNotification(data: {
   const notification = { id: Number(result.lastID), ...data, priority };
 
   // Push real-time SSE event only for immediate notifications
-  if (priority === 'immediate') pushToUser(data.user_id, 'notification', notification);
+  if (priority === 'immediate') {
+    pushToUser(data.user_id, 'notification', notification);
+    broadcastEvent({ type: 'notification', payload: { notification }, targetUserId: data.user_id });
+  }
 
   return notification;
 }
@@ -27,7 +31,10 @@ export async function createSchoolNotification(data: {
   );
   const notification = { id: Number(result.lastID), ...data, priority };
 
-  if (priority === 'immediate') pushToSchool(data.school_id, 'notification', notification);
+  if (priority === 'immediate') {
+    pushToSchool(data.school_id, 'notification', notification);
+    broadcastEvent({ type: 'notification', payload: { notification }, targetUserId: data.school_id, schoolId: data.school_id });
+  }
 
   return notification;
 }

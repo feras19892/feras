@@ -31,14 +31,21 @@ export interface ArchivedClassRow {
   reason: string | null;
 }
 
-export async function archiveReport(reportId: number, archivedBy: number, reason?: string): Promise<{ id: number }> {
+export async function archiveReport(reportId: number, archivedBy: number, reason?: string, adminSchoolId?: number): Promise<{ id: number }> {
   const report = await db.get<Record<string, unknown>>(
-    `SELECT * FROM experiment_reports WHERE id = ?`,
+    `SELECT r.*, COALESCE(c.school_id, t.school_id) as _school_id
+     FROM experiment_reports r
+     LEFT JOIN classes c ON r.class_id = c.id
+     LEFT JOIN users t ON c.teacher_id = t.id
+     WHERE r.id = ?`,
     reportId,
   );
 
   if (!report) {
     throw new Error('Report not found');
+  }
+  if (adminSchoolId && report._school_id && report._school_id !== adminSchoolId) {
+    throw new Error('غير مصرح — التقرير خارج نطاق مدرستك');
   }
 
   // لا تؤرشف تقريراً تشير إليه إصدارات أحدث (parent_id) — أرشف الأحدث فقط
@@ -80,14 +87,18 @@ export async function archiveReport(reportId: number, archivedBy: number, reason
   return { id: Number(result.lastID) };
 }
 
-export async function archiveClass(classId: number, archivedBy: number, reason?: string): Promise<{ id: number }> {
-  const cls = await db.get(
-    `SELECT * FROM classes WHERE id = ?`,
+export async function archiveClass(classId: number, archivedBy: number, reason?: string, adminSchoolId?: number): Promise<{ id: number }> {
+  const cls = await db.get<Record<string, any>>(
+    `SELECT c.*, COALESCE(c.school_id, t.school_id) as _school_id
+     FROM classes c LEFT JOIN users t ON c.teacher_id = t.id WHERE c.id = ?`,
     classId,
   );
   
   if (!cls) {
     throw new Error('Class not found');
+  }
+  if (adminSchoolId && cls._school_id && cls._school_id !== adminSchoolId) {
+    throw new Error('غير مصرح — الفصل خارج نطاق مدرستك');
   }
 
   const studentCount = await db.get(
@@ -108,26 +119,47 @@ export async function archiveClass(classId: number, archivedBy: number, reason?:
   return { id: Number(result.lastID) };
 }
 
-export async function getArchivedReports(userId?: number, classId?: number): Promise<ArchivedReportRow[]> {
-  let query = 'SELECT * FROM archived_reports';
+export async function getArchivedReports(filters: {
+  studentId?: number;
+  classId?: number;
+  schoolId?: number;
+  teacherId?: number;
+} = {}): Promise<ArchivedReportRow[]> {
+  let query = 'SELECT ar.* FROM archived_reports ar';
   const params: any[] = [];
   const conditions: string[] = [];
 
-  if (userId) {
-    conditions.push('user_id = ?');
-    params.push(userId);
+  if (filters.schoolId) {
+    query += ' JOIN users su ON ar.user_id = su.id';
+    conditions.push('su.school_id = ?');
+    params.push(filters.schoolId);
   }
 
-  if (classId) {
-    conditions.push('class_id = ?');
-    params.push(classId);
+  if (filters.studentId) {
+    conditions.push('ar.user_id = ?');
+    params.push(filters.studentId);
+  }
+
+  if (filters.classId) {
+    conditions.push('ar.class_id = ?');
+    params.push(filters.classId);
+  }
+
+  if (filters.teacherId) {
+    // The archived report's class may have been deleted — scope by the
+    // student's current enrollment in one of the teacher's classes instead.
+    conditions.push(`EXISTS (
+      SELECT 1 FROM class_students cs JOIN classes c ON cs.class_id = c.id
+      WHERE cs.student_id = ar.user_id AND c.teacher_id = ?
+    )`);
+    params.push(filters.teacherId);
   }
 
   if (conditions.length > 0) {
     query += ' WHERE ' + conditions.join(' AND ');
   }
 
-  query += ' ORDER BY archived_at DESC LIMIT 100';
+  query += ' ORDER BY ar.archived_at DESC LIMIT 100';
 
   return db.all<ArchivedReportRow[]>(query, ...params);
 }
@@ -156,14 +188,18 @@ export async function getArchivedClasses(teacherId?: number, schoolId?: number):
   return db.all<ArchivedClassRow[]>(query, ...params);
 }
 
-export async function restoreReport(archivedId: number): Promise<void> {
-  const archived = await db.get<ArchivedReportRow>(
-    'SELECT * FROM archived_reports WHERE id = ?',
+export async function restoreReport(archivedId: number, adminSchoolId?: number): Promise<void> {
+  const archived = await db.get<ArchivedReportRow & { student_school_id: number | null }>(
+    `SELECT ar.*, su.school_id as student_school_id FROM archived_reports ar
+     LEFT JOIN users su ON ar.user_id = su.id WHERE ar.id = ?`,
     archivedId,
   );
 
   if (!archived) {
     throw new Error('Archived report not found');
+  }
+  if (adminSchoolId && archived.student_school_id && archived.student_school_id !== adminSchoolId) {
+    throw new Error('غير مصرح — التقرير خارج نطاق مدرستك');
   }
 
   // فك حزمة المحتوى إلى أعمدة experiment_reports الأصلية
@@ -188,7 +224,7 @@ export async function restoreReport(archivedId: number): Promise<void> {
   await db.run('DELETE FROM archived_reports WHERE id = ?', archivedId);
 }
 
-export async function restoreClass(archivedId: number): Promise<void> {
+export async function restoreClass(archivedId: number, adminSchoolId?: number): Promise<void> {
   const archived = await db.get<ArchivedClassRow>(
     'SELECT * FROM archived_classes WHERE id = ?',
     archivedId,
@@ -197,8 +233,11 @@ export async function restoreClass(archivedId: number): Promise<void> {
   if (!archived) {
     throw new Error('Archived class not found');
   }
+  if (adminSchoolId && archived.school_id && archived.school_id !== adminSchoolId) {
+    throw new Error('غير مصرح — الفصل خارج نطاق مدرستك');
+  }
 
-  const result = await db.run(
+  await db.run(
     `INSERT INTO classes (name, code, teacher_id, school_id, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?)`,
     archived.name, archived.code, archived.teacher_id, archived.school_id, archived.created_at, archived.archived_at,

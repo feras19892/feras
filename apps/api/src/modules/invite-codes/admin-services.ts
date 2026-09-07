@@ -39,6 +39,7 @@ export async function getSubscriberAccounts(): Promise<SubscriberAccount[]> {
     LEFT JOIN subscriptions s ON s.owner_id = u.id AND s.owner_type = 'user'
     WHERE u.role IN ('student','teacher')
     ORDER BY u.created_at DESC
+    LIMIT 1000
   `);
 
   const schools = await db.all<
@@ -48,6 +49,7 @@ export async function getSubscriberAccounts(): Promise<SubscriberAccount[]> {
     FROM schools sc
     LEFT JOIN subscriptions s ON s.owner_id = sc.id AND s.owner_type = 'school'
     ORDER BY sc.created_at DESC
+    LIMIT 1000
   `);
 
   const codes = await db.all<{ owner_id: number; owner_type: string; is_active: number; used_count: number }[]>(
@@ -115,7 +117,7 @@ export async function getInviteCodesByOwner(ownerId: number, ownerType: 'teacher
 }
 
 export async function getAllInviteCodes(): Promise<InviteCode[]> {
-  return db.all<InviteCode[]>('SELECT * FROM invite_codes ORDER BY created_at DESC');
+  return db.all<InviteCode[]>('SELECT * FROM invite_codes ORDER BY created_at DESC LIMIT 500');
 }
 
 export async function createAdminInviteCode(input: {

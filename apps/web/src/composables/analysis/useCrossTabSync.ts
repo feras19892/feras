@@ -8,6 +8,7 @@ const CHANNEL_NAME = 'analysis-sync';
 export function useCrossTabSync() {
   const store = useAnalysisStore();
   let bc: BroadcastChannel | null = null;
+  let storageHandler: ((e: StorageEvent) => void) | null = null;
 
   function broadcast() {
     const payload = {
@@ -44,14 +45,18 @@ export function useCrossTabSync() {
   onMounted(() => {
     try { bc = new BroadcastChannel(CHANNEL_NAME); bc.onmessage = (ev) => receive(ev.data); } catch { bc = null; }
     // Fallback via localStorage
-    window.addEventListener('storage', (e) => {
+    storageHandler = (e: StorageEvent) => {
       if (e.key === 'analysis-sync-payload' && e.newValue) {
         try { receive({ type: 'update', payload: JSON.parse(e.newValue).payload }); } catch { /* ignore */ }
       }
-    });
+    };
+    window.addEventListener('storage', storageHandler);
   });
 
-  onUnmounted(() => { if (bc) { bc.close(); bc = null; } });
+  onUnmounted(() => {
+    if (bc) { bc.close(); bc = null; }
+    if (storageHandler) { window.removeEventListener('storage', storageHandler); storageHandler = null; }
+  });
 
   return { broadcast };
 }

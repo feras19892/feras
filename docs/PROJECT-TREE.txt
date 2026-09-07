@@ -1,0 +1,2650 @@
+# شجرة المشروع — مُولَّدة تلقائياً من الملفات المتتبعة في git
+# التاريخ: 2026-09-07 — الملفات: 2323
+
+feras/
+├── apps/
+│   ├── api/
+│   │   ├── src/
+│   │   │   ├── db/
+│   │   │   │   ├── migrations/
+│   │   │   │   │   ├── 001_init.sql
+│   │   │   │   │   ├── 002_reports.sql
+│   │   │   │   │   ├── 003_enrich_reports.sql
+│   │   │   │   │   ├── 004_admin_enhance.sql
+│   │   │   │   │   ├── 005_admin_full.sql
+│   │   │   │   │   ├── 006_experiments_schema.sql
+│   │   │   │   │   ├── 007_math_schema.sql
+│   │   │   │   │   ├── 008_math_equation_meta.sql
+│   │   │   │   │   ├── 009_email_verification.sql
+│   │   │   │   │   ├── 010_class_chat.sql
+│   │   │   │   │   ├── 011_class_chat_reads.sql
+│   │   │   │   │   ├── 012_system_settings.sql
+│   │   │   │   │   ├── 013_name_change_requests.sql
+│   │   │   │   │   ├── 014_schools.sql
+│   │   │   │   │   ├── 015_school_refresh_and_email_change.sql
+│   │   │   │   │   ├── 016_approval_workflow.sql
+│   │   │   │   │   ├── 017_dashboard_interconnect.sql
+│   │   │   │   │   ├── 018_school_notifications.sql
+│   │   │   │   │   ├── 019_enhancements.sql
+│   │   │   │   │   ├── 020_fix_report_status.sql
+│   │   │   │   │   ├── 021_password_reset.sql
+│   │   │   │   │   ├── 022_feedback_school_id.sql
+│   │   │   │   │   ├── 023_notifications_pinned.sql
+│   │   │   │   │   ├── 024_approval_metadata.sql
+│   │   │   │   │   ├── 025_feedback_seen.sql
+│   │   │   │   │   ├── 026_direct_messages.sql
+│   │   │   │   │   ├── 028_restore_block_columns.sql
+│   │   │   │   │   ├── 029_add_missing_indexes.sql
+│   │   │   │   │   ├── 030_approval_indexes.sql
+│   │   │   │   │   ├── 031_password_reset_attempts.sql
+│   │   │   │   │   ├── 032_performance_indexes.sql
+│   │   │   │   │   ├── 033_login_attempts.sql
+│   │   │   │   │   ├── 034_additional_indexes.sql
+│   │   │   │   │   ├── 035_login_attempts_composite_index.sql
+│   │   │   │   │   ├── 036_plagiarism_note.sql
+│   │   │   │   │   ├── 037_multi_dimensional_grading.sql
+│   │   │   │   │   ├── 038_approval_nullable_target.sql
+│   │   │   │   │   ├── 039_report_teacher_id.sql
+│   │   │   │   │   ├── 040_school_class_ownership.sql
+│   │   │   │   │   ├── 041_notification_priority.sql
+│   │   │   │   │   ├── 041_ratings_target_id_text.sql
+│   │   │   │   │   ├── 042_classes_updated_at.sql
+│   │   │   │   │   ├── 043_penalties_type_constraint.sql
+│   │   │   │   │   ├── 044_quiz_enhancements.sql
+│   │   │   │   │   ├── 045_notification_quiz_id.sql
+│   │   │   │   │   ├── 046_admin_notification_logs.sql
+│   │   │   │   │   ├── 046_complaints.sql
+│   │   │   │   │   ├── 047_warnings_school_id.sql
+│   │   │   │   │   ├── 048_add_subscriptions.sql
+│   │   │   │   │   ├── 049_add_age_to_users.sql
+│   │   │   │   │   ├── 050_user_block_until.sql
+│   │   │   │   │   ├── 051_invite_code_role.sql
+│   │   │   │   │   ├── 051_scheduled_reports.sql
+│   │   │   │   │   ├── 052_subscription_limits.sql
+│   │   │   │   │   ├── 053_plan_packages.sql
+│   │   │   │   │   ├── 053_subscriptions_status_suspended.sql
+│   │   │   │   │   ├── 054_plan_packages_v2.sql
+│   │   │   │   │   ├── 054_trial_anti_fraud.sql
+│   │   │   │   │   ├── 055_invoices.sql
+│   │   │   │   │   ├── 056_subscription_controls.sql
+│   │   │   │   │   ├── 057_subscription_notifications.sql
+│   │   │   │   │   ├── 058_subscription_notification_queue.sql
+│   │   │   │   │   ├── 059_notification_template_channel.sql
+│   │   │   │   │   ├── 060_feedback_context.sql
+│   │   │   │   │   ├── 061_consent_records.sql
+│   │   │   │   │   ├── 062_chat_translations.sql
+│   │   │   │   │   ├── 063_subscription_templates_v2.sql
+│   │   │   │   │   ├── 064_deactivate_yearly_renewal.sql
+│   │   │   │   │   ├── 065_experiment_questions.sql
+│   │   │   │   │   ├── 066_experiments_seed_all.sql
+│   │   │   │   │   ├── 067_experiments_biology_v2.sql
+│   │   │   │   │   ├── 067_schedules.sql
+│   │   │   │   │   ├── 068_archive.sql
+│   │   │   │   │   ├── 068_experiments_ecology.sql
+│   │   │   │   │   ├── 069_support_tickets.sql
+│   │   │   │   │   ├── 070_experiments_biology_animal_cell.sql
+│   │   │   │   │   ├── 071_experiments_biology_biotech_evolution.sql
+│   │   │   │   │   └── README.md
+│   │   │   │   ├── index.ts
+│   │   │   │   └── verify-data.ts
+│   │   │   ├── e2e/
+│   │   │   │   ├── integration-scenario.ts
+│   │   │   │   ├── login-smoke.ts
+│   │   │   │   ├── reports-isolation.test.ts
+│   │   │   │   ├── run.ts
+│   │   │   │   └── seed-e2e.ts
+│   │   │   ├── modules/
+│   │   │   │   ├── activity/
+│   │   │   │   │   └── service.ts
+│   │   │   │   ├── admin/
+│   │   │   │   │   ├── admin-password.ts
+│   │   │   │   │   ├── audit-service.ts
+│   │   │   │   │   ├── direct-message-service.ts
+│   │   │   │   │   ├── export-service.ts
+│   │   │   │   │   ├── feedback-service.ts
+│   │   │   │   │   ├── handlers-activity.ts
+│   │   │   │   │   ├── handlers-advanced.ts
+│   │   │   │   │   ├── handlers-classes.ts
+│   │   │   │   │   ├── handlers-core.ts
+│   │   │   │   │   ├── handlers-messages.ts
+│   │   │   │   │   ├── handlers-notifications.ts
+│   │   │   │   │   ├── handlers-reports.ts
+│   │   │   │   │   ├── handlers-subscriptions.ts
+│   │   │   │   │   ├── handlers-system.ts
+│   │   │   │   │   ├── handlers-users.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── services-admin-reports.ts
+│   │   │   │   │   ├── services-core.ts
+│   │   │   │   │   ├── services-emergency.ts
+│   │   │   │   │   ├── services-notifications.ts
+│   │   │   │   │   ├── services-reports.ts
+│   │   │   │   │   ├── services.ts
+│   │   │   │   │   ├── system-health-service.ts
+│   │   │   │   │   ├── user-detail-service.ts
+│   │   │   │   │   └── warning-service.ts
+│   │   │   │   ├── ai/
+│   │   │   │   │   ├── analyzer.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── mcp-server.ts
+│   │   │   │   │   ├── queue.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── announcements/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── approvals/
+│   │   │   │   │   ├── handlers-school.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── services-actions.ts
+│   │   │   │   │   ├── services-core.ts
+│   │   │   │   │   ├── services-queries.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── archive/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── auth/
+│   │   │   │   │   ├── cookies.ts
+│   │   │   │   │   ├── crypto.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── jwt.ts
+│   │   │   │   │   ├── middleware.ts
+│   │   │   │   │   ├── schemas.ts
+│   │   │   │   │   ├── seed-admin.ts
+│   │   │   │   │   ├── seed-test-data.ts
+│   │   │   │   │   ├── services-account.ts
+│   │   │   │   │   ├── services-auth.ts
+│   │   │   │   │   ├── services-consent.ts
+│   │   │   │   │   ├── services-data-export.ts
+│   │   │   │   │   ├── services-token.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── chat/
+│   │   │   │   │   ├── filter.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── classes/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── schemas.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── complaints/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── service.ts
+│   │   │   │   ├── dashboard/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── deadlines/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── enhancements/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── experiment-questions/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── schemas.ts
+│   │   │   │   │   ├── services.ts
+│   │   │   │   │   └── stats.ts
+│   │   │   │   ├── feedback/
+│   │   │   │   │   └── handlers.ts
+│   │   │   │   ├── gamification/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── invite-codes/
+│   │   │   │   │   ├── admin-handlers.ts
+│   │   │   │   │   ├── admin-services.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── services.ts
+│   │   │   │   │   └── types.ts
+│   │   │   │   ├── invoices/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── math/
+│   │   │   │   │   ├── seed/
+│   │   │   │   │   │   ├── branches.json
+│   │   │   │   │   │   └── equations.json
+│   │   │   │   │   ├── bootstrap.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── index.ts
+│   │   │   │   │   ├── repository.ts
+│   │   │   │   │   ├── schemas.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── notifications/
+│   │   │   │   │   ├── admin-handlers.ts
+│   │   │   │   │   ├── dispatch-helpers.ts
+│   │   │   │   │   ├── dispatch.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── queue-handlers.ts
+│   │   │   │   │   ├── queue.ts
+│   │   │   │   │   ├── scheduler.ts
+│   │   │   │   │   ├── schemas.ts
+│   │   │   │   │   ├── services.ts
+│   │   │   │   │   └── sse.ts
+│   │   │   │   ├── plagiarism/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── quizzes/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── reports/
+│   │   │   │   │   ├── handlers-crud.ts
+│   │   │   │   │   ├── handlers-extra.ts
+│   │   │   │   │   ├── handlers-stats.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── schemas.ts
+│   │   │   │   │   ├── services-crud.ts
+│   │   │   │   │   ├── services-stats.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── schedules/
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── school/
+│   │   │   │   │   ├── export-service.ts
+│   │   │   │   │   ├── handlers-admin.ts
+│   │   │   │   │   ├── handlers-classes.ts
+│   │   │   │   │   ├── handlers-notifications.ts
+│   │   │   │   │   ├── handlers-oversight.ts
+│   │   │   │   │   ├── handlers-reports.ts
+│   │   │   │   │   ├── handlers-school.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── services-admin.ts
+│   │   │   │   │   ├── services-capacity.ts
+│   │   │   │   │   ├── services-class-freeze.ts
+│   │   │   │   │   ├── services-classes.ts
+│   │   │   │   │   ├── services-core.ts
+│   │   │   │   │   ├── services-email.ts
+│   │   │   │   │   ├── services-evaluation.ts
+│   │   │   │   │   ├── services-oversight.ts
+│   │   │   │   │   ├── services-reports.ts
+│   │   │   │   │   └── services.ts
+│   │   │   │   ├── sessions/
+│   │   │   │   │   └── service.ts
+│   │   │   │   ├── settings/
+│   │   │   │   │   └── handlers.ts
+│   │   │   │   ├── sse/
+│   │   │   │   │   ├── event-bus.ts
+│   │   │   │   │   └── handlers.ts
+│   │   │   │   ├── subscriptions/
+│   │   │   │   │   ├── controls.ts
+│   │   │   │   │   ├── handlers.ts
+│   │   │   │   │   ├── services.ts
+│   │   │   │   │   └── types.ts
+│   │   │   │   └── support-tickets/
+│   │   │   │       ├── handlers.ts
+│   │   │   │       └── services.ts
+│   │   │   ├── scripts/
+│   │   │   │   ├── cleanup-users.ts
+│   │   │   │   └── reset-data.ts
+│   │   │   ├── shared/
+│   │   │   │   ├── middleware/
+│   │   │   │   │   ├── body-limit.ts
+│   │   │   │   │   ├── cors.ts
+│   │   │   │   │   ├── logger.ts
+│   │   │   │   │   ├── rate-limit.ts
+│   │   │   │   │   └── security.ts
+│   │   │   │   ├── utils/
+│   │   │   │   │   └── http.ts
+│   │   │   │   ├── archive-scheduler.ts
+│   │   │   │   ├── backup.ts
+│   │   │   │   ├── cleanup.ts
+│   │   │   │   ├── cloud-backup.ts
+│   │   │   │   ├── delete-user.ts
+│   │   │   │   ├── email.ts
+│   │   │   │   ├── sentry.ts
+│   │   │   │   ├── system-settings.ts
+│   │   │   │   └── translation.ts
+│   │   │   ├── worker/
+│   │   │   │   └── index.ts
+│   │   │   └── index.ts
+│   │   ├── .env.example
+│   │   ├── .eslintrc.cjs
+│   │   ├── .gitignore
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── test-security.mjs
+│   │   └── tsconfig.json
+│   ├── web/
+│   │   ├── .netlify/
+│   │   │   ├── netlify.toml
+│   │   │   └── state.json
+│   │   ├── docs/
+│   │   │   └── chemistry/
+│   │   │       ├── PENDING_TOOLS.md
+│   │   │       ├── TOOL_ANALYSIS.md
+│   │   │       └── TOOLS_CATALOG.md
+│   │   ├── e2e/
+│   │   │   └── integration/
+│   │   │       ├── biology-debug.spec.ts
+│   │   │       ├── button-crawl.spec.ts
+│   │   │       ├── global-setup.ts
+│   │   │       ├── global-teardown.ts
+│   │   │       ├── school-login-flow.spec.ts
+│   │   │       └── student-teacher-flow.spec.ts
+│   │   ├── public/
+│   │   │   ├── draco/
+│   │   │   │   ├── draco_decoder.js
+│   │   │   │   ├── draco_decoder.wasm
+│   │   │   │   └── draco_wasm_wrapper.js
+│   │   │   ├── legal/
+│   │   │   │   ├── subscription-policy-ar.html
+│   │   │   │   ├── subscription-policy-ar.md
+│   │   │   │   ├── subscription-policy-en.html
+│   │   │   │   └── subscription-policy-es.html
+│   │   │   ├── models/
+│   │   │   │   ├── digestive.glb
+│   │   │   │   ├── dna.glb
+│   │   │   │   ├── eye-hubmap-realistic.glb
+│   │   │   │   ├── generate-anatomy-glbs.cjs
+│   │   │   │   ├── heart-hubmap.glb
+│   │   │   │   ├── kidney.glb
+│   │   │   │   ├── lungs.glb
+│   │   │   │   ├── plant-cell.glb
+│   │   │   │   ├── README.txt
+│   │   │   │   └── skeleton.glb
+│   │   │   ├── icon-192.svg
+│   │   │   ├── icon-512.svg
+│   │   │   ├── manifest.json
+│   │   │   └── sw.js
+│   │   ├── scripts/
+│   │   │   ├── biology-i18n-missing.json
+│   │   │   └── check-biology-i18n.mjs
+│   │   ├── src/
+│   │   │   ├── assets/
+│   │   │   │   ├── styles/
+│   │   │   │   │   ├── admin-shell.css
+│   │   │   │   │   ├── classes-page.css
+│   │   │   │   │   ├── dashboard-shared.css
+│   │   │   │   │   ├── hud-admin.css
+│   │   │   │   │   ├── light-theme.css
+│   │   │   │   │   ├── my-classes.css
+│   │   │   │   │   ├── overview-page.css
+│   │   │   │   │   ├── schools-page.css
+│   │   │   │   │   ├── student-detail-modal.css
+│   │   │   │   │   ├── unified-page.css
+│   │   │   │   │   └── users-page.css
+│   │   │   │   └── README.md
+│   │   │   ├── components/
+│   │   │   │   ├── admin/
+│   │   │   │   │   ├── classes/
+│   │   │   │   │   │   └── ClassModals.vue
+│   │   │   │   │   ├── dashboard/
+│   │   │   │   │   │   ├── DashboardKPIs.vue
+│   │   │   │   │   │   ├── DashboardPerformance.vue
+│   │   │   │   │   │   ├── DashboardRanking.vue
+│   │   │   │   │   │   ├── DashboardStatus.vue
+│   │   │   │   │   │   └── useAdminDashboard.ts
+│   │   │   │   │   ├── detailed/
+│   │   │   │   │   │   ├── DetailedAcademic.vue
+│   │   │   │   │   │   ├── DetailedDaily.vue
+│   │   │   │   │   │   └── DetailedOverview.vue
+│   │   │   │   │   ├── schools/
+│   │   │   │   │   │   ├── AdminSchoolClasses.vue
+│   │   │   │   │   │   ├── AdminSchoolEdit.vue
+│   │   │   │   │   │   ├── AdminSchoolList.vue
+│   │   │   │   │   │   ├── AdminSchoolOverview.vue
+│   │   │   │   │   │   ├── AdminSchoolReports.vue
+│   │   │   │   │   │   └── AdminSchoolUsers.vue
+│   │   │   │   │   ├── tabs/
+│   │   │   │   │   │   ├── TabAcademic.vue
+│   │   │   │   │   │   ├── TabAcademicPerf.vue
+│   │   │   │   │   │   ├── TabAlerts.vue
+│   │   │   │   │   │   ├── TabAlertsReports.vue
+│   │   │   │   │   │   ├── TabAnalytics.vue
+│   │   │   │   │   │   ├── TabOverview.vue
+│   │   │   │   │   │   ├── TabPerformance.vue
+│   │   │   │   │   │   └── TabSystemActivity.vue
+│   │   │   │   │   ├── AdminAppShell.vue
+│   │   │   │   │   ├── AdminClassManager.vue
+│   │   │   │   │   ├── AdminDashboard.vue
+│   │   │   │   │   ├── AdminDetailedReports.css
+│   │   │   │   │   ├── AdminDetailedReports.vue
+│   │   │   │   │   ├── AdminDirectMessage.vue
+│   │   │   │   │   ├── AdminHelpModal.vue
+│   │   │   │   │   ├── AdminNotificationCenter-extras.css
+│   │   │   │   │   ├── AdminNotificationCenter.css
+│   │   │   │   │   ├── AdminNotificationCenter.vue
+│   │   │   │   │   ├── AdminReportViewer.vue
+│   │   │   │   │   ├── AdminSchoolManager.vue
+│   │   │   │   │   ├── AdminSidebar.vue
+│   │   │   │   │   ├── AdminSmartReports.vue
+│   │   │   │   │   ├── AdminTopBar.vue
+│   │   │   │   │   ├── AdminTopHeader.vue
+│   │   │   │   │   ├── AdminUserActionBar.vue
+│   │   │   │   │   ├── AdminUserDetail.vue
+│   │   │   │   │   ├── AdminUserEditModal.vue
+│   │   │   │   │   ├── AdminUserManager.vue
+│   │   │   │   │   ├── AdminUserMessageModal.vue
+│   │   │   │   │   ├── AdminUserStats.vue
+│   │   │   │   │   ├── ClassActionBar.vue
+│   │   │   │   │   ├── CommOverview.css
+│   │   │   │   │   ├── CommOverview.vue
+│   │   │   │   │   ├── EmergencyPasswordDialog.vue
+│   │   │   │   │   ├── GroupOverview.vue
+│   │   │   │   │   ├── ManageOverview.css
+│   │   │   │   │   ├── ManageOverview.vue
+│   │   │   │   │   ├── NotificationComposer.vue
+│   │   │   │   │   ├── NotificationHistory.vue
+│   │   │   │   │   ├── ReportDetailModal.vue
+│   │   │   │   │   ├── SchoolActionBar.vue
+│   │   │   │   │   ├── SystemOverview.vue
+│   │   │   │   │   └── UserDetailModals.vue
+│   │   │   │   ├── auth/
+│   │   │   │   │   └── SubscriptionOverviewModal.vue
+│   │   │   │   ├── dashboard/
+│   │   │   │   │   ├── DashSection.vue
+│   │   │   │   │   ├── DashStatusCard.vue
+│   │   │   │   │   └── DashStatusGrid.vue
+│   │   │   │   ├── dev/
+│   │   │   │   │   ├── ExperimentMonitorPage.vue
+│   │   │   │   │   └── ExperimentMonitorWidget.vue
+│   │   │   │   ├── experiment/
+│   │   │   │   │   ├── analysis-calc/
+│   │   │   │   │   │   ├── AnalysisCalcHelpModal.vue
+│   │   │   │   │   │   ├── AnalysisChartWorkspace.vue
+│   │   │   │   │   │   ├── AnalysisConclusionPanel.vue
+│   │   │   │   │   │   ├── AnalysisDataTable.vue
+│   │   │   │   │   │   ├── AnalysisEquationsPanel.vue
+│   │   │   │   │   │   ├── AnalysisErrorPanel.vue
+│   │   │   │   │   │   ├── AnalysisMediumPanel.vue
+│   │   │   │   │   │   ├── AnalysisMenuBar.vue
+│   │   │   │   │   │   ├── AnalysisReportExport.vue
+│   │   │   │   │   │   ├── AnalysisReportPreview.vue
+│   │   │   │   │   │   ├── AnalysisStatsPanel.vue
+│   │   │   │   │   │   ├── AnalysisTab.vue
+│   │   │   │   │   │   ├── AnalysisTabs.vue
+│   │   │   │   │   │   ├── CalcTabContent.vue
+│   │   │   │   │   │   ├── CalcTabElectric.vue
+│   │   │   │   │   │   ├── CalcTabMechanics.vue
+│   │   │   │   │   │   ├── CalcTabOptics.vue
+│   │   │   │   │   │   ├── CalcTabThermal.vue
+│   │   │   │   │   │   ├── DataTab.vue
+│   │   │   │   │   │   ├── EquationDetail.vue
+│   │   │   │   │   │   ├── ReportSection.vue
+│   │   │   │   │   │   ├── ReportTab.vue
+│   │   │   │   │   │   └── StudentInfoPanel.vue
+│   │   │   │   │   ├── biology/
+│   │   │   │   │   │   ├── biology-help-data.ts
+│   │   │   │   │   │   ├── biology-help-topics.ts
+│   │   │   │   │   │   └── BiologyHelpModal.vue
+│   │   │   │   │   ├── biot-savart/
+│   │   │   │   │   │   ├── BiotSavartCanvas.vue
+│   │   │   │   │   │   ├── BiotSavartControlBar.vue
+│   │   │   │   │   │   ├── BiotSavartHelpModal.vue
+│   │   │   │   │   │   ├── BiotSavartMenuBar.vue
+│   │   │   │   │   │   ├── BiotSavartPanelBody.vue
+│   │   │   │   │   │   └── BiotSavartStatusBar.vue
+│   │   │   │   │   ├── boyles-law/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── BoylesLawChartPanel.vue
+│   │   │   │   │   │   │   ├── BoylesLawLawsPanel.vue
+│   │   │   │   │   │   │   ├── BoylesLawParamsPanel.vue
+│   │   │   │   │   │   │   ├── BoylesLawReadingsPanel.vue
+│   │   │   │   │   │   │   ├── BoylesLawReferencePanel.vue
+│   │   │   │   │   │   │   ├── BoylesLawResultsPanel.vue
+│   │   │   │   │   │   │   ├── BoylesLawTrialsPanel.vue
+│   │   │   │   │   │   │   └── BoylesLawWorksheetPanel.vue
+│   │   │   │   │   │   ├── BoylesLawCanvas.vue
+│   │   │   │   │   │   ├── BoylesLawControlBar.vue
+│   │   │   │   │   │   ├── BoylesLawGuidePanel.vue
+│   │   │   │   │   │   ├── BoylesLawHelpModal.vue
+│   │   │   │   │   │   ├── BoylesLawMenuBar.vue
+│   │   │   │   │   │   ├── BoylesLawOverlayPanels.vue
+│   │   │   │   │   │   ├── BoylesLawPanelBody.vue
+│   │   │   │   │   │   └── BoylesLawStatusBar.vue
+│   │   │   │   │   ├── calorimetry/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── CalorimetryChartPanel.vue
+│   │   │   │   │   │   │   ├── CalorimetryLawsPanel.vue
+│   │   │   │   │   │   │   ├── CalorimetryParamsPanel.vue
+│   │   │   │   │   │   │   ├── CalorimetryReadingsPanel.vue
+│   │   │   │   │   │   │   ├── CalorimetryReferencePanel.vue
+│   │   │   │   │   │   │   ├── CalorimetryResultsPanel.vue
+│   │   │   │   │   │   │   ├── CalorimetryTrialsPanel.vue
+│   │   │   │   │   │   │   └── CalorimetryWorksheetPanel.vue
+│   │   │   │   │   │   ├── CalorimetryCanvas.vue
+│   │   │   │   │   │   ├── CalorimetryControlBar.vue
+│   │   │   │   │   │   ├── CalorimetryGuidePanel.vue
+│   │   │   │   │   │   ├── CalorimetryHelpModal.vue
+│   │   │   │   │   │   ├── CalorimetryMenuBar.vue
+│   │   │   │   │   │   ├── CalorimetryOverlayPanels.vue
+│   │   │   │   │   │   ├── CalorimetryPanelBody.vue
+│   │   │   │   │   │   └── CalorimetryStatusBar.vue
+│   │   │   │   │   ├── chemistry/
+│   │   │   │   │   │   ├── BuretteDisplay.vue
+│   │   │   │   │   │   ├── ChemAnalysisButton.vue
+│   │   │   │   │   │   ├── ChemicalCard.vue
+│   │   │   │   │   │   ├── ChemicalShelfPanel.vue
+│   │   │   │   │   │   ├── ChemistryHelpModal.vue
+│   │   │   │   │   │   ├── ChemReportModal.vue
+│   │   │   │   │   │   ├── ContainerRenderers.vue
+│   │   │   │   │   │   ├── ExperimentSelector.vue
+│   │   │   │   │   │   ├── ExperimentStepsPanel.vue
+│   │   │   │   │   │   ├── ExperimentTheoryPanel.vue
+│   │   │   │   │   │   ├── floating-inspector.css
+│   │   │   │   │   │   ├── FloatingInspector.vue
+│   │   │   │   │   │   ├── GuidePanel.vue
+│   │   │   │   │   │   ├── InspectorBurette.vue
+│   │   │   │   │   │   ├── InspectorContainer.vue
+│   │   │   │   │   │   ├── InspectorPanel.vue
+│   │   │   │   │   │   ├── InspectorPipette.vue
+│   │   │   │   │   │   ├── InspectorSpatula.vue
+│   │   │   │   │   │   ├── LabAssistant.vue
+│   │   │   │   │   │   ├── LabBalance.vue
+│   │   │   │   │   │   ├── LabBeaker.css
+│   │   │   │   │   │   ├── LabBeaker.vue
+│   │   │   │   │   │   ├── LabBeakerClamp.vue
+│   │   │   │   │   │   ├── LabBeakerPhysics.vue
+│   │   │   │   │   │   ├── LabBunsenBurner.vue
+│   │   │   │   │   │   ├── LabBurette.vue
+│   │   │   │   │   │   ├── LabDropper.vue
+│   │   │   │   │   │   ├── LabErlenmeyer.vue
+│   │   │   │   │   │   ├── LabFilterFunnel.vue
+│   │   │   │   │   │   ├── LabGradCylinder.vue
+│   │   │   │   │   │   ├── LabHeatingMantle.vue
+│   │   │   │   │   │   ├── LabHotPlate.vue
+│   │   │   │   │   │   ├── LabItemRenderer.css
+│   │   │   │   │   │   ├── LabItemRenderer.vue
+│   │   │   │   │   │   ├── LabPhMeter.vue
+│   │   │   │   │   │   ├── LabPipette.vue
+│   │   │   │   │   │   ├── LabRetortStandAssembly.css
+│   │   │   │   │   │   ├── LabRetortStandAssembly.vue
+│   │   │   │   │   │   ├── LabRoundBottomFlask.vue
+│   │   │   │   │   │   ├── LabRubberStopper.vue
+│   │   │   │   │   │   ├── LabSeparatoryFunnel.vue
+│   │   │   │   │   │   ├── LabSpatula.vue
+│   │   │   │   │   │   ├── LabStatsPanel.vue
+│   │   │   │   │   │   ├── LabStirringRod.vue
+│   │   │   │   │   │   ├── LabTestTube.vue
+│   │   │   │   │   │   ├── LabTestTubeRack.vue
+│   │   │   │   │   │   ├── LabThermometer.vue
+│   │   │   │   │   │   ├── LabVolumetricFlask.vue
+│   │   │   │   │   │   ├── LabVolumetricPipette.vue
+│   │   │   │   │   │   ├── LabWatchGlass.vue
+│   │   │   │   │   │   ├── LabWoodenBase.vue
+│   │   │   │   │   │   ├── LeftPanel.vue
+│   │   │   │   │   │   ├── NotesPanel.vue
+│   │   │   │   │   │   ├── OnboardingOverlay.vue
+│   │   │   │   │   │   ├── PENDING_TOOLS.md
+│   │   │   │   │   │   ├── ReactionEffects.vue
+│   │   │   │   │   │   ├── RightPanel.vue
+│   │   │   │   │   │   ├── TitrationCurveChart.vue
+│   │   │   │   │   │   ├── TitrationDataTable.vue
+│   │   │   │   │   │   ├── TOOL_ANALYSIS.md
+│   │   │   │   │   │   ├── TOOLS_CATALOG.md
+│   │   │   │   │   │   ├── WorkspaceActionsPanel.vue
+│   │   │   │   │   │   ├── WorkspaceCanvas.vue
+│   │   │   │   │   │   └── WorkspaceOverlays.vue
+│   │   │   │   │   ├── collision/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── CollisionReferencePanel.vue
+│   │   │   │   │   │   │   └── CollisionWorksheetPanel.vue
+│   │   │   │   │   │   ├── CollisionCanvas.vue
+│   │   │   │   │   │   ├── CollisionControlBar.vue
+│   │   │   │   │   │   ├── CollisionDataPanel.vue
+│   │   │   │   │   │   ├── CollisionEquationsPanel.vue
+│   │   │   │   │   │   ├── CollisionGuidePanel.vue
+│   │   │   │   │   │   ├── CollisionHelpModal.vue
+│   │   │   │   │   │   ├── CollisionMenuBar.vue
+│   │   │   │   │   │   ├── CollisionOverlayPanels.vue
+│   │   │   │   │   │   ├── CollisionPanelBody.vue
+│   │   │   │   │   │   ├── CollisionParamsPanel.vue
+│   │   │   │   │   │   ├── CollisionReport.vue
+│   │   │   │   │   │   ├── CollisionScatterChart.vue
+│   │   │   │   │   │   ├── CollisionSignalPanel.vue
+│   │   │   │   │   │   ├── CollisionStatsPanel.vue
+│   │   │   │   │   │   └── CollisionStatusBar.vue
+│   │   │   │   │   ├── diffraction/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── DiffractionChartPanel.vue
+│   │   │   │   │   │   │   ├── DiffractionLawsPanel.vue
+│   │   │   │   │   │   │   ├── DiffractionParamsPanel.vue
+│   │   │   │   │   │   │   ├── DiffractionReadingsPanel.vue
+│   │   │   │   │   │   │   ├── DiffractionReferencePanel.vue
+│   │   │   │   │   │   │   ├── DiffractionResultsPanel.vue
+│   │   │   │   │   │   │   ├── DiffractionTrialsPanel.vue
+│   │   │   │   │   │   │   └── DiffractionWorksheetPanel.vue
+│   │   │   │   │   │   ├── DiffractionCanvas.vue
+│   │   │   │   │   │   ├── DiffractionControlBar.vue
+│   │   │   │   │   │   ├── DiffractionGuidePanel.vue
+│   │   │   │   │   │   ├── DiffractionHelpModal.vue
+│   │   │   │   │   │   ├── DiffractionMenuBar.vue
+│   │   │   │   │   │   ├── DiffractionOverlayPanels.vue
+│   │   │   │   │   │   ├── DiffractionPanelBody.vue
+│   │   │   │   │   │   └── DiffractionStatusBar.vue
+│   │   │   │   │   ├── electric-workshop/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── CapacitorsComboReferencePanel.vue
+│   │   │   │   │   │   │   ├── CapacitorsComboWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── GalvanometerReferencePanel.vue
+│   │   │   │   │   │   │   ├── GalvanometerWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── GenericReferencePanel.vue
+│   │   │   │   │   │   │   ├── GenericWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── InternalResistanceReferencePanel.vue
+│   │   │   │   │   │   │   ├── InternalResistanceWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── KirchhoffReferencePanel.vue
+│   │   │   │   │   │   │   ├── KirchhoffWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── LampReferencePanel.vue
+│   │   │   │   │   │   │   ├── LampWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── NonOhmicReferencePanel.vue
+│   │   │   │   │   │   │   ├── NonOhmicWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── OhmsLawReferencePanel.vue
+│   │   │   │   │   │   │   ├── OhmsLawWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── ParallelReferencePanel.vue
+│   │   │   │   │   │   │   ├── ParallelWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── PotentiometerReferencePanel.vue
+│   │   │   │   │   │   │   ├── PotentiometerWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── PowerReferencePanel.vue
+│   │   │   │   │   │   │   ├── PowerWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── RCReferencePanel.vue
+│   │   │   │   │   │   │   ├── RCWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── ResistivityReferencePanel.vue
+│   │   │   │   │   │   │   ├── ResistivityWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── SeriesReferencePanel.vue
+│   │   │   │   │   │   │   ├── SeriesWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── VoltageDividerReferencePanel.vue
+│   │   │   │   │   │   │   ├── VoltageDividerWorksheetPanel.vue
+│   │   │   │   │   │   │   ├── WheatstoneReferencePanel.vue
+│   │   │   │   │   │   │   └── WheatstoneWorksheetPanel.vue
+│   │   │   │   │   │   └── ElectricWorkshopHelpModal.vue
+│   │   │   │   │   ├── electromagnetism/
+│   │   │   │   │   │   ├── circular-coil-helpers.ts
+│   │   │   │   │   │   ├── circular-coil-probe-draw.ts
+│   │   │   │   │   │   ├── circular-coil-probe.ts
+│   │   │   │   │   │   ├── CircularCoilCanvas.vue
+│   │   │   │   │   │   ├── CircularCoilDataPanel.vue
+│   │   │   │   │   │   ├── CircularCoilGuidePanel.vue
+│   │   │   │   │   │   ├── CircularCoilHelpModal.vue
+│   │   │   │   │   │   ├── CircularCoilParamPanel.vue
+│   │   │   │   │   │   ├── CircularCoilReadingsPanel.vue
+│   │   │   │   │   │   ├── ControlBar.vue
+│   │   │   │   │   │   ├── ElectromagnetismHelpModal.vue
+│   │   │   │   │   │   ├── faraday-helpers.ts
+│   │   │   │   │   │   ├── FaradayLawCanvas.vue
+│   │   │   │   │   │   ├── FaradayLawDataPanel.vue
+│   │   │   │   │   │   ├── FaradayLawGuidePanel.vue
+│   │   │   │   │   │   ├── FaradayLawHelpModal.vue
+│   │   │   │   │   │   ├── FaradayLawParamPanel.vue
+│   │   │   │   │   │   ├── FaradayLawReadingsPanel.vue
+│   │   │   │   │   │   ├── generator-helpers.ts
+│   │   │   │   │   │   ├── GeneratorCanvas.vue
+│   │   │   │   │   │   ├── GeneratorDataPanel.vue
+│   │   │   │   │   │   ├── GeneratorGuidePanel.vue
+│   │   │   │   │   │   ├── GeneratorHelpModal.vue
+│   │   │   │   │   │   ├── GeneratorParamPanel.vue
+│   │   │   │   │   │   ├── GeneratorReadingsPanel.vue
+│   │   │   │   │   │   ├── GuidePanel.vue
+│   │   │   │   │   │   ├── LenzLawHelpModal.vue
+│   │   │   │   │   │   ├── lorentz-helpers.ts
+│   │   │   │   │   │   ├── LorentzForceCanvas.vue
+│   │   │   │   │   │   ├── LorentzForceDataPanel.vue
+│   │   │   │   │   │   ├── LorentzForceGuidePanel.vue
+│   │   │   │   │   │   ├── LorentzForceHelpModal.vue
+│   │   │   │   │   │   ├── LorentzForceParamPanel.vue
+│   │   │   │   │   │   ├── LorentzForceReadingsPanel.vue
+│   │   │   │   │   │   ├── magnetic-flux-helpers.ts
+│   │   │   │   │   │   ├── MagneticFluxCanvas.vue
+│   │   │   │   │   │   ├── MagneticFluxDataPanel.vue
+│   │   │   │   │   │   ├── MagneticFluxGuidePanel.vue
+│   │   │   │   │   │   ├── MagneticFluxHelpModal.vue
+│   │   │   │   │   │   ├── MagneticFluxParamPanel.vue
+│   │   │   │   │   │   ├── MagneticFluxReadingsPanel.vue
+│   │   │   │   │   │   ├── MenuBar.vue
+│   │   │   │   │   │   ├── solenoid-helpers.ts
+│   │   │   │   │   │   ├── SolenoidCanvas.vue
+│   │   │   │   │   │   ├── SolenoidDataPanel.vue
+│   │   │   │   │   │   ├── SolenoidGuidePanel.vue
+│   │   │   │   │   │   ├── SolenoidHelpModal.vue
+│   │   │   │   │   │   ├── SolenoidParamPanel.vue
+│   │   │   │   │   │   ├── SolenoidReadingsPanel.vue
+│   │   │   │   │   │   ├── StraightWireCanvas.vue
+│   │   │   │   │   │   ├── StraightWireDataPanel.vue
+│   │   │   │   │   │   ├── StraightWireGuidePanel.vue
+│   │   │   │   │   │   ├── StraightWireHelpModal.vue
+│   │   │   │   │   │   ├── StraightWireParamPanel.vue
+│   │   │   │   │   │   ├── StraightWireReadingsPanel.vue
+│   │   │   │   │   │   ├── torque-helpers.ts
+│   │   │   │   │   │   ├── TorqueCoilCanvas.vue
+│   │   │   │   │   │   ├── TorqueCoilDataPanel.vue
+│   │   │   │   │   │   ├── TorqueCoilGuidePanel.vue
+│   │   │   │   │   │   ├── TorqueCoilHelpModal.vue
+│   │   │   │   │   │   ├── TorqueCoilParamPanel.vue
+│   │   │   │   │   │   ├── TorqueCoilReadingsPanel.vue
+│   │   │   │   │   │   └── WireForceHelpModal.vue
+│   │   │   │   │   ├── faraday/
+│   │   │   │   │   │   ├── FaradayCanvas.vue
+│   │   │   │   │   │   ├── FaradayControlBar.vue
+│   │   │   │   │   │   ├── FaradayHelpModal.vue
+│   │   │   │   │   │   ├── FaradayMenuBar.vue
+│   │   │   │   │   │   ├── FaradayPanelBody.vue
+│   │   │   │   │   │   └── FaradayStatusBar.vue
+│   │   │   │   │   ├── freefall/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── FreeFallReferencePanel.vue
+│   │   │   │   │   │   │   └── FreeFallWorksheetPanel.vue
+│   │   │   │   │   │   ├── FreeFallCanvas.vue
+│   │   │   │   │   │   ├── FreeFallControlBar.vue
+│   │   │   │   │   │   ├── FreeFallEquationsPanel.vue
+│   │   │   │   │   │   ├── FreeFallGuidePanel.vue
+│   │   │   │   │   │   ├── FreeFallHelpModal.vue
+│   │   │   │   │   │   ├── FreeFallMenuBar.vue
+│   │   │   │   │   │   ├── FreeFallOverlayPanels.vue
+│   │   │   │   │   │   ├── FreeFallPanelBody.vue
+│   │   │   │   │   │   ├── FreeFallParamsPanel.vue
+│   │   │   │   │   │   ├── FreeFallReport.vue
+│   │   │   │   │   │   ├── FreeFallReportPanel.vue
+│   │   │   │   │   │   ├── FreeFallScatterPanel.vue
+│   │   │   │   │   │   ├── FreeFallSignalPanel.vue
+│   │   │   │   │   │   ├── FreeFallStatsPanel.vue
+│   │   │   │   │   │   ├── FreeFallStatusBar.vue
+│   │   │   │   │   │   └── FreeFallTablePanel.vue
+│   │   │   │   │   ├── grating/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── GratingChartPanel.vue
+│   │   │   │   │   │   │   ├── GratingLawsPanel.vue
+│   │   │   │   │   │   │   ├── GratingParamsPanel.vue
+│   │   │   │   │   │   │   ├── GratingReadingsPanel.vue
+│   │   │   │   │   │   │   ├── GratingResultsPanel.vue
+│   │   │   │   │   │   │   └── GratingTrialsPanel.vue
+│   │   │   │   │   │   ├── GratingCanvas.vue
+│   │   │   │   │   │   ├── GratingControlBar.vue
+│   │   │   │   │   │   ├── GratingHelpModal.vue
+│   │   │   │   │   │   ├── GratingMenuBar.vue
+│   │   │   │   │   │   ├── GratingOverlayPanels.vue
+│   │   │   │   │   │   ├── GratingPanelBody.vue
+│   │   │   │   │   │   └── GratingStatusBar.vue
+│   │   │   │   │   ├── ideal-gas/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── IdealGasChartPanel.vue
+│   │   │   │   │   │   │   ├── IdealGasLawsPanel.vue
+│   │   │   │   │   │   │   ├── IdealGasParamsPanel.vue
+│   │   │   │   │   │   │   ├── IdealGasReadingsPanel.vue
+│   │   │   │   │   │   │   ├── IdealGasReferencePanel.vue
+│   │   │   │   │   │   │   ├── IdealGasResultsPanel.vue
+│   │   │   │   │   │   │   ├── IdealGasTrialsPanel.vue
+│   │   │   │   │   │   │   └── IdealGasWorksheetPanel.vue
+│   │   │   │   │   │   ├── IdealGasCanvas.vue
+│   │   │   │   │   │   ├── IdealGasControlBar.vue
+│   │   │   │   │   │   ├── IdealGasGuidePanel.vue
+│   │   │   │   │   │   ├── IdealGasHelpModal.vue
+│   │   │   │   │   │   ├── IdealGasMenuBar.vue
+│   │   │   │   │   │   ├── IdealGasOverlayPanels.vue
+│   │   │   │   │   │   ├── IdealGasPanelBody.vue
+│   │   │   │   │   │   └── IdealGasStatusBar.vue
+│   │   │   │   │   ├── inclined/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── InclinedReferencePanel.vue
+│   │   │   │   │   │   │   └── InclinedWorksheetPanel.vue
+│   │   │   │   │   │   ├── InclinedCanvas.vue
+│   │   │   │   │   │   ├── InclinedControlBar.vue
+│   │   │   │   │   │   ├── InclinedEquationsPanel.vue
+│   │   │   │   │   │   ├── InclinedGuidePanel.vue
+│   │   │   │   │   │   ├── InclinedHelpModal.vue
+│   │   │   │   │   │   ├── InclinedMenuBar.vue
+│   │   │   │   │   │   ├── InclinedOverlayPanels.vue
+│   │   │   │   │   │   ├── InclinedPanelBody.vue
+│   │   │   │   │   │   ├── InclinedParamsPanel.vue
+│   │   │   │   │   │   ├── InclinedReport.vue
+│   │   │   │   │   │   ├── InclinedScatterPanel.vue
+│   │   │   │   │   │   ├── InclinedSignalPanel.vue
+│   │   │   │   │   │   ├── InclinedStatsPanel.vue
+│   │   │   │   │   │   ├── InclinedStatusBar.vue
+│   │   │   │   │   │   └── InclinedTablePanel.vue
+│   │   │   │   │   ├── interference/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── InterferenceChartPanel.vue
+│   │   │   │   │   │   │   ├── InterferenceLawsPanel.vue
+│   │   │   │   │   │   │   ├── InterferenceParamsPanel.vue
+│   │   │   │   │   │   │   ├── InterferenceReadingsPanel.vue
+│   │   │   │   │   │   │   ├── InterferenceReferencePanel.vue
+│   │   │   │   │   │   │   ├── InterferenceResultsPanel.vue
+│   │   │   │   │   │   │   ├── InterferenceTrialsPanel.vue
+│   │   │   │   │   │   │   └── InterferenceWorksheetPanel.vue
+│   │   │   │   │   │   ├── InterferenceCanvas.vue
+│   │   │   │   │   │   ├── InterferenceControlBar.vue
+│   │   │   │   │   │   ├── InterferenceGuidePanel.vue
+│   │   │   │   │   │   ├── InterferenceHelpModal.vue
+│   │   │   │   │   │   ├── InterferenceMenuBar.vue
+│   │   │   │   │   │   ├── InterferenceOverlayPanels.vue
+│   │   │   │   │   │   ├── InterferencePanelBody.vue
+│   │   │   │   │   │   └── InterferenceStatusBar.vue
+│   │   │   │   │   ├── latent-heat/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── LatentHeatChartPanel.vue
+│   │   │   │   │   │   │   ├── LatentHeatLawsPanel.vue
+│   │   │   │   │   │   │   ├── LatentHeatParamsPanel.vue
+│   │   │   │   │   │   │   ├── LatentHeatReadingsPanel.vue
+│   │   │   │   │   │   │   ├── LatentHeatReferencePanel.vue
+│   │   │   │   │   │   │   ├── LatentHeatResultsPanel.vue
+│   │   │   │   │   │   │   ├── LatentHeatTrialsPanel.vue
+│   │   │   │   │   │   │   └── LatentHeatWorksheetPanel.vue
+│   │   │   │   │   │   ├── LatentHeatCanvas.vue
+│   │   │   │   │   │   ├── LatentHeatControlBar.vue
+│   │   │   │   │   │   ├── LatentHeatGuidePanel.vue
+│   │   │   │   │   │   ├── LatentHeatHelpModal.vue
+│   │   │   │   │   │   ├── LatentHeatMenuBar.vue
+│   │   │   │   │   │   ├── LatentHeatOverlayPanels.vue
+│   │   │   │   │   │   ├── LatentHeatPanelBody.vue
+│   │   │   │   │   │   └── LatentHeatStatusBar.vue
+│   │   │   │   │   ├── lightray/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── LightRayReferencePanel.vue
+│   │   │   │   │   │   │   └── LightRayWorksheetPanel.vue
+│   │   │   │   │   │   ├── LightRayCanvas.vue
+│   │   │   │   │   │   ├── LightRayChart.vue
+│   │   │   │   │   │   ├── LightRayControlBar.vue
+│   │   │   │   │   │   ├── LightRayGuidePanel.vue
+│   │   │   │   │   │   ├── LightRayHelpModal.vue
+│   │   │   │   │   │   ├── LightRayMenuBar.vue
+│   │   │   │   │   │   ├── LightRayOverlayPanels.vue
+│   │   │   │   │   │   ├── LightRayPanelBody.vue
+│   │   │   │   │   │   └── LightRayStatusBar.vue
+│   │   │   │   │   ├── mirror/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── MirrorReferencePanel.vue
+│   │   │   │   │   │   │   └── MirrorWorksheetPanel.vue
+│   │   │   │   │   │   ├── MirrorCanvas.vue
+│   │   │   │   │   │   ├── MirrorGuidePanel.vue
+│   │   │   │   │   │   ├── MirrorHelpModal.vue
+│   │   │   │   │   │   └── MirrorPanelBody.vue
+│   │   │   │   │   ├── netforce/
+│   │   │   │   │   │   ├── NetForceCanvas.vue
+│   │   │   │   │   │   ├── NetForceControlBar.vue
+│   │   │   │   │   │   ├── NetForceGuidePanel.vue
+│   │   │   │   │   │   ├── NetForceHelpModal.vue
+│   │   │   │   │   │   ├── NetForceMenuBar.vue
+│   │   │   │   │   │   ├── NetForceOverlayPanels.vue
+│   │   │   │   │   │   ├── NetForcePanelBody.vue
+│   │   │   │   │   │   ├── NetForceReport.vue
+│   │   │   │   │   │   └── NetForceStatusBar.vue
+│   │   │   │   │   ├── pendulum/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── PendulumReferencePanel.vue
+│   │   │   │   │   │   │   └── PendulumWorksheetPanel.vue
+│   │   │   │   │   │   ├── PendulumCanvas.vue
+│   │   │   │   │   │   ├── PendulumControlBar.vue
+│   │   │   │   │   │   ├── PendulumCutButton.vue
+│   │   │   │   │   │   ├── PendulumDataPanel.vue
+│   │   │   │   │   │   ├── PendulumEnvSelector.vue
+│   │   │   │   │   │   ├── PendulumFFTPanel.vue
+│   │   │   │   │   │   ├── PendulumGuidePanel.vue
+│   │   │   │   │   │   ├── PendulumHelpModal.vue
+│   │   │   │   │   │   ├── PendulumLiveAnalysis.vue
+│   │   │   │   │   │   ├── PendulumMenuBar.vue
+│   │   │   │   │   │   ├── PendulumModeSwitcher.vue
+│   │   │   │   │   │   ├── PendulumOverlayPanels.vue
+│   │   │   │   │   │   ├── PendulumPanelBody.vue
+│   │   │   │   │   │   ├── PendulumParamPanel.vue
+│   │   │   │   │   │   ├── PendulumPhaseSpace.vue
+│   │   │   │   │   │   ├── PendulumPhotogate.vue
+│   │   │   │   │   │   ├── PendulumReport.vue
+│   │   │   │   │   │   ├── PendulumScatterChart.vue
+│   │   │   │   │   │   ├── PendulumSignalChart.vue
+│   │   │   │   │   │   ├── PendulumStatusBar.vue
+│   │   │   │   │   │   ├── PendulumStepTracker.vue
+│   │   │   │   │   │   └── PendulumTutorCard.vue
+│   │   │   │   │   ├── polarization/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── PolarizationChartPanel.vue
+│   │   │   │   │   │   │   ├── PolarizationLawsPanel.vue
+│   │   │   │   │   │   │   ├── PolarizationParamsPanel.vue
+│   │   │   │   │   │   │   ├── PolarizationReadingsPanel.vue
+│   │   │   │   │   │   │   ├── PolarizationReferencePanel.vue
+│   │   │   │   │   │   │   ├── PolarizationResultsPanel.vue
+│   │   │   │   │   │   │   ├── PolarizationTrialsPanel.vue
+│   │   │   │   │   │   │   └── PolarizationWorksheetPanel.vue
+│   │   │   │   │   │   ├── PolarizationCanvas.vue
+│   │   │   │   │   │   ├── PolarizationControlBar.vue
+│   │   │   │   │   │   ├── PolarizationGuidePanel.vue
+│   │   │   │   │   │   ├── PolarizationHelpModal.vue
+│   │   │   │   │   │   ├── PolarizationMenuBar.vue
+│   │   │   │   │   │   ├── PolarizationOverlayPanels.vue
+│   │   │   │   │   │   ├── PolarizationPanelBody.vue
+│   │   │   │   │   │   └── PolarizationStatusBar.vue
+│   │   │   │   │   ├── prism/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── PrismChartPanel.vue
+│   │   │   │   │   │   │   ├── PrismLawsPanel.vue
+│   │   │   │   │   │   │   ├── PrismParamsPanel.vue
+│   │   │   │   │   │   │   ├── PrismReadingsPanel.vue
+│   │   │   │   │   │   │   ├── PrismReferencePanel.vue
+│   │   │   │   │   │   │   ├── PrismResultsPanel.vue
+│   │   │   │   │   │   │   ├── PrismTrialsPanel.vue
+│   │   │   │   │   │   │   └── PrismWorksheetPanel.vue
+│   │   │   │   │   │   ├── PrismCanvas.vue
+│   │   │   │   │   │   ├── PrismControlBar.vue
+│   │   │   │   │   │   ├── PrismGuidePanel.vue
+│   │   │   │   │   │   ├── PrismHelpModal.vue
+│   │   │   │   │   │   ├── PrismMenuBar.vue
+│   │   │   │   │   │   ├── PrismOverlayPanels.vue
+│   │   │   │   │   │   ├── PrismPanelBody.vue
+│   │   │   │   │   │   └── PrismStatusBar.vue
+│   │   │   │   │   ├── projectile/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── ProjectileReferencePanel.vue
+│   │   │   │   │   │   │   └── ProjectileWorksheetPanel.vue
+│   │   │   │   │   │   ├── ProjectileCanvas.vue
+│   │   │   │   │   │   ├── ProjectileControlBar.vue
+│   │   │   │   │   │   ├── ProjectileGuidePanel.vue
+│   │   │   │   │   │   ├── ProjectileHelpModal.vue
+│   │   │   │   │   │   ├── ProjectileHintOverlay.vue
+│   │   │   │   │   │   ├── ProjectileMenuBar.vue
+│   │   │   │   │   │   ├── ProjectileOverlayPanels.vue
+│   │   │   │   │   │   ├── ProjectilePanelBody.vue
+│   │   │   │   │   │   ├── ProjectileReport.vue
+│   │   │   │   │   │   ├── ProjectileStatusBar.vue
+│   │   │   │   │   │   └── ProjectileStepTracker.vue
+│   │   │   │   │   ├── resonance/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── ResonanceChartPanel.vue
+│   │   │   │   │   │   │   ├── ResonanceLawsPanel.vue
+│   │   │   │   │   │   │   ├── ResonanceParamsPanel.vue
+│   │   │   │   │   │   │   ├── ResonanceReadingsPanel.vue
+│   │   │   │   │   │   │   ├── ResonanceReferencePanel.vue
+│   │   │   │   │   │   │   ├── ResonanceResultsPanel.vue
+│   │   │   │   │   │   │   ├── ResonanceTrialsPanel.vue
+│   │   │   │   │   │   │   └── ResonanceWorksheetPanel.vue
+│   │   │   │   │   │   ├── ResonanceCanvas.vue
+│   │   │   │   │   │   ├── ResonanceControlBar.vue
+│   │   │   │   │   │   ├── ResonanceGuidePanel.vue
+│   │   │   │   │   │   ├── ResonanceHelpModal.vue
+│   │   │   │   │   │   ├── ResonanceMenuBar.vue
+│   │   │   │   │   │   ├── ResonanceOverlayPanels.vue
+│   │   │   │   │   │   ├── ResonancePanelBody.vue
+│   │   │   │   │   │   └── ResonanceStatusBar.vue
+│   │   │   │   │   ├── shared/
+│   │   │   │   │   │   ├── DraggablePanel.vue
+│   │   │   │   │   │   ├── experiment-help-types.ts
+│   │   │   │   │   │   └── ExperimentHelpModal.vue
+│   │   │   │   │   ├── specific-heat/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── SpecificHeatChartPanel.vue
+│   │   │   │   │   │   │   ├── SpecificHeatLawsPanel.vue
+│   │   │   │   │   │   │   ├── SpecificHeatParamsPanel.vue
+│   │   │   │   │   │   │   ├── SpecificHeatReadingsPanel.vue
+│   │   │   │   │   │   │   ├── SpecificHeatReferencePanel.vue
+│   │   │   │   │   │   │   ├── SpecificHeatResultsPanel.vue
+│   │   │   │   │   │   │   ├── SpecificHeatTrialsPanel.vue
+│   │   │   │   │   │   │   └── SpecificHeatWorksheetPanel.vue
+│   │   │   │   │   │   ├── SpecificHeatControlBar.vue
+│   │   │   │   │   │   ├── SpecificHeatGuidePanel.vue
+│   │   │   │   │   │   ├── SpecificHeatHelpModal.vue
+│   │   │   │   │   │   ├── SpecificHeatLab.css
+│   │   │   │   │   │   ├── SpecificHeatLab.vue
+│   │   │   │   │   │   ├── SpecificHeatMenuBar.vue
+│   │   │   │   │   │   ├── SpecificHeatOverlayPanels.vue
+│   │   │   │   │   │   ├── SpecificHeatPanelBody.vue
+│   │   │   │   │   │   └── SpecificHeatStatusBar.vue
+│   │   │   │   │   ├── speed-of-sound/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── SpeedOfSoundChartPanel.vue
+│   │   │   │   │   │   │   ├── SpeedOfSoundLawsPanel.vue
+│   │   │   │   │   │   │   ├── SpeedOfSoundParamsPanel.vue
+│   │   │   │   │   │   │   ├── SpeedOfSoundReadingsPanel.vue
+│   │   │   │   │   │   │   ├── SpeedOfSoundReferencePanel.vue
+│   │   │   │   │   │   │   ├── SpeedOfSoundResultsPanel.vue
+│   │   │   │   │   │   │   ├── SpeedOfSoundTrialsPanel.vue
+│   │   │   │   │   │   │   └── SpeedOfSoundWorksheetPanel.vue
+│   │   │   │   │   │   ├── SpeedOfSoundCanvas.vue
+│   │   │   │   │   │   ├── SpeedOfSoundControlBar.vue
+│   │   │   │   │   │   ├── SpeedOfSoundGuidePanel.vue
+│   │   │   │   │   │   ├── SpeedOfSoundHelpModal.vue
+│   │   │   │   │   │   ├── SpeedOfSoundMenuBar.vue
+│   │   │   │   │   │   ├── SpeedOfSoundOverlayPanels.vue
+│   │   │   │   │   │   ├── SpeedOfSoundPanelBody.vue
+│   │   │   │   │   │   └── SpeedOfSoundStatusBar.vue
+│   │   │   │   │   ├── spring/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── SpringReferencePanel.vue
+│   │   │   │   │   │   │   └── SpringWorksheetPanel.vue
+│   │   │   │   │   │   ├── downloadCsv.ts
+│   │   │   │   │   │   ├── DraggablePanel.vue
+│   │   │   │   │   │   ├── linearRegression.ts
+│   │   │   │   │   │   ├── PanelCard.vue
+│   │   │   │   │   │   ├── SpringCanvas.vue
+│   │   │   │   │   │   ├── SpringControlBar.vue
+│   │   │   │   │   │   ├── SpringDataPanel.vue
+│   │   │   │   │   │   ├── SpringErrorPanel.vue
+│   │   │   │   │   │   ├── SpringFFTPanel.vue
+│   │   │   │   │   │   ├── SpringGuidePanel.vue
+│   │   │   │   │   │   ├── SpringHelpModal.vue
+│   │   │   │   │   │   ├── SpringLiveAnalysis.vue
+│   │   │   │   │   │   ├── SpringMenuBar.vue
+│   │   │   │   │   │   ├── SpringOverlayPanels.vue
+│   │   │   │   │   │   ├── SpringPanelBody.vue
+│   │   │   │   │   │   ├── SpringParamPanel.vue
+│   │   │   │   │   │   ├── SpringPhotogate.vue
+│   │   │   │   │   │   ├── SpringReport.css
+│   │   │   │   │   │   ├── SpringReport.vue
+│   │   │   │   │   │   ├── SpringScatterChart.vue
+│   │   │   │   │   │   ├── SpringSignalChart.vue
+│   │   │   │   │   │   ├── SpringStaticPanel.vue
+│   │   │   │   │   │   ├── SpringStatusBar.vue
+│   │   │   │   │   │   ├── SpringStepTracker.vue
+│   │   │   │   │   │   └── SpringTutorCard.vue
+│   │   │   │   │   ├── thermal-expansion/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── ThermalExpansionChartPanel.vue
+│   │   │   │   │   │   │   ├── ThermalExpansionLawsPanel.vue
+│   │   │   │   │   │   │   ├── ThermalExpansionParamsPanel.vue
+│   │   │   │   │   │   │   ├── ThermalExpansionReadingsPanel.vue
+│   │   │   │   │   │   │   ├── ThermalExpansionReferencePanel.vue
+│   │   │   │   │   │   │   ├── ThermalExpansionResultsPanel.vue
+│   │   │   │   │   │   │   ├── ThermalExpansionTrialsPanel.vue
+│   │   │   │   │   │   │   └── ThermalExpansionWorksheetPanel.vue
+│   │   │   │   │   │   ├── ThermalExpansionCanvas.vue
+│   │   │   │   │   │   ├── ThermalExpansionControlBar.vue
+│   │   │   │   │   │   ├── ThermalExpansionGuidePanel.vue
+│   │   │   │   │   │   ├── ThermalExpansionHelpModal.vue
+│   │   │   │   │   │   ├── ThermalExpansionMenuBar.vue
+│   │   │   │   │   │   ├── ThermalExpansionOverlayPanels.vue
+│   │   │   │   │   │   ├── ThermalExpansionPanelBody.vue
+│   │   │   │   │   │   └── ThermalExpansionStatusBar.vue
+│   │   │   │   │   ├── thinlens/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── ThinLensReferencePanel.vue
+│   │   │   │   │   │   │   └── ThinLensWorksheetPanel.vue
+│   │   │   │   │   │   ├── ThinLensCanvas.vue
+│   │   │   │   │   │   ├── ThinLensGuidePanel.vue
+│   │   │   │   │   │   ├── ThinLensHelpModal.vue
+│   │   │   │   │   │   └── ThinLensPanelBody.vue
+│   │   │   │   │   ├── wave-interference/
+│   │   │   │   │   │   ├── panels/
+│   │   │   │   │   │   │   ├── WaveInterferenceChartPanel.vue
+│   │   │   │   │   │   │   ├── WaveInterferenceLawsPanel.vue
+│   │   │   │   │   │   │   ├── WaveInterferenceParamsPanel.vue
+│   │   │   │   │   │   │   ├── WaveInterferenceReadingsPanel.vue
+│   │   │   │   │   │   │   ├── WaveInterferenceReferencePanel.vue
+│   │   │   │   │   │   │   ├── WaveInterferenceResultsPanel.vue
+│   │   │   │   │   │   │   ├── WaveInterferenceTrialsPanel.vue
+│   │   │   │   │   │   │   └── WaveInterferenceWorksheetPanel.vue
+│   │   │   │   │   │   ├── WaveInterferenceCanvas.vue
+│   │   │   │   │   │   ├── WaveInterferenceControlBar.vue
+│   │   │   │   │   │   ├── WaveInterferenceGuidePanel.vue
+│   │   │   │   │   │   ├── WaveInterferenceHelpModal.vue
+│   │   │   │   │   │   ├── WaveInterferenceMenuBar.vue
+│   │   │   │   │   │   ├── WaveInterferenceOverlayPanels.vue
+│   │   │   │   │   │   ├── WaveInterferencePanelBody.vue
+│   │   │   │   │   │   └── WaveInterferenceStatusBar.vue
+│   │   │   │   │   ├── DataTable.vue
+│   │   │   │   │   ├── DeletableSection.vue
+│   │   │   │   │   ├── EquationsPanel.vue
+│   │   │   │   │   ├── ExperimentReport.vue
+│   │   │   │   │   ├── GuidePanel.vue
+│   │   │   │   │   ├── NewAnalysisButton.vue
+│   │   │   │   │   ├── ParamPanel.vue
+│   │   │   │   │   └── SubmitReportModal.vue
+│   │   │   │   ├── experiment-questions/
+│   │   │   │   │   ├── ExpQuestionsStats.vue
+│   │   │   │   │   ├── StudentQuestionsModal.vue
+│   │   │   │   │   └── TemplateEditor.vue
+│   │   │   │   ├── home/
+│   │   │   │   │   └── StudentClasses.vue
+│   │   │   │   ├── hud/
+│   │   │   │   │   ├── ActionDock.vue
+│   │   │   │   │   ├── FloatingCommandBar.vue
+│   │   │   │   │   ├── HudCard.vue
+│   │   │   │   │   ├── HudGrid.vue
+│   │   │   │   │   ├── HudShell.vue
+│   │   │   │   │   └── HudSlideOver.vue
+│   │   │   │   ├── landing/
+│   │   │   │   │   ├── LandingFeatureDetail.vue
+│   │   │   │   │   ├── LandingGuestButtons.vue
+│   │   │   │   │   ├── LandingHeroSection.vue
+│   │   │   │   │   ├── LandingInfoSide.vue
+│   │   │   │   │   ├── LandingLangSwitcher.vue
+│   │   │   │   │   ├── LandingLoginForm.vue
+│   │   │   │   │   └── LandingLoginSide.vue
+│   │   │   │   ├── math/
+│   │   │   │   │   ├── MathBranchCard.vue
+│   │   │   │   │   ├── MathEquationCard.vue
+│   │   │   │   │   ├── MathExplanation.vue
+│   │   │   │   │   ├── MathGraph.vue
+│   │   │   │   │   └── MathSolver.vue
+│   │   │   │   ├── school/
+│   │   │   │   │   ├── school-dashboard.css
+│   │   │   │   │   ├── school-reports-types.ts
+│   │   │   │   │   ├── school-tables.css
+│   │   │   │   │   ├── SchoolBillingStats.vue
+│   │   │   │   │   ├── SchoolCapacitySection.vue
+│   │   │   │   │   ├── SchoolExportPanel.vue
+│   │   │   │   │   ├── SchoolExtraTabs.vue
+│   │   │   │   │   ├── SchoolFeedback.vue
+│   │   │   │   │   ├── SchoolHelpButton.vue
+│   │   │   │   │   ├── SchoolHelpModal.vue
+│   │   │   │   │   ├── SchoolInviteCodesTable.vue
+│   │   │   │   │   ├── SchoolMembersControl.vue
+│   │   │   │   │   ├── SchoolOverview.vue
+│   │   │   │   │   ├── SchoolRecentItems.vue
+│   │   │   │   │   ├── SchoolReports.vue
+│   │   │   │   │   ├── SchoolReportsDaily.vue
+│   │   │   │   │   ├── SchoolReportsStudents.vue
+│   │   │   │   │   ├── SchoolSettings.vue
+│   │   │   │   │   ├── SchoolTables.vue
+│   │   │   │   │   ├── SchoolUserDetailModals.vue
+│   │   │   │   │   ├── SchoolUserDetailTabs.vue
+│   │   │   │   │   └── TeacherPerformance.vue
+│   │   │   │   ├── shared/
+│   │   │   │   │   ├── charts/
+│   │   │   │   │   │   ├── BarChart.vue
+│   │   │   │   │   │   ├── DoughnutChart.vue
+│   │   │   │   │   │   ├── LineChart.vue
+│   │   │   │   │   │   └── StatCard.vue
+│   │   │   │   │   ├── AccountSettingsModal.css
+│   │   │   │   │   ├── AccountSettingsModal.vue
+│   │   │   │   │   ├── ActionMenu.vue
+│   │   │   │   │   ├── AlertBanner.vue
+│   │   │   │   │   ├── AnnouncementsPanel.vue
+│   │   │   │   │   ├── ApiProgressBar.vue
+│   │   │   │   │   ├── ApprovalPanel.vue
+│   │   │   │   │   ├── AppSidebar.vue
+│   │   │   │   │   ├── BiologyReportSection.vue
+│   │   │   │   │   ├── BroadcastAlert.vue
+│   │   │   │   │   ├── ClassChat.vue
+│   │   │   │   │   ├── CommandPalette.vue
+│   │   │   │   │   ├── CompactStats.vue
+│   │   │   │   │   ├── ComplaintForm.vue
+│   │   │   │   │   ├── ComplaintsPage.vue
+│   │   │   │   │   ├── ConfirmModal.vue
+│   │   │   │   │   ├── CookieConsent.vue
+│   │   │   │   │   ├── CreateApprovalButton.vue
+│   │   │   │   │   ├── DetailDrawer.vue
+│   │   │   │   │   ├── EmptyState.vue
+│   │   │   │   │   ├── ErrorBoundary.vue
+│   │   │   │   │   ├── ErrorState.vue
+│   │   │   │   │   ├── FeedbackButton.vue
+│   │   │   │   │   ├── FeedbackModal.vue
+│   │   │   │   │   ├── FilterBar.vue
+│   │   │   │   │   ├── FrozenScreen.vue
+│   │   │   │   │   ├── GlobalAdminPasswordDialog.vue
+│   │   │   │   │   ├── GlobalConfirmDialog.vue
+│   │   │   │   │   ├── HelpModal.vue
+│   │   │   │   │   ├── LiveToastContainer.vue
+│   │   │   │   │   ├── LoadingSkeleton.vue
+│   │   │   │   │   ├── LocaleSwitcher.vue
+│   │   │   │   │   ├── NameRequestBadge.vue
+│   │   │   │   │   ├── NotificationBell.vue
+│   │   │   │   │   ├── NotificationsTab.vue
+│   │   │   │   │   ├── Pagination.vue
+│   │   │   │   │   ├── PanelShell.vue
+│   │   │   │   │   ├── PaymentFlow.vue
+│   │   │   │   │   ├── PlanSelector.vue
+│   │   │   │   │   ├── ProjectRating.vue
+│   │   │   │   │   ├── QuizForceScreen.vue
+│   │   │   │   │   ├── RatingCenter.vue
+│   │   │   │   │   ├── RatingSection.vue
+│   │   │   │   │   ├── ReportCommentThread.vue
+│   │   │   │   │   ├── ReportContent.vue
+│   │   │   │   │   ├── ReportPreviewModal.vue
+│   │   │   │   │   ├── ReportViewer.vue
+│   │   │   │   │   ├── ResetConfirmModal.vue
+│   │   │   │   │   ├── SchoolAccountSettingsModal.vue
+│   │   │   │   │   ├── SchoolApprovalButton.vue
+│   │   │   │   │   ├── SendAlertButton.vue
+│   │   │   │   │   ├── SkeletonLoader.vue
+│   │   │   │   │   ├── SystemBanner.vue
+│   │   │   │   │   ├── ToastContainer.vue
+│   │   │   │   │   ├── TrialBanner.vue
+│   │   │   │   │   ├── VirtualTable.vue
+│   │   │   │   │   └── VoiceRecorderButton.vue
+│   │   │   │   ├── student/
+│   │   │   │   │   ├── AITutorWidget.vue
+│   │   │   │   │   ├── DeadlinesPanel.vue
+│   │   │   │   │   ├── LearningProgressCard.vue
+│   │   │   │   │   ├── QuizActiveScreen.vue
+│   │   │   │   │   ├── QuizModals.vue
+│   │   │   │   │   ├── student-quizzes-tab.css
+│   │   │   │   │   ├── StudentClassesTab.vue
+│   │   │   │   │   ├── StudentEnhancementsTab.vue
+│   │   │   │   │   ├── StudentHelpButton.vue
+│   │   │   │   │   ├── StudentHelpModal.vue
+│   │   │   │   │   ├── StudentOverviewAlerts.vue
+│   │   │   │   │   ├── StudentOverviewAnalytics.vue
+│   │   │   │   │   ├── StudentOverviewKPIs.vue
+│   │   │   │   │   ├── StudentOverviewTab.vue
+│   │   │   │   │   ├── StudentProfileTab.vue
+│   │   │   │   │   ├── StudentQuizzesTab.vue
+│   │   │   │   │   └── StudentReportsTab.vue
+│   │   │   │   ├── teacher/
+│   │   │   │   │   ├── ClassDetail.vue
+│   │   │   │   │   ├── ClassGrid.vue
+│   │   │   │   │   ├── ClassManager.vue
+│   │   │   │   │   ├── ClassReportsTab.vue
+│   │   │   │   │   ├── ClassStatsTab.vue
+│   │   │   │   │   ├── CreateAnnouncementForm.vue
+│   │   │   │   │   ├── CreateClassModal.vue
+│   │   │   │   │   ├── DashboardClassesTab.vue
+│   │   │   │   │   ├── DashboardDailyTab.vue
+│   │   │   │   │   ├── DashboardOverviewTab.vue
+│   │   │   │   │   ├── DashboardStudentsTab.vue
+│   │   │   │   │   ├── GradeModal.vue
+│   │   │   │   │   ├── PlagiarismChecker.vue
+│   │   │   │   │   ├── quiz-builder.css
+│   │   │   │   │   ├── quiz-manager.css
+│   │   │   │   │   ├── QuizBuilder.vue
+│   │   │   │   │   ├── QuizManager.vue
+│   │   │   │   │   ├── ReportAIAnalyzer.vue
+│   │   │   │   │   ├── ReportCalculationsSection.vue
+│   │   │   │   │   ├── ReportConclusionSection.vue
+│   │   │   │   │   ├── ReportQuestionsSection.vue
+│   │   │   │   │   ├── ReportReadingsSection.vue
+│   │   │   │   │   ├── ReportSidebar.vue
+│   │   │   │   │   ├── StudentDetailModal.vue
+│   │   │   │   │   ├── teacher-grading.css
+│   │   │   │   │   ├── teacher-quiz-builder.css
+│   │   │   │   │   ├── TeacherAnnouncementsTab.vue
+│   │   │   │   │   ├── TeacherDeadlinesPanel.vue
+│   │   │   │   │   ├── TeacherEnhancementsTab.vue
+│   │   │   │   │   ├── TeacherGrading.vue
+│   │   │   │   │   ├── TeacherHelpButton.vue
+│   │   │   │   │   ├── TeacherHelpModal.vue
+│   │   │   │   │   ├── TeacherOverviewAlerts.vue
+│   │   │   │   │   ├── TeacherOverviewAnalytics.vue
+│   │   │   │   │   ├── TeacherOverviewKPIs.vue
+│   │   │   │   │   ├── TeacherQuizBuilder.vue
+│   │   │   │   │   ├── TeacherReportViewer.vue
+│   │   │   │   │   ├── TeacherSettingsTab.vue
+│   │   │   │   │   ├── TeacherStats.vue
+│   │   │   │   │   ├── TeacherStatsCharts.vue
+│   │   │   │   │   ├── TeacherStatsComparison.vue
+│   │   │   │   │   ├── TeacherStatsExport.vue
+│   │   │   │   │   ├── TeacherStatsExpTable.vue
+│   │   │   │   │   ├── TeacherStatsStudentTable.vue
+│   │   │   │   │   ├── TeacherStatsSummary.vue
+│   │   │   │   │   └── useGradingHelpers.ts
+│   │   │   │   └── ui/
+│   │   │   │       └── BranchCard.vue
+│   │   │   ├── composables/
+│   │   │   │   ├── admin/
+│   │   │   │   │   ├── useAdminChat.ts
+│   │   │   │   │   ├── useAdminCommOverview.ts
+│   │   │   │   │   ├── useAdminExport.ts
+│   │   │   │   │   ├── useAdminManageOverview.ts
+│   │   │   │   │   ├── useAdminNotificationCenter.ts
+│   │   │   │   │   ├── useAdminReportsAnalytics.ts
+│   │   │   │   │   └── useAdminUserDetail.ts
+│   │   │   │   ├── analysis/
+│   │   │   │   │   ├── analysisHelpers.ts
+│   │   │   │   │   ├── sendToAnalysis.ts
+│   │   │   │   │   ├── useCrossTabSync.ts
+│   │   │   │   │   ├── useSmartValidator.ts
+│   │   │   │   │   └── useTheoreticalValues.ts
+│   │   │   │   ├── auth/
+│   │   │   │   │   ├── useAuthActions.ts
+│   │   │   │   │   └── useClassActions.ts
+│   │   │   │   ├── biology/
+│   │   │   │   │   ├── biology-geometry.ts
+│   │   │   │   │   ├── glb-camera-tween.ts
+│   │   │   │   │   ├── glb-material-state.ts
+│   │   │   │   │   ├── glb-model-loader.ts
+│   │   │   │   │   ├── heart-dispose.ts
+│   │   │   │   │   ├── heart-flow.ts
+│   │   │   │   │   ├── heart-interactions.ts
+│   │   │   │   │   ├── heart-material.ts
+│   │   │   │   │   ├── heart-model-loader.ts
+│   │   │   │   │   ├── heart-scene-setup.ts
+│   │   │   │   │   ├── useBiologyExplode.test.ts
+│   │   │   │   │   ├── useBiologyExplode.ts
+│   │   │   │   │   ├── useBiologyHotspots.test.ts
+│   │   │   │   │   ├── useBiologyHotspots.ts
+│   │   │   │   │   ├── useBiologyScreenshot.ts
+│   │   │   │   │   ├── useBiologyTracking.ts
+│   │   │   │   │   ├── useCrispr3D.ts
+│   │   │   │   │   ├── useDNAReplication3D.ts
+│   │   │   │   │   ├── useEcosystem3D.ts
+│   │   │   │   │   ├── useFullscreen.ts
+│   │   │   │   │   ├── useGLBModel.ts
+│   │   │   │   │   ├── useHeartGLB.ts
+│   │   │   │   │   ├── useMeiosis3D.ts
+│   │   │   │   │   ├── useMitosis3D.ts
+│   │   │   │   │   ├── usePcr3D.ts
+│   │   │   │   │   ├── usePhotosynthesis3D.ts
+│   │   │   │   │   ├── useProteinSynthesis3D.ts
+│   │   │   │   │   └── useTranspiration3D.ts
+│   │   │   │   ├── biot-savart/
+│   │   │   │   │   ├── useBiotSavartCalculations.ts
+│   │   │   │   │   ├── useBiotSavartExperiment.ts
+│   │   │   │   │   ├── useBiotSavartLayout.ts
+│   │   │   │   │   └── useBiotSavartTrials.ts
+│   │   │   │   ├── boyles-law/
+│   │   │   │   │   ├── useBoylesLawCalculations.ts
+│   │   │   │   │   ├── useBoylesLawExperiment.ts
+│   │   │   │   │   ├── useBoylesLawLayout.ts
+│   │   │   │   │   └── useBoylesLawTrials.ts
+│   │   │   │   ├── calorimetry/
+│   │   │   │   │   ├── useCalorimetryCalculations.ts
+│   │   │   │   │   ├── useCalorimetryExperiment.ts
+│   │   │   │   │   ├── useCalorimetryLayout.ts
+│   │   │   │   │   └── useCalorimetryTrials.ts
+│   │   │   │   ├── chemistry/
+│   │   │   │   │   ├── experiments/
+│   │   │   │   │   │   ├── __tests__/
+│   │   │   │   │   │   │   └── registry.test.ts
+│   │   │   │   │   │   ├── definitions/
+│   │   │   │   │   │   │   ├── middle-acid-base-identification.ts
+│   │   │   │   │   │   │   ├── middle-carbonate-gas.ts
+│   │   │   │   │   │   │   ├── middle-metal-acid-gas.ts
+│   │   │   │   │   │   │   ├── neutralization-ch3cooh-naoh.ts
+│   │   │   │   │   │   │   ├── neutralization-hcl-naoh.ts
+│   │   │   │   │   │   │   ├── precipitation-cuso4-naoh.ts
+│   │   │   │   │   │   │   ├── uni-precip-pbi2.ts
+│   │   │   │   │   │   │   └── uni-redox-kmno4-h2o2.ts
+│   │   │   │   │   │   ├── reports/
+│   │   │   │   │   │   │   ├── generator.ts
+│   │   │   │   │   │   │   └── index.ts
+│   │   │   │   │   │   ├── validators/
+│   │   │   │   │   │   │   ├── engine.ts
+│   │   │   │   │   │   │   ├── index.ts
+│   │   │   │   │   │   │   └── rules.ts
+│   │   │   │   │   │   ├── index.ts
+│   │   │   │   │   │   ├── registry.ts
+│   │   │   │   │   │   └── types.ts
+│   │   │   │   │   ├── ar-chemistry.ts
+│   │   │   │   │   ├── buretteWarningUtils.ts
+│   │   │   │   │   ├── chemDatabase.ts
+│   │   │   │   │   ├── chemDataCore.ts
+│   │   │   │   │   ├── chemDataExtended.ts
+│   │   │   │   │   ├── chemLabIds.ts
+│   │   │   │   │   ├── chemLabTypes.ts
+│   │   │   │   │   ├── engine.test.ts
+│   │   │   │   │   ├── fluidSimRenderer.ts
+│   │   │   │   │   ├── fluidSimTypes.ts
+│   │   │   │   │   ├── fuzz-chemistry.test.ts
+│   │   │   │   │   ├── liquidSimRenderer.ts
+│   │   │   │   │   ├── liquidSimTypes.ts
+│   │   │   │   │   ├── metaballRenderer.ts
+│   │   │   │   │   ├── metaballTypes.ts
+│   │   │   │   │   ├── property-chemistry.test.ts
+│   │   │   │   │   ├── sendToAnalysis.ts
+│   │   │   │   │   ├── solidFluidRenderer.ts
+│   │   │   │   │   ├── solidFluidTypes.ts
+│   │   │   │   │   ├── useBalance.ts
+│   │   │   │   │   ├── useBeakerScale.ts
+│   │   │   │   │   ├── useBuretteMixRecorder.ts
+│   │   │   │   │   ├── useChemCalculations.ts
+│   │   │   │   │   ├── useChemicalLocale.ts
+│   │   │   │   │   ├── useChemistryActions.ts
+│   │   │   │   │   ├── useChemistryGetters.ts
+│   │   │   │   │   ├── useChemistryHistory.ts
+│   │   │   │   │   ├── useChemistryLab.ts
+│   │   │   │   │   ├── useChemistryResizing.ts
+│   │   │   │   │   ├── useChemistrySession.ts
+│   │   │   │   │   ├── useChemistryTools.ts
+│   │   │   │   │   ├── useDropPhysics.ts
+│   │   │   │   │   ├── useExecActions.ts
+│   │   │   │   │   ├── useFluidSimulation.ts
+│   │   │   │   │   ├── useLabAssistant.ts
+│   │   │   │   │   ├── useLabSimulation.ts
+│   │   │   │   │   ├── useLiquidSimulation.ts
+│   │   │   │   │   ├── useMetaballFluid.ts
+│   │   │   │   │   ├── usePhMeter.ts
+│   │   │   │   │   ├── usePipetteActions.ts
+│   │   │   │   │   ├── useReactionEngine.ts
+│   │   │   │   │   ├── useRetortStandAnalog.ts
+│   │   │   │   │   ├── useRetortStandAssembly.ts
+│   │   │   │   │   ├── useRetortStandDrag.ts
+│   │   │   │   │   ├── useSimpleFluid.ts
+│   │   │   │   │   ├── useSolidFluid.ts
+│   │   │   │   │   ├── useSpillDrops.ts
+│   │   │   │   │   ├── useStepControl.ts
+│   │   │   │   │   ├── useThermometer.ts
+│   │   │   │   │   ├── useTitrationRecorder.ts
+│   │   │   │   │   ├── useToolStateBuilder.ts
+│   │   │   │   │   ├── useWorkspaceDrag.ts
+│   │   │   │   │   └── workspaceDragSnap.ts
+│   │   │   │   ├── collision/
+│   │   │   │   │   ├── collisionUtils.test.ts
+│   │   │   │   │   ├── collisionUtils.ts
+│   │   │   │   │   ├── useCollisionExperiment.ts
+│   │   │   │   │   ├── useCollisionLab.ts
+│   │   │   │   │   ├── useCollisionLayout.ts
+│   │   │   │   │   ├── useCollisionReport.ts
+│   │   │   │   │   └── useCollisionTrials.ts
+│   │   │   │   ├── diffraction/
+│   │   │   │   │   ├── useDiffractionCalculations.ts
+│   │   │   │   │   ├── useDiffractionExperiment.ts
+│   │   │   │   │   ├── useDiffractionLayout.ts
+│   │   │   │   │   └── useDiffractionTrials.ts
+│   │   │   │   ├── electromagnetism/
+│   │   │   │   │   ├── useCircularCoilExperiment.ts
+│   │   │   │   │   ├── useFaradayLawExperiment.ts
+│   │   │   │   │   ├── useGeneratorExperiment.ts
+│   │   │   │   │   ├── useLorentzForceExperiment.ts
+│   │   │   │   │   ├── useMagneticFluxExperiment.ts
+│   │   │   │   │   ├── useSolenoidExperiment.ts
+│   │   │   │   │   ├── useStraightWireExperiment.ts
+│   │   │   │   │   └── useTorqueCoilExperiment.ts
+│   │   │   │   ├── experiment/
+│   │   │   │   │   ├── analysis/
+│   │   │   │   │   │   ├── chart-drawer.ts
+│   │   │   │   │   │   ├── chart-regression.ts
+│   │   │   │   │   │   ├── useChartWorkspace.ts
+│   │   │   │   │   │   └── useEquationSolver.ts
+│   │   │   │   │   ├── collision/
+│   │   │   │   │   │   ├── collision-drawers.ts
+│   │   │   │   │   │   ├── collision-hud.ts
+│   │   │   │   │   │   └── useCollisionCanvas.ts
+│   │   │   │   │   ├── shared/
+│   │   │   │   │   │   ├── useCanvasDPR.ts
+│   │   │   │   │   │   ├── useExperimentLayout.ts
+│   │   │   │   │   │   └── useExperimentTrials.ts
+│   │   │   │   │   ├── useAnomalyWatcher.ts
+│   │   │   │   │   └── useStartupDiagnostics.ts
+│   │   │   │   ├── faraday/
+│   │   │   │   │   ├── useFaradayCalculations.ts
+│   │   │   │   │   ├── useFaradayExperiment.ts
+│   │   │   │   │   ├── useFaradayLayout.ts
+│   │   │   │   │   └── useFaradayTrials.ts
+│   │   │   │   ├── freefall/
+│   │   │   │   │   ├── freeFallUtils.test.ts
+│   │   │   │   │   ├── freeFallUtils.ts
+│   │   │   │   │   ├── useFreeFallExperiment.ts
+│   │   │   │   │   ├── useFreeFallLab.ts
+│   │   │   │   │   ├── useFreeFallLayout.ts
+│   │   │   │   │   ├── useFreeFallReport.ts
+│   │   │   │   │   └── useFreeFallTrials.ts
+│   │   │   │   ├── grating/
+│   │   │   │   │   ├── useGratingCalculations.ts
+│   │   │   │   │   ├── useGratingExperiment.ts
+│   │   │   │   │   ├── useGratingLayout.ts
+│   │   │   │   │   └── useGratingTrials.ts
+│   │   │   │   ├── hud/
+│   │   │   │   │   ├── useActionDock.ts
+│   │   │   │   │   └── useFloatingCommandBar.ts
+│   │   │   │   ├── ideal-gas/
+│   │   │   │   │   ├── useIdealGasCalculations.ts
+│   │   │   │   │   ├── useIdealGasExperiment.ts
+│   │   │   │   │   ├── useIdealGasLayout.ts
+│   │   │   │   │   └── useIdealGasTrials.ts
+│   │   │   │   ├── inclined/
+│   │   │   │   │   ├── inclinedUtils.ts
+│   │   │   │   │   ├── useInclinedExperiment.ts
+│   │   │   │   │   ├── useInclinedLab.ts
+│   │   │   │   │   ├── useInclinedLayout.ts
+│   │   │   │   │   └── useInclinedTrials.ts
+│   │   │   │   ├── interference/
+│   │   │   │   │   ├── useInterferenceCalculations.ts
+│   │   │   │   │   ├── useInterferenceExperiment.ts
+│   │   │   │   │   ├── useInterferenceLayout.ts
+│   │   │   │   │   └── useInterferenceTrials.ts
+│   │   │   │   ├── latent-heat/
+│   │   │   │   │   ├── useLatentHeatCalculations.ts
+│   │   │   │   │   ├── useLatentHeatExperiment.ts
+│   │   │   │   │   ├── useLatentHeatLayout.ts
+│   │   │   │   │   └── useLatentHeatTrials.ts
+│   │   │   │   ├── lightray/
+│   │   │   │   │   ├── useLightRayExperiment.ts
+│   │   │   │   │   ├── useLightRayLayout.ts
+│   │   │   │   │   └── useLightRayTrials.ts
+│   │   │   │   ├── math/
+│   │   │   │   │   ├── useMathGraph.ts
+│   │   │   │   │   ├── useMathPractice.ts
+│   │   │   │   │   └── useMathSolver.ts
+│   │   │   │   ├── mirror/
+│   │   │   │   │   ├── drawMirrorRays.ts
+│   │   │   │   │   ├── mirrorArcHit.ts
+│   │   │   │   │   ├── useMirrorExperiment.ts
+│   │   │   │   │   ├── useMirrorLayout.ts
+│   │   │   │   │   ├── useMirrorRenderer.ts
+│   │   │   │   │   └── useMirrorTrials.ts
+│   │   │   │   ├── netforce/
+│   │   │   │   │   ├── netforceUtils.ts
+│   │   │   │   │   ├── useNetForceExperiment.ts
+│   │   │   │   │   ├── useNetForceLab.ts
+│   │   │   │   │   ├── useNetForceLayout.ts
+│   │   │   │   │   └── useNetForceTrials.ts
+│   │   │   │   ├── pendulum/
+│   │   │   │   │   ├── pendulumUtils.test.ts
+│   │   │   │   │   ├── pendulumUtils.ts
+│   │   │   │   │   ├── usePendulumDrag.ts
+│   │   │   │   │   ├── usePendulumExperiment.ts
+│   │   │   │   │   ├── usePendulumLab.ts
+│   │   │   │   │   ├── usePendulumLayout.ts
+│   │   │   │   │   ├── usePendulumReport.ts
+│   │   │   │   │   └── usePendulumTrials.ts
+│   │   │   │   ├── polarization/
+│   │   │   │   │   ├── usePolarizationCalculations.ts
+│   │   │   │   │   ├── usePolarizationExperiment.ts
+│   │   │   │   │   ├── usePolarizationLayout.ts
+│   │   │   │   │   └── usePolarizationTrials.ts
+│   │   │   │   ├── prism/
+│   │   │   │   │   ├── prism-drawing.ts
+│   │   │   │   │   ├── prism-geometry.ts
+│   │   │   │   │   ├── prism-raytracer.ts
+│   │   │   │   │   ├── useMaterialName.ts
+│   │   │   │   │   ├── usePrismCalculations.test.ts
+│   │   │   │   │   ├── usePrismCalculations.ts
+│   │   │   │   │   ├── usePrismExperiment.ts
+│   │   │   │   │   ├── usePrismInteraction.ts
+│   │   │   │   │   ├── usePrismLayout.ts
+│   │   │   │   │   ├── usePrismMinDeviation.ts
+│   │   │   │   │   ├── usePrismRenderer.ts
+│   │   │   │   │   ├── usePrismTrials.test.ts
+│   │   │   │   │   └── usePrismTrials.ts
+│   │   │   │   ├── projectile/
+│   │   │   │   │   ├── useProjectileDigitalScreen.ts
+│   │   │   │   │   ├── useProjectileDraw.ts
+│   │   │   │   │   ├── useProjectileExperiment.ts
+│   │   │   │   │   ├── useProjectileGrid.ts
+│   │   │   │   │   ├── useProjectileHints.ts
+│   │   │   │   │   ├── useProjectileLab.ts
+│   │   │   │   │   ├── useProjectileLayout.ts
+│   │   │   │   │   ├── useProjectileReport.ts
+│   │   │   │   │   ├── useProjectileTargetDraw.ts
+│   │   │   │   │   └── useProjectileTrials.ts
+│   │   │   │   ├── resonance/
+│   │   │   │   │   ├── useResonanceCalculations.ts
+│   │   │   │   │   ├── useResonanceExperiment.ts
+│   │   │   │   │   ├── useResonanceLayout.ts
+│   │   │   │   │   └── useResonanceTrials.ts
+│   │   │   │   ├── school/
+│   │   │   │   │   ├── useSchoolClasses.ts
+│   │   │   │   │   ├── useSchoolClassStudents.ts
+│   │   │   │   │   ├── useSchoolHelp.ts
+│   │   │   │   │   ├── useSchoolOverview.ts
+│   │   │   │   │   ├── useSchoolStudents.ts
+│   │   │   │   │   └── useSchoolTeachers.ts
+│   │   │   │   ├── shared/
+│   │   │   │   │   ├── useChat.ts
+│   │   │   │   │   ├── useDashboard.ts
+│   │   │   │   │   ├── useEventBus.ts
+│   │   │   │   │   ├── useExport.ts
+│   │   │   │   │   ├── useFullscreen.ts
+│   │   │   │   │   ├── useLabels.ts
+│   │   │   │   │   ├── useNotifications.ts
+│   │   │   │   │   ├── usePermissions.ts
+│   │   │   │   │   ├── usePreferences.ts
+│   │   │   │   │   ├── useRealtime.ts
+│   │   │   │   │   ├── useSelectedClass.ts
+│   │   │   │   │   ├── useSelectedSchool.ts
+│   │   │   │   │   ├── useSelectedUser.ts
+│   │   │   │   │   ├── useTabs.ts
+│   │   │   │   │   └── useTheme.ts
+│   │   │   │   ├── specific-heat/
+│   │   │   │   │   ├── useSpecificHeatCalculations.ts
+│   │   │   │   │   ├── useSpecificHeatExperiment.ts
+│   │   │   │   │   ├── useSpecificHeatLayout.ts
+│   │   │   │   │   └── useSpecificHeatTrials.ts
+│   │   │   │   ├── speed-of-sound/
+│   │   │   │   │   ├── useSpeedOfSoundCalculations.ts
+│   │   │   │   │   ├── useSpeedOfSoundExperiment.ts
+│   │   │   │   │   ├── useSpeedOfSoundLayout.ts
+│   │   │   │   │   └── useSpeedOfSoundTrials.ts
+│   │   │   │   ├── spring/
+│   │   │   │   │   ├── drawSpringDigital.ts
+│   │   │   │   │   ├── physicsUtils.test.ts
+│   │   │   │   │   ├── physicsUtils.ts
+│   │   │   │   │   ├── useSpringDraw.ts
+│   │   │   │   │   ├── useSpringExperiment.ts
+│   │   │   │   │   ├── useSpringExperimentActions.ts
+│   │   │   │   │   ├── useSpringExperimentState.ts
+│   │   │   │   │   ├── useSpringLab.ts
+│   │   │   │   │   ├── useSpringLayout.ts
+│   │   │   │   │   ├── useSpringReport.ts
+│   │   │   │   │   ├── useSpringScene.ts
+│   │   │   │   │   ├── useSpringStatic.ts
+│   │   │   │   │   └── useSpringTrials.ts
+│   │   │   │   ├── student/
+│   │   │   │   │   ├── studentHelpData.ts
+│   │   │   │   │   ├── useStudentDashboard.ts
+│   │   │   │   │   ├── useStudentDashboardPage.ts
+│   │   │   │   │   └── useStudentHelp.ts
+│   │   │   │   ├── teacher/
+│   │   │   │   │   ├── useClassManager.ts
+│   │   │   │   │   ├── useReportParser.ts
+│   │   │   │   │   ├── useTeacherClasses.ts
+│   │   │   │   │   ├── useTeacherDashboard.ts
+│   │   │   │   │   ├── useTeacherHelp.ts
+│   │   │   │   │   ├── useTeacherHome.ts
+│   │   │   │   │   └── useTeacherStatsCharts.ts
+│   │   │   │   ├── thermal-expansion/
+│   │   │   │   │   ├── thermalExpansionCanvas.utils.ts
+│   │   │   │   │   ├── useThermalExpansionCalculations.ts
+│   │   │   │   │   ├── useThermalExpansionExperiment.ts
+│   │   │   │   │   ├── useThermalExpansionLayout.ts
+│   │   │   │   │   └── useThermalExpansionTrials.ts
+│   │   │   │   ├── thinlens/
+│   │   │   │   │   ├── useThinLensExperiment.ts
+│   │   │   │   │   ├── useThinLensLayout.ts
+│   │   │   │   │   ├── useThinLensRenderer.ts
+│   │   │   │   │   └── useThinLensTrials.ts
+│   │   │   │   ├── wave-interference/
+│   │   │   │   │   ├── useWaveInterferenceCalculations.ts
+│   │   │   │   │   ├── useWaveInterferenceExperiment.ts
+│   │   │   │   │   ├── useWaveInterferenceLayout.ts
+│   │   │   │   │   └── useWaveInterferenceTrials.ts
+│   │   │   │   ├── admin-user-actions.ts
+│   │   │   │   ├── fuzz-physics-engines.test.ts
+│   │   │   │   ├── physics-utils-bounds.test.ts
+│   │   │   │   ├── property-physics.test.ts
+│   │   │   │   ├── useAdmin.ts
+│   │   │   │   ├── useAdminPasswordConfirm.ts
+│   │   │   │   ├── useAITutor.ts
+│   │   │   │   ├── useAutoGrade.ts
+│   │   │   │   ├── useCalendarExport.ts
+│   │   │   │   ├── useCommandPalette.ts
+│   │   │   │   ├── useConfirmDialog.ts
+│   │   │   │   ├── useDevice.ts
+│   │   │   │   ├── useExperimentId.ts
+│   │   │   │   ├── useExperimentMonitor.ts
+│   │   │   │   ├── useExperimentReport.test.ts
+│   │   │   │   ├── useExperimentReport.ts
+│   │   │   │   ├── useGoToBranch.ts
+│   │   │   │   ├── useI18n.test.ts
+│   │   │   │   ├── useI18n.ts
+│   │   │   │   ├── useKeyboardShortcuts.ts
+│   │   │   │   ├── useLearningProgress.ts
+│   │   │   │   ├── useNotifications.ts
+│   │   │   │   ├── useOnlineStatus.ts
+│   │   │   │   ├── useQuery.ts
+│   │   │   │   ├── useReportGrading.ts
+│   │   │   │   ├── useReportSubmission.ts
+│   │   │   │   ├── useReportTemplates.ts
+│   │   │   │   ├── useResetConfirm.ts
+│   │   │   │   ├── useSchoolExport.ts
+│   │   │   │   ├── useSubscriptionSettings.ts
+│   │   │   │   ├── useToast.ts
+│   │   │   │   ├── useUrlTab.ts
+│   │   │   │   ├── useVirtualScroll.ts
+│   │   │   │   └── useVoiceRecorder.ts
+│   │   │   ├── config/
+│   │   │   │   ├── dashboard/
+│   │   │   │   │   ├── .gitkeep
+│   │   │   │   │   ├── admin.config.ts
+│   │   │   │   │   ├── school.config.ts
+│   │   │   │   │   ├── student.config.ts
+│   │   │   │   │   └── teacher.config.ts
+│   │   │   │   └── .gitkeep
+│   │   │   ├── core/
+│   │   │   │   ├── base/
+│   │   │   │   │   └── .gitkeep
+│   │   │   │   ├── factories/
+│   │   │   │   │   └── .gitkeep
+│   │   │   │   ├── types/
+│   │   │   │   │   ├── .gitkeep
+│   │   │   │   │   └── dashboard.types.ts
+│   │   │   │   └── .gitkeep
+│   │   │   ├── layouts/
+│   │   │   │   ├── .gitkeep
+│   │   │   │   └── DashboardLayout.vue
+│   │   │   ├── locales/
+│   │   │   │   ├── admin-ar/
+│   │   │   │   │   ├── A.ts
+│   │   │   │   │   ├── B.ts
+│   │   │   │   │   ├── C.ts
+│   │   │   │   │   └── D.ts
+│   │   │   │   ├── admin-en/
+│   │   │   │   │   ├── A.ts
+│   │   │   │   │   ├── B.ts
+│   │   │   │   │   ├── C.ts
+│   │   │   │   │   └── D.ts
+│   │   │   │   ├── admin-es/
+│   │   │   │   │   ├── A.ts
+│   │   │   │   │   ├── B.ts
+│   │   │   │   │   ├── C.ts
+│   │   │   │   │   └── D.ts
+│   │   │   │   ├── admin-user/
+│   │   │   │   │   ├── ar.ts
+│   │   │   │   │   ├── en.ts
+│   │   │   │   │   └── es.ts
+│   │   │   │   ├── analysis/
+│   │   │   │   │   ├── ar.ts
+│   │   │   │   │   ├── en.ts
+│   │   │   │   │   ├── es.ts
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── experiments/
+│   │   │   │   │   ├── ar-1.ts
+│   │   │   │   │   ├── ar-2.ts
+│   │   │   │   │   ├── ar-3.ts
+│   │   │   │   │   ├── ar-4a.ts
+│   │   │   │   │   ├── ar-4b.ts
+│   │   │   │   │   ├── en-1.ts
+│   │   │   │   │   ├── en-2.ts
+│   │   │   │   │   ├── en-3.ts
+│   │   │   │   │   ├── en-4a.ts
+│   │   │   │   │   ├── en-4b.ts
+│   │   │   │   │   ├── es-1.ts
+│   │   │   │   │   ├── es-2.ts
+│   │   │   │   │   ├── es-3.ts
+│   │   │   │   │   ├── es-4a.ts
+│   │   │   │   │   ├── es-4b.ts
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── account.ts
+│   │   │   │   ├── admin-ar.ts
+│   │   │   │   ├── admin-en.ts
+│   │   │   │   ├── admin-es.ts
+│   │   │   │   ├── admin-extras.ts
+│   │   │   │   ├── admin-reports.ts
+│   │   │   │   ├── admin-user.ts
+│   │   │   │   ├── ai.ts
+│   │   │   │   ├── approval.ts
+│   │   │   │   ├── ar-admin.ts
+│   │   │   │   ├── ar-core.ts
+│   │   │   │   ├── ar-misc.ts
+│   │   │   │   ├── ar-science.ts
+│   │   │   │   ├── auth.ts
+│   │   │   │   ├── biology-ar_a.ts
+│   │   │   │   ├── biology-ar_b.ts
+│   │   │   │   ├── biology-ar_c.ts
+│   │   │   │   ├── biology-ar_d.ts
+│   │   │   │   ├── biology-en_a.ts
+│   │   │   │   ├── biology-en_b.ts
+│   │   │   │   ├── biology-en_c.ts
+│   │   │   │   ├── biology-en_d.ts
+│   │   │   │   ├── biology-es_a.ts
+│   │   │   │   ├── biology-es_b.ts
+│   │   │   │   ├── biology-es_c.ts
+│   │   │   │   ├── biology-es_d.ts
+│   │   │   │   ├── chemistry-analysis.ts
+│   │   │   │   ├── chemistry-ar.ts
+│   │   │   │   ├── chemistry-assistant.ts
+│   │   │   │   ├── chemistry-chemicals.ts
+│   │   │   │   ├── chemistry-en.ts
+│   │   │   │   ├── chemistry-es.ts
+│   │   │   │   ├── chemistry-experiments-ar.ts
+│   │   │   │   ├── chemistry-experiments-en.ts
+│   │   │   │   ├── chemistry-experiments-es.ts
+│   │   │   │   ├── chemistry-lab.ts
+│   │   │   │   ├── chemistry-report.ts
+│   │   │   │   ├── chemistry-shelf.ts
+│   │   │   │   ├── chemistry-tools.ts
+│   │   │   │   ├── common.ts
+│   │   │   │   ├── dashboard-ar.ts
+│   │   │   │   ├── dashboard-en.ts
+│   │   │   │   ├── dashboard-es.ts
+│   │   │   │   ├── electricWorkshop_ar_a.ts
+│   │   │   │   ├── electricWorkshop_ar_b.ts
+│   │   │   │   ├── electricWorkshop_en_a.ts
+│   │   │   │   ├── electricWorkshop_en_b.ts
+│   │   │   │   ├── electricWorkshop_es_a.ts
+│   │   │   │   ├── electricWorkshop_es_b.ts
+│   │   │   │   ├── electricWorkshop.ts
+│   │   │   │   ├── en-admin.ts
+│   │   │   │   ├── en-core.ts
+│   │   │   │   ├── en-misc.ts
+│   │   │   │   ├── en-science.ts
+│   │   │   │   ├── es-admin.ts
+│   │   │   │   ├── es-core.ts
+│   │   │   │   ├── es-misc.ts
+│   │   │   │   ├── es-science.ts
+│   │   │   │   ├── hardcoded.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── landing-ar.ts
+│   │   │   │   ├── landing-en.ts
+│   │   │   │   ├── landing-es.ts
+│   │   │   │   ├── legal.ts
+│   │   │   │   ├── lens.ts
+│   │   │   │   ├── math.ts
+│   │   │   │   ├── report.ts
+│   │   │   │   ├── school-dashboard-ar.ts
+│   │   │   │   ├── school-dashboard-en.ts
+│   │   │   │   ├── school-dashboard-es.ts
+│   │   │   │   ├── school-reports-locale.ts
+│   │   │   │   ├── school.ts
+│   │   │   │   ├── settings.ts
+│   │   │   │   ├── shared-locale-ar.ts
+│   │   │   │   ├── shared-locale-en.ts
+│   │   │   │   ├── shared-locale-es.ts
+│   │   │   │   ├── subscriptions.ts
+│   │   │   │   ├── system.ts
+│   │   │   │   ├── teacher-ar.ts
+│   │   │   │   ├── teacher-en.ts
+│   │   │   │   ├── teacher-es.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── modules/
+│   │   │   │   ├── auth/
+│   │   │   │   │   ├── components/
+│   │   │   │   │   │   └── LoginForm.vue
+│   │   │   │   │   ├── composables/
+│   │   │   │   │   │   └── useAuth.ts
+│   │   │   │   │   ├── stores/
+│   │   │   │   │   │   └── auth.ts
+│   │   │   │   │   └── types.ts
+│   │   │   │   ├── biology/
+│   │   │   │   │   └── components/
+│   │   │   │   │       ├── BiologyBranchIndex.vue
+│   │   │   │   │       ├── BiologyGoals.vue
+│   │   │   │   │       ├── BiologyReportButton.vue
+│   │   │   │   │       ├── CrisprExperiment.vue
+│   │   │   │   │       ├── EcologyFoodChainExperiment.vue
+│   │   │   │   │       ├── EcosystemBalanceExperiment.vue
+│   │   │   │   │       ├── GelElectrophoresisExperiment.vue
+│   │   │   │   │       ├── GeneticsStageExperiment.vue
+│   │   │   │   │       ├── glb-experiment.css
+│   │   │   │   │       ├── GLBExperiment.vue
+│   │   │   │   │       ├── heart-experiment.css
+│   │   │   │   │       ├── HeartExperiment.vue
+│   │   │   │   │       ├── HeartToolbar.vue
+│   │   │   │   │       ├── InfoPanel.vue
+│   │   │   │   │       ├── PcrExperiment.vue
+│   │   │   │   │       ├── PhotosynthesisExperiment.vue
+│   │   │   │   │       ├── ProteinSynthesisExperiment.vue
+│   │   │   │   │       ├── PunnettSquareExperiment.vue
+│   │   │   │   │       ├── StageStepper.vue
+│   │   │   │   │       ├── TranspirationExperiment.vue
+│   │   │   │   │       └── WaterCycleExperiment.vue
+│   │   │   │   ├── chemistry/
+│   │   │   │   │   ├── analysis-calc/
+│   │   │   │   │   │   ├── ChemAnalysisConclusionPanel.vue
+│   │   │   │   │   │   ├── ChemAnalysisDataTable.vue
+│   │   │   │   │   │   ├── ChemAnalysisMenuBar.vue
+│   │   │   │   │   │   ├── ChemAnalysisPage.vue
+│   │   │   │   │   │   ├── ChemAnalysisReportExport.vue
+│   │   │   │   │   │   ├── ChemAnalysisStatsPanel.vue
+│   │   │   │   │   │   ├── ChemAnalysisTab.vue
+│   │   │   │   │   │   ├── ChemAnalysisTabs.vue
+│   │   │   │   │   │   ├── ChemChartCanvas.vue
+│   │   │   │   │   │   ├── ChemDataTab.vue
+│   │   │   │   │   │   ├── ChemReportTab.vue
+│   │   │   │   │   │   └── ChemStudentInfoPanel.vue
+│   │   │   │   │   ├── chemistry-landing.css
+│   │   │   │   │   └── ChemistryLanding.vue
+│   │   │   │   ├── dashboard/
+│   │   │   │   │   ├── components/
+│   │   │   │   │   │   └── DashboardCard.vue
+│   │   │   │   │   ├── composables/
+│   │   │   │   │   │   └── useDashboard.ts
+│   │   │   │   │   └── types.ts
+│   │   │   │   ├── physics/
+│   │   │   │   │   ├── experiment-template/
+│   │   │   │   │   │   ├── composables/
+│   │   │   │   │   │   │   └── useExperimentRunner.ts
+│   │   │   │   │   │   ├── ExperimentError.vue
+│   │   │   │   │   │   ├── ExperimentShell.vue
+│   │   │   │   │   │   └── types.ts
+│   │   │   │   │   ├── experiments/
+│   │   │   │   │   │   ├── analysis-calc/
+│   │   │   │   │   │   │   └── AnalysisCalcExperiment.vue
+│   │   │   │   │   │   ├── biot-savart/
+│   │   │   │   │   │   │   └── BiotSavartExperiment.vue
+│   │   │   │   │   │   ├── boyles-law/
+│   │   │   │   │   │   │   └── BoylesLawExperiment.vue
+│   │   │   │   │   │   ├── calorimetry/
+│   │   │   │   │   │   │   └── CalorimetryExperiment.vue
+│   │   │   │   │   │   ├── circular-coil/
+│   │   │   │   │   │   │   └── CircularCoilExperiment.vue
+│   │   │   │   │   │   ├── collision/
+│   │   │   │   │   │   │   ├── CollisionExperiment.vue
+│   │   │   │   │   │   │   └── useCollisionPhysics.ts
+│   │   │   │   │   │   ├── diffraction/
+│   │   │   │   │   │   │   └── DiffractionExperiment.vue
+│   │   │   │   │   │   ├── electric-workshop/
+│   │   │   │   │   │   │   ├── ac/
+│   │   │   │   │   │   │   │   ├── ACBottomBar.vue
+│   │   │   │   │   │   │   │   ├── acCanvasState.ts
+│   │   │   │   │   │   │   │   ├── ACDialogs.vue
+│   │   │   │   │   │   │   │   ├── acExplainCalcs.ts
+│   │   │   │   │   │   │   │   ├── acExplainCalcs1.ts
+│   │   │   │   │   │   │   │   ├── acExplainCalcs2.ts
+│   │   │   │   │   │   │   │   ├── ACLab.vue
+│   │   │   │   │   │   │   │   ├── acLabLayout.css
+│   │   │   │   │   │   │   │   ├── acLabScoped.css
+│   │   │   │   │   │   │   │   ├── acMouseEvents.ts
+│   │   │   │   │   │   │   │   ├── acOtherEvents.ts
+│   │   │   │   │   │   │   │   ├── ACPalette.vue
+│   │   │   │   │   │   │   │   ├── ACReadingsPanel.vue
+│   │   │   │   │   │   │   │   ├── ACTopBar.vue
+│   │   │   │   │   │   │   │   └── ComponentIconCanvas.vue
+│   │   │   │   │   │   │   ├── dc/
+│   │   │   │   │   │   │   │   ├── ComponentIconCanvas.vue
+│   │   │   │   │   │   │   │   ├── DCBottomBar.vue
+│   │   │   │   │   │   │   │   ├── dcCanvasState.ts
+│   │   │   │   │   │   │   │   ├── DCDialogs.vue
+│   │   │   │   │   │   │   │   ├── dcExplainCalcs.ts
+│   │   │   │   │   │   │   │   ├── dcExplainCalcs1.ts
+│   │   │   │   │   │   │   │   ├── dcExplainCalcs2.ts
+│   │   │   │   │   │   │   │   ├── dcExplainCalcs3.ts
+│   │   │   │   │   │   │   │   ├── dcExplainCalcs4.ts
+│   │   │   │   │   │   │   │   ├── DCLab.vue
+│   │   │   │   │   │   │   │   ├── dcLabLayout.css
+│   │   │   │   │   │   │   │   ├── dcLabScoped.css
+│   │   │   │   │   │   │   │   ├── dcMouseEvents.ts
+│   │   │   │   │   │   │   │   ├── dcOtherEvents.ts
+│   │   │   │   │   │   │   │   ├── DCPalette.vue
+│   │   │   │   │   │   │   │   ├── DCReadingsPanel.vue
+│   │   │   │   │   │   │   │   └── DCTopBar.vue
+│   │   │   │   │   │   │   ├── shared/
+│   │   │   │   │   │   │   │   ├── # My Modern App.txt
+│   │   │   │   │   │   │   │   ├── ac-meters.test.ts
+│   │   │   │   │   │   │   │   ├── componentDefs.ts
+│   │   │   │   │   │   │   │   ├── componentSpecs.ts
+│   │   │   │   │   │   │   │   ├── componentSpecsAdvanced.ts
+│   │   │   │   │   │   │   │   ├── componentSpecsBasic.ts
+│   │   │   │   │   │   │   │   ├── componentSpecTypes.ts
+│   │   │   │   │   │   │   │   ├── dc-solver.test.ts
+│   │   │   │   │   │   │   │   ├── draw-semiconductors.ts
+│   │   │   │   │   │   │   │   ├── draw2d-advanced.ts
+│   │   │   │   │   │   │   │   ├── draw2d-basic.ts
+│   │   │   │   │   │   │   │   ├── draw3d-advanced.ts
+│   │   │   │   │   │   │   │   ├── draw3d-multimeter.ts
+│   │   │   │   │   │   │   │   ├── draw3d-passive.ts
+│   │   │   │   │   │   │   │   ├── draw3d-switches.ts
+│   │   │   │   │   │   │   │   ├── drawComponent.ts
+│   │   │   │   │   │   │   │   ├── drawCustomComponents.ts
+│   │   │   │   │   │   │   │   ├── drawHelpers.ts
+│   │   │   │   │   │   │   │   ├── drawWire.ts
+│   │   │   │   │   │   │   │   ├── exportSVG.ts
+│   │   │   │   │   │   │   │   ├── matrixBuffer.ts
+│   │   │   │   │   │   │   │   ├── mnaExplainer.ts
+│   │   │   │   │   │   │   │   ├── nodeGraph.ts
+│   │   │   │   │   │   │   │   ├── relayStates.ts
+│   │   │   │   │   │   │   │   ├── resistorColors.ts
+│   │   │   │   │   │   │   │   ├── smartWire.ts
+│   │   │   │   │   │   │   │   ├── smartWireHelpers.ts
+│   │   │   │   │   │   │   │   ├── solver-ac.ts
+│   │   │   │   │   │   │   │   ├── solver-dc.ts
+│   │   │   │   │   │   │   │   ├── solver-faults.ts
+│   │   │   │   │   │   │   │   ├── solver-linear.ts
+│   │   │   │   │   │   │   │   ├── solver-multimeter.ts
+│   │   │   │   │   │   │   │   ├── solver-transient-dc.ts
+│   │   │   │   │   │   │   │   ├── solver-transient.ts
+│   │   │   │   │   │   │   │   ├── solver-worker.ts
+│   │   │   │   │   │   │   │   ├── solver.ts
+│   │   │   │   │   │   │   │   ├── solverWorkerClient.ts
+│   │   │   │   │   │   │   │   ├── types.ts
+│   │   │   │   │   │   │   │   ├── useAnimationLoop.ts
+│   │   │   │   │   │   │   │   ├── useCircuitDialogs.ts
+│   │   │   │   │   │   │   │   ├── useComponentEditor.ts
+│   │   │   │   │   │   │   │   ├── useDCLab.ts
+│   │   │   │   │   │   │   │   ├── useEditActions.ts
+│   │   │   │   │   │   │   │   ├── useLabActions.ts
+│   │   │   │   │   │   │   │   ├── useResistorData.ts
+│   │   │   │   │   │   │   │   ├── useSelectionSync.ts
+│   │   │   │   │   │   │   │   ├── useTouchEvents.ts
+│   │   │   │   │   │   │   │   ├── useWorkshop.ts
+│   │   │   │   │   │   │   │   ├── useWorkshopCanvas.ts
+│   │   │   │   │   │   │   │   ├── wireCrossings.ts
+│   │   │   │   │   │   │   │   ├── workshopBottomBar.css
+│   │   │   │   │   │   │   │   ├── workshopCanvas.css
+│   │   │   │   │   │   │   │   ├── workshopComponents.ts
+│   │   │   │   │   │   │   │   ├── workshopDialogs.css
+│   │   │   │   │   │   │   │   ├── workshopExperimentsAC.ts
+│   │   │   │   │   │   │   │   ├── workshopExperimentsDC.ts
+│   │   │   │   │   │   │   │   ├── workshopExperimentsDC2.ts
+│   │   │   │   │   │   │   │   ├── workshopExperimentsDC3.ts
+│   │   │   │   │   │   │   │   ├── workshopExport.ts
+│   │   │   │   │   │   │   │   ├── workshopFaults.css
+│   │   │   │   │   │   │   │   ├── workshopFullscreen.css
+│   │   │   │   │   │   │   │   ├── workshopHistory.ts
+│   │   │   │   │   │   │   │   ├── workshopOverlays.css
+│   │   │   │   │   │   │   │   ├── workshopPalette.css
+│   │   │   │   │   │   │   │   ├── workshopReadings.css
+│   │   │   │   │   │   │   │   ├── workshopRedraw.ts
+│   │   │   │   │   │   │   │   ├── WorkshopReportToolbar.vue
+│   │   │   │   │   │   │   │   ├── workshopResistor.css
+│   │   │   │   │   │   │   │   ├── workshopSolver.ts
+│   │   │   │   │   │   │   │   ├── workshopStorage.ts
+│   │   │   │   │   │   │   │   ├── workshopTopBar.css
+│   │   │   │   │   │   │   │   └── workshopWires.ts
+│   │   │   │   │   │   │   └── ElectricWorkshop.vue
+│   │   │   │   │   │   ├── faraday/
+│   │   │   │   │   │   │   └── FaradayExperiment.vue
+│   │   │   │   │   │   ├── faraday-law/
+│   │   │   │   │   │   │   └── FaradayLawExperiment.vue
+│   │   │   │   │   │   ├── freefall/
+│   │   │   │   │   │   │   ├── FreeFallExperiment.vue
+│   │   │   │   │   │   │   └── useFreeFallPhysics.ts
+│   │   │   │   │   │   ├── generator/
+│   │   │   │   │   │   │   └── GeneratorExperiment.vue
+│   │   │   │   │   │   ├── grating/
+│   │   │   │   │   │   │   └── GratingExperiment.vue
+│   │   │   │   │   │   ├── ideal-gas/
+│   │   │   │   │   │   │   └── IdealGasExperiment.vue
+│   │   │   │   │   │   ├── inclined/
+│   │   │   │   │   │   │   ├── InclinedExperiment.vue
+│   │   │   │   │   │   │   └── useInclinedPhysics.ts
+│   │   │   │   │   │   ├── interference/
+│   │   │   │   │   │   │   └── InterferenceExperiment.vue
+│   │   │   │   │   │   ├── latent-heat/
+│   │   │   │   │   │   │   └── LatentHeatExperiment.vue
+│   │   │   │   │   │   ├── lenz-law/
+│   │   │   │   │   │   │   └── LenzLawExperiment.vue
+│   │   │   │   │   │   ├── lightray/
+│   │   │   │   │   │   │   └── LightRayExperiment.vue
+│   │   │   │   │   │   ├── lorentz-force/
+│   │   │   │   │   │   │   └── LorentzForceExperiment.vue
+│   │   │   │   │   │   ├── magnetic-flux/
+│   │   │   │   │   │   │   └── MagneticFluxExperiment.vue
+│   │   │   │   │   │   ├── mirror/
+│   │   │   │   │   │   │   └── MirrorExperiment.vue
+│   │   │   │   │   │   ├── netforce/
+│   │   │   │   │   │   │   ├── NetForceExperiment.vue
+│   │   │   │   │   │   │   └── useNetForcePhysics.ts
+│   │   │   │   │   │   ├── pendulum/
+│   │   │   │   │   │   │   ├── PendulumExperiment.vue
+│   │   │   │   │   │   │   ├── PendulumSpringBridge.ts
+│   │   │   │   │   │   │   └── usePendulumPhysics.ts
+│   │   │   │   │   │   ├── polarization/
+│   │   │   │   │   │   │   └── PolarizationExperiment.vue
+│   │   │   │   │   │   ├── prism/
+│   │   │   │   │   │   │   └── PrismExperiment.vue
+│   │   │   │   │   │   ├── projectile/
+│   │   │   │   │   │   │   ├── ProjectileExperiment.vue
+│   │   │   │   │   │   │   ├── projectileTheoretical.ts
+│   │   │   │   │   │   │   └── useProjectilePhysics.ts
+│   │   │   │   │   │   ├── resonance/
+│   │   │   │   │   │   │   └── ResonanceExperiment.vue
+│   │   │   │   │   │   ├── solenoid/
+│   │   │   │   │   │   │   └── SolenoidExperiment.vue
+│   │   │   │   │   │   ├── specific-heat/
+│   │   │   │   │   │   │   └── SpecificHeatExperiment.vue
+│   │   │   │   │   │   ├── speed-of-sound/
+│   │   │   │   │   │   │   └── SpeedOfSoundExperiment.vue
+│   │   │   │   │   │   ├── spring/
+│   │   │   │   │   │   │   ├── fft.ts
+│   │   │   │   │   │   │   ├── SpringExperiment.vue
+│   │   │   │   │   │   │   └── useSpringPhysics.ts
+│   │   │   │   │   │   ├── straight-wire/
+│   │   │   │   │   │   │   └── StraightWireExperiment.vue
+│   │   │   │   │   │   ├── thermal-expansion/
+│   │   │   │   │   │   │   └── ThermalExpansionExperiment.vue
+│   │   │   │   │   │   ├── thinlens/
+│   │   │   │   │   │   │   └── ThinLensExperiment.vue
+│   │   │   │   │   │   ├── torque-coil/
+│   │   │   │   │   │   │   └── TorqueCoilExperiment.vue
+│   │   │   │   │   │   ├── wave-interference/
+│   │   │   │   │   │   │   └── WaveInterferenceExperiment.vue
+│   │   │   │   │   │   └── wire-force/
+│   │   │   │   │   │       └── WireForceExperiment.vue
+│   │   │   │   │   ├── branch-page.vue
+│   │   │   │   │   ├── branches-page.vue
+│   │   │   │   │   ├── catalog.ts
+│   │   │   │   │   ├── experiment-loader.ts
+│   │   │   │   │   └── experiment-page.vue
+│   │   │   │   └── settings/
+│   │   │   │       ├── components/
+│   │   │   │       │   └── ThemeToggle.vue
+│   │   │   │       └── types.ts
+│   │   │   ├── pages/
+│   │   │   │   ├── _deprecated/
+│   │   │   │   │   ├── student/
+│   │   │   │   │   │   └── tabs/
+│   │   │   │   │   │       ├── Communication.vue
+│   │   │   │   │   │       ├── MyWork.vue
+│   │   │   │   │   │       ├── MyWorkReports.vue
+│   │   │   │   │   │       └── Profile.vue
+│   │   │   │   │   └── teacher/
+│   │   │   │   │       └── tabs/
+│   │   │   │   │           ├── Communication.vue
+│   │   │   │   │           └── Profile.vue
+│   │   │   │   ├── admin/
+│   │   │   │   │   ├── tabs/
+│   │   │   │   │   │   ├── activation-codes/
+│   │   │   │   │   │   │   └── ActivationCodesTab.vue
+│   │   │   │   │   │   ├── invoices/
+│   │   │   │   │   │   │   └── InvoiceList.vue
+│   │   │   │   │   │   ├── subscriptions/
+│   │   │   │   │   │   │   ├── EmergencyControls.vue
+│   │   │   │   │   │   │   ├── index.vue
+│   │   │   │   │   │   │   ├── NotificationQueueLog.vue
+│   │   │   │   │   │   │   ├── NotificationUserManager.vue
+│   │   │   │   │   │   │   ├── PackageForm.vue
+│   │   │   │   │   │   │   ├── PackageList.vue
+│   │   │   │   │   │   │   ├── PlanForm.vue
+│   │   │   │   │   │   │   ├── PlanManagement.vue
+│   │   │   │   │   │   │   ├── PlanPackages.vue
+│   │   │   │   │   │   │   ├── SubscriptionControls.vue
+│   │   │   │   │   │   │   ├── SubscriptionList.vue
+│   │   │   │   │   │   │   ├── SubscriptionModals.vue
+│   │   │   │   │   │   │   ├── SubscriptionOverview.vue
+│   │   │   │   │   │   │   ├── SubscriptionPlans.vue
+│   │   │   │   │   │   │   ├── SubscriptionSettings.vue
+│   │   │   │   │   │   │   └── SubscriptionsTab.vue
+│   │   │   │   │   │   ├── system/
+│   │   │   │   │   │   │   ├── SupportTickets.vue
+│   │   │   │   │   │   │   ├── SystemAccess.vue
+│   │   │   │   │   │   │   ├── SystemAlerts.vue
+│   │   │   │   │   │   │   ├── SystemAudit.vue
+│   │   │   │   │   │   │   ├── SystemBackups.vue
+│   │   │   │   │   │   │   ├── SystemEmergency.vue
+│   │   │   │   │   │   │   ├── SystemMaintenance.vue
+│   │   │   │   │   │   │   ├── SystemMetrics.vue
+│   │   │   │   │   │   │   ├── SystemMetricsExtra.vue
+│   │   │   │   │   │   │   └── SystemSettings.vue
+│   │   │   │   │   │   ├── ActivityLog.vue
+│   │   │   │   │   │   ├── AdminChat.css
+│   │   │   │   │   │   ├── AdminChat.vue
+│   │   │   │   │   │   ├── AdminOverviewV2.css
+│   │   │   │   │   │   ├── AdminOverviewV2.vue
+│   │   │   │   │   │   ├── AdminUsersV2.vue
+│   │   │   │   │   │   ├── ClassDetailV2.vue
+│   │   │   │   │   │   ├── ClassesV2.vue
+│   │   │   │   │   │   ├── Notifications.vue
+│   │   │   │   │   │   ├── ReportsAnalyticsV2.vue
+│   │   │   │   │   │   ├── RequestsApprovals.vue
+│   │   │   │   │   │   ├── SchoolDetailV2.vue
+│   │   │   │   │   │   ├── SchoolsV2.vue
+│   │   │   │   │   │   ├── SystemV2.vue
+│   │   │   │   │   │   └── UserDetailV3.vue
+│   │   │   │   │   └── index.vue
+│   │   │   │   ├── biology/
+│   │   │   │   │   ├── anatomy/
+│   │   │   │   │   │   ├── digestive.vue
+│   │   │   │   │   │   ├── eye.vue
+│   │   │   │   │   │   ├── heart.vue
+│   │   │   │   │   │   ├── index.vue
+│   │   │   │   │   │   ├── kidney.vue
+│   │   │   │   │   │   ├── lungs.vue
+│   │   │   │   │   │   └── skeleton.vue
+│   │   │   │   │   ├── biotechnology/
+│   │   │   │   │   │   ├── crispr.vue
+│   │   │   │   │   │   ├── gel-electrophoresis.vue
+│   │   │   │   │   │   ├── index.vue
+│   │   │   │   │   │   └── pcr.vue
+│   │   │   │   │   ├── cell/
+│   │   │   │   │   │   ├── animal-cell.vue
+│   │   │   │   │   │   ├── dna-structure.vue
+│   │   │   │   │   │   ├── index.vue
+│   │   │   │   │   │   ├── plant-cell.vue
+│   │   │   │   │   │   └── protein-synthesis.vue
+│   │   │   │   │   ├── ecology/
+│   │   │   │   │   │   ├── ecosystem-balance.vue
+│   │   │   │   │   │   ├── food-chain.vue
+│   │   │   │   │   │   ├── index.vue
+│   │   │   │   │   │   └── water-cycle.vue
+│   │   │   │   │   ├── genetics/
+│   │   │   │   │   │   ├── dna-replication.vue
+│   │   │   │   │   │   ├── index.vue
+│   │   │   │   │   │   ├── meiosis.vue
+│   │   │   │   │   │   ├── mitosis.vue
+│   │   │   │   │   │   └── punnett-square.vue
+│   │   │   │   │   ├── microbiology/
+│   │   │   │   │   │   ├── bacteria.vue
+│   │   │   │   │   │   ├── blood-cells.vue
+│   │   │   │   │   │   ├── fungi.vue
+│   │   │   │   │   │   ├── index.vue
+│   │   │   │   │   │   └── virus.vue
+│   │   │   │   │   ├── plant/
+│   │   │   │   │   │   ├── flower-reproduction.vue
+│   │   │   │   │   │   ├── index.vue
+│   │   │   │   │   │   ├── photosynthesis.vue
+│   │   │   │   │   │   ├── plant-structure.vue
+│   │   │   │   │   │   └── transpiration.vue
+│   │   │   │   │   └── index.vue
+│   │   │   │   ├── math/
+│   │   │   │   │   ├── [branch]/
+│   │   │   │   │   │   └── [equation].vue
+│   │   │   │   │   ├── equations-advanced/
+│   │   │   │   │   │   ├── algebra.ts
+│   │   │   │   │   │   ├── calculus.ts
+│   │   │   │   │   │   ├── electricity.ts
+│   │   │   │   │   │   ├── electromagnetism.ts
+│   │   │   │   │   │   ├── geometry.ts
+│   │   │   │   │   │   ├── heat.ts
+│   │   │   │   │   │   ├── index.ts
+│   │   │   │   │   │   ├── mechanics.ts
+│   │   │   │   │   │   ├── number-theory.ts
+│   │   │   │   │   │   ├── statistics.ts
+│   │   │   │   │   │   ├── trigonometry.ts
+│   │   │   │   │   │   └── waves-optics.ts
+│   │   │   │   │   ├── equations-basic/
+│   │   │   │   │   │   ├── algebra.ts
+│   │   │   │   │   │   ├── calculus.ts
+│   │   │   │   │   │   ├── geometry.ts
+│   │   │   │   │   │   ├── index.ts
+│   │   │   │   │   │   ├── statistics.ts
+│   │   │   │   │   │   └── trigonometry.ts
+│   │   │   │   │   ├── [branch].vue
+│   │   │   │   │   ├── data.ts
+│   │   │   │   │   ├── equations-data.ts
+│   │   │   │   │   ├── equations-physics.ts
+│   │   │   │   │   ├── index.css
+│   │   │   │   │   ├── index.vue
+│   │   │   │   │   ├── math-types.ts
+│   │   │   │   │   ├── math-utils.ts
+│   │   │   │   │   ├── MathText.vue
+│   │   │   │   │   ├── useMathGraph.ts
+│   │   │   │   │   └── useMathPractice.ts
+│   │   │   │   ├── school/
+│   │   │   │   │   ├── tabs/
+│   │   │   │   │   │   ├── Home.css
+│   │   │   │   │   │   ├── SchoolActivity.vue
+│   │   │   │   │   │   ├── SchoolBilling.vue
+│   │   │   │   │   │   ├── SchoolClassDetail.vue
+│   │   │   │   │   │   ├── SchoolClasses.vue
+│   │   │   │   │   │   ├── SchoolFeedback.vue
+│   │   │   │   │   │   ├── SchoolMembers.vue
+│   │   │   │   │   │   ├── SchoolNotifications.vue
+│   │   │   │   │   │   ├── SchoolOverviewAlerts.vue
+│   │   │   │   │   │   ├── SchoolOverviewAnalytics.vue
+│   │   │   │   │   │   ├── SchoolOverviewKPIs.vue
+│   │   │   │   │   │   ├── SchoolOverviewV2.css
+│   │   │   │   │   │   ├── SchoolOverviewV2.vue
+│   │   │   │   │   │   ├── SchoolReports.vue
+│   │   │   │   │   │   ├── SchoolSettings.vue
+│   │   │   │   │   │   ├── SchoolStudentDetail.vue
+│   │   │   │   │   │   ├── SchoolStudents.vue
+│   │   │   │   │   │   ├── SchoolTeacherDetail.vue
+│   │   │   │   │   │   ├── SchoolTeachers.vue
+│   │   │   │   │   │   ├── SchoolWarnings.vue
+│   │   │   │   │   │   └── Users.vue
+│   │   │   │   │   ├── index.vue
+│   │   │   │   │   └── Payment.vue
+│   │   │   │   ├── shared/
+│   │   │   │   │   ├── Communication.vue
+│   │   │   │   │   ├── Experiments.vue
+│   │   │   │   │   └── UserSettings.vue
+│   │   │   │   ├── student/
+│   │   │   │   │   ├── tabs/
+│   │   │   │   │   │   ├── Chat.vue
+│   │   │   │   │   │   ├── Complaints.vue
+│   │   │   │   │   │   ├── Home.vue
+│   │   │   │   │   │   ├── MyClasses.vue
+│   │   │   │   │   │   ├── MyReports.vue
+│   │   │   │   │   │   ├── Notifications.vue
+│   │   │   │   │   │   ├── Quizzes.vue
+│   │   │   │   │   │   └── StudentBilling.vue
+│   │   │   │   │   ├── index.vue
+│   │   │   │   │   └── Payment.vue
+│   │   │   │   ├── teacher/
+│   │   │   │   │   ├── tabs/
+│   │   │   │   │   │   ├── BiologyAnalytics.vue
+│   │   │   │   │   │   ├── BroadcastModal.vue
+│   │   │   │   │   │   ├── Chat.vue
+│   │   │   │   │   │   ├── ClassFormModal.vue
+│   │   │   │   │   │   ├── ClassStudents.vue
+│   │   │   │   │   │   ├── Complaints.vue
+│   │   │   │   │   │   ├── ExperimentQuestions.vue
+│   │   │   │   │   │   ├── Grading.css
+│   │   │   │   │   │   ├── Grading.vue
+│   │   │   │   │   │   ├── Home.vue
+│   │   │   │   │   │   ├── MyClasses.vue
+│   │   │   │   │   │   ├── Notifications.vue
+│   │   │   │   │   │   ├── quiz-results.css
+│   │   │   │   │   │   ├── QuizDetailResults.vue
+│   │   │   │   │   │   ├── QuizResults.vue
+│   │   │   │   │   │   ├── Quizzes.vue
+│   │   │   │   │   │   ├── Schedule.vue
+│   │   │   │   │   │   ├── SchoolLink.vue
+│   │   │   │   │   │   ├── StudentDetailModal.vue
+│   │   │   │   │   │   ├── StudentDetailStats.vue
+│   │   │   │   │   │   ├── TeacherSubscriptions.vue
+│   │   │   │   │   │   └── useStudentActions.ts
+│   │   │   │   │   ├── index.vue
+│   │   │   │   │   └── Payment.vue
+│   │   │   │   ├── admin.css
+│   │   │   │   ├── analysis-v2.vue
+│   │   │   │   ├── analysis-v3.css
+│   │   │   │   ├── analysis-v3.vue
+│   │   │   │   ├── approvals.vue
+│   │   │   │   ├── index.vue
+│   │   │   │   ├── language.vue
+│   │   │   │   ├── login.vue
+│   │   │   │   ├── NotFound.vue
+│   │   │   │   ├── PrivacyPolicy.vue
+│   │   │   │   ├── register.css
+│   │   │   │   ├── register.vue
+│   │   │   │   ├── report-view.css
+│   │   │   │   ├── report-view.vue
+│   │   │   │   ├── school-login.vue
+│   │   │   │   ├── school-register.css
+│   │   │   │   ├── school-register.vue
+│   │   │   │   ├── school.css
+│   │   │   │   ├── teacher-dashboard.css
+│   │   │   │   ├── TermsOfService.vue
+│   │   │   │   ├── verify-email.css
+│   │   │   │   └── verify-email.vue
+│   │   │   ├── router/
+│   │   │   │   └── routes.ts
+│   │   │   ├── services/
+│   │   │   │   ├── core/
+│   │   │   │   │   ├── .gitkeep
+│   │   │   │   │   ├── admin-subscriptions.api.ts
+│   │   │   │   │   ├── admin.api.ts
+│   │   │   │   │   ├── api-helpers.ts
+│   │   │   │   │   ├── cache.service.ts
+│   │   │   │   │   ├── currency.ts
+│   │   │   │   │   ├── notification-queue.api.ts
+│   │   │   │   │   ├── notification-templates.api.ts
+│   │   │   │   │   ├── school.api.ts
+│   │   │   │   │   ├── settings.api.ts
+│   │   │   │   │   ├── student.api.ts
+│   │   │   │   │   └── teacher.api.ts
+│   │   │   │   ├── admin-emergency.service.ts
+│   │   │   │   ├── admin-messages.service.ts
+│   │   │   │   ├── admin-notifications.service.ts
+│   │   │   │   ├── admin-reports.service.ts
+│   │   │   │   ├── admin.service.ts
+│   │   │   │   ├── admin.types.ts
+│   │   │   │   ├── ai.service.ts
+│   │   │   │   ├── anatomy-data.ts
+│   │   │   │   ├── anatomy-topics.ts
+│   │   │   │   ├── animal-cell-model-builder.ts
+│   │   │   │   ├── announcement.service.ts
+│   │   │   │   ├── approval.service.ts
+│   │   │   │   ├── backup.service.ts
+│   │   │   │   ├── bacteria-model-builder.ts
+│   │   │   │   ├── biology-sections.ts
+│   │   │   │   ├── biotechnology-topics.ts
+│   │   │   │   ├── blood-model-builder.ts
+│   │   │   │   ├── cell-biology-topics.ts
+│   │   │   │   ├── chat.service.ts
+│   │   │   │   ├── class.service.ts
+│   │   │   │   ├── complaint.service.ts
+│   │   │   │   ├── deadline.service.ts
+│   │   │   │   ├── digestive-glb-parts.ts
+│   │   │   │   ├── ecology-data.ts
+│   │   │   │   ├── ecology-organism-details.ts
+│   │   │   │   ├── ecology-topics.ts
+│   │   │   │   ├── enhancements.service.ts
+│   │   │   │   ├── experiment-questions.service.ts
+│   │   │   │   ├── eye-glb-parts.ts
+│   │   │   │   ├── eye-model-generator.ts
+│   │   │   │   ├── eye-texture-enhancer.ts
+│   │   │   │   ├── feedback.service.ts
+│   │   │   │   ├── flower-model-builder.ts
+│   │   │   │   ├── fungi-model-builder.ts
+│   │   │   │   ├── gamification.service.ts
+│   │   │   │   ├── genetics-stages-data.ts
+│   │   │   │   ├── genetics-topics.ts
+│   │   │   │   ├── home.service.ts
+│   │   │   │   ├── http.test.ts
+│   │   │   │   ├── http.ts
+│   │   │   │   ├── kidney-glb-parts.ts
+│   │   │   │   ├── lungs-glb-parts.ts
+│   │   │   │   ├── math.service.ts
+│   │   │   │   ├── mendel-traits.ts
+│   │   │   │   ├── microbiology-topics.ts
+│   │   │   │   ├── notification.service.ts
+│   │   │   │   ├── ollama.ts
+│   │   │   │   ├── pcr-data.ts
+│   │   │   │   ├── photosynthesis-data.ts
+│   │   │   │   ├── plagiarism.service.ts
+│   │   │   │   ├── plant-biology-topics.ts
+│   │   │   │   ├── plant-model-builder.ts
+│   │   │   │   ├── protein-synthesis-data.ts
+│   │   │   │   ├── quiz.service.ts
+│   │   │   │   ├── report.service.ts
+│   │   │   │   ├── schedule.service.ts
+│   │   │   │   ├── school-activity.service.ts
+│   │   │   │   ├── school-admin.service.ts
+│   │   │   │   ├── school-classes.service.ts
+│   │   │   │   ├── school-notification.service.ts
+│   │   │   │   ├── school-notifications.service.ts
+│   │   │   │   ├── school-reports.service.ts
+│   │   │   │   ├── school-warnings.service.ts
+│   │   │   │   ├── school.service.ts
+│   │   │   │   ├── skeleton-glb-parts.ts
+│   │   │   │   ├── support-ticket.service.ts
+│   │   │   │   ├── system-status.service.ts
+│   │   │   │   ├── telegram-feedback.ts
+│   │   │   │   ├── transpiration-data.ts
+│   │   │   │   ├── virus-model-builder.ts
+│   │   │   │   └── warnings.service.ts
+│   │   │   ├── shared/
+│   │   │   │   ├── composables/
+│   │   │   │   │   ├── useMediaQuery.ts
+│   │   │   │   │   └── useTheme.ts
+│   │   │   │   ├── types/
+│   │   │   │   │   └── globals.ts
+│   │   │   │   ├── ui/
+│   │   │   │   │   ├── BaseButton.vue
+│   │   │   │   │   └── BaseInput.vue
+│   │   │   │   └── utils/
+│   │   │   │       ├── cn.ts
+│   │   │   │       └── formatDate.ts
+│   │   │   ├── stores/
+│   │   │   │   ├── admin.store.ts
+│   │   │   │   ├── analysis.store.ts
+│   │   │   │   ├── chemistry-analysis.store.ts
+│   │   │   │   ├── i18n.store.ts
+│   │   │   │   ├── math.store.ts
+│   │   │   │   ├── preferences.store.ts
+│   │   │   │   ├── school.store.ts
+│   │   │   │   ├── student.store.ts
+│   │   │   │   ├── teacher.store.ts
+│   │   │   │   └── toast.store.ts
+│   │   │   ├── tools/
+│   │   │   │   ├── apply-hardcoded.ts
+│   │   │   │   ├── fix-t-final-v2.ts
+│   │   │   │   ├── fix-t-final.ts
+│   │   │   │   ├── fix-t-placement-v2.ts
+│   │   │   │   ├── fix-t-placement-v3.ts
+│   │   │   │   ├── fix-t-placement.ts
+│   │   │   │   ├── i18n-audit.ts
+│   │   │   │   ├── i18n-coverage-output.txt
+│   │   │   │   ├── i18n-coverage.ts
+│   │   │   │   ├── restore-i18n-props.ts
+│   │   │   │   ├── restore-t.ts
+│   │   │   │   └── revert-hardcoded.ts
+│   │   │   ├── types/
+│   │   │   │   ├── admin-dashboard.ts
+│   │   │   │   ├── biology.types.ts
+│   │   │   │   ├── chemistry.ts
+│   │   │   │   ├── math.types.ts
+│   │   │   │   ├── physics.ts
+│   │   │   │   └── router.ts
+│   │   │   ├── utils/
+│   │   │   │   ├── captureElement.ts
+│   │   │   │   ├── fetchSSE.ts
+│   │   │   │   ├── lab-report.build-html.ts
+│   │   │   │   ├── lab-report.send.ts
+│   │   │   │   ├── lab-report.ts
+│   │   │   │   ├── lab-report.types.ts
+│   │   │   │   └── sanitizeHtml.ts
+│   │   │   ├── App.vue
+│   │   │   ├── env.d.ts
+│   │   │   ├── main.ts
+│   │   │   ├── router.ts
+│   │   │   └── vite-env.d.ts
+│   │   ├── test-results/
+│   │   │   └── .last-run.json
+│   │   ├── tests/
+│   │   │   ├── visual-regression.spec.ts-snapshots/
+│   │   │   │   ├── -chemistry-chromium-win32.png
+│   │   │   │   ├── -chemistry-desktop-chromium-win32.png
+│   │   │   │   ├── -chemistry-mobile-chromium-win32.png
+│   │   │   │   ├── -chemistry-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-electromagnetism-biot-savart-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-electromagnetism-biot-savart-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-electromagnetism-biot-savart-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-electromagnetism-faraday-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-electromagnetism-faraday-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-electromagnetism-faraday-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-electromagnetism-rc-circuit-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-electromagnetism-rc-circuit-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-electromagnetism-rc-circuit-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-analysis-calc-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-analysis-calc-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-analysis-calc-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-analysis-calc-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-collision-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-collision-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-collision-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-collision-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-freefall-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-freefall-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-freefall-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-freefall-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-inclined-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-inclined-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-inclined-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-inclined-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-lightray-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-lightray-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-lightray-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-mirror-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-mirror-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-mirror-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-pendulum-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-pendulum-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-pendulum-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-pendulum-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-prism-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-prism-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-prism-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-projectile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-projectile-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-projectile-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-projectile-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-spring-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-spring-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-spring-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-mechanics-spring-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-boyles-law-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-boyles-law-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-boyles-law-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-calorimetry-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-calorimetry-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-calorimetry-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-ideal-gas-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-ideal-gas-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-ideal-gas-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-latent-heat-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-latent-heat-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-latent-heat-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-specific-heat-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-specific-heat-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-specific-heat-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-thermal-expansion-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-thermal-expansion-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-thermodynamics-thermal-expansion-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-waves-diffraction-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-waves-diffraction-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-waves-diffraction-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-waves-grating-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-waves-grating-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-waves-grating-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-waves-interference-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-waves-interference-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-waves-interference-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-waves-polarization-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-waves-polarization-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-waves-polarization-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-waves-resonance-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-waves-resonance-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-waves-resonance-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-waves-speed-of-sound-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-waves-speed-of-sound-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-waves-speed-of-sound-tablet-chromium-win32.png
+│   │   │   │   ├── -physics-waves-wave-interference-desktop-chromium-win32.png
+│   │   │   │   ├── -physics-waves-wave-interference-mobile-chromium-win32.png
+│   │   │   │   ├── -physics-waves-wave-interference-tablet-chromium-win32.png
+│   │   │   │   ├── analysis-calc-tabs-chromium-win32.png
+│   │   │   │   ├── chemistry-layout-chromium-win32.png
+│   │   │   │   ├── dashboard-chromium-win32.png
+│   │   │   │   └── landing-rtl-chromium-win32.png
+│   │   │   ├── i18n-ui.spec.ts
+│   │   │   ├── monkey-tabs.spec.ts
+│   │   │   ├── performance-leak.spec.ts
+│   │   │   ├── physics-bounds.spec.ts
+│   │   │   └── visual-regression.spec.ts
+│   │   ├── .env.example
+│   │   ├── .eslintrc.cjs
+│   │   ├── .gitignore
+│   │   ├── build_output.txt
+│   │   ├── deploy-output.txt
+│   │   ├── Dockerfile
+│   │   ├── env-list.txt
+│   │   ├── eslint-errors-only.json
+│   │   ├── eslint-report.json
+│   │   ├── fail-detail.txt
+│   │   ├── i18n-audit-output-utf8.txt
+│   │   ├── i18n-audit-output.txt
+│   │   ├── i18n-audit.txt
+│   │   ├── index.html
+│   │   ├── lint_errors.txt
+│   │   ├── netlify.toml
+│   │   ├── nginx.conf
+│   │   ├── package.json
+│   │   ├── playwright.config.ts
+│   │   ├── thinlens-tsc.txt
+│   │   ├── tsc_errors.txt
+│   │   ├── tsc_output.txt
+│   │   ├── tsconfig.json
+│   │   ├── vercel.json
+│   │   ├── vite.config.ts
+│   │   ├── vite.config.ts.timestamp-1782593125798-9394244cac5028.mjs
+│   │   ├── vite.config.ts.timestamp-1783887734908-4a68362479f1f.mjs
+│   │   ├── vite.config.ts.timestamp-1785335820355-3a4f8619184d6.mjs
+│   │   ├── vite.config.ts.timestamp-1785668953811-e954d19b94b9f.mjs
+│   │   └── vitest.config.ts
+│   └── worker/
+│       ├── src/
+│       │   ├── jobs/
+│       │   │   ├── processImages.ts
+│       │   │   └── sendEmail.ts
+│       │   └── index.ts
+│       ├── package.json
+│       └── tsconfig.json
+├── docs/
+│   └── experiment-quiz-plan.md
+├── packages/
+│   ├── biology-engine/
+│   │   ├── src/
+│   │   │   ├── analysis.ts
+│   │   │   ├── evolution.ts
+│   │   │   ├── gel.ts
+│   │   │   ├── genetics.ts
+│   │   │   ├── index.ts
+│   │   │   ├── pcr.ts
+│   │   │   ├── tracking.ts
+│   │   │   └── types.ts
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   ├── chemistry-engine/
+│   │   ├── src/
+│   │   │   ├── color.ts
+│   │   │   ├── equations-api.ts
+│   │   │   ├── equations-data.ts
+│   │   │   ├── equations-gas-redox-complex.ts
+│   │   │   ├── equations-neutralization-precipitation.ts
+│   │   │   ├── equations.ts
+│   │   │   ├── index.ts
+│   │   │   ├── reactions.ts
+│   │   │   ├── type-checks.ts
+│   │   │   └── types.ts
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   ├── config/
+│   │   ├── eslint/
+│   │   │   └── index.js
+│   │   ├── typescript/
+│   │   │   └── base.json
+│   │   ├── index.js
+│   │   └── package.json
+│   ├── math-engine/
+│   │   ├── src/
+│   │   │   ├── complex.ts
+│   │   │   ├── index.ts
+│   │   │   ├── linear.ts
+│   │   │   ├── solver-core.ts
+│   │   │   ├── solver-graph.ts
+│   │   │   ├── solver-practice.ts
+│   │   │   ├── solver.ts
+│   │   │   └── types.ts
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   ├── shared-types/
+│   │   ├── src/
+│   │   │   ├── api-responses.ts
+│   │   │   ├── auth.ts
+│   │   │   ├── class.ts
+│   │   │   ├── domain.ts
+│   │   │   ├── experiment-result.ts
+│   │   │   ├── experiment.ts
+│   │   │   ├── gamification.ts
+│   │   │   ├── index.ts
+│   │   │   ├── quiz.ts
+│   │   │   └── user.ts
+│   │   ├── index.d.ts
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   └── ui-kit/
+│       ├── src/
+│       │   ├── Button/
+│       │   │   └── Button.vue
+│       │   ├── Input/
+│       │   │   └── Input.vue
+│       │   └── index.ts
+│       └── package.json
+├── scripts/
+│   └── dev.cjs
+├── .clineignore
+├── .dockerignore
+├── .env.example
+├── .gitignore
+├── .npmrc
+├── api-wrapper.cjs
+├── ecosystem.config.cjs
+├── ngrok-wrapper.cjs
+├── package.json
+├── PLAN.md
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+└── vercel.json

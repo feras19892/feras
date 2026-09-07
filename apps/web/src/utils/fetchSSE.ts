@@ -12,6 +12,7 @@ interface FetchSSEOptions {
 export function createFetchSSE(opts: FetchSSEOptions): { close: () => void } {
   let controller: AbortController | null = null;
   let closed = false;
+  let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
 
   const extraHeaders: Record<string, string> = { ...opts.headers };
   const apiBase = import.meta.env.VITE_API_BASE_URL ?? '';
@@ -38,6 +39,7 @@ export function createFetchSSE(opts: FetchSSEOptions): { close: () => void } {
 
         if (!res.ok || !res.body) {
           if (opts.onError) opts.onError();
+          reconnectTimeout = setTimeout(() => {}, 3000);
           await new Promise((r) => setTimeout(r, 3000));
           continue;
         }
@@ -83,6 +85,7 @@ export function createFetchSSE(opts: FetchSSEOptions): { close: () => void } {
     close() {
       closed = true;
       if (controller) controller.abort();
+      if (reconnectTimeout) clearTimeout(reconnectTimeout);
     },
   };
 }

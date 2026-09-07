@@ -11,7 +11,7 @@ import FaradayLawParamPanel from '../../../../components/experiment/electromagne
 import FaradayLawReadingsPanel from '../../../../components/experiment/electromagnetism/FaradayLawReadingsPanel.vue'
 import FaradayLawDataPanel from '../../../../components/experiment/electromagnetism/FaradayLawDataPanel.vue'
 import FaradayLawGuidePanel from '../../../../components/experiment/electromagnetism/FaradayLawGuidePanel.vue'
-import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
+import FaradayLawHelpModal from '../../../../components/experiment/electromagnetism/FaradayLawHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
@@ -45,7 +45,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen"
     />
 
-    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
+    <FaradayLawHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="tab-bar">
       <button class="tab-btn" :class="{ active: activeTab === 'faraday' }" @click="activeTab = 'faraday'">⚡ {{ t('experiments.faradayTab') }}</button>

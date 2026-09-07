@@ -46,8 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '@/composables/useI18n';
-const { direction } = useI18n();
 import SchoolHelpButton from '@/components/school/SchoolHelpButton.vue'
 import { ref } from 'vue'
 import { useSchoolOverview } from '@/composables/school/useSchoolOverview'

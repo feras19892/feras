@@ -116,7 +116,7 @@ app.delete('/msg/:messageId', async (c) => {
 app.get('/flagged/list', async (c) => {
   const user = c.get('user');
   if (user.role !== 'admin') return c.json({ success: false, message: 'غير مصرح' }, 403);
-  const messages = await svc.getFlaggedMessages();
+  const messages = await svc.getFlaggedMessages(50, user.school_id ?? undefined);
   return c.json({ success: true, messages });
 });
 
@@ -124,7 +124,7 @@ app.get('/flagged/list', async (c) => {
 app.get('/admin/all', async (c) => {
   const user = c.get('user');
   if (user.role !== 'admin') return c.json({ success: false, message: 'غير مصرح' }, 403);
-  const messages = await svc.getAllChatMessagesForAdmin();
+  const messages = await svc.getAllChatMessagesForAdmin(200, user.school_id ?? undefined);
   return c.json({ success: true, messages });
 });
 
@@ -133,6 +133,19 @@ app.patch('/admin/unflag/:messageId', async (c) => {
   const user = c.get('user');
   if (user.role !== 'admin') return c.json({ success: false, message: 'غير مصرح' }, 403);
   const messageId = Number(c.req.param('messageId'));
+  if (user.school_id) {
+    const msg = await db.get<{ school_id: number | null }>(
+      `SELECT COALESCE(c.school_id, t.school_id) as school_id
+       FROM class_messages m
+       LEFT JOIN classes c ON m.class_id = c.id
+       LEFT JOIN users t ON c.teacher_id = t.id
+       WHERE m.id = ?`,
+      messageId,
+    );
+    if (!msg || (msg.school_id && msg.school_id !== user.school_id)) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
+  }
   const result = await svc.unflagMessage(messageId);
   if (!result.success) return c.json({ success: false, message: 'الرسالة غير موجودة' }, 404);
   return c.json({ success: true });
@@ -142,14 +155,15 @@ app.patch('/admin/unflag/:messageId', async (c) => {
 app.get('/admin/stats', async (c) => {
   const user = c.get('user');
   if (user.role !== 'admin') return c.json({ success: false, message: 'غير مصرح' }, 403);
-  const stats = await svc.getChatStatsForAdmin();
+  const stats = await svc.getChatStatsForAdmin(user.school_id ?? undefined);
   return c.json({ success: true, stats });
 });
 
 // POST /admin/toggle — admin only, enable/disable chat globally
 app.post('/admin/toggle', async (c) => {
   const user = c.get('user');
-  if (user.role !== 'admin') return c.json({ success: false, message: 'غير مصرح' }, 403);
+  // Global setting — school-scoped admins may not toggle it
+  if (user.role !== 'admin' || user.school_id) return c.json({ success: false, message: 'غير مصرح' }, 403);
   const body = (await c.req.json().catch(() => ({}))) as { enabled?: boolean };
   const current = await isChatEnabled();
   const next = typeof body.enabled === 'boolean' ? body.enabled : !current;

@@ -1,7 +1,6 @@
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { comparePassword } from '../auth/crypto.js';
-import { authMiddleware } from '../auth/middleware.js';
 import { db } from '../../db/index.js';
 import { hashPassword } from '../../modules/auth/crypto.js';
 import { updatePassword } from '../../modules/auth/services.js';
@@ -52,6 +51,13 @@ function validId(idStr: string): number | null {
   return Number.isFinite(n) && n > 0 ? n : null;
 }
 
+// School-scoped admins may only act on users within their own school.
+async function userInAdminScope(admin: User, userId: number): Promise<boolean> {
+  if (!admin.school_id) return true;
+  const target = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ?`, userId);
+  return !!target && target.school_id === admin.school_id;
+}
+
 export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): void {
   app.get('/users', async (c) => {
     try {
@@ -59,7 +65,8 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
       const limit = Math.min(100, Math.max(1, Number(c.req.query('limit') || '50')));
       const search = c.req.query('search') || undefined;
       const role = c.req.query('role') || undefined;
-      const result = await svc.getAllUsers(page, limit, search, role);
+      const admin = c.get('user') as User;
+      const result = await svc.getAllUsers(page, limit, search, role, admin.school_id ?? undefined);
       return c.json({ success: true, ...result });
     } catch (err) {
       if (process.env.NODE_ENV !== 'production') console.error('admin getUsers error:', err);
@@ -76,6 +83,9 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
     if (pwCheck) return c.json(pwCheck, 401);
     if (id === admin.id) {
       return c.json({ success: false, message: 'لا يمكن حذف حسابك الخاص' }, 400);
+    }
+    if (!(await userInAdminScope(admin as User, id))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
     }
     try {
       const result = await svc.deleteUser(id);
@@ -94,6 +104,9 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
     const admin = c.get('user');
     const pwCheck = await verifyAdminPassword(admin, admin_password);
     if (pwCheck) return c.json(pwCheck, 401);
+    if (!(await userInAdminScope(admin as User, id))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     try {
       const result = await svc.updateUserRole(id, role);
       return c.json(result);
@@ -105,9 +118,10 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
 
   app.post('/users', zValidator('json', createUserSchema), async (c) => {
     const { name, email, password, role } = c.req.valid('json');
+    const admin = c.get('user') as User;
     try {
       const passwordHash = await hashPassword(password);
-      const result = await svc.createUser(name, email, passwordHash, role);
+      const result = await svc.createUser(name, email, passwordHash, role, admin.school_id ?? undefined);
       return c.json(result, 201);
     } catch (err) {
       if (process.env.NODE_ENV !== 'production') console.error('admin createUser error:', err);
@@ -119,7 +133,8 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
     const id = validId(c.req.param('id'));
     if (!id) return c.json({ success: false, message: 'معرف غير صالح' }, 400);
     try {
-      const profile = await detailSvc.getUserFullProfile(id);
+      const admin = c.get('user') as User;
+      const profile = await detailSvc.getUserFullProfile(id, admin.school_id ?? undefined);
       if (!profile) return c.json({ success: false, message: 'User not found' }, 404);
       return c.json({ success: true, ...profile });
     } catch (err) {
@@ -135,6 +150,9 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
     const { reason, admin_password } = c.req.valid('json');
     const pwCheck = await verifyAdminPassword(admin, admin_password);
     if (pwCheck) return c.json(pwCheck, 401);
+    if (!(await userInAdminScope(admin, id))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     const result = await detailSvc.banUser(id, reason || '', admin.id, admin.name);
     return c.json(result);
   });
@@ -146,6 +164,9 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
     const { admin_password } = c.req.valid('json');
     const pwCheck = await verifyAdminPassword(admin, admin_password);
     if (pwCheck) return c.json(pwCheck, 401);
+    if (!(await userInAdminScope(admin, id))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     const result = await detailSvc.unbanUser(id, admin.id, admin.name);
     return c.json(result);
   });
@@ -157,6 +178,9 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
     const admin = c.get('user');
     const pwCheck = await verifyAdminPassword(admin, admin_password);
     if (pwCheck) return c.json(pwCheck, 401);
+    if (!(await userInAdminScope(admin as User, id))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     try {
       const result = await updatePassword(id, password);
       if (!result.success) return c.json({ success: false, message: result.message || 'Update failed' }, 500);
@@ -171,6 +195,10 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
     const id = validId(c.req.param('id'));
     if (!id) return c.json({ success: false, message: 'معرف غير صالح' }, 400);
     const { name, email } = c.req.valid('json');
+    const admin = c.get('user') as User;
+    if (!(await userInAdminScope(admin, id))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     try {
       const result = await svc.updateUserForAdmin(id, { name, email });
       if (!result.success) return c.json(result, 400);
@@ -183,9 +211,10 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
 
   app.get('/teachers', async (c) => {
     try {
+      const admin = c.get('user') as User;
       const schoolIdRaw = c.req.query('schoolId');
       const schoolId = schoolIdRaw ? Number(schoolIdRaw) : undefined;
-      const list = await svc.getAllTeachers(schoolId && schoolId > 0 ? schoolId : undefined);
+      const list = await svc.getAllTeachers(admin.school_id ?? (schoolId && schoolId > 0 ? schoolId : undefined));
       return c.json({ success: true, teachers: list });
     } catch (err) {
       if (process.env.NODE_ENV !== 'production') console.error('admin getTeachers error:', err);
@@ -195,6 +224,9 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
 
   app.post('/users/delete-non-admin', zValidator('json', deleteAllSchema), async (c) => {
     const admin = c.get('user') as User;
+    if (admin.school_id) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     const { password } = c.req.valid('json');
     const adminRow = await db.get<{ password_hash: string }>(`SELECT password_hash FROM users WHERE id = ?`, admin.id);
     if (!adminRow || !(await comparePassword(password, adminRow.password_hash))) {
@@ -214,6 +246,9 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
     const id = validId(c.req.param('id'));
     if (!id) return c.json({ success: false, message: 'معرف غير صالح' }, 400);
     const { days } = c.req.valid('json');
+    if (!(await userInAdminScope(admin, id))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     const result = await detailSvc.extendTrial(id, days, admin.id, admin.name);
     return c.json(result);
   });
@@ -222,6 +257,10 @@ export function registerUserRoutes(app: Hono<{ Variables: { user: User } }>): vo
     const id = validId(c.req.param('id'));
     if (!id) return c.json({ success: false, message: 'معرف غير صالح' }, 400);
     const body = c.req.valid('json');
+    const admin = c.get('user') as User;
+    if (!(await userInAdminScope(admin, id))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     const result = await detailSvc.changeSubscription(id, body);
     return c.json(result);
   });

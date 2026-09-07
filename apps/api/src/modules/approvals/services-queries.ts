@@ -7,7 +7,10 @@ export async function getApprovalById(id: number) {
   return db.get(`SELECT * FROM approval_requests WHERE id = ?`, id);
 }
 
-export async function getAllApprovals(limit = 200) {
+export async function getAllApprovals(limit = 200, schoolId?: number) {
+  if (schoolId) {
+    return db.all(`SELECT * FROM approval_requests WHERE school_id = ? ORDER BY created_at DESC LIMIT ?`, schoolId, limit);
+  }
   return db.all(`SELECT * FROM approval_requests ORDER BY created_at DESC LIMIT ?`, limit);
 }
 

@@ -55,6 +55,11 @@ async function handleRegister() {
     formError.value = t('auth.errors.passwordsMismatch');
     return;
   }
+  // Match server-side policy: 8+ chars with lowercase, uppercase and a digit
+  if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,128}$/.test(password.value)) {
+    formError.value = t('auth.errors.passwordWeak', 'كلمة المرور يجب أن تكون 8 أحرف على الأقل وتتضمن حرفاً كبيراً وحرفاً صغيراً ورقماً');
+    return;
+  }
 
   // School registration path
   if (isSchool.value) {

@@ -11,6 +11,7 @@ export interface LoadModelDeps {
   heartMeshes: { current: THREE.Mesh[] };
   applyMaterialState: () => void;
   applyExplode: () => void;
+  onProgress?: (ratio: number) => void;
 }
 
 export function loadHeartModel(
@@ -32,6 +33,11 @@ export function loadHeartModel(
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
       const maxDim = Math.max(size.x, size.y, size.z);
+      if (maxDim === 0 || !Number.isFinite(maxDim)) {
+        deps.isLoading.value = false;
+        deps.error.value = 'Heart model has invalid dimensions.';
+        return;
+      }
       deps.baseScale.current = 8 / maxDim;
       heartModel.scale.set(deps.baseScale.current, deps.baseScale.current, deps.baseScale.current);
       heartModel.position.sub(center.clone().multiplyScalar(deps.baseScale.current));
@@ -78,11 +84,19 @@ export function loadHeartModel(
       });
       deps.applyExplode();
       deps.applyMaterialState();
+      deps.isLoading.value = false;
+      dracoLoader.dispose();
     },
-    undefined,
+    (evt) => {
+      // total قد يكون 0 إذا غاب Content-Length — نتجاهل حينها لتجنب NaN
+      if (deps.onProgress && evt.total > 0) {
+        deps.onProgress(Math.min(1, evt.loaded / evt.total));
+      }
+    },
     (err) => {
       deps.isLoading.value = false;
       deps.error.value = `Failed to load heart model from /models/heart-hubmap.glb. (${err instanceof Error ? err.message : String(err)})`;
+      dracoLoader.dispose();
     }
   );
 }

@@ -11,7 +11,7 @@ import LorentzForceParamPanel from '../../../../components/experiment/electromag
 import LorentzForceReadingsPanel from '../../../../components/experiment/electromagnetism/LorentzForceReadingsPanel.vue'
 import LorentzForceDataPanel from '../../../../components/experiment/electromagnetism/LorentzForceDataPanel.vue'
 import LorentzForceGuidePanel from '../../../../components/experiment/electromagnetism/LorentzForceGuidePanel.vue'
-import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
+import LorentzForceHelpModal from '../../../../components/experiment/electromagnetism/LorentzForceHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
@@ -44,7 +44,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen"
     />
 
-    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
+    <LorentzForceHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col">

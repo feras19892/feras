@@ -11,7 +11,7 @@ import MagneticFluxParamPanel from '../../../../components/experiment/electromag
 import MagneticFluxReadingsPanel from '../../../../components/experiment/electromagnetism/MagneticFluxReadingsPanel.vue'
 import MagneticFluxDataPanel from '../../../../components/experiment/electromagnetism/MagneticFluxDataPanel.vue'
 import MagneticFluxGuidePanel from '../../../../components/experiment/electromagnetism/MagneticFluxGuidePanel.vue'
-import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
+import MagneticFluxHelpModal from '../../../../components/experiment/electromagnetism/MagneticFluxHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 
 
@@ -43,7 +43,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen"
     />
 
-    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
+    <MagneticFluxHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col">

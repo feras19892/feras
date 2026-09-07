@@ -19,16 +19,19 @@ export const bodySizeLimit: MiddlewareHandler = async (c, next) => {
     if (reader) {
       let total = 0;
       try {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          total += value.byteLength;
-          if (total > DEFAULT_MAX) {
-            await reader.cancel();
-            return c.json(
-              { success: false, message: 'Request body too large' },
-              413
-            );
+        let done = false;
+        while (!done) {
+          const chunk = await reader.read();
+          done = chunk.done;
+          if (chunk.value) {
+            total += chunk.value.byteLength;
+            if (total > DEFAULT_MAX) {
+              await reader.cancel();
+              return c.json(
+                { success: false, message: 'Request body too large' },
+                413
+              );
+            }
           }
         }
       } catch {

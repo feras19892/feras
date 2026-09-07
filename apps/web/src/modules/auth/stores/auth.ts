@@ -41,12 +41,20 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  watch(user, (u) => {
-    try { localStorage.setItem('auth_user', JSON.stringify(u)); } catch { if (import.meta.env.DEV) console.warn('Failed to persist user') }
+  let userSaveTimer: ReturnType<typeof setTimeout> | null = null;
+  watch(user, () => {
+    if (userSaveTimer) clearTimeout(userSaveTimer);
+    userSaveTimer = setTimeout(() => {
+      try { localStorage.setItem('auth_user', JSON.stringify(user.value)); } catch { if (import.meta.env.DEV) console.warn('Failed to persist user') }
+    }, 300);
   }, { deep: true });
 
-  watch(schoolSession, (s) => {
-    try { if (s) localStorage.setItem('school_session', JSON.stringify(s)); else localStorage.removeItem('school_session'); } catch { if (import.meta.env.DEV) console.warn('Failed to persist school session') }
+  let schoolSaveTimer: ReturnType<typeof setTimeout> | null = null;
+  watch(schoolSession, () => {
+    if (schoolSaveTimer) clearTimeout(schoolSaveTimer);
+    schoolSaveTimer = setTimeout(() => {
+      try { if (schoolSession.value) localStorage.setItem('school_session', JSON.stringify(schoolSession.value)); else localStorage.removeItem('school_session'); } catch { if (import.meta.env.DEV) console.warn('Failed to persist school session') }
+    }, 300);
   }, { deep: true });
 
   const isLoggedIn = computed(() => !!user.value || !!schoolSession.value);
@@ -61,7 +69,11 @@ export const useAuthStore = defineStore('auth', () => {
   const isAdmin = computed(() => role.value === 'admin');
   const isSchool = computed(() => role.value === 'school' || !!schoolSession.value);
 
-  watch([guestMode, guestRole, guestExpiresAt, currentClassId, classes], () => persistGuest(), { deep: true });
+  let guestSaveTimer: ReturnType<typeof setTimeout> | null = null;
+  watch([guestMode, guestRole, guestExpiresAt, currentClassId, classes], () => {
+    if (guestSaveTimer) clearTimeout(guestSaveTimer);
+    guestSaveTimer = setTimeout(() => { persistGuest(); guestSaveTimer = null; }, 300);
+  }, { deep: true });
 
   function persistGuest() {
     localStorage.setItem('auth_guest_mode', JSON.stringify(guestMode.value));

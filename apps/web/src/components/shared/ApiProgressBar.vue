@@ -5,6 +5,7 @@ import { eventBus } from '@/composables/shared/useEventBus'
 const active = ref(false)
 const progress = ref(0)
 let timer: ReturnType<typeof setInterval> | null = null
+let hideTimer: ReturnType<typeof setTimeout> | null = null
 let activeCount = 0
 
 function startProgress() {
@@ -28,9 +29,11 @@ function stopProgress() {
       clearInterval(timer)
       timer = null
     }
-    setTimeout(() => {
+    // FIX: Store setTimeout ID so it can be cleared on unmount
+    hideTimer = setTimeout(() => {
       active.value = false
       progress.value = 0
+      hideTimer = null
     }, 300)
   }
 }
@@ -47,6 +50,7 @@ onUnmounted(() => {
   eventBus.off('api:request-start', onStart)
   eventBus.off('api:request-end', onStop)
   if (timer) clearInterval(timer)
+  if (hideTimer) clearTimeout(hideTimer)
 })
 </script>
 

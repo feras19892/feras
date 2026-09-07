@@ -3,7 +3,7 @@ import { randomInt } from 'crypto';
 import { invalidateSystemSetting } from '../../shared/system-settings.js';
 import { broadcastEvent } from '../sse/event-bus.js';
 
-export async function getAllUsers(page = 1, limit = 50, search?: string, role?: string) {
+export async function getAllUsers(page = 1, limit = 50, search?: string, role?: string, schoolId?: number) {
   const offset = (page - 1) * limit;
   let where = 'WHERE 1=1';
   const params: (string | number)[] = [];
@@ -14,6 +14,10 @@ export async function getAllUsers(page = 1, limit = 50, search?: string, role?: 
   if (role) {
     where += ' AND u.role = ?';
     params.push(role);
+  }
+  if (schoolId) {
+    where += ' AND u.school_id = ?';
+    params.push(schoolId);
   }
   const rows = await db.all(
     `SELECT u.id, u.email, u.name, u.role, u.email_verified_at, u.created_at, u.blocked_at, u.block_reason, u.school_id, s.name as school_name
@@ -90,9 +94,8 @@ export async function getAllTeachers(schoolId?: number) {
 }
 
 export async function deleteUser(userId: number) {
-  // Temporarily disable FK constraints to avoid ordering issues and
-  // NOT NULL constraints (e.g. classes.teacher_id is NOT NULL).
-  await db.run(`PRAGMA foreign_keys = OFF`);
+  // Use transaction with proper CASCADE deletion (foreign_keys = ON)
+  // This ensures data integrity is maintained
   await db.run('BEGIN IMMEDIATE');
   try {
     // Delete all rows that reference this user (both CASCADE and non-CASCADE)
@@ -165,20 +168,33 @@ export async function deleteUser(userId: number) {
   } catch (err) {
     await db.run('ROLLBACK');
     throw err;
-  } finally {
-    await db.run(`PRAGMA foreign_keys = ON`);
   }
   return { success: true };
 }
 
 export async function deleteAllNonAdminUsers() {
-  const before = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users WHERE role != 'admin'`);
-  await db.run(`PRAGMA foreign_keys = OFF`);
+  // Use transaction with proper CASCADE deletion (foreign_keys = ON)
   await db.run('BEGIN IMMEDIATE');
   try {
+    // Delete related records first (child tables)
     await db.run(`DELETE FROM notifications WHERE user_id IN (SELECT id FROM users WHERE role != 'admin')`);
     await db.run(`DELETE FROM subscription_notification_queue WHERE user_id IN (SELECT id FROM users WHERE role != 'admin')`);
     await db.run(`DELETE FROM subscriptions WHERE owner_type = 'user' AND owner_id IN (SELECT id FROM users WHERE role != 'admin')`);
+    // Delete refresh tokens
+    await db.run(`DELETE FROM refresh_tokens WHERE user_id IN (SELECT id FROM users WHERE role != 'admin')`);
+    // Delete email verification codes
+    await db.run(`DELETE FROM email_verification_codes WHERE user_id IN (SELECT id FROM users WHERE role != 'admin')`);
+    // Delete class_students
+    await db.run(`DELETE FROM class_students WHERE student_id IN (SELECT id FROM users WHERE role != 'admin')`);
+    // Delete reports and related data
+    await db.run(`DELETE FROM report_comments WHERE report_id IN (SELECT id FROM experiment_reports WHERE student_id IN (SELECT id FROM users WHERE role != 'admin'))`);
+    await db.run(`DELETE FROM grade_history WHERE report_id IN (SELECT id FROM experiment_reports WHERE student_id IN (SELECT id FROM users WHERE role != 'admin'))`);
+    await db.run(`DELETE FROM experiment_reports WHERE student_id IN (SELECT id FROM users WHERE role != 'admin')`);
+    // Delete classes owned by non-admin users
+    await db.run(`DELETE FROM class_students WHERE class_id IN (SELECT id FROM classes WHERE teacher_id IN (SELECT id FROM users WHERE role != 'admin'))`);
+    await db.run(`DELETE FROM experiment_reports WHERE class_id IN (SELECT id FROM classes WHERE teacher_id IN (SELECT id FROM users WHERE role != 'admin'))`);
+    await db.run(`DELETE FROM classes WHERE teacher_id IN (SELECT id FROM users WHERE role != 'admin')`);
+    // Finally delete the users
     const res = await db.run(`DELETE FROM users WHERE role != 'admin'`);
     await db.run('COMMIT');
     const after = await db.get<{ count: number }>(`SELECT COUNT(*) as count FROM users WHERE role != 'admin'`);
@@ -186,8 +202,6 @@ export async function deleteAllNonAdminUsers() {
   } catch (err) {
     await db.run('ROLLBACK');
     throw err;
-  } finally {
-    await db.run(`PRAGMA foreign_keys = ON`);
   }
 }
 
@@ -196,10 +210,10 @@ export async function updateUserRole(userId: number, role: string) {
   return { success: true };
 }
 
-export async function createUser(name: string, email: string, passwordHash: string, role: string) {
+export async function createUser(name: string, email: string, passwordHash: string, role: string, schoolId?: number) {
   const result = await db.run(
-    `INSERT INTO users (name, email, password_hash, role, email_verified_at) VALUES (?, ?, ?, ?, datetime('now'))`,
-    name, email, passwordHash, role
+    `INSERT INTO users (name, email, password_hash, role, school_id, email_verified_at) VALUES (?, ?, ?, ?, ?, datetime('now'))`,
+    name, email, passwordHash, role, schoolId ?? null
   );
   return { success: true, id: result.lastID };
 }
@@ -318,13 +332,13 @@ export async function updateUserForAdmin(userId: number, data: { name?: string; 
 }
 
 export async function createClassForAdmin(name: string, code: string | undefined, teacherId: number) {
-  const teacher = await db.get(`SELECT id FROM users WHERE id = ? AND role = 'teacher'`, teacherId);
+  const teacher = await db.get<{ id: number; school_id: number | null }>(`SELECT id, school_id FROM users WHERE id = ? AND role = 'teacher'`, teacherId);
   if (!teacher) return { success: false, message: 'المدرس غير موجود' };
 
   const classCode = code || Array.from({ length: 6 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[randomInt(0, 36)]).join('');
   const result = await db.run(
-    `INSERT INTO classes (id, name, code, teacher_id) VALUES (?, ?, ?, ?)`,
-    `cls_${Date.now()}`, name, classCode, teacherId
+    `INSERT INTO classes (id, name, code, teacher_id, school_id) VALUES (?, ?, ?, ?, ?)`,
+    `cls_${Date.now()}`, name, classCode, teacherId, teacher.school_id ?? null
   );
   // تحديث حي: أبلغ المعلم المعيّن فوراً عبر SSE
   broadcastEvent({ type: 'class_created', payload: { class_id: String(result.lastID), name }, targetUserId: teacherId });

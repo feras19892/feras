@@ -1,4 +1,4 @@
-import { db, dbAll, dbGet } from '../../db/index.js';
+import { db, dbAll } from '../../db/index.js';
 import { dispatchEvent } from '../notifications/dispatch.js';
 
 export async function createQuiz(teacherId: number, classId: string | null, title: string, description: string, timeLimit: number, quizType: string = 'quiz', scheduledAt: string | null = null, weight: number = 10) {

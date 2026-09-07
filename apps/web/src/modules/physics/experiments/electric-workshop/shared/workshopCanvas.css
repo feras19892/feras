@@ -218,4 +218,145 @@
   width: 100%;
   accent-color: #3b82f6;
 }
+
+/* ─── Mobile & Tablet Responsive ─── */
+@media (max-width: 768px) {
+  .prop-editor {
+    min-width: auto;
+    max-width: 90vw;
+    padding: 0.8rem;
+    border-radius: 0.4rem;
+  }
+  .pe-header {
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+  }
+  .pe-header h4 {
+    font-size: 0.85rem;
+  }
+  .pe-icon {
+    font-size: 1.1rem;
+  }
+  .pe-section {
+    margin-bottom: 0.5rem;
+  }
+  .pe-label {
+    font-size: 0.65rem;
+  }
+  .pe-input {
+    width: 80px;
+    padding: 0.3rem;
+    font-size: 0.9rem;
+  }
+  .pe-input-row {
+    gap: 0.3rem;
+  }
+  .pe-unit {
+    font-size: 0.7rem;
+  }
+  .rot-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .rot-val {
+    font-size: 0.75rem;
+    min-width: 35px;
+  }
+  .pe-toggle,
+  .pe-reset {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+    min-height: 44px;
+  }
+  .pe-readings {
+    padding: 0.4rem;
+  }
+  .pe-reading-row {
+    font-size: 0.65rem;
+    padding: 0.1rem 0;
+  }
+  .pe-actions {
+    gap: 0.3rem;
+    margin-top: 0.6rem;
+  }
+  .pe-delete,
+  .pe-cancel,
+  .pe-save {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.72rem;
+    min-height: 44px;
+  }
+  .mm-mode-selector {
+    gap: 0.2rem;
+  }
+  .mm-mode-btn {
+    padding: 0.4rem 0.2rem;
+    font-size: 0.6rem;
+    min-height: 44px;
+  }
+  .wire-color-picker {
+    gap: 0.2rem;
+  }
+  .wcp-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .wcp-dot {
+    width: 20px;
+    height: 20px;
+  }
+  .wire-color-btn {
+    padding: 0.4rem 0.5rem;
+    min-height: 44px;
+  }
+  .wc-dot {
+    width: 14px;
+    height: 14px;
+  }
+  .wc-label {
+    font-size: 0.7rem;
+  }
+  .tb-btn {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.7rem;
+    min-height: 44px;
+  }
+  .tb-info {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .prop-editor {
+    max-width: 95vw;
+    padding: 0.6rem;
+  }
+  .pe-input {
+    width: 70px;
+    font-size: 0.85rem;
+  }
+  .pe-header h4 {
+    font-size: 0.8rem;
+  }
+}
+
+/* Touch-friendly: Larger hit areas for touch devices */
+@media (pointer: coarse) {
+  .tb-btn,
+  .rot-btn,
+  .pe-toggle,
+  .pe-reset,
+  .pe-delete,
+  .pe-cancel,
+  .pe-save,
+  .mm-mode-btn,
+  .wire-color-btn,
+  .wcp-btn {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
 /* Danger Visual Overlay */

@@ -85,34 +85,45 @@ export async function createNameRequest(userId: number, requestedName: string): 
   return { success: true };
 }
 
-export async function getPendingNameRequests(teacherId: number): Promise<{ id: number; user_id: number; user_name: string; user_email: string; requested_name: string; created_at: string }[]> {
-  const requests = await db.all<{ id: number; user_id: number; user_name: string; user_email: string; requested_name: string; created_at: string }[]>(
-    `SELECT ncr.id, ncr.user_id, u.name as user_name, u.email as user_email, ncr.requested_name, ncr.created_at
-     FROM name_change_requests ncr
-     JOIN users u ON ncr.user_id = u.id
-     JOIN class_students cs ON cs.student_id = ncr.user_id
-     JOIN classes c ON c.id = cs.class_id
-     WHERE ncr.status = 'pending' AND c.teacher_id = ?
-     GROUP BY ncr.id
-     ORDER BY ncr.created_at DESC`,
-    teacherId,
-  );
+export async function getPendingNameRequests(teacherId: number, isAdmin = false): Promise<{ id: number; user_id: number; user_name: string; user_email: string; requested_name: string; created_at: string }[]> {
+  // الأدمن يرى كل الطلبات المعلّقة؛ المعلم يرى طلاب فصوله فقط (عزل بيانات)
+  const requests = isAdmin
+    ? await db.all<{ id: number; user_id: number; user_name: string; user_email: string; requested_name: string; created_at: string }[]>(
+        `SELECT ncr.id, ncr.user_id, u.name as user_name, u.email as user_email, ncr.requested_name, ncr.created_at
+         FROM name_change_requests ncr
+         JOIN users u ON ncr.user_id = u.id
+         WHERE ncr.status = 'pending'
+         ORDER BY ncr.created_at DESC`,
+      )
+    : await db.all<{ id: number; user_id: number; user_name: string; user_email: string; requested_name: string; created_at: string }[]>(
+        `SELECT ncr.id, ncr.user_id, u.name as user_name, u.email as user_email, ncr.requested_name, ncr.created_at
+         FROM name_change_requests ncr
+         JOIN users u ON ncr.user_id = u.id
+         JOIN class_students cs ON cs.student_id = ncr.user_id
+         JOIN classes c ON c.id = cs.class_id
+         WHERE ncr.status = 'pending' AND c.teacher_id = ?
+         GROUP BY ncr.id
+         ORDER BY ncr.created_at DESC`,
+        teacherId,
+      );
   return requests;
 }
 
-export async function resolveNameRequest(requestId: number, teacherId: number, approved: boolean): Promise<{ success: boolean; message?: string }> {
+export async function resolveNameRequest(requestId: number, teacherId: number, approved: boolean, isAdmin = false): Promise<{ success: boolean; message?: string }> {
   const req = await db.get<{ id: number; user_id: number; requested_name: string; status: string }>(
     'SELECT id, user_id, requested_name, status FROM name_change_requests WHERE id = ?', requestId,
   );
   if (!req) return { success: false, message: 'الطلب غير موجود' };
   if (req.status !== 'pending') return { success: false, message: 'تمت معالجة هذا الطلب بالفعل' };
 
-  // Verify this teacher owns a class that the student belongs to
-  const owns = await db.get<{ cnt: number }>(
-    `SELECT COUNT(*) as cnt FROM class_students cs JOIN classes c ON c.id = cs.class_id WHERE cs.student_id = ? AND c.teacher_id = ?`,
-    req.user_id, teacherId,
-  );
-  if (!owns || owns.cnt === 0) return { success: false, message: 'غير مصرح — هذا الطالب ليس في فصولك' };
+  // الأدمن مصرّح بمعالجة أي طلب؛ المعلم يحتاج ملكية فصل الطالب (عزل بيانات)
+  if (!isAdmin) {
+    const owns = await db.get<{ cnt: number }>(
+      `SELECT COUNT(*) as cnt FROM class_students cs JOIN classes c ON c.id = cs.class_id WHERE cs.student_id = ? AND c.teacher_id = ?`,
+      req.user_id, teacherId,
+    );
+    if (!owns || owns.cnt === 0) return { success: false, message: 'غير مصرح — هذا الطالب ليس في فصولك' };
+  }
 
   const status = approved ? 'approved' : 'rejected';
   await db.run('BEGIN IMMEDIATE');

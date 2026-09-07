@@ -88,8 +88,6 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '@/composables/useI18n';
-const { direction } = useI18n();
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '@/modules/auth/stores/auth'
 import { useStudentStore } from '@/stores/student.store'

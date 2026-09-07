@@ -37,3 +37,8 @@ export const submitAnswersSchema = z.object({
     }),
   ).min(1),
 });
+
+export const gradeAnswerSchema = z.object({
+  teacher_score: z.number().int().min(0).max(100),
+  feedback: z.string().max(1000).optional(),
+});

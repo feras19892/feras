@@ -4,7 +4,7 @@ function escapeCsvValue(v: unknown): string {
   if (v === null || v === undefined) return '';
   let s = String(v).replace(/"/g, '""');
   if (/^[=+\-@\t\r]/.test(s)) {
-    s = `\'${s}`;
+    s = `'${s}`;
   }
   if (s.includes(',') || s.includes('\n') || s.includes('\r')) {
     return `"${s}"`;
@@ -22,8 +22,10 @@ function toCsv(rows: any[], columns: string[]) {
   return lines.join('\n');
 }
 
-export async function exportUsers() {
-  const rows = await db.all(`SELECT id, name, email, role, created_at, email_verified_at FROM users ORDER BY id`);
+export async function exportUsers(adminSchoolId?: number) {
+  const rows = adminSchoolId
+    ? await db.all(`SELECT id, name, email, role, created_at, email_verified_at FROM users WHERE school_id = ? ORDER BY id`, adminSchoolId)
+    : await db.all(`SELECT id, name, email, role, created_at, email_verified_at FROM users ORDER BY id`);
   return toCsv(rows, ['id', 'name', 'email', 'role', 'created_at', 'email_verified_at']);
 }
 
@@ -48,11 +50,14 @@ export async function exportReports(adminSchoolId?: number) {
   return toCsv(rows, ['id', 'student_name', 'experiment_name', 'class_name', 'teacher_name', 'status', 'grade', 'submitted_at', 'graded_at']);
 }
 
-export async function exportClasses() {
+export async function exportClasses(adminSchoolId?: number) {
+  const where = adminSchoolId ? `WHERE c.school_id = ?` : '';
+  const params: number[] = adminSchoolId ? [adminSchoolId] : [];
   const rows = await db.all(
     `SELECT c.id, c.name, c.code, u.name as teacher_name, c.created_at,
      (SELECT COUNT(*) FROM class_students cs WHERE cs.class_id = c.id) as student_count
-     FROM classes c JOIN users u ON c.teacher_id = u.id ORDER BY c.created_at DESC`
+     FROM classes c JOIN users u ON c.teacher_id = u.id ${where} ORDER BY c.created_at DESC`,
+    ...params,
   );
   return toCsv(rows, ['id', 'name', 'code', 'teacher_name', 'student_count', 'created_at']);
 }

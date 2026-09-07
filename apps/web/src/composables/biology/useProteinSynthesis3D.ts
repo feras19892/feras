@@ -27,7 +27,7 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
   const currentStageIndex = ref(0);
   const error = ref<string | null>(null);
   const isLoading = ref(true);
-  const autoRotate = ref(true);
+  const autoRotate = ref(false);
   let renderer: THREE.WebGLRenderer | null = null;
   let scene: THREE.Scene | null = null;
   let camera: THREE.PerspectiveCamera | null = null;
@@ -163,7 +163,7 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
     controls.dampingFactor = 0.08;
     controls.minDistance = 4;
     controls.maxDistance = 25;
-    controls.autoRotate = true;
+    controls.autoRotate = false;
     controls.autoRotateSpeed = 0.3;
     controls.saveState();
 
@@ -226,9 +226,21 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
     if (!containerRef.value || !camera || !renderer) return;
     const width = containerRef.value.clientWidth;
     const height = containerRef.value.clientHeight;
+    if (width === 0 || height === 0) return;
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
+  };
+
+  // لقطة شاشة للتقرير — نرسم إطاراً طازجاً قبل الالتقاط
+  const screenshot = (): string | null => {
+    if (!renderer || !scene || !camera) return null;
+    try {
+      renderer.render(scene, camera);
+      return renderer.domElement.toDataURL('image/png');
+    } catch {
+      return null;
+    }
   };
 
   const setStage = (index: number): void => {
@@ -246,9 +258,9 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
 
   const resetAll = (): void => {
     setStage(0);
-    autoRotate.value = true;
+    autoRotate.value = false;
     if (controls) {
-      controls.autoRotate = true;
+      controls.autoRotate = false;
       controls.reset();
     }
   };
@@ -279,5 +291,6 @@ export function useProteinSynthesis3D(containerRef: Ref<HTMLDivElement | null>) 
     toggleAutoRotate,
     resetCamera,
     resetAll,
+    screenshot,
   };
 }

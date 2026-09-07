@@ -1,11 +1,14 @@
 import { db } from '../../db/index.js';
 import { dispatchEvent } from '../notifications/dispatch.js';
+import { broadcastEvent } from '../sse/event-bus.js';
 import { scheduleForSubscription, purgePendingForSubscription } from '../notifications/queue.js';
 import { getActiveSubscription, getSubscriptionById } from '../subscriptions/services.js';
 
-export async function getUserFullProfile(userId: number) {
-  const user = await db.get(`SELECT id, name, email, role, email_verified_at, created_at, blocked_at, block_reason, school_id FROM users WHERE id = ?`, userId);
+export async function getUserFullProfile(userId: number, adminSchoolId?: number) {
+  const user = await db.get<{ id: number; name: string; email: string; role: string; email_verified_at: string | null; created_at: string; blocked_at: string | null; block_reason: string | null; school_id: number | null }>(`SELECT id, name, email, role, email_verified_at, created_at, blocked_at, block_reason, school_id FROM users WHERE id = ?`, userId);
   if (!user) return null;
+  // School-scoped admins may only view users within their own school.
+  if (adminSchoolId && user.school_id !== adminSchoolId) return null;
 
   const school = user.school_id ? await db.get<{ id: number; name: string }>(`SELECT id, name FROM schools WHERE id = ?`, user.school_id) : null;
   const lastLogin = await db.get<{ login_at: string }>(`SELECT login_at FROM session_log WHERE user_id = ? ORDER BY login_at DESC LIMIT 1`, userId);
@@ -70,6 +73,7 @@ export async function banUser(userId: number, reason: string, adminId: number, a
     actorRole: 'admin',
     payload: { userId, reason },
   });
+  broadcastEvent({ type: 'user_banned', payload: { user_id: userId }, targetUserId: userId });
   return { success: true };
 }
 
@@ -82,6 +86,7 @@ export async function unbanUser(userId: number, adminId: number, adminName: stri
     actorRole: 'admin',
     payload: { userId },
   });
+  broadcastEvent({ type: 'user_unbanned', payload: { user_id: userId }, targetUserId: userId });
   return { success: true };
 }
 

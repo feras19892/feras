@@ -1,11 +1,10 @@
-import { db } from '../../db/index.js';
 import { createNotification, createSchoolNotification } from './services.js';
 import { logActivity } from '../activity/service.js';
 import {
   type Recipient,
   getTeacherForClass, getSchoolForClass, getStudentsForClass,
   getAllAdmins, getAllUsers, getAllSchools, getUsersForSchool,
-  getUserSchoolId, getReportAuthor,
+  getUserSchoolId,
 } from './dispatch-helpers.js';
 
 export type NotificationEventType =
@@ -56,8 +55,6 @@ export interface DispatchEvent {
   actorRole: 'student' | 'teacher' | 'school' | 'admin';
   payload?: DispatchPayload;
 }
-
-type _Recipient = Recipient;
 
 // ─── Build notification text ───
 

@@ -20,7 +20,7 @@ app.post('/report', adminAuthMiddleware, zValidator('json', archiveReportSchema)
   const body = c.req.valid('json');
 
   try {
-    const result = await svc.archiveReport(body.report_id, user.id, body.reason);
+    const result = await svc.archiveReport(body.report_id, user.id, body.reason, user.school_id ?? undefined);
     return c.json({ success: true, id: result.id }, 201);
   } catch (err: any) {
     if (process.env.NODE_ENV !== 'production') console.error('archiveReport error:', err);
@@ -31,11 +31,17 @@ app.post('/report', adminAuthMiddleware, zValidator('json', archiveReportSchema)
 // Get archived reports
 app.get('/reports', async (c) => {
   const user = c.get('user');
-  const userId = user.role === 'admin' ? undefined : user.id;
   const classId = c.req.query('class_id') ? Number(c.req.query('class_id')) : undefined;
 
+  const filters: Parameters<typeof svc.getArchivedReports>[0] = { classId };
+  if (user.role === 'student') filters.studentId = user.id;
+  else if (user.role === 'teacher') filters.teacherId = user.id;
+  else if (user.role === 'school') filters.schoolId = user.id;
+  else if (user.role === 'admin') filters.schoolId = user.school_id ?? undefined;
+  else return c.json({ success: true, reports: [] });
+
   try {
-    const reports = await svc.getArchivedReports(userId, classId);
+    const reports = await svc.getArchivedReports(filters);
     return c.json({ success: true, reports });
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') console.error('getArchivedReports error:', err);
@@ -46,9 +52,10 @@ app.get('/reports', async (c) => {
 // Restore archived report (admin only)
 app.post('/report/:id/restore', adminAuthMiddleware, async (c) => {
   const id = Number(c.req.param('id'));
+  const user = c.get('user');
 
   try {
-    await svc.restoreReport(id);
+    await svc.restoreReport(id, user.school_id ?? undefined);
     return c.json({ success: true, message: 'Report restored successfully' });
   } catch (err: any) {
     if (process.env.NODE_ENV !== 'production') console.error('restoreReport error:', err);
@@ -67,7 +74,7 @@ app.post('/class', adminAuthMiddleware, zValidator('json', archiveClassSchema), 
   const body = c.req.valid('json');
 
   try {
-    const result = await svc.archiveClass(body.class_id, user.id, body.reason);
+    const result = await svc.archiveClass(body.class_id, user.id, body.reason, user.school_id ?? undefined);
     return c.json({ success: true, id: result.id }, 201);
   } catch (err: any) {
     if (process.env.NODE_ENV !== 'production') console.error('archiveClass error:', err);
@@ -78,8 +85,12 @@ app.post('/class', adminAuthMiddleware, zValidator('json', archiveClassSchema), 
 // Get archived classes
 app.get('/classes', async (c) => {
   const user = c.get('user');
-  const teacherId = user.role === 'admin' ? undefined : user.id;
-  const schoolId = user.role === 'school' ? user.id : undefined;
+  let teacherId: number | undefined;
+  let schoolId: number | undefined;
+  if (user.role === 'teacher') teacherId = user.id;
+  else if (user.role === 'school') schoolId = user.id;
+  else if (user.role === 'admin') schoolId = user.school_id ?? undefined;
+  else return c.json({ success: true, classes: [] });
 
   try {
     const classes = await svc.getArchivedClasses(teacherId, schoolId);
@@ -93,9 +104,10 @@ app.get('/classes', async (c) => {
 // Restore archived class (admin only)
 app.post('/class/:id/restore', adminAuthMiddleware, async (c) => {
   const id = Number(c.req.param('id'));
+  const user = c.get('user');
 
   try {
-    await svc.restoreClass(id);
+    await svc.restoreClass(id, user.school_id ?? undefined);
     return c.json({ success: true, message: 'Class restored successfully' });
   } catch (err: any) {
     if (process.env.NODE_ENV !== 'production') console.error('restoreClass error:', err);

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from '@/composables/useI18n';
-const { direction } = useI18n();
 import type { SchoolClassBar, SchoolLinePoint } from '@/composables/school/useSchoolOverview'
 import type { TeacherEvaluation, OutstandingStudent } from '@/services/school-reports.service'
 
@@ -34,7 +32,7 @@ defineProps<{
     </div>
 
     <div class="sh-panel line">
-      <h3 class="sh-panel__title">التقارير خلال آخر 7 أيام</h3>
+      <h3 class="sh-panel__title">تقارير اليوم حسب الفصل</h3>
       <svg v-if="lineData.length" class="line-chart" viewBox="0 0 280 100" preserveAspectRatio="none">
         <line v-for="(g, i) in gridLines" :key="i" x1="0" :y1="g" x2="280" :y2="g" stroke="var(--as-border)" stroke-width="0.5" />
         <polyline fill="none" :points="linePoints" stroke="var(--as-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />

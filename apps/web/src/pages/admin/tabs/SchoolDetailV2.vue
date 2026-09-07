@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onActivated, watch } from 'vue'
 import { useAdminStore } from '@/stores/admin.store'
 import { useSelectedSchool } from '@/composables/shared/useSelectedSchool'
 import { eventBus } from '@/composables/shared/useEventBus'
@@ -73,7 +73,9 @@ const school = computed<any>(() => (store.activeSchools as any[]).find((s: any) 
 function goBack() { clearSelectedSchool(); eventBus.emit('admin:switch-tab', { tabId: 'schools' }) }
 function goToTab(tabId: string) { eventBus.emit('admin:switch-tab', { tabId }) }
 async function load() { await store.fetchSchools() }
-onMounted(load)
+// KeepAlive: أعد التحميل عند العودة للتبويب وعند تغيّر المدرسة المختارة
+onActivated(load)
+watch(selectedSchoolId, () => { if (selectedSchoolId.value) load() })
 </script>
 
 <style scoped>

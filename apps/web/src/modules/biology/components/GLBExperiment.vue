@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n';
-const { t } = useI18n();
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import * as THREE from 'three';
 
 import { useGLBModel } from '../../../composables/biology/useGLBModel';
+import { useBiologyTracking } from '../../../composables/biology/useBiologyTracking';
+import { useFullscreen } from '../../../composables/shared/useFullscreen';
 import type { ModelPart } from '../../../composables/biology/useGLBModel';
 import type { HotspotState } from '../../../types/biology.types';
 import InfoPanel from './InfoPanel.vue';
+import BiologyGoals from './BiologyGoals.vue';
 import { useRoute } from 'vue-router';
 import BiologyReportButton from './BiologyReportButton.vue';
+import BiologyHelpModal from '../../../components/experiment/biology/BiologyHelpModal.vue';
 import { resolveExperimentId } from '../../../composables/useExperimentId';
+
+const { t } = useI18n();
 
 
 
@@ -36,12 +41,14 @@ const containerRef = ref<HTMLDivElement | null>(null);
 const {
   error,
   isLoading,
+  loadProgress,
   selectedPartId,
   hoveredPartId,
   xRayMode,
   crossSectionMode,
   crossSectionOffset,
   autoRotate,
+  explodeFactor,
   highlight,
   setHovered,
   resetCamera,
@@ -52,7 +59,21 @@ const {
   toggleAutoRotate,
   screenshot,
   resetAll,
+  setExplodeFactor,
 } = useGLBModel(containerRef, props.modelPath, props.parts ?? [], props.modelGenerator, props.modelEnhancer);
+
+// تتبّع استكشاف الطالب لتغذية التقرير الحقيقي
+const tracking = useBiologyTracking();
+watch(selectedPartId, (id) => {
+  if (!id) return;
+  const part = (props.parts ?? []).find((p) => p.id === id);
+  if (part) tracking.trackPart(id, t(part.nameKey));
+});
+watch(xRayMode, (v) => { if (v) tracking.trackTool('x-ray'); });
+watch(crossSectionMode, (v) => { if (v) tracking.trackTool('cross-section'); });
+watch(explodeFactor, (v) => { if (v > 0) tracking.trackTool('explode'); });
+
+const progressPercent = computed(() => Math.min(100, Math.round(loadProgress.value * 100)));
 
 const goBack = (): void => {
   router.push(props.backRoute);
@@ -80,6 +101,18 @@ const markerLabels = computed(() =>
   Object.fromEntries((props.parts ?? []).map((p) => [p.id, t(p.nameKey)])),
 );
 
+const exploredPartIds = computed(() => new Set(tracking.exploredParts.value.map((p) => p.id)));
+const goals = computed(() => [
+  {
+    id: 'exploreAll',
+    label: t('biology.goalExploreAll'),
+    completed: props.parts ? exploredPartIds.value.size >= props.parts.length : false,
+  },
+  { id: 'xRay', label: t('biology.goalUseXRay'), completed: xRayMode.value },
+  { id: 'crossSection', label: t('biology.goalUseCrossSection'), completed: crossSectionMode.value },
+  { id: 'explode', label: t('biology.goalUseExplode'), completed: explodeFactor.value > 0 },
+]);
+
 const handleCanvasClick = (event: MouseEvent): void => {
   const id = pickPart(event.clientX, event.clientY);
   if (id) select(id);
@@ -94,34 +127,24 @@ const onCrossSectionInput = (event: Event): void => {
   setCrossSectionOffset(Number((event.target as HTMLInputElement).value));
 };
 
-const downloadScreenshot = (): void => {
-  const dataUrl = screenshot();
-  if (!dataUrl) return;
+const onExplodeInput = (event: Event): void => {
+  setExplodeFactor(Number((event.target as HTMLInputElement).value));
+};
+
+function downloadScreenshot(): void {
+  const data = screenshot();
+  if (!data) return;
   const link = document.createElement('a');
-  link.href = dataUrl;
-  link.download = 'anatomy-screenshot.png';
+  link.href = data;
+  link.download = `${experimentId.value ?? 'biology'}-screenshot.png`;
   document.body.appendChild(link);
   link.click();
   link.remove();
-};
+}
 
-const isFullscreen = ref(false);
+const { isFullscreen, toggleFullscreen } = useFullscreen();
 
-const toggleFullscreen = async (): Promise<void> => {
-  const el = document.querySelector('.experiment-page') as HTMLElement | null;
-  if (!el) return;
-  try {
-    if (!document.fullscreenElement) {
-      await el.requestFullscreen();
-      isFullscreen.value = true;
-    } else {
-      await document.exitFullscreen();
-      isFullscreen.value = false;
-    }
-  } catch {
-    isFullscreen.value = !!document.fullscreenElement;
-  }
-};
+const helpOpen = ref(false);
 </script>
 
 <template>
@@ -137,7 +160,19 @@ const toggleFullscreen = async (): Promise<void> => {
         <h1 class="experiment-title">{{ t(props.titleKey) }}</h1>
         <p class="experiment-subtitle">{{ t(props.subtitleKey) }}</p>
       </div>
-      <BiologyReportButton :experiment-id="experimentId" :experiment-name="t(props.titleKey)" />
+      <BiologyReportButton
+        :experiment-id="experimentId"
+        :experiment-name="t(props.titleKey)"
+        :tracking="tracking"
+        :get-screenshot="screenshot"
+      />
+      <button class="header-action" :title="t('biology.bioHelpTitle')" @click="helpOpen = true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      </button>
       <button class="header-action" @click="toggleFullscreen">
         <svg v-if="!isFullscreen" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
@@ -162,6 +197,7 @@ const toggleFullscreen = async (): Promise<void> => {
           </div>
           <p>{{ t('biology.selectPartHint') }}</p>
         </div>
+        <BiologyGoals v-if="goals.length" :title="t('biology.goalsTitle')" :goals="goals" />
       </aside>
 
       <section
@@ -173,6 +209,10 @@ const toggleFullscreen = async (): Promise<void> => {
         <div v-if="isLoading" class="loading-overlay" role="status">
           <div class="spinner" />
           <span>{{ t('biology.loadingModel') }}</span>
+          <div class="load-progress" aria-hidden="true">
+            <div class="load-progress__bar" :style="{ width: progressPercent + '%' }" />
+          </div>
+          <span class="load-progress__label">{{ progressPercent }}%</span>
         </div>
         <div v-if="error" class="webgl-error" role="alert">{{ error }}</div>
 
@@ -252,6 +292,18 @@ const toggleFullscreen = async (): Promise<void> => {
             @input="onCrossSectionInput"
           />
         </div>
+
+        <div class="floating-slider">
+          <label>{{ t('biology.explodeLabel') }}</label>
+          <input
+            type="range"
+            min="0"
+            max="1.5"
+            step="0.05"
+            :value="explodeFactor"
+            @input="onExplodeInput"
+          />
+        </div>
       </section>
 
       <aside v-if="parts && parts.length" class="side-panel parts-side">
@@ -284,7 +336,32 @@ const toggleFullscreen = async (): Promise<void> => {
         </div>
       </aside>
     </main>
+    <BiologyHelpModal
+      :open="helpOpen"
+      :context="{ topic: experimentId ?? '', titleKey: props.titleKey, subtitleKey: props.subtitleKey, parts: props.parts }"
+      @close="helpOpen = false"
+    />
   </div>
 </template>
 
 <style scoped src="./glb-experiment.css"></style>
+
+<style scoped>
+.load-progress {
+  width: 220px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.25);
+  overflow: hidden;
+}
+.load-progress__bar {
+  height: 100%;
+  border-radius: 999px;
+  background: #4ade80;
+  transition: width 0.2s ease;
+}
+.load-progress__label {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+</style>

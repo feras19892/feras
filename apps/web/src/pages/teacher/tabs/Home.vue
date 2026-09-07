@@ -103,8 +103,6 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '@/composables/useI18n';
-const { direction } = useI18n();
 import { useTeacherHome } from '@/composables/teacher/useTeacherHome'
 import ErrorState from '@/components/shared/ErrorState.vue'
 import SkeletonLoader from '@/components/shared/SkeletonLoader.vue'

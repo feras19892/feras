@@ -47,12 +47,14 @@ export function useCollisionTrials(params: CollisionParams, sim: CollisionState)
       .map((tr) => `${tr.id},${tr.m1},${tr.m2},${tr.v1i},${tr.v2i},${tr.e},${tr.v1f},${tr.v2f},${tr.Pi},${tr.Pf},${tr.KEi},${tr.KEf},${tr.lossPercent},${tr.timestamp}`)
       .join('\n')
     const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
+    link.href = url
     link.download = `collision_trials_${Date.now()}.csv`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+    setTimeout(() => URL.revokeObjectURL(url), 0)
   }
 
   const trialStats = computed(() => {

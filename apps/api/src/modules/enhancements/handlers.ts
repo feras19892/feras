@@ -40,6 +40,21 @@ enhRoutes.post('/penalties', zValidator('json', penaltySchema), async (c) => {
     const owns = await verifyTeacherOwnsStudent(user.id, body.student_id);
     if (!owns) return c.json({ success: false, message: 'غير مصرح — هذا الطالب ليس في فصولك' }, 403);
   }
+  // If a class is referenced, the caller must actually own/scope it
+  if (body.class_id) {
+    const cls = await db.get<{ teacher_id: number; school_id: number | null }>(
+      `SELECT c.teacher_id, COALESCE(c.school_id, t.school_id) as school_id
+       FROM classes c LEFT JOIN users t ON c.teacher_id = t.id WHERE c.id = ?`,
+      body.class_id,
+    );
+    if (!cls) return c.json({ success: false, message: 'الفصل غير موجود' }, 404);
+    if (user.role === 'teacher' && cls.teacher_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح — هذا الفصل ليس من فصولك' }, 403);
+    }
+    if (user.role === 'school' && cls.school_id !== user.id) {
+      return c.json({ success: false, message: 'غير مصرح — هذا الفصل لا ينتمي لمدرستك' }, 403);
+    }
+  }
   try {
     const penalty = await svc.createPenalty(body.student_id, user.id, body.class_id || null, body.type, body.reason, body.points);
     await dispatchEvent({

@@ -90,15 +90,31 @@ document.documentElement.setAttribute('data-theme', preferences.prefs.theme);
     );
   }
 
+  // عند فشل استيراد chunk ديناميكي (نشر إصدار جديد أثناء فتح التطبيق)
+  // أعد تحميل الصفحة مرة واحدة للحصول على النسخة الحديثة
+  window.addEventListener('vite:preloadError', () => {
+    if (!sessionStorage.getItem('sw_chunk_reload')) {
+      sessionStorage.setItem('sw_chunk_reload', '1');
+      window.location.reload();
+    }
+  });
+  window.addEventListener('load', () => sessionStorage.removeItem('sw_chunk_reload'));
+
+  // تسجيل Service Worker للدعم بدون إنترنت وتحسين الأداء على الموبايل
   if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-    // أزل أي خدمة عامل قديمة من النشر السابق (كانت تسبب تحذير preload و cross-world mismatch)
-    // مع hash mode لا حاجة لـ SW — المتصفح يدير كل المسارات داخل التطبيق
     try {
+      // إزالة أي تسجيلات قديمة أولاً
       const registrations = await navigator.serviceWorker.getRegistrations();
       for (const reg of registrations) {
         await reg.unregister();
       }
-    } catch { /* ignore */ }
-    // نلغي تسجيل SW — ملف /sw.js غير موجود والـ hash mode لا يحتاجه
+      // تسجيل Service Worker الجديد
+      const registration = await navigator.serviceWorker.register('/sw.js', {
+        scope: '/',
+      });
+      console.log('[SW] Service Worker registered successfully:', registration.scope);
+    } catch (error) {
+      console.warn('[SW] Service Worker registration failed:', error);
+    }
   }
 })();

@@ -23,6 +23,7 @@ const emit = defineEmits<{
   resetLab: [];
   showReport: [];
   goBack: [];
+  toggleHelp: [];
 }>();
 </script>
 
@@ -31,6 +32,9 @@ const emit = defineEmits<{
     <div class="panel-header">
       <span>{{ t('chemistryLab.infoPanel') }}</span>
       <div class="header-buttons">
+        <button class="help-btn" @click="emit('toggleHelp')" :title="t('chemistry.chemHelpTitle')" :aria-label="t('chemistry.chemHelpTitle')">
+          ?
+        </button>
         <button class="back-btn" @click="emit('goBack')" :title="t('experiments.back')">
           ← {{ t('experiments.back') }}
         </button>
@@ -75,6 +79,14 @@ const emit = defineEmits<{
   transition: all 0.2s;
 }
 .back-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
+.help-btn {
+  width: 1.8rem; height: 1.8rem; border-radius: 0.4rem;
+  border: 1px solid #cbd5e1; background: rgba(255,255,255,0.9);
+  color: #475569; cursor: pointer; font-family: inherit; font-size: 0.8rem;
+  font-weight: 700; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.help-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
 .reset-btn {
   padding: 0.35rem 0.7rem; border-radius: 0.4rem;
   border: none; background: linear-gradient(135deg, #ef4444, #dc2626);

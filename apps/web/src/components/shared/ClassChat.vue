@@ -78,6 +78,10 @@ function playNotificationSound() {
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3)
     osc.start()
     osc.stop(ctx.currentTime + 0.3)
+    // Close AudioContext after sound finishes to prevent memory leak
+    osc.onended = () => {
+      ctx.close().catch(() => {})
+    }
   } catch { /* ignore */ }
 }
 

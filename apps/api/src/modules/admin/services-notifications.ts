@@ -94,7 +94,7 @@ export async function sendAdminNotification(input: AdminNotificationInput): Prom
         logId,
       );
       if (priority === 'immediate') {
-        try { pushToUser(userId, 'notification', { title: input.title, message: input.message, priority, admin_batch_id: logId }); } catch {}
+        try { pushToUser(userId, 'notification', { title: input.title, message: input.message, priority, admin_batch_id: logId }); } catch { /* best-effort realtime push */ }
       }
     }
     await db.run('COMMIT');

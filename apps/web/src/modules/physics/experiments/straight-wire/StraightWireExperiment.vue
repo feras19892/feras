@@ -12,7 +12,7 @@ import StraightWireReadingsPanel from '../../../../components/experiment/electro
 import StraightWireDataPanel from '../../../../components/experiment/electromagnetism/StraightWireDataPanel.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import StraightWireGuidePanel from '../../../../components/experiment/electromagnetism/StraightWireGuidePanel.vue'
-import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
+import StraightWireHelpModal from '../../../../components/experiment/electromagnetism/StraightWireHelpModal.vue'
 import { ref } from 'vue'
 
 
@@ -44,7 +44,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen"
     />
 
-    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
+    <StraightWireHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col">

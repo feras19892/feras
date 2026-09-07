@@ -176,8 +176,8 @@ export const adminAuthMiddleware: MiddlewareHandler = async (c, next) => {
   try {
     const payload = await verifyAccessToken(token);
     if (payload.role !== 'admin') return c.json({ success: false, message: 'مطلوب صلاحية أدمن' }, 403);
-    const admin = await db.get<{ id: number; name: string; email: string; blocked_at: string | null; block_until: string | null }>(
-      'SELECT id, name, email, blocked_at, block_until FROM users WHERE id = ?', Number(payload.sub),
+    const admin = await db.get<{ id: number; name: string; email: string; school_id: number | null; blocked_at: string | null; block_until: string | null }>(
+      'SELECT id, name, email, school_id, blocked_at, block_until FROM users WHERE id = ?', Number(payload.sub),
     );
     if (!admin) return c.json({ success: false, message: 'الأدمن غير موجود' }, 401);
     if (admin.blocked_at) {
@@ -186,7 +186,7 @@ export const adminAuthMiddleware: MiddlewareHandler = async (c, next) => {
         return c.json({ success: false, message: 'الحساب محظور' }, 403);
       }
     }
-    c.set('user', { id: admin.id, name: admin.name, email: admin.email, role: 'admin' } as User);
+    c.set('user', { id: admin.id, name: admin.name, email: admin.email, role: 'admin', school_id: admin.school_id ?? undefined } as User);
     await next();
   } catch {
     return c.json({ success: false, message: 'رمز غير صالح أو منتهي الصلاحية' }, 401);

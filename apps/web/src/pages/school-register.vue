@@ -41,8 +41,8 @@ async function handleRegister() {
     formError.value = t('auth.errors.passwordsMismatch');
     return;
   }
-  if (password.value.length < 8) {
-    formError.value = t('auth.errors.passwordTooShort');
+  if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,128}$/.test(password.value)) {
+    formError.value = t('auth.errors.passwordWeak', 'كلمة المرور يجب أن تكون 8 أحرف على الأقل وتتضمن حرفاً كبيراً وحرفاً صغيراً ورقماً');
     return;
   }
   if (!agreedToTerms.value) {

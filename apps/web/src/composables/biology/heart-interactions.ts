@@ -26,6 +26,7 @@ export function setupInteractions(deps: InteractionDeps): {
 } {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
+  const auxPos = new THREE.Vector3();
 
   const updatePointer = (event: PointerEvent): void => {
     const rect = deps.renderer.domElement.getBoundingClientRect();
@@ -76,7 +77,8 @@ export function setupInteractions(deps: InteractionDeps): {
       if (particles.length) {
         for (const particle of particles) {
           const t = (elapsed * particle.speed + particle.offset) % 1;
-          particle.mesh.position.copy(particle.curve.getPointAt(t));
+          particle.curve.getPointAt(t, auxPos);
+          particle.mesh.position.copy(auxPos);
         }
       }
     }

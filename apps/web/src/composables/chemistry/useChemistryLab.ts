@@ -170,8 +170,35 @@ export function setupInitialLabLayout(): void {
 }
 
 // ================== WATCHER ==================
-watch([items, liquidMap, buretteMap, pipetteMap, sepFunnelMap, pourFlowMap, tiltAngleMap, phProbeTipMap, solidMap, stopperMap, receivingMap], saveSessionDebounced, { deep: true });
-watch([burnerMap, balanceTareMap, containerTareMap, simSpeed, itemZoomMap, rackSlotsMap, retortStandMap, beakerClampMap, hotPlateMap, woodenBaseMap], saveSessionDebounced);
+function sessionSnapshot() {
+  return {
+    items: items.value,
+    liquids: { ...liquidMap },
+    burettes: { ...buretteMap },
+    pipettes: { ...pipetteMap },
+    sepFunnels: { ...sepFunnelMap },
+    burners: { ...burnerMap },
+    balanceTares: { ...balanceTareMap },
+    containerTares: { ...containerTareMap },
+    simSpeed: simSpeed.value,
+    itemZooms: { ...itemZoomMap },
+    phProbeTips: { ...phProbeTipMap },
+    solids: { ...solidMap },
+    stoppers: { ...stopperMap },
+    pourFlows: { ...pourFlowMap },
+    tiltAngles: { ...tiltAngleMap },
+    rackSlots: { ...rackSlotsMap },
+    buretteInitialVolumes: { ...buretteInitialVolumeMap },
+    buretteTotalConsumeds: { ...buretteTotalConsumedMap },
+    buretteConsumedThisRefills: { ...buretteConsumedThisRefill },
+    hasSelectedChemicals: { ...hasSelectedChemicalMap },
+    beakerClamps: { ...beakerClampMap },
+    hotPlates: { ...hotPlateMap },
+    woodenBases: { ...woodenBaseMap },
+    retortStands: { ...retortStandMap },
+  };
+}
+watch(() => JSON.stringify(sessionSnapshot()), saveSessionDebounced);
 
 // ================== EXPORT STATE ==================
 export function useChemistryLab() {

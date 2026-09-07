@@ -15,7 +15,7 @@ export const loginSchema = z.object({
 
 export const registerSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(1),
+  password: passwordComplexity,
   name: z.string().min(2),
   role: z.enum(['student', 'teacher']).optional().default('student'),
   school_code: z.string().optional().nullable(),
@@ -28,7 +28,7 @@ export const registerSchema = z.object({
 export const schoolRegisterSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  password: z.string().min(1),
+  password: passwordComplexity,
   max_students: z.number().int().min(1).max(10000).optional().default(50),
   max_teachers: z.number().int().min(1).max(500).optional().default(10),
 });

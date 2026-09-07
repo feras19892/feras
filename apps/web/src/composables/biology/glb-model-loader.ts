@@ -66,8 +66,12 @@ export function buildPartMeshMap(
 
     if (part.namePatterns) {
       const exclude = part.excludePatterns ?? [];
-      const includeRegexes = part.namePatterns.map((p) => new RegExp(p, 'i'));
-      const excludeRegexes = exclude.map((p) => new RegExp(p, 'i'));
+      const includeRegexes = part.namePatterns
+        .map((p) => { try { return new RegExp(p, 'i'); } catch { return null; } })
+        .filter((re): re is RegExp => re !== null);
+      const excludeRegexes = exclude
+        .map((p) => { try { return new RegExp(p, 'i'); } catch { return null; } })
+        .filter((re): re is RegExp => re !== null);
       for (const mesh of allMeshes) {
         if (seen.has(mesh)) continue;
         const name = mesh.name;
@@ -99,6 +103,7 @@ export function scaleAndCenterModel(model: THREE.Object3D): void {
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
   const maxDim = Math.max(size.x, size.y, size.z);
+  if (maxDim === 0 || !Number.isFinite(maxDim)) return;
   const scale = 8 / maxDim;
   model.scale.set(scale, scale, scale);
   model.position.sub(center.clone().multiplyScalar(scale));
@@ -116,6 +121,7 @@ export function loadModel(
   onModelLoaded?: (model: THREE.Object3D) => void,
   modelGenerator?: () => THREE.Object3D,
   modelEnhancer?: (model: THREE.Object3D) => void,
+  onProgress?: (ratio: number) => void,
 ): void {
   if (modelGenerator) {
     const loadedModel = modelGenerator();
@@ -123,6 +129,7 @@ export function loadModel(
     scene.add(loadedModel);
     buildPartMeshMap(loadedModel, parts, partMeshes, allMeshes);
     onModelLoaded?.(loadedModel);
+    onProgress?.(1);
     onLoad();
     return;
   }
@@ -140,11 +147,19 @@ export function loadModel(
       scene.add(loadedModel);
       buildPartMeshMap(loadedModel, parts, partMeshes, allMeshes);
       onModelLoaded?.(loadedModel);
+      onProgress?.(1);
       onLoad();
+      dracoLoader.dispose();
     },
-    undefined,
+    (evt) => {
+      // total قد يكون 0 إذا غاب Content-Length — نتجاهل حينها لتجنب NaN
+      if (onProgress && evt.total > 0) {
+        onProgress(Math.min(1, evt.loaded / evt.total));
+      }
+    },
     (err) => {
       onError(`Failed to load model: ${err instanceof Error ? err.message : String(err)}`);
+      dracoLoader.dispose();
     },
   );
 }

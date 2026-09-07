@@ -2,11 +2,11 @@
   "framework": "vue",
   "outputDirectory": "dist",
   "installCommand": "cd ../.. && pnpm install --no-frozen-lockfile",
-  "buildCommand": "VITE_API_BASE_URL= node node_modules/vite/bin/vite.js build",
+  "buildCommand": "node node_modules/vite/bin/vite.js build",
   "trailingSlash": false,
+  "cleanUrls": true,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://wafery-veristic-samiyah.ngrok-free.dev/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!api/|assets/|models/|draco/|sw\\.js|manifest\\.json|icon-).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -18,6 +18,7 @@
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
         { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" },
         { "key": "Cross-Origin-Resource-Policy", "value": "same-origin" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: wss:; frame-ancestors 'none'" },
         { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" }
       ]
     },
@@ -25,6 +26,33 @@
       "source": "/(.*).(js|css|svg|png|jpg|jpeg|webp|woff2|ttf)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/models/(.*).(glb|gltf)",
+      "headers": [
+        { "key": "Content-Type", "value": "model/gltf-binary" },
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
+      ]
+    },
+    {
+      "source": "/draco/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Service-Worker-Allowed", "value": "/" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" },
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
       ]
     }
   ]

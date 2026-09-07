@@ -144,20 +144,42 @@ export async function approveRequest(
   approverRole: string,
   response: string,
 ): Promise<{ success: boolean; message?: string; action?: string }> {
-  const req = await db.get<any>(`SELECT * FROM approval_requests WHERE id = ? AND status = 'pending'`, requestId);
-  if (!req) return { success: false, message: 'Request not found or already processed' };
+  // Atomically claim the request: read + authorize + transition pending→approved
+  // inside one immediate transaction so concurrent approvals can't double-execute.
+  let req: any;
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    req = await db.get<any>(`SELECT * FROM approval_requests WHERE id = ?`, requestId);
+    if (!req || req.status !== 'pending') {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'Request not found or already processed' };
+    }
 
-  // Verify the approver is authorized
-  if (approverRole !== 'admin') {
-    if (req.approver_type === 'admin') {
-      return { success: false, message: 'Not authorized' };
+    // Verify the approver is authorized
+    if (approverRole !== 'admin') {
+      const unauthorized =
+        req.approver_type === 'admin' ||
+        (req.approver_type === 'teacher' && (approverRole !== 'teacher' || req.approver_id !== approverId)) ||
+        (req.approver_type === 'school' && (approverRole !== 'school' || req.school_id !== approverId));
+      if (unauthorized) {
+        await db.run('ROLLBACK');
+        return { success: false, message: 'Not authorized' };
+      }
     }
-    if (req.approver_type === 'teacher' && (approverRole !== 'teacher' || req.approver_id !== approverId)) {
-      return { success: false, message: 'Not authorized' };
+
+    const claimed = await db.run(
+      `UPDATE approval_requests SET status = 'approved', approver_response = ?, approver_responded_at = datetime('now'), approver_name = ?, updated_at = datetime('now')
+       WHERE id = ? AND status = 'pending'`,
+      response, approverName, requestId,
+    );
+    if (!claimed.changes) {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'Request not found or already processed' };
     }
-    if (req.approver_type === 'school' && (approverRole !== 'school' || req.school_id !== approverId)) {
-      return { success: false, message: 'Not authorized' };
-    }
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK').catch(() => {});
+    throw err;
   }
 
   // Notify the requester
@@ -187,25 +209,40 @@ export async function rejectRequest(
   approverRole: string,
   response: string,
 ): Promise<{ success: boolean; message?: string }> {
-  const req = await db.get<any>(`SELECT * FROM approval_requests WHERE id = ? AND status = 'pending'`, requestId);
-  if (!req) return { success: false, message: 'Request not found or already processed' };
+  let req: any;
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    req = await db.get<any>(`SELECT * FROM approval_requests WHERE id = ?`, requestId);
+    if (!req || req.status !== 'pending') {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'Request not found or already processed' };
+    }
 
-  if (approverRole !== 'admin') {
-    if (req.approver_type === 'admin') {
-      return { success: false, message: 'Not authorized' };
+    if (approverRole !== 'admin') {
+      const unauthorized =
+        req.approver_type === 'admin' ||
+        (req.approver_type === 'teacher' && (approverRole !== 'teacher' || req.approver_id !== approverId)) ||
+        (req.approver_type === 'school' && (approverRole !== 'school' || req.school_id !== approverId));
+      if (unauthorized) {
+        await db.run('ROLLBACK');
+        return { success: false, message: 'Not authorized' };
+      }
     }
-    if (req.approver_type === 'teacher' && (approverRole !== 'teacher' || req.approver_id !== approverId)) {
-      return { success: false, message: 'Not authorized' };
+
+    const claimed = await db.run(
+      `UPDATE approval_requests SET status = 'rejected', approver_response = ?, approver_responded_at = datetime('now'), approver_name = ?, updated_at = datetime('now')
+       WHERE id = ? AND status = 'pending'`,
+      response, approverName, requestId,
+    );
+    if (!claimed.changes) {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'Request not found or already processed' };
     }
-    if (req.approver_type === 'school' && (approverRole !== 'school' || req.school_id !== approverId)) {
-      return { success: false, message: 'Not authorized' };
-    }
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK').catch(() => {});
+    throw err;
   }
-
-  await db.run(
-    `UPDATE approval_requests SET status = 'rejected', approver_response = ?, approver_responded_at = datetime('now'), approver_name = ?, updated_at = datetime('now') WHERE id = ?`,
-    response, approverName, requestId,
-  );
 
   // Notify the requester
   await createNotification({

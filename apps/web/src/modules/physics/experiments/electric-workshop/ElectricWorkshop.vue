@@ -4,7 +4,10 @@ const { t, direction } = useI18n();
 import { ref, watch } from 'vue'
 import DCLab from './dc/DCLab.vue'
 import ACLab from './ac/ACLab.vue'
+import ElectricWorkshopHelpModal from '@/components/experiment/electric-workshop/ElectricWorkshopHelpModal.vue'
 type TabId = 'dc' | 'ac'
+
+const helpOpen = ref(false)
 
 const STORAGE_KEY_TAB = 'electric-workshop-active-tab'
 
@@ -33,6 +36,7 @@ const tabs: { id: TabId; labelKey: string; icon: string; color: string }[] = [
     <header class="workshop-header">
       <h1>🛠️ {{ t('experiments.expElectricWorkshop') }}</h1>
       <span class="workshop-hint">{{ t('ew.workshopHint') }}</span>
+      <button class="workshop-help-btn" @click="helpOpen = true">❓ {{ t('experiments.menuHelp') }}</button>
     </header>
 
     <div class="workshop-tabs">
@@ -55,6 +59,8 @@ const tabs: { id: TabId; labelKey: string; icon: string; color: string }[] = [
       <ACLab v-else-if="activeTab === 'ac'" />
 
     </div>
+
+    <ElectricWorkshopHelpModal :open="helpOpen" @close="helpOpen = false" />
   </div>
 </template>
 
@@ -84,6 +90,23 @@ const tabs: { id: TabId; labelKey: string; icon: string; color: string }[] = [
 .workshop-hint {
   font-size: 0.78rem;
   color: #64748b;
+}
+
+.workshop-help-btn {
+  margin-inline-start: auto;
+  background: transparent;
+  border: 1px solid #2D3645;
+  color: #8B95A5;
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.15s;
+}
+
+.workshop-help-btn:hover {
+  background: rgba(91,141,184,.1);
+  color: #5B8DB8;
 }
 
 .workshop-tabs {

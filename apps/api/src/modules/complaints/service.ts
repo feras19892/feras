@@ -72,9 +72,10 @@ export async function getComplaintsForUser(userId: number, role: string, schoolI
     return db.all<ComplaintRow[]>(`SELECT * FROM complaints ORDER BY created_at DESC LIMIT 200`);
   }
   if (role === 'school') {
+    // School accounts carry the school id as their user id — fall back to it
     return db.all<ComplaintRow[]>(
       `SELECT * FROM complaints WHERE (target_role = 'school' AND target_id = ?) OR from_user_id = ? ORDER BY created_at DESC LIMIT 200`,
-      schoolId, userId,
+      schoolId ?? userId, userId,
     );
   }
   if (role === 'teacher') {
@@ -101,7 +102,7 @@ export async function getComplaintStats(userId: number, role: string, schoolId?:
     params.push(userId);
   } else if (role === 'school') {
     where = `(target_role = 'school' AND target_id = ?) OR from_user_id = ?`;
-    params.push(schoolId || 0, userId);
+    params.push(schoolId ?? userId, userId);
   }
 
   const row = await db.get<{ total: number; open: number; urgent: number; resolved: number }>(

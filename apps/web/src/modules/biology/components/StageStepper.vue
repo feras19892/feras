@@ -18,7 +18,8 @@ const emit = defineEmits<{
 }>();
 
 const selectStage = (index: number): void => {
-  emit('update:modelValue', index);
+  const clamped = Math.max(0, Math.min(props.stages.length - 1, index));
+  emit('update:modelValue', clamped);
 };
 
 const handleKeydown = (event: KeyboardEvent, index: number): void => {

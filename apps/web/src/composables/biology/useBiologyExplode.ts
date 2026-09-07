@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 
 export function useBiologyExplode() {
   const targetProgress = ref(0);
@@ -28,6 +28,10 @@ export function useBiologyExplode() {
     cancelAnimationFrame(animationId);
     currentProgress.value = 0;
   };
+
+  onUnmounted(() => {
+    cancelAnimationFrame(animationId);
+  });
 
   return {
     progress: currentProgress,

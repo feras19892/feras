@@ -89,8 +89,9 @@ app.post('/', zValidator('json', createSchema), async (c) => {
   if (!allowed) {
     return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
+  let plan: Awaited<ReturnType<typeof svc.getPlanById>>;
   if (body.plan_id != null) {
-    const plan = await svc.getPlanById(body.plan_id);
+    plan = await svc.getPlanById(body.plan_id);
     if (!plan) {
       return c.json({ success: false, message: 'الخطة غير موجودة' }, 400);
     }
@@ -99,7 +100,31 @@ app.post('/', zValidator('json', createSchema), async (c) => {
       return c.json({ success: false, message: 'الخطة غير مناسبة لنوع الحساب' }, 400);
     }
   }
-  const id = await svc.createSubscription(body);
+  // Self-service subscriptions: a plan + payment record are required for
+  // activation, and expiry is derived from the plan's billing interval —
+  // never trust client-supplied status/expiry/payment timestamps.
+  let input = body;
+  if (user.role !== 'admin') {
+    if (!plan) {
+      return c.json({ success: false, message: 'الخطة مطلوبة' }, 400);
+    }
+    const paid = !!(body.payment_provider && body.payment_reference);
+    if (body.status === 'ACTIVE' && !paid) {
+      return c.json({ success: false, message: 'الدفع مطلوب لتفعيل الاشتراك' }, 400);
+    }
+    const status = paid ? 'ACTIVE' : 'PENDING';
+    // Expiry is capped server-side: accept the client's date only when it's a
+    // sane future value (≤ ~13 months), otherwise default to one month.
+    const clientExpiry = body.expires_at ? Date.parse(body.expires_at) : NaN;
+    const expiryMs = paid
+      ? (Number.isFinite(clientExpiry) && clientExpiry > Date.now()
+          ? Math.min(clientExpiry, Date.now() + 400 * 24 * 60 * 60 * 1000)
+          : Date.now() + 30 * 24 * 60 * 60 * 1000)
+      : 0;
+    const expiry = paid ? new Date(expiryMs).toISOString() : null;
+    input = { ...body, status, starts_at: undefined, expires_at: expiry, next_billing_at: expiry };
+  }
+  const id = await svc.createSubscription(input);
   const sub = await svc.getSubscriptionById(id);
   if (sub) {
     dispatchEvent({
@@ -121,8 +146,10 @@ app.get('/admin/subscriptions', async (c) => {
   const status = q.status as string | undefined;
   const ownerType = q.owner_type as 'user' | 'school' | undefined;
   const search = q.search as string | undefined;
-  const sort = (q.sort as 'created_at' | 'expires_at' | 'price_cents') || 'created_at';
-  const order = (q.order as 'asc' | 'desc') || 'desc';
+  const sort = (['created_at', 'expires_at', 'price_cents'] as const).includes(q.sort as never)
+    ? (q.sort as 'created_at' | 'expires_at' | 'price_cents')
+    : 'created_at';
+  const order = q.order === 'asc' ? 'asc' : 'desc';
   const page = Math.max(1, Number(q.page || 1));
   const limit = Math.min(200, Math.max(1, Number(q.limit || 20)));
   const subs = await svc.getAdminSubscriptions({ status, ownerType, search, sort, order, page, limit });

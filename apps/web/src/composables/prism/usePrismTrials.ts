@@ -27,7 +27,7 @@ export function usePrismTrials(
   }
 
   function exportCsv() {
-    base.exportCsv(`prism_${Date.now()}.csv`, [
+    return base.exportCsv(`prism_${Date.now()}.csv`, [
       ['Trial', 'A(deg)', 'theta_i(deg)', 'lambda(nm)', 'theta_e(deg)', 'delta(deg)', 'n'],
       ...base.trials.value.map(tr => {
         const fmt = (v: number | null, d = 1) => v !== null ? v.toFixed(d) : 'TIR'

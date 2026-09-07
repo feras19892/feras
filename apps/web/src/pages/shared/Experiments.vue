@@ -6,7 +6,7 @@ const physicsCount = branches.reduce((sum, b) => sum + b.experiments.filter(e =>
 const subjects = [
   { id: 'physics', title: 'الفيزياء', desc: 'تجارب الحركة والقوى والطاقة والموجات والكهرباء والمغناطيسية', color: '#06b6d4', icon: '⚛️', count: physicsCount, route: '/physics' },
   { id: 'chemistry', title: 'الكيمياء', desc: 'تجارب التعيير والترسيب والتفاعلات الحمضية والقاعدية', color: '#10b981', icon: '🧪', count: 8, route: '/chemistry' },
-  { id: 'biology', title: 'الأحياء', desc: 'تجارب الخلايا والتشريح والأنسجة والعمليات الحيوية', color: '#f59e0b', icon: '🧬', count: 9, route: '/biology' },
+  { id: 'biology', title: 'الأحياء', desc: 'تجارب الخلايا والتشريح والأنسجة والعمليات الحيوية', color: '#f59e0b', icon: '🧬', count: 24, route: '/biology' },
   { id: 'math', title: 'الرياضيات', desc: 'حل المعادلات والجبر والهندسة والتفاضل والتطبيقات', color: '#8b5cf6', icon: '📐', count: 3, route: '/math' },
 ]
 </script>

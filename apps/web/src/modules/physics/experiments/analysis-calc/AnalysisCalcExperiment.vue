@@ -14,6 +14,7 @@ import AnalysisTab from '../../../../components/experiment/analysis-calc/Analysi
 import ReportTab from '../../../../components/experiment/analysis-calc/ReportTab.vue';
 import SubmitReportModal from '../../../../components/experiment/SubmitReportModal.vue';
 import CalcTabContent from '../../../../components/experiment/analysis-calc/CalcTabContent.vue';
+import AnalysisCalcHelpModal from '../../../../components/experiment/analysis-calc/AnalysisCalcHelpModal.vue';
 
 
 
@@ -23,6 +24,7 @@ const router = useRouter();
 const store = useAnalysisStore();
 const activeTab = ref(0);
 const reportOpen = ref(false);
+const helpOpen = ref(false);
 const conclusionData = ref({ conclusion: '', errors: '', improvements: '' });
 const chartSnapshot = ref('');
 const analysisTabRef = ref<InstanceType<typeof AnalysisTab> | null>(null);
@@ -53,7 +55,7 @@ const hasCalcTab = computed(() => {
   if (!payload) return false;
   return payload.hasCalcTab === true;
 });
-const extraTabs = computed(() => hasCalcTab.value ? ['حسابات'] : []);
+const extraTabs = computed(() => hasCalcTab.value ? [t('experiments.acCalcTab')] : []);
 const firstReading = computed(() => readings.value[0]);
 const reportTabIdx = computed(() => hasCalcTab.value ? 3 : 2);
 
@@ -152,7 +154,9 @@ async function sendToTeacher() {
 
 <template>
   <div class="analysis-calc-page">
-    <AnalysisMenuBar :source-name="sourceName" @back="goBack" @clear="clearData" />
+    <AnalysisMenuBar :source-name="sourceName" @back="goBack" @clear="clearData" @toggle-help="helpOpen = !helpOpen" />
+
+    <AnalysisCalcHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div v-if="!hasData" class="no-data">
       <div class="no-data-box">

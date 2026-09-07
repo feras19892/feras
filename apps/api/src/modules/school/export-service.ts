@@ -4,7 +4,7 @@ function escapeCsvValue(v: unknown): string {
   if (v === null || v === undefined) return '';
   let s = String(v).replace(/"/g, '""');
   if (/^[=+\-@\t\r]/.test(s)) {
-    s = `\'${s}`;
+    s = `'${s}`;
   }
   if (s.includes(',') || s.includes('\n') || s.includes('\r')) {
     return `"${s}"`;

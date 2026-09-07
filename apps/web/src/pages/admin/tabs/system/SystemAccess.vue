@@ -155,7 +155,7 @@ async function doImpersonate() {
     const res = await impersonateUser(impersonateUserId.value, impersonatePassword.value)
     if (!res.success) throw new Error((res as any).message || t('admin.toastImpersonateFailed'))
     if (!res.token) throw new Error(t('admin.toastTokenMissing'))
-    setTokens(res.token, res.refreshToken)
+    setTokens(res.token)
     auth.setSession(res.user as any)
     auth.clearSchoolSession()
     toast.success(t('admin.toastImpersonated'))

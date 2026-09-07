@@ -34,11 +34,17 @@ function validateReportData(data: CreateReportData): { valid: boolean; message?:
   return { valid: true };
 }
 
-async function checkDuplicateReport(studentId: number, classId: string, experimentName: string): Promise<boolean> {
-  const existing = await db.get(
-    `SELECT id FROM experiment_reports WHERE student_id = ? AND class_id = ? AND experiment_name = ? AND status IN ('submitted','graded','resubmitted') LIMIT 1`,
-    studentId, classId, experimentName,
-  );
+async function checkDuplicateReport(studentId: number, classId: string, experimentName: string, experimentId?: string): Promise<boolean> {
+  // Prefer the canonical experiment_id — experiment_name is localized and can change.
+  const existing = experimentId
+    ? await db.get(
+        `SELECT id FROM experiment_reports WHERE student_id = ? AND class_id = ? AND experiment_id = ? AND status IN ('submitted','graded','resubmitted') LIMIT 1`,
+        studentId, classId, experimentId,
+      )
+    : await db.get(
+        `SELECT id FROM experiment_reports WHERE student_id = ? AND class_id = ? AND experiment_name = ? AND status IN ('submitted','graded','resubmitted') LIMIT 1`,
+        studentId, classId, experimentName,
+      );
   return !!existing;
 }
 
@@ -49,13 +55,17 @@ export async function createReport(data: CreateReportData) {
     return { error: validation.message };
   }
 
-  // Check for duplicate submission (same experiment + class + student)
-  const isDuplicate = await checkDuplicateReport(data.student_id, data.class_id, data.experiment_name);
-  if (isDuplicate) {
-    return { error: 'لقد سلمت تقريراً لهذه التجربة في هذا الفصل بالفعل. استخدم إعادة الإرسال بدلاً من ذلك.' };
-  }
-
+  // Use transaction to prevent race condition on duplicate check
+  await db.run('BEGIN IMMEDIATE');
+  let reportId: number;
   try {
+    // Check for duplicate submission (same experiment + class + student) - inside transaction
+    const isDuplicate = await checkDuplicateReport(data.student_id, data.class_id, data.experiment_name, data.experiment_id);
+    if (isDuplicate) {
+      await db.run('ROLLBACK');
+      return { error: 'لقد سلمت تقريراً لهذه التجربة في هذا الفصل بالفعل. استخدم إعادة الإرسال بدلاً من ذلك.' };
+    }
+
     const result = await db.run(
       `INSERT INTO experiment_reports
        (student_id, class_id, experiment_type, experiment_name, experiment_id, readings, params,
@@ -70,74 +80,99 @@ export async function createReport(data: CreateReportData) {
       data.plots || null, data.chart_snapshot || null,
       data.question_template_id ?? null
     );
-    const reportId = Number(result.lastID);
-
-    // إشعار ذكي
-    const student = await db.get<{ name: string }>('SELECT name FROM users WHERE id = ?', data.student_id);
-    await dispatchEvent({
-      type: 'report_submitted',
-      actorId: data.student_id,
-      actorName: student?.name || 'طالب',
-      actorRole: 'student',
-      payload: { reportId, classId: data.class_id },
-    });
-
-    // Auto-check badges (non-blocking)
-    checkAutoBadges(data.student_id).catch(() => {});
-
-    return { id: reportId, ...data };
-  } catch (err: unknown) {
+    reportId = Number(result.lastID);
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK');
     if (process.env.NODE_ENV !== 'production') console.error('[createReport] DB error:', err);
     return { error: 'فشل حفظ التقرير في قاعدة البيانات. تأكد من صحة البيانات وحاول مرة أخرى.' };
   }
+
+  // إشعار ذكي (خارج الـ transaction)
+  const student = await db.get<{ name: string }>('SELECT name FROM users WHERE id = ?', data.student_id);
+  await dispatchEvent({
+    type: 'report_submitted',
+    actorId: data.student_id,
+    actorName: student?.name || 'طالب',
+    actorRole: 'student',
+    payload: { reportId, classId: data.class_id },
+  });
+
+  // تحديث حي: أبلغ معلم الفصل فوراً عبر SSE
+  const submittedToTeacherId = await getTeacherId(data.class_id);
+  if (submittedToTeacherId) {
+    broadcastEvent({
+      type: 'report_submitted',
+      payload: { report_id: reportId, class_id: data.class_id, student_id: data.student_id },
+      targetUserId: submittedToTeacherId,
+    });
+  }
+
+  // Auto-check badges (non-blocking)
+  checkAutoBadges(data.student_id).catch(() => {});
+
+  return { id: reportId, ...data };
 }
 
 export async function resubmitReport(reportId: number, data: CreateReportData) {
+  // Validate report content
+  const validation = validateReportData(data);
+  if (!validation.valid) {
+    return { success: false, message: validation.message };
+  }
+
   const old = await getReportById(reportId);
   if (!old) return { success: false, message: 'التقرير غير موجود' };
   if (old.student_id !== data.student_id) return { success: false, message: 'غير مصرح — لا يمكنك إعادة إرسال تقرير لا يخصك' };
   if (old.class_id !== data.class_id) return { success: false, message: 'غير مصرح — الفصل لا يتطابق مع التقرير الأصلي' };
+  
+  let newId: number;
   try {
+    // Use transaction for atomic operation
+    await db.run('BEGIN IMMEDIATE');
     const result = await db.run(
       `INSERT INTO experiment_reports
        (student_id, class_id, experiment_type, experiment_name, experiment_id, readings, params,
         student_info, conclusion, conclusion_errors, conclusion_improvements,
-        columns, equations, plots, chart_snapshot, status, submitted_at, parent_id, version, teacher_seen)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'resubmitted', CURRENT_TIMESTAMP, ?, ?, 0)`,
+        columns, equations, plots, chart_snapshot, question_template_id, status, submitted_at, parent_id, version, teacher_seen)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'resubmitted', CURRENT_TIMESTAMP, ?, ?, 0)`,
       data.student_id, data.class_id, data.experiment_type, data.experiment_name, data.experiment_id || null,
       data.readings, data.params || null,
       data.student_info || null, data.conclusion || null,
       data.conclusion_errors || null, data.conclusion_improvements || null,
       data.columns || null, data.equations || null,
       data.plots || null, data.chart_snapshot || null,
+      data.question_template_id ?? null,
       reportId, (old.version || 1) + 1
     );
-    const newId = Number(result.lastID);
-
-    // إشعار ذكي
-    await dispatchEvent({
-      type: 'report_resubmitted',
-      actorId: old.student_id,
-      actorName: old.student_name || 'طالب',
-      actorRole: 'student',
-      payload: { reportId: newId, classId: data.class_id },
-    });
-
-    // تحديث حي: أبلغ معلم الفصل فوراً عبر SSE
-    const teacherId = await getTeacherId(data.class_id);
-    if (teacherId) {
-      broadcastEvent({
-        type: 'report_resubmitted',
-        payload: { report_id: newId, class_id: data.class_id, student_id: old.student_id },
-        targetUserId: teacherId,
-      });
-    }
-
-    return { success: true, id: newId };
+    newId = Number(result.lastID);
+    await db.run('COMMIT');
   } catch (err: unknown) {
+    await db.run('ROLLBACK');
     if (process.env.NODE_ENV !== 'production') console.error('[resubmitReport] DB error:', err);
     return { success: false, message: 'فشل إعادة إرسال التقرير. تأكد من صحة البيانات وحاول مرة أخرى.' };
   }
+
+  // إشعار ذكي (خارج الـ transaction)
+  await dispatchEvent({
+    type: 'report_resubmitted',
+    actorId: old.student_id,
+    actorName: old.student_name || 'طالب',
+    actorRole: 'student',
+    payload: { reportId: newId, classId: data.class_id },
+  });
+
+  // تحديث حي: أبلغ معلم الفصل فوراً عبر SSE
+  const teacherId = await getTeacherId(data.class_id);
+  if (teacherId) {
+    broadcastEvent({
+      type: 'report_resubmitted',
+      payload: { report_id: newId, class_id: data.class_id, student_id: old.student_id },
+      targetUserId: teacherId,
+    });
+  }
+
+  return { success: true, id: newId };
 }
 
 export async function getReports(filters: { class_id?: string; student_id?: number; status?: string; search?: string; page?: number; limit?: number }) {
@@ -177,42 +212,54 @@ export async function getReportById(id: number) {
 }
 
 export async function markReportAsSeen(id: number) {
-  const report = await db.get<{ student_id: number; experiment_name: string; teacher_seen: number }>(
-    `SELECT student_id, experiment_name, teacher_seen FROM experiment_reports WHERE id = ?`, id,
+  // Use atomic UPDATE with WHERE clause to prevent race condition
+  // Only update if teacher_seen is currently 0
+  const result = await db.run(
+    `UPDATE experiment_reports SET teacher_seen = 1 WHERE id = ? AND teacher_seen = 0`,
+    id
   );
-  if (!report) return { success: false };
-
-  // Only notify if this is the first time being seen
-  if (report.teacher_seen === 0) {
-    await db.run(`UPDATE experiment_reports SET teacher_seen = 1 WHERE id = ?`, id);
-    await createNotification({
-      user_id: report.student_id,
-      type: 'report_opened',
-      title: `المدرس يراجع تقريرك`,
-      message: `تم فتح تقريرك "${report.experiment_name}" من قبل المدرس`,
-      report_id: id,
-    });
+  
+  // Only notify if we actually updated (this is the first time being seen)
+  if (result.changes === 1) {
+    const report = await db.get<{ student_id: number; experiment_name: string }>(
+      `SELECT student_id, experiment_name FROM experiment_reports WHERE id = ?`, id
+    );
+    if (report) {
+      await createNotification({
+        user_id: report.student_id,
+        type: 'report_opened',
+        title: `المدرس يراجع تقريرك`,
+        message: `تم فتح تقريرك "${report.experiment_name}" من قبل المدرس`,
+        report_id: id,
+      });
+    }
   }
   return { success: true };
 }
 
 export async function gradeReport(id: number, data: { grade: number; feedback?: string; grade_accuracy?: number; grade_presentation?: number; grade_conclusion?: number; grade_innovation?: number }, teacherId: number, teacherName: string, actorRole: User['role'] = 'teacher') {
-  let old = await db.get<{ student_id?: number; experiment_name?: string; class_id?: string; grade?: number; feedback?: string }>(`SELECT * FROM experiment_reports WHERE id = ?`, id);
-
   const dims = (data.grade_accuracy ?? 0) + (data.grade_presentation ?? 0) + (data.grade_conclusion ?? 0) + (data.grade_innovation ?? 0);
   const hasDims = data.grade_accuracy != null || data.grade_presentation != null || data.grade_conclusion != null || data.grade_innovation != null;
-  const rawGrade = hasDims ? dims : (data.grade ?? 0);
+  const hasGrade = data.grade != null;
+  // FIX: If grade is explicitly provided, use it. If dimensions are provided without grade, calculate from dimensions.
+  const rawGrade = hasGrade ? data.grade : (hasDims ? dims : 0);
   const finalGrade = Math.min(100, Math.max(0, rawGrade));
 
-  await db.run('BEGIN');
+  // Read the current row inside an immediate transaction so concurrent grading
+  // requests are serialized and grade_history records the correct previous grade.
+  let old: { student_id?: number; experiment_name?: string; class_id?: string; grade?: number; feedback?: string } | undefined;
+  await db.run('BEGIN IMMEDIATE');
   try {
-    if (old) {
-      await db.run(
-        `INSERT INTO grade_history (report_id, teacher_id, teacher_name, old_grade, new_grade, old_feedback, new_feedback)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        id, teacherId, teacherName, old.grade, finalGrade, old.feedback, data.feedback || null
-      );
+    old = await db.get(`SELECT * FROM experiment_reports WHERE id = ?`, id);
+    if (!old) {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'التقرير غير موجود' };
     }
+    await db.run(
+      `INSERT INTO grade_history (report_id, teacher_id, teacher_name, old_grade, new_grade, old_feedback, new_feedback)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      id, teacherId, teacherName, old.grade, finalGrade, old.feedback, data.feedback || null
+    );
     await db.run(
       `UPDATE experiment_reports SET grade=?, feedback=?, status='graded', graded_at=CURRENT_TIMESTAMP, graded_by=?, graded_by_name=?,
        grade_accuracy=?, grade_presentation=?, grade_conclusion=?, grade_innovation=?
@@ -235,6 +282,12 @@ export async function gradeReport(id: number, data: { grade: number; feedback?: 
       actorName: teacherName,
       actorRole: actorRole as any,
       payload: { reportId: id, studentId: old.student_id, classId: old.class_id },
+    });
+    // تحديث حي: أبلغ الطالب فوراً عبر SSE
+    broadcastEvent({
+      type: 'report_graded',
+      payload: { report_id: id, student_id: old.student_id, class_id: old.class_id },
+      targetUserId: old.student_id,
     });
   }
 

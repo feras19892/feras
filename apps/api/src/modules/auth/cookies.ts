@@ -4,24 +4,35 @@ import type { Context } from 'hono';
 const isProd = process.env.NODE_ENV === 'production';
 const crossOrigin = isProd && !!process.env.CORS_ORIGIN;
 
-const REFRESH_COOKIE_OPTS = {
-  path: '/',
-  httpOnly: true,
-  secure: isProd || crossOrigin,
-  sameSite: (crossOrigin ? 'None' : 'Lax') as 'None' | 'Lax',
-  maxAge: 7 * 24 * 60 * 60,
-};
+// Detect whether this specific request is cross-site. Browsers send
+// `Sec-Fetch-Site: cross-site`; fall back to comparing Origin against the
+// request host. This lets a dev/tunneled API (e.g. ngrok) still issue
+// SameSite=None cookies to a deployed frontend.
+function isCrossSiteRequest(c: Context): boolean {
+  const sfs = c.req.header('sec-fetch-site');
+  if (sfs) return sfs === 'cross-site';
+  const origin = c.req.header('origin');
+  if (!origin) return false;
+  try {
+    return new URL(origin).host !== new URL(c.req.url).host;
+  } catch {
+    return false;
+  }
+}
 
-const ACCESS_COOKIE_OPTS = {
-  path: '/',
-  httpOnly: true,
-  secure: isProd || crossOrigin,
-  sameSite: (crossOrigin ? 'None' : 'Lax') as 'None' | 'Lax',
-  maxAge: 15 * 60,
-};
+function cookieOpts(c: Context, maxAge: number) {
+  const cross = crossOrigin || isCrossSiteRequest(c);
+  return {
+    path: '/',
+    httpOnly: true,
+    secure: isProd || cross,
+    sameSite: (cross ? 'None' : 'Lax') as 'None' | 'Lax',
+    maxAge,
+  };
+}
 
 export function setRefreshCookie(c: Context, token: string) {
-  setCookie(c, 'refresh_token', token, REFRESH_COOKIE_OPTS);
+  setCookie(c, 'refresh_token', token, cookieOpts(c, 7 * 24 * 60 * 60));
 }
 
 export function getRefreshCookie(c: Context): string | undefined {
@@ -29,11 +40,11 @@ export function getRefreshCookie(c: Context): string | undefined {
 }
 
 export function clearRefreshCookie(c: Context) {
-  deleteCookie(c, 'refresh_token', REFRESH_COOKIE_OPTS);
+  deleteCookie(c, 'refresh_token', cookieOpts(c, 7 * 24 * 60 * 60));
 }
 
 export function setAccessCookie(c: Context, token: string) {
-  setCookie(c, 'access_token', token, ACCESS_COOKIE_OPTS);
+  setCookie(c, 'access_token', token, cookieOpts(c, 15 * 60));
 }
 
 export function getAccessCookie(c: Context): string | undefined {
@@ -41,5 +52,5 @@ export function getAccessCookie(c: Context): string | undefined {
 }
 
 export function clearAccessCookie(c: Context) {
-  deleteCookie(c, 'access_token', ACCESS_COOKIE_OPTS);
+  deleteCookie(c, 'access_token', cookieOpts(c, 15 * 60));
 }

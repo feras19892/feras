@@ -11,7 +11,7 @@ import GeneratorParamPanel from '../../../../components/experiment/electromagnet
 import GeneratorReadingsPanel from '../../../../components/experiment/electromagnetism/GeneratorReadingsPanel.vue'
 import GeneratorDataPanel from '../../../../components/experiment/electromagnetism/GeneratorDataPanel.vue'
 import GeneratorGuidePanel from '../../../../components/experiment/electromagnetism/GeneratorGuidePanel.vue'
-import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
+import GeneratorHelpModal from '../../../../components/experiment/electromagnetism/GeneratorHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 
 
@@ -43,7 +43,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen"
     />
 
-    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
+    <GeneratorHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col">

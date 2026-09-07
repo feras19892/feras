@@ -10,29 +10,51 @@ export async function escalateRequest(
 ): Promise<{ success: boolean; message?: string }> {
   // Allow escalation after rejection OR after escalation deadline has passed on a pending request
   const now = new Date().toISOString();
-  const req = await db.get<any>(
-    `SELECT * FROM approval_requests WHERE id = ? AND (
-      status = 'rejected'
-      OR (status = 'pending' AND escalation_deadline IS NOT NULL AND escalation_deadline < ?)
-    )`,
-    requestId, now,
-  );
-  if (!req) return { success: false, message: 'لا يمكن التصعيد — يجب أن يُرفض الطلب أولاً أو تنتهي مهلة الرد قبل التصعيد للمستوى الأعلى.' };
+  let req: any;
+  let nextApprover: ApproverType | null;
 
-  const nextApprover = escalationMap[req.approver_type as ApproverType];
-  if (!nextApprover) return { success: false, message: 'لا يمكن التصعيد أكثر — وصل الطلب للأدمن' };
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    req = await db.get<any>(
+      `SELECT * FROM approval_requests WHERE id = ? AND (
+        status = 'rejected'
+        OR (status = 'pending' AND escalation_deadline IS NOT NULL AND escalation_deadline < ?)
+      )`,
+      requestId, now,
+    );
+    if (!req) {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'لا يمكن التصعيد — يجب أن يُرفض الطلب أولاً أو تنتهي مهلة الرد قبل التصعيد للمستوى الأعلى.' };
+    }
 
-  // Calculate new escalation deadline for the next approver
-  const escalationHours: Record<ApproverType, number> = { teacher: 48, school: 72, admin: 0 };
-  const hours = escalationHours[nextApprover as ApproverType];
-  const newDeadline = hours > 0
-    ? new Date(Date.now() + hours * 60 * 60 * 1000).toISOString()
-    : null;
+    nextApprover = escalationMap[req.approver_type as ApproverType];
+    if (!nextApprover) {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'لا يمكن التصعيد أكثر — وصل الطلب للأدمن' };
+    }
 
-  await db.run(
-    `UPDATE approval_requests SET status = 'pending', escalated_to = ?, escalated_at = datetime('now'), escalation_reason = ?, approver_type = ?, escalation_deadline = ?, updated_at = datetime('now') WHERE id = ?`,
-    nextApprover, reason, nextApprover, newDeadline, requestId,
-  );
+    // Calculate new escalation deadline for the next approver
+    const escalationHours: Record<ApproverType, number> = { teacher: 48, school: 72, admin: 0 };
+    const hours = escalationHours[nextApprover as ApproverType];
+    const newDeadline = hours > 0
+      ? new Date(Date.now() + hours * 60 * 60 * 1000).toISOString()
+      : null;
+
+    // Conditional update — only escalate if the request is still in an escalatable state
+    const claimed = await db.run(
+      `UPDATE approval_requests SET status = 'pending', escalated_to = ?, escalated_at = datetime('now'), escalation_reason = ?, approver_type = ?, escalation_deadline = ?, updated_at = datetime('now')
+       WHERE id = ? AND (status = 'rejected' OR (status = 'pending' AND escalation_deadline IS NOT NULL AND escalation_deadline < ?))`,
+      nextApprover, reason, nextApprover, newDeadline, requestId, now,
+    );
+    if (!claimed.changes) {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'لا يمكن التصعيد — تمت معالجة الطلب بالفعل' };
+    }
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK').catch(() => {});
+    throw err;
+  }
 
   // Notify admins if escalated to admin
   if (nextApprover === 'admin') {
@@ -59,7 +81,55 @@ export async function escalateRequest(
   return { success: true };
 }
 
+function parseMeta(req: any): Record<string, any> {
+  try {
+    const parsed = JSON.parse(req.metadata || '{}');
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+// Verify that every resource referenced by the request belongs to the
+// request's school (when one is recorded). Throws on cross-tenant targets.
+async function verifyRequestTargets(req: any): Promise<void> {
+  const schoolId = req.school_id ?? null;
+  if (!schoolId) return;
+
+  if (req.class_id) {
+    const cls = await db.get<{ school_id: number | null }>(
+      `SELECT COALESCE(c.school_id, t.school_id) as school_id FROM classes c LEFT JOIN users t ON c.teacher_id = t.id WHERE c.id = ?`,
+      req.class_id,
+    );
+    if (cls && cls.school_id && cls.school_id !== schoolId) {
+      throw new Error('cross_school_class');
+    }
+  }
+
+  if (req.target_user_id) {
+    const target = await db.get<{ school_id: number | null }>(
+      `SELECT school_id FROM users WHERE id = ?`, req.target_user_id,
+    );
+    if (target && target.school_id && target.school_id !== schoolId) {
+      throw new Error('cross_school_user');
+    }
+  }
+
+  if (req.report_id) {
+    const report = await db.get<{ school_id: number | null }>(
+      `SELECT COALESCE(c.school_id, t.school_id) as school_id FROM experiment_reports r
+       JOIN classes c ON r.class_id = c.id LEFT JOIN users t ON c.teacher_id = t.id
+       WHERE r.id = ?`,
+      req.report_id,
+    );
+    if (report && report.school_id && report.school_id !== schoolId) {
+      throw new Error('cross_school_report');
+    }
+  }
+}
+
 export async function executeApprovedAction(req: any): Promise<string> {
+  await verifyRequestTargets(req);
   switch (req.type) {
     case 'penalty': {
       // Create a warning for the student
@@ -77,12 +147,12 @@ export async function executeApprovedAction(req: any): Promise<string> {
     }
     case 'grade_change': {
       if (req.report_id && req.proposed_grade != null) {
-        // Save old grade to history
-        const oldReport = await db.get<{ grade: number | null; graded_by: number | null }>(
-          `SELECT grade, graded_by FROM experiment_reports WHERE id = ?`, req.report_id,
-        );
         await db.run('BEGIN IMMEDIATE');
         try {
+          // Save old grade to history (read inside the transaction)
+          const oldReport = await db.get<{ grade: number | null; graded_by: number | null }>(
+            `SELECT grade, graded_by FROM experiment_reports WHERE id = ?`, req.report_id,
+          );
           if (oldReport) {
             await db.run(
               `INSERT INTO grade_history (report_id, old_grade, new_grade, teacher_id, reason) VALUES (?, ?, ?, ?, ?)`,
@@ -139,8 +209,15 @@ export async function executeApprovedAction(req: any): Promise<string> {
       return 'appeal_accepted';
     }
     case 'class_creation': {
-      const meta = JSON.parse(req.metadata || '{}');
-      const teacherId = meta.teacher_id || req.requester_id;
+      const meta = parseMeta(req);
+      let teacherId = meta.teacher_id || req.requester_id;
+      // Validate the requested teacher exists and belongs to the request's school
+      const teacher = await db.get<{ id: number; school_id: number | null }>(
+        `SELECT id, school_id FROM users WHERE id = ? AND role = 'teacher'`, teacherId,
+      );
+      if (!teacher || (req.school_id && teacher.school_id && teacher.school_id !== req.school_id)) {
+        teacherId = req.requester_id;
+      }
       let classCode = '';
       for (let attempt = 0; attempt < 10; attempt++) {
         classCode = Array.from({ length: 6 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[randomInt(0, 36)]).join('');
@@ -149,13 +226,10 @@ export async function executeApprovedAction(req: any): Promise<string> {
       }
       await db.run('BEGIN IMMEDIATE');
       try {
-        const classResult = await db.run(
-          `INSERT INTO classes (name, code, teacher_id, is_active) VALUES (?, ?, ?, 1)`,
-          meta.name || 'New Class', classCode, teacherId,
+        await db.run(
+          `INSERT INTO classes (name, code, teacher_id, is_active, school_id) VALUES (?, ?, ?, 1, ?)`,
+          meta.name || 'New Class', classCode, teacherId, req.school_id ?? null,
         );
-        if (meta.school_id) {
-          await db.run(`UPDATE classes SET school_id = ? WHERE id = ?`, meta.school_id, classResult.lastID);
-        }
         await db.run('COMMIT');
       } catch (err) {
         await db.run('ROLLBACK');
@@ -191,13 +265,19 @@ export async function executeApprovedAction(req: any): Promise<string> {
     }
     case 'class_edit': {
       if (req.class_id) {
-        const meta = JSON.parse(req.metadata || '{}');
+        const meta = parseMeta(req);
         await db.run('BEGIN IMMEDIATE');
         try {
           if (meta.name) {
             await db.run(`UPDATE classes SET name = ? WHERE id = ?`, meta.name, req.class_id);
           }
           if (meta.teacher_id) {
+            const teacher = await db.get<{ id: number; school_id: number | null }>(
+              `SELECT id, school_id FROM users WHERE id = ? AND role = 'teacher'`, meta.teacher_id,
+            );
+            if (!teacher || (req.school_id && teacher.school_id && teacher.school_id !== req.school_id)) {
+              throw new Error('invalid_teacher');
+            }
             await db.run(`UPDATE classes SET teacher_id = ? WHERE id = ?`, meta.teacher_id, req.class_id);
           }
           await db.run('COMMIT');
@@ -209,22 +289,23 @@ export async function executeApprovedAction(req: any): Promise<string> {
       return 'class_edited';
     }
     case 'user_creation': {
-      const meta = JSON.parse(req.metadata || '{}');
+      const meta = parseMeta(req);
       if (meta.name && meta.email) {
         if (!meta.password || typeof meta.password !== 'string' || meta.password.length < 8) {
           return 'user_creation_failed: password required (min 8 chars)';
         }
         const { hashPassword } = await import('../auth/crypto.js');
         const passwordHash = await hashPassword(meta.password);
+        const role = meta.role === 'student' || meta.role === 'teacher' ? meta.role : 'teacher';
         await db.run(
           `INSERT INTO users (name, email, password_hash, role, school_id) VALUES (?, ?, ?, ?, ?)`,
-          meta.name, meta.email, passwordHash, meta.role || 'teacher', req.school_id || null,
+          meta.name, meta.email, passwordHash, role, req.school_id || null,
         );
       }
       return 'user_created';
     }
     case 'user_edit': {
-      const meta = JSON.parse(req.metadata || '{}');
+      const meta = parseMeta(req);
       if (req.target_user_id) {
         await db.run('BEGIN IMMEDIATE');
         try {

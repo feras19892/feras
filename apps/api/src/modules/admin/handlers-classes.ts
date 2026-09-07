@@ -3,6 +3,7 @@ import { z } from 'zod';
 import type { Hono } from 'hono';
 import * as svc from './services.js';
 import { verifyAdminPassword } from './admin-password.js';
+import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 
 const createClassSchema = z.object({
@@ -10,6 +11,17 @@ const createClassSchema = z.object({
   code: z.string().min(2).max(20).optional(),
   teacher_id: z.number().int().positive(),
 });
+
+// School-scoped admins may only act on classes within their own school.
+// Legacy classes may have NULL school_id — fall back to the teacher's school.
+async function classInAdminScope(admin: User, classId: string): Promise<boolean> {
+  if (!admin.school_id) return true;
+  const row = await db.get<{ school_id: number | null }>(
+    `SELECT COALESCE(c.school_id, u.school_id) as school_id FROM classes c LEFT JOIN users u ON c.teacher_id = u.id WHERE c.id = ?`,
+    classId,
+  );
+  return !!row && row.school_id === admin.school_id;
+}
 
 export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): void {
   app.get('/classes', async (c) => {
@@ -30,6 +42,9 @@ export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): v
     const admin = c.get('user');
     const pwCheck = await verifyAdminPassword(admin, admin_password);
     if (pwCheck) return c.json(pwCheck, 401);
+    if (!(await classInAdminScope(admin as User, id))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     try {
       const result = await svc.deleteClass(id);
       return c.json(result);
@@ -41,6 +56,10 @@ export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): v
 
   app.get('/classes/:id/students', async (c) => {
     const classId = c.req.param('id');
+    const admin = c.get('user') as User;
+    if (!(await classInAdminScope(admin, classId))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     try {
       const students = await svc.getClassStudentsForAdmin(classId);
       return c.json({ success: true, students });
@@ -56,6 +75,16 @@ export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): v
   })), async (c) => {
     const classId = c.req.param('id');
     const body = c.req.valid('json');
+    const admin = c.get('user') as User;
+    if (!(await classInAdminScope(admin, classId))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
+    if (body.teacher_id !== undefined && admin.school_id) {
+      const teacher = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ? AND role = 'teacher'`, body.teacher_id);
+      if (!teacher || teacher.school_id !== admin.school_id) {
+        return c.json({ success: false, message: 'غير مصرح' }, 403);
+      }
+    }
     try {
       const result = await svc.updateClassForAdmin(classId, body);
       if (!result.success) return c.json(result, 400);
@@ -68,6 +97,13 @@ export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): v
 
   app.post('/classes', zValidator('json', createClassSchema), async (c) => {
     const { name, code, teacher_id } = c.req.valid('json');
+    const admin = c.get('user') as User;
+    if (admin.school_id) {
+      const teacher = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ? AND role = 'teacher'`, teacher_id);
+      if (!teacher || teacher.school_id !== admin.school_id) {
+        return c.json({ success: false, message: 'غير مصرح' }, 403);
+      }
+    }
     try {
       const result = await svc.createClassForAdmin(name, code, teacher_id);
       if (!result.success) return c.json(result, 400);
@@ -84,6 +120,9 @@ export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): v
     const classId = c.req.param('id');
     const { reason } = c.req.valid('json');
     const user = c.get('user');
+    if (!(await classInAdminScope(user as User, classId))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     try {
       const result = await svc.freezeClassForAdmin(classId, reason, user.id);
       if (!result.success) return c.json(result, 400);
@@ -96,6 +135,10 @@ export function registerClassRoutes(app: Hono<{ Variables: { user: User } }>): v
 
   app.post('/classes/:id/unfreeze', async (c) => {
     const classId = c.req.param('id');
+    const admin = c.get('user') as User;
+    if (!(await classInAdminScope(admin, classId))) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
     try {
       const result = await svc.unfreezeClassForAdmin(classId);
       if (!result.success) return c.json(result, 400);

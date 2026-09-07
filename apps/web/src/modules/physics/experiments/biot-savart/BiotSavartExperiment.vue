@@ -12,6 +12,7 @@ import BiotSavartStatusBar from '../../../../components/experiment/biot-savart/B
 import BiotSavartControlBar from '../../../../components/experiment/biot-savart/BiotSavartControlBar.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
+import BiotSavartHelpModal from '../../../../components/experiment/biot-savart/BiotSavartHelpModal.vue'
 
 
 
@@ -43,6 +44,8 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
+
+    <BiotSavartHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col" :style="{ width: ex.layout.widths.data + 'px' }">

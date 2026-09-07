@@ -3,6 +3,7 @@ import { randomInt, randomUUID } from 'crypto';
 import { getSystemSetting } from '../../shared/system-settings.js';
 import { createNotification } from '../notifications/services.js';
 import { dispatchEvent } from '../notifications/dispatch.js';
+import { broadcastEvent } from '../sse/event-bus.js';
 
 function generateCode(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -24,13 +25,25 @@ async function generateUniqueCode(): Promise<string> {
 
 export async function createClass(teacherId: number, name: string, description = '') {
   const id = 'cls-' + randomUUID();
-  const code = await generateUniqueCode();
   const teacher = await db.get<{ school_id: number | null; name: string }>('SELECT school_id, name FROM users WHERE id = ?', teacherId);
   const schoolId = teacher?.school_id ?? null;
-  await db.run(
-    'INSERT INTO classes (id, name, code, teacher_id, school_id, description, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    id, name, code, teacherId, schoolId, description, 1
-  );
+  // Retry on a rare UNIQUE(code) collision instead of failing the request.
+  let code = '';
+  let inserted = false;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    code = await generateUniqueCode();
+    try {
+      await db.run(
+        'INSERT INTO classes (id, name, code, teacher_id, school_id, description, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        id, name, code, teacherId, schoolId, description, 1
+      );
+      inserted = true;
+      break;
+    } catch (err) {
+      if (attempt === 4 || !(err instanceof Error && err.message.includes('UNIQUE'))) throw err;
+    }
+  }
+  if (!inserted) throw new Error('Failed to generate a unique class code');
 
   await dispatchEvent({
     type: 'class_created_by_teacher',
@@ -39,6 +52,11 @@ export async function createClass(teacherId: number, name: string, description =
     actorRole: 'teacher',
     payload: { classId: id },
   });
+
+  // تحديث حي: أبلغ المدرسة فوراً عبر SSE
+  if (schoolId) {
+    broadcastEvent({ type: 'class_created', payload: { class_id: id, name, schoolId }, targetUserId: schoolId, schoolId });
+  }
 
   return { id, name, code };
 }
@@ -121,26 +139,39 @@ export async function joinClassByCode(studentId: number, code: string) {
     return { success: false, message: 'لا يمكن الانضمام — الفصل لا ينتمي لمدرستك' };
   }
 
-  const existing = await db.get(
-    'SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?',
-    cls.id, studentId
-  );
-  if (existing) return { success: false, message: 'أنت مشترك في هذا الفصل مسبقاً' };
-
-  // Check max class size from system settings
-  const maxVal = await getSystemSetting('max_class_size');
-  const maxSize = maxVal ? parseInt(maxVal, 10) : 50;
-  if (maxSize > 0) {
-    const countRow = await db.get<{ cnt: number }>('SELECT COUNT(*) as cnt FROM class_students WHERE class_id = ?', cls.id);
-    if (countRow && countRow.cnt >= maxSize) {
-      return { success: false, message: `هذا الفصل ممتلئ (الحد الأقصى ${maxSize} طالب)` };
+  // Membership check + capacity check + insert must be atomic so concurrent
+  // joins cannot exceed the configured max class size.
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    const existing = await db.get(
+      'SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?',
+      cls.id, studentId
+    );
+    if (existing) {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'أنت مشترك في هذا الفصل مسبقاً' };
     }
-  }
 
-  await db.run(
-    'INSERT INTO class_students (class_id, student_id) VALUES (?, ?)',
-    cls.id, studentId
-  );
+    // Check max class size from system settings
+    const maxVal = await getSystemSetting('max_class_size');
+    const maxSize = maxVal ? parseInt(maxVal, 10) : 50;
+    if (maxSize > 0) {
+      const countRow = await db.get<{ cnt: number }>('SELECT COUNT(*) as cnt FROM class_students WHERE class_id = ?', cls.id);
+      if (countRow && countRow.cnt >= maxSize) {
+        await db.run('ROLLBACK');
+        return { success: false, message: `هذا الفصل ممتلئ (الحد الأقصى ${maxSize} طالب)` };
+      }
+    }
+
+    await db.run(
+      'INSERT INTO class_students (class_id, student_id) VALUES (?, ?)',
+      cls.id, studentId
+    );
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK').catch(() => {});
+    throw err;
+  }
 
   // Notify the teacher that a new student joined their class
   const studentName = await db.get<{ name: string }>('SELECT name FROM users WHERE id = ?', studentId);

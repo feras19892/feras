@@ -165,12 +165,12 @@ function closeReport() {
 }
 
 async function load() {
-  await store.fetchReports(true)
+  // تحميل موحّد: التقارير (إجباري) + الفصول معاً لضمان اتساق أسماء الفصول بعد التحديث
+  await Promise.allSettled([store.fetchReports(true), store.fetchClasses()])
 }
 
 onMounted(() => {
-  store.fetchReports()
-  store.fetchClasses()
+  load()
   eventBus.on('report:graded', load)
 })
 

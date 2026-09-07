@@ -60,15 +60,16 @@ async function verifySchoolOwnsClass(schoolId: number, classId: string): Promise
   return !!row && row.school_id === schoolId;
 }
 
-// POST / — إنشاء
+// POST / — إنشاء (متاح للطلاب فقط)
 app.post('/', zValidator('json', createReportSchema), async (c) => {
   const user = c.get('user');
+  if (user.role !== 'student') {
+    return c.json({ success: false, message: 'غير مصرح — فقط الطلاب يمكنهم تقديم التقارير' }, 403);
+  }
   const body = c.req.valid('json');
   // Verify student is a member of the class
-  if (user.role === 'student') {
-    const member = await db.get('SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?', body.class_id, user.id);
-    if (!member) return c.json({ success: false, message: 'غير مصرح — أنت لست عضواً في هذا الفصل' }, 403);
-  }
+  const member = await db.get('SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?', body.class_id, user.id);
+  if (!member) return c.json({ success: false, message: 'غير مصرح — أنت لست عضواً في هذا الفصل' }, 403);
   // Block if class is frozen
   const cls = await db.get<{ is_frozen: number }>('SELECT is_frozen FROM classes WHERE id = ?', body.class_id);
   if (cls?.is_frozen) {
@@ -98,17 +99,18 @@ app.post('/', zValidator('json', createReportSchema), async (c) => {
   return c.json({ success: true, report: result }, 201);
 });
 
-// POST /:id/resubmit — إعادة إرسال
+// POST /:id/resubmit — إعادة إرسال (متاح للطلاب فقط)
 app.post('/:id/resubmit', zValidator('json', createReportSchema), async (c) => {
   const user = c.get('user');
+  if (user.role !== 'student') {
+    return c.json({ success: false, message: 'غير مصرح — فقط الطلاب يمكنهم إعادة تقديم التقارير' }, 403);
+  }
   const id = validId(c.req.param('id'));
   if (!id) return c.json({ success: false, message: 'معرف غير صالح' }, 400);
   const body = c.req.valid('json');
   // Verify student is a member of the class
-  if (user.role === 'student') {
-    const member = await db.get('SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?', body.class_id, user.id);
-    if (!member) return c.json({ success: false, message: 'غير مصرح — أنت لست عضواً في هذا الفصل' }, 403);
-  }
+  const member = await db.get('SELECT 1 FROM class_students WHERE class_id = ? AND student_id = ?', body.class_id, user.id);
+  if (!member) return c.json({ success: false, message: 'غير مصرح — أنت لست عضواً في هذا الفصل' }, 403);
   // Block if class is frozen
   const cls = await db.get<{ is_frozen: number }>('SELECT is_frozen FROM classes WHERE id = ?', body.class_id);
   if (cls?.is_frozen) {

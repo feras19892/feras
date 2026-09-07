@@ -5,7 +5,7 @@ import { authMiddleware } from '../auth/middleware.js';
 import { db } from '../../db/index.js';
 import type { User } from '@my-modern-app/shared-types';
 import { createNotification, createSchoolNotification } from './services.js';
-import { generateQueueForAll } from './queue.js';
+
 
 const app = new Hono<{ Variables: { user: User } }>();
 

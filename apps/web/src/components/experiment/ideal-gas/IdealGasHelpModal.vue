@@ -1,37 +1,98 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n';
+import ExperimentHelpModal from '../shared/ExperimentHelpModal.vue';
+import type { HelpSection } from '../shared/experiment-help-types';
 const { t } = useI18n();
-defineProps<{ open: boolean }>()
 
-const emit = defineEmits<{ (e: 'close'): void }>()
+defineProps<{ open: boolean }>();
+const emit = defineEmits<{ (e: 'close'): void }>();
+
+const sections: HelpSection[] = [
+  {
+    title: t('experiments.igHelpS1Title'),
+    blocks: [
+      { type: 'p', text: t('experiments.igHelpS1P1') },
+      { type: 'p', text: t('experiments.igHelpS1P2') },
+      { type: 'p', text: t('experiments.igHelpS1P3') },
+    ],
+  },
+  {
+    title: t('experiments.igHelpS2Title'),
+    blocks: [
+      { type: 'p', text: t('experiments.igHelpS2P1') },
+      { type: 'formula', text: t('experiments.igHelpS2F1') },
+      { type: 'p', text: t('experiments.igHelpS2P2') },
+      { type: 'formula', text: t('experiments.igHelpS2F2') },
+      { type: 'p', text: t('experiments.igHelpS2P3') },
+      { type: 'formula', text: t('experiments.igHelpS2F3') },
+      { type: 'p', text: t('experiments.igHelpS2P4') },
+    ],
+  },
+  {
+    title: t('experiments.igHelpS3Title'),
+    blocks: [
+      { type: 'p', text: t('experiments.igHelpS3P1') },
+      {
+        type: 'ordered',
+        items: [
+          t('experiments.igHelpS3L1'),
+          t('experiments.igHelpS3L2'),
+          t('experiments.igHelpS3L3'),
+          t('experiments.igHelpS3L4'),
+          t('experiments.igHelpS3L5'),
+        ],
+      },
+    ],
+  },
+  {
+    title: t('experiments.igHelpS4Title'),
+    blocks: [
+      { type: 'p', text: t('experiments.igHelpS4P1') },
+      {
+        type: 'list',
+        items: [
+          t('experiments.igHelpS4L1'),
+          t('experiments.igHelpS4L2'),
+          t('experiments.igHelpS4L3'),
+          t('experiments.igHelpS4L4'),
+        ],
+      },
+    ],
+  },
+  {
+    title: t('experiments.igHelpS5Title'),
+    blocks: [
+      {
+        type: 'cards',
+        items: [
+          t('experiments.igHelpS5E1'),
+          t('experiments.igHelpS5E2'),
+          t('experiments.igHelpS5E3'),
+        ],
+      },
+    ],
+  },
+  {
+    title: t('experiments.igHelpS6Title'),
+    blocks: [
+      {
+        type: 'list',
+        items: [
+          t('experiments.igHelpS6L1'),
+          t('experiments.igHelpS6L2'),
+          t('experiments.igHelpS6L3'),
+        ],
+      },
+    ],
+  },
+];
 </script>
 
 <template>
-  <Teleport to="body">
-    <div v-if="open" class="help-overlay" @click.self="emit('close')">
-    <div class="help-modal">
-      <h3>{{ t('experiments.helpTitle') }}</h3>
-      <div class="help-grid">
-        <div><kbd>Space</kbd><span>{{ t('experiments.helpSpace') }}</span></div>
-        <div><kbd>R</kbd><span>{{ t('experiments.helpR') }}</span></div>
-        <div><kbd>S</kbd><span>{{ t('experiments.helpS') }}</span></div>
-        <div><kbd>Ctrl+Z</kbd><span>{{ t('experiments.helpUndo') }}</span></div>
-        <div><kbd>Ctrl+Y</kbd><span>{{ t('experiments.helpRedo') }}</span></div>
-        <div><kbd>?</kbd><span>{{ t('experiments.helpQuestion') }}</span></div>
-      </div>
-      <button class="close-btn" @click="emit('close')">{{ t('experiments.helpQuestion') }}</button>
-      </div>
-    </div>
-  </Teleport>
+  <ExperimentHelpModal
+    :open="open"
+    :title="t('experiments.igHelpTitle')"
+    :sections="sections"
+    @close="emit('close')"
+  />
 </template>
-
-<style scoped>
-.help-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:9999; }
-.help-modal { background:#1A1F27; border:1px solid #2D3645; border-radius:10px; padding:1.5rem; width:360px; max-width:90vw; }
-.help-modal h3 { margin:0 0 .75rem; color:#5B8DB8; font-size:1rem; }
-.help-grid { display:grid; gap:.5rem; margin-bottom:1rem; }
-.help-grid div { display:flex; align-items:center; gap:.6rem; color:#B8C0CC; font-size:.8rem; }
-kbd { display:inline-block; padding:.15rem .35rem; border-radius:4px; border:1px solid #2D3645; background:#0d1117; color:#8B95A5; font-size:.72rem; font-family:monospace; min-width:56px; text-align:center; }
-.close-btn { width:100%; padding:.45rem; border-radius:6px; border:none; background:#5B8DB8; color:#fff; font-weight:700; cursor:pointer; }
-.close-btn:hover { background:#4a7ba8; }
-</style>

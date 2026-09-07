@@ -1,8 +1,20 @@
-const CACHE_NAME = 'modapp-v1';
+// __BUILD_ID__ is replaced by scripts/stamp-sw.mjs after each build so every
+// deploy gets a fresh cache and stale entries are dropped on activate.
+const CACHE_NAME = 'modapp-__BUILD_ID__';
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
   '/manifest.json',
+];
+
+// الملفات التي يتم تخزينها مؤقتاً أثناء الاستخدام
+const RUNTIME_CACHE_PATTERNS = [
+  /\/assets\//,
+  /\/icon-/,
+  /\.css$/,
+  /\.js$/,
+  /\.woff2?$/,
+  /\.png$/,
+  /\.svg$/,
+  /\.jpg$/,
 ];
 
 self.addEventListener('install', (event) => {
@@ -31,6 +43,8 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.startsWith('/ws')) return;
 
   if (req.mode === 'navigate') {
+    // Always prefer the network for HTML — a cached index.html references
+    // hashed chunks that may no longer exist after a new deploy.
     event.respondWith(
       fetch(req)
         .then((res) => {
@@ -38,7 +52,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((c) => c.put(req, copy)).catch(() => {});
           return res;
         })
-        .catch(() => caches.match(req).then((c) => c || caches.match('/index.html')))
+        .catch(() => caches.match(req))
     );
     return;
   }
@@ -49,8 +63,14 @@ self.addEventListener('fetch', (event) => {
       return fetch(req)
         .then((res) => {
           if (res.ok && res.type === 'basic') {
-            const copy = res.clone();
-            caches.open(CACHE_NAME).then((c) => c.put(req, copy)).catch(() => {});
+            // تخزين الملفات المطابقة للأنماط المحددة
+            const shouldCache = RUNTIME_CACHE_PATTERNS.some((pattern) =>
+              pattern.test(url.pathname)
+            );
+            if (shouldCache) {
+              const copy = res.clone();
+              caches.open(CACHE_NAME).then((c) => c.put(req, copy)).catch(() => {});
+            }
           }
           return res;
         })

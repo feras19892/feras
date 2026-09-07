@@ -40,7 +40,7 @@ watch(panelKey, () => {
           <p class="info-description">{{ props.hotspot.description }}</p>
 
           <div v-if="hasDetails" class="details-section">
-            <button class="details-toggle" @click="expanded = !expanded">
+            <button type="button" class="details-toggle" :aria-expanded="expanded" aria-controls="details-content" @click="expanded = !expanded">
               <svg v-if="!expanded" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="6 9 12 15 18 9" />
               </svg>
@@ -51,7 +51,7 @@ watch(panelKey, () => {
             </button>
 
             <Transition name="details-expand">
-              <div v-if="expanded" class="details-content">
+              <div v-if="expanded" id="details-content" class="details-content">
                 <div v-if="props.hotspot.longDescription" class="detail-block">
                   <div class="detail-label">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -258,6 +258,6 @@ watch(panelKey, () => {
 
 .details-expand-enter-to,
 .details-expand-leave-from {
-  max-height: 500px;
+  max-height: 90vh;
 }
 </style>

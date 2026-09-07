@@ -16,6 +16,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'clear'): void;
   (e: 'back'): void;
+  (e: 'toggle-help'): void;
 }>();
 
 const title = computed(() => {
@@ -30,6 +31,7 @@ const title = computed(() => {
       <span class="title">📊 {{ title }}</span>
     </div>
     <div class="right">
+      <button class="btn-help" @click="emit('toggle-help')">&#x2753; {{ t('experiments.menuHelp') }}</button>
       <NewAnalysisButton />
       <button class="btn-clear" @click="emit('clear')">{{ t('analysis.clearData') }}</button>
     </div>
@@ -70,4 +72,15 @@ const title = computed(() => {
   transition: all 0.15s;
 }
 .btn-clear:hover { background: rgba(239,68,68,0.18); }
+.btn-help {
+  background: rgba(91,141,184,0.1);
+  border: 1px solid rgba(91,141,184,0.2);
+  color: #8B95A5;
+  cursor: pointer;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.35rem;
+  transition: all 0.15s;
+}
+.btn-help:hover { background: rgba(91,141,184,0.18); color: #D1D7E0; }
 </style>

@@ -11,6 +11,7 @@ import * as healthSvc from './system-health-service.js';
 import * as exportSvc from './export-service.js';
 import * as auditSvc from './audit-service.js';
 import * as activitySvc from '../activity/service.js';
+import { verifyAdminPassword } from './admin-password.js';
 import { backupDatabase } from '../../shared/backup.js';
 import { readdir, stat, copyFile } from 'fs/promises';
 import { join, resolve, basename, sep } from 'path';
@@ -82,7 +83,8 @@ export function registerSystemRoutes(app: Hono<{ Variables: { user: User } }>): 
 
   app.get('/sessions', async (c) => {
     try {
-      const list = await sessionSvc.getActiveSessions();
+      const user = c.get('user') as User;
+      const list = await sessionSvc.getActiveSessions(user.school_id ?? undefined);
       return c.json({ success: true, sessions: list });
     } catch (err) {
       if (process.env.NODE_ENV !== 'production') console.error('admin getSessions error:', err);
@@ -118,9 +120,9 @@ export function registerSystemRoutes(app: Hono<{ Variables: { user: User } }>): 
     let filename = 'export.csv';
     try {
       switch (type) {
-        case 'users': csv = await exportSvc.exportUsers(); filename = 'users.csv'; break;
+        case 'users': csv = await exportSvc.exportUsers(adminSchoolId); filename = 'users.csv'; break;
         case 'reports': csv = await exportSvc.exportReports(adminSchoolId); filename = 'reports.csv'; break;
-        case 'classes': csv = await exportSvc.exportClasses(); filename = 'classes.csv'; break;
+        case 'classes': csv = await exportSvc.exportClasses(adminSchoolId); filename = 'classes.csv'; break;
         case 'feedback': csv = await exportSvc.exportFeedback(); filename = 'feedback.csv'; break;
         case 'activity': csv = await exportSvc.exportActivity(); filename = 'activity.csv'; break;
         default: return c.json({ success: false, message: 'Invalid export type' }, 400);
@@ -135,15 +137,24 @@ export function registerSystemRoutes(app: Hono<{ Variables: { user: User } }>): 
   });
 
   const impersonateSchema = z.object({
-    password: z.string().optional(),
+    password: z.string().min(1, 'كلمة مرور الإدمن مطلوبة'),
   });
 
   app.post('/impersonate/:id', zValidator('json', impersonateSchema), async (c) => {
     const admin = c.get('user');
     const targetId = Number(c.req.param('id'));
     if (!Number.isFinite(targetId) || targetId <= 0) return c.json({ success: false, message: 'Invalid ID' }, 400);
-    c.req.valid('json');
+    const { password } = c.req.valid('json');
+    const pwCheck = await verifyAdminPassword(admin as User, password);
+    if (pwCheck) return c.json(pwCheck, 401);
     try {
+      const adminSchoolId = (admin as User).school_id;
+      if (adminSchoolId) {
+        const target = await db.get<{ school_id: number | null }>(`SELECT school_id FROM users WHERE id = ?`, targetId);
+        if (!target || target.school_id !== adminSchoolId) {
+          return c.json({ success: false, message: 'غير مصرح' }, 403);
+        }
+      }
       const result = await impersonateUser(targetId);
       if (!result) return c.json({ success: false, message: 'User not found' }, 404);
       setAccessCookie(c, result.token);
@@ -279,7 +290,7 @@ export function registerSystemRoutes(app: Hono<{ Variables: { user: User } }>): 
     // Prevent path traversal: restrict to the backup directory and DB backups only.
     const safeName = basename(filename);
     if (safeName !== filename) return c.json({ success: false, message: 'Invalid backup filename' }, 400);
-    if (!safeName.startsWith('app_') && !safeName.endsWith('.db')) {
+    if (!safeName.startsWith('app_') || !safeName.endsWith('.db')) {
       return c.json({ success: false, message: 'Invalid backup filename' }, 400);
     }
     const backupPath = resolve(backupDir, safeName);

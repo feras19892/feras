@@ -44,8 +44,9 @@ export function useAdminNotificationCenter() {
   const open = ref(false);
   const filter = ref<AdminNotifFilter>('all');
   const messageUnread = ref(0);
-  const liveToasts = ref<{ id: number; title: string; message: string; type: string; icon: string }[]>([]);
+    const liveToasts = ref<{ id: number; title: string; message: string; type: string; icon: string }[]>([]);
   let toastId = 0;
+  let activeToastTimer: ReturnType<typeof setTimeout> | null = null;
 
   // عدّاد الرسائل الموجهة — endpoint أدمن فقط، event-driven بلا polling
   async function loadMessageUnread() {
@@ -65,9 +66,10 @@ export function useAdminNotificationCenter() {
     eventBus.on('cache:invalidate', onNotifCacheInvalidate);
   });
 
-  onUnmounted(() => {
+    onUnmounted(() => {
     eventBus.off('notification:new', loadMessageUnread);
     eventBus.off('cache:invalidate', onNotifCacheInvalidate);
+    if (activeToastTimer) clearTimeout(activeToastTimer);
   });
   const seenNotifIds = new Set<number>();
   let notifInitialized = false;
@@ -125,11 +127,13 @@ export function useAdminNotificationCenter() {
     return d.toLocaleDateString(locale.value === 'ar' ? 'ar-SA' : locale.value);
   }
 
-  function addToast(title: string, message: string, type: string) {
+    function addToast(title: string, message: string, type: string) {
+    if (activeToastTimer) clearTimeout(activeToastTimer);
     const id = ++toastId;
     liveToasts.value.push({ id, title, message, type, icon: getIcon(type) });
-    setTimeout(() => {
+    activeToastTimer = setTimeout(() => {
       liveToasts.value = liveToasts.value.filter(t => t.id !== id);
+      activeToastTimer = null;
     }, 5000);
   }
 

@@ -35,7 +35,8 @@ export async function uploadToCloud(backupPath: string, backupName: string): Pro
 
   try {
     const fileBuffer = await readFile(backupPath);
-    const key = `backups/${backupName}`;
+    const safeName = backupName.split(/[\\/]/).pop() || 'backup.db';
+    const key = `backups/${safeName}`;
 
     await client.send(
       new PutObjectCommand({

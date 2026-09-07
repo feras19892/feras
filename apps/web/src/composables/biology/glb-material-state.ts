@@ -76,6 +76,7 @@ export function applyMaterialState(deps: MaterialStateDeps): void {
           }
         }
         material.clippingPlanes = crossSectionMode.value && clipPlane ? [clipPlane] : [];
+        material.needsUpdate = true;
       }
     }
   });

@@ -23,10 +23,8 @@ export function useDashboard(role: 'admin' | 'school' | 'teacher' | 'student', c
   async function handleLogout() {
     try { await auth.logout() } catch { /* ignore */ }
     localStorage.removeItem('sidebarCollapsed')
-    localStorage.removeItem('lastTab_student')
-    localStorage.removeItem('lastTab_teacher')
-    localStorage.removeItem('lastTab_admin')
-    localStorage.removeItem('lastTab_school')
+    // امسح تفضيلات اللوحة (تخزّن آخر تبويب داخل 'dashboard-preferences') لمنع استعادة تبويب قديم غير صالح
+    localStorage.removeItem('dashboard-preferences')
     window.location.replace('/#/')
   }
 

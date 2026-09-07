@@ -1,12 +1,12 @@
 {
   "framework": "vue",
-  "buildCommand": "cd apps/web && VITE_API_BASE_URL= pnpm exec vite build",
+  "buildCommand": "cd apps/web && pnpm exec vite build",
   "outputDirectory": "apps/web/dist",
   "installCommand": "pnpm install",
   "trailingSlash": false,
+  "cleanUrls": true,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://wafery-veristic-samiyah.ngrok-free.dev/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!api/|assets/|models/|draco/|sw\\.js|manifest\\.json|icon-).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -26,6 +26,33 @@
       "source": "/(.*).(js|css|svg|png|jpg|jpeg|webp|woff2|ttf)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/models/(.*).(glb|gltf)",
+      "headers": [
+        { "key": "Content-Type", "value": "model/gltf-binary" },
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
+      ]
+    },
+    {
+      "source": "/draco/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Service-Worker-Allowed", "value": "/" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" },
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
       ]
     }
   ]

@@ -183,6 +183,11 @@ export function solveCircuitTransientDC(
       }
     }
 
+    // تثبيت عقدة الأرضي (node 0) بجهد صفر — مع MNA قياسي لا نجعل الأرضي مجهولاً
+    for (let j = 0; j < size; j++) G[0 * size + j] = 0
+    G[0 * size + 0] = 1
+    RHS[0] = 0
+
     return solveLinear(G, RHS, size)
   }
 

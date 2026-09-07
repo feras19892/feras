@@ -74,18 +74,19 @@ function onWindowError(e: ErrorEvent) {
 
 /* ── hook Canvas & WebGL ── */
 let canvasHookInstalled = false;
+let origGetContext: ((contextId: string, options?: unknown) => RenderingContext | null) | null = null;
 const wrapped2dContexts = new WeakSet<CanvasRenderingContext2D>();
 const wrappedGlContexts = new WeakSet<WebGLRenderingContext>();
 
 function hookCanvas() {
   if (canvasHookInstalled) return;
   canvasHookInstalled = true;
-  const origGetContext = HTMLCanvasElement.prototype.getContext;
+  origGetContext = HTMLCanvasElement.prototype.getContext;
   (HTMLCanvasElement.prototype as unknown as { getContext: (contextId: string, options?: unknown) => RenderingContext | null }).getContext = function (
     contextId: string,
     options?: unknown
   ) {
-    const ctx = (origGetContext as unknown as (contextId: string, options?: unknown) => RenderingContext | null).call(this, contextId, options);
+    const ctx = (origGetContext as (contextId: string, options?: unknown) => RenderingContext | null).call(this, contextId, options);
     if (!ctx) return null;
     if (contextId === '2d') {
       const c2d = ctx as CanvasRenderingContext2D;
@@ -109,6 +110,14 @@ function hookCanvas() {
     }
     return ctx;
   };
+}
+
+/* FIX: Restore original getContext to prevent permanent prototype pollution */
+function unhookCanvas() {
+  if (!canvasHookInstalled || !origGetContext) return;
+  canvasHookInstalled = false;
+  (HTMLCanvasElement.prototype as unknown as { getContext: (contextId: string, options?: unknown) => RenderingContext | null }).getContext = origGetContext.bind(HTMLCanvasElement.prototype);
+  origGetContext = null;
 }
 
 /* ── FPS loop ── */
@@ -179,11 +188,12 @@ export function useExperimentMonitor() {
     historyTimer = window.setInterval(pushSnapshot, 5000);
   });
 
-  onUnmounted(() => {
+    onUnmounted(() => {
     cancelAnimationFrame(rafId);
     clearInterval(memTimer);
     clearInterval(historyTimer);
     unhookConsole();
+    unhookCanvas();
     if (windowErrorHandler) {
       window.removeEventListener('error', windowErrorHandler);
       windowErrorHandler = null;

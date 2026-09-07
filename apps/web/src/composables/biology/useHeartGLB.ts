@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, type Ref } from 'vue';
+﻿import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 import * as THREE from 'three';
 import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import {
@@ -25,6 +25,7 @@ export function useHeartGLB(
 ) {
   const error = ref<string | null>(null);
   const isLoading = ref(true);
+  const loadProgress = ref(0);
   const selectedPartId = ref<string | null>(null);
   const hoveredPartId = ref<string | null>(null);
   const xRayMode = ref(false);
@@ -168,9 +169,21 @@ export function useHeartGLB(
     if (!containerRef.value || !camera || !renderer) return;
     const width = containerRef.value.clientWidth;
     const height = containerRef.value.clientHeight;
+    if (width === 0 || height === 0) return;
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
+  };
+
+  // لقطة شاشة للتقرير — نرسم إطاراً طازجاً قبل الالتقاط (بدون preserveDrawingBuffer)
+  const screenshot = (): string | null => {
+    if (!renderer || !scene || !camera) return null;
+    try {
+      renderer.render(scene, camera);
+      return renderer.domElement.toDataURL('image/png');
+    } catch {
+      return null;
+    }
   };
 
   const init = (): void => {
@@ -179,8 +192,8 @@ export function useHeartGLB(
     const height = containerRef.value.clientHeight;
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x070b14);
-    scene.fog = new THREE.FogExp2(0x070b14, 0.02);
+    scene.background = new THREE.Color(0x0f172a);
+    scene.fog = new THREE.FogExp2(0x0f172a, 0.02);
 
     camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 1.5, 14);
@@ -189,6 +202,7 @@ export function useHeartGLB(
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     } catch {
       error.value = 'WebGL is not supported or has been disabled in this browser.';
+      isLoading.value = false;
       return;
     }
     renderer.setSize(width, height);
@@ -208,6 +222,7 @@ export function useHeartGLB(
       heartMeshes: { get current() { return heartMeshes }, set current(v) { heartMeshes = v } },
       applyMaterialState,
       applyExplode,
+      onProgress: (ratio) => { loadProgress.value = ratio },
     });
 
     const { onPointerMove, onClick, animate, getAnimationId: getAnimId } = setupInteractions({
@@ -273,13 +288,13 @@ export function useHeartGLB(
   });
 
   return {
-    error, isLoading, selectedPartId, hoveredPartId,
+    error, isLoading, loadProgress, selectedPartId, hoveredPartId,
     xRayMode, crossSectionMode, crossSectionOffset,
     heartbeatEnabled, autoRotate, insideView,
     explodeFactor, bloodFlowEnabled,
     toggleXRay, toggleCrossSection, setCrossSectionOffset,
     resetCamera, toggleHeartbeat, toggleAutoRotate,
     toggleInsideView, setExplodeFactor, toggleBloodFlow,
-    resetAll, selectPartById,
+    resetAll, selectPartById, screenshot,
   };
 }

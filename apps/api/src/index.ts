@@ -120,7 +120,18 @@ app.route('/api/archive', archiveRoutes);
 app.route('/api/support-tickets', supportTicketRoutes);
 
 // Backup management routes (admin only)
-app.get('/api/admin/backups', async (c) => {
+// These operate on the entire database — restrict to global (unscoped) admins.
+const globalAdminOnly = async (c: any, next: any) => {
+  const user = c.get('user') as { school_id?: number | null } | undefined;
+  if (user?.school_id) {
+    return c.json({ success: false, message: 'غير مصرح — عمليات قاعدة البيانات للأدمن العام فقط' }, 403);
+  }
+  await next();
+};
+app.use('/api/admin/backups', globalAdminOnly);
+app.use('/api/admin/backups/*', globalAdminOnly);
+
+app.get('/api/admin/backups', adminAuthMiddleware, async (c) => {
   try {
     const backups = await listBackups();
     return c.json({ success: true, backups });
@@ -129,7 +140,7 @@ app.get('/api/admin/backups', async (c) => {
   }
 });
 
-app.post('/api/admin/backups/create', async (c) => {
+app.post('/api/admin/backups/create', adminAuthMiddleware, async (c) => {
   try {
     const success = await backupDatabase();
     if (success) {
@@ -141,7 +152,7 @@ app.post('/api/admin/backups/create', async (c) => {
   }
 });
 
-app.post('/api/admin/backups/restore', async (c) => {
+app.post('/api/admin/backups/restore', adminAuthMiddleware, async (c) => {
   try {
     const { backupName } = await c.req.json();
     if (!backupName) {
@@ -157,7 +168,7 @@ app.post('/api/admin/backups/restore', async (c) => {
   }
 });
 
-app.get('/api/admin/backups/download/:backupName', async (c) => {
+app.get('/api/admin/backups/download/:backupName', adminAuthMiddleware, async (c) => {
   try {
     const backupName = c.req.param('backupName');
     if (!backupName) {
@@ -176,7 +187,7 @@ app.get('/api/admin/backups/download/:backupName', async (c) => {
   }
 });
 
-app.delete('/api/admin/backups/:backupName', async (c) => {
+app.delete('/api/admin/backups/:backupName', adminAuthMiddleware, async (c) => {
   try {
     const backupName = c.req.param('backupName');
     if (!backupName) {

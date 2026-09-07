@@ -10,6 +10,7 @@ import {
   addQuestionSchema,
   assignTemplateSchema,
   submitAnswersSchema,
+  gradeAnswerSchema,
 } from './schemas.js';
 
 type Variables = { user: User };
@@ -203,7 +204,7 @@ expRoutes.get('/stats', async (c) => {
   return c.json({ success: false, message: 'Forbidden' }, 403);
 });
 
-// Teacher/Student: get answers for a report
+// Teacher/Admin: get answers for a report
 expRoutes.get('/reports/:report_id/answers', async (c) => {
   const user = c.get('user');
   const reportId = Number(c.req.param('report_id'));
@@ -220,6 +221,26 @@ expRoutes.get('/reports/:report_id/answers', async (c) => {
   }
   const answers = await svc.getAnswersForReport(reportId);
   return c.json({ success: true, answers });
+});
+
+// Teacher/Admin: manually grade one answer (short_answer etc.) + recompute report score
+expRoutes.patch('/reports/:report_id/answers/:answer_id', zValidator('json', gradeAnswerSchema), async (c) => {
+  const user = c.get('user');
+  if (user.role !== 'teacher' && user.role !== 'admin') {
+    return c.json({ success: false, message: 'Teachers only' }, 403);
+  }
+  const reportId = Number(c.req.param('report_id'));
+  const answerId = Number(c.req.param('answer_id'));
+  const report = await svc.getReportById(reportId);
+  if (!report) return c.json({ success: false, message: 'Report not found' }, 404);
+  const classRow = await db.get<{ teacher_id: number }>('SELECT teacher_id FROM classes WHERE id = ?', report.class_id);
+  if (!classRow || (classRow.teacher_id !== user.id && user.role !== 'admin')) {
+    return c.json({ success: false, message: 'Not your class' }, 403);
+  }
+  const body = c.req.valid('json');
+  const result = await svc.gradeAnswer(reportId, answerId, body.teacher_score, body.feedback);
+  if (result.error) return c.json({ success: false, message: result.error }, 400);
+  return c.json({ success: true, question_score: result.question_score, question_max_score: result.question_max_score });
 });
 
 export { expRoutes };

@@ -1,7 +1,6 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { db } from '../../db/index.js';
 import {
   getEmailChangeRequests, reviewEmailChangeRequest,
   getSchoolUserDetail, createSchoolWarning,

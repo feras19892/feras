@@ -27,8 +27,8 @@ function onBlocked(e: Event) {
 }
 
 function doLogout() {
-  localStorage.removeItem('access_token')
-  localStorage.removeItem('refresh_token')
+  localStorage.removeItem('auth_access_token')
+  localStorage.removeItem('auth_refresh_token')
   window.location.replace('/#/')
 }
 

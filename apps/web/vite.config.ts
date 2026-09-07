@@ -3,10 +3,26 @@ import vue from '@vitejs/plugin-vue';
 import Inspect from 'vite-plugin-inspect';
 import VueDevtools from 'vite-plugin-vue-devtools';
 import { fileURLToPath, URL } from 'node:url';
+import { readFileSync, writeFileSync } from 'node:fs';
 
 export default defineConfig(({ mode }) => ({
   plugins: [
     vue(),
+    {
+      // Stamp the service worker with a per-build id so each deploy rotates the
+      // runtime cache and drops references to deleted hashed chunks.
+      name: 'stamp-service-worker',
+      apply: 'build',
+      closeBundle() {
+        try {
+          const swPath = fileURLToPath(new URL('./dist/sw.js', import.meta.url));
+          const src = readFileSync(swPath, 'utf8');
+          writeFileSync(swPath, src.replaceAll('__BUILD_ID__', Date.now().toString(36)));
+        } catch {
+          // sw.js is optional in the build output
+        }
+      },
+    },
     Inspect({
       enabled: mode === 'development',
       build: false,

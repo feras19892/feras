@@ -15,13 +15,7 @@ app.get('/events', (c) => {
   const user = c.get('user');
 
   const requestOrigin = c.req.header('origin');
-  const envOrigins = process.env.CORS_ORIGIN
-    ? process.env.CORS_ORIGIN.split(',').map((s) => s.trim()).filter((s) => s !== '*' && s !== '')
-    : [];
-  const fallbackOrigin = envOrigins[0] ?? null;
-  const origin = (requestOrigin && isAllowedOrigin(requestOrigin))
-    ? requestOrigin
-    : (requestOrigin ? null : fallbackOrigin);
+  const origin = requestOrigin && isAllowedOrigin(requestOrigin) ? requestOrigin : null;
   if (!origin) {
     return c.text('Origin not allowed', 403);
   }
@@ -37,9 +31,11 @@ app.get('/events', (c) => {
       if (!event.targetUserId && !event.targetRole && !event.schoolId) return;
       if (event.targetUserId && event.targetUserId !== user.id) return;
       if (event.targetRole && event.targetRole !== user.role) return;
-      if (event.schoolId && user.role !== 'admin') {
+      // FIX: Also check schoolId from payload for role-targeted events to prevent cross-tenant data leaks
+      const effectiveSchoolId = event.schoolId ?? (event.payload?.school_id as number | undefined) ?? (event.payload?.schoolId as number | undefined);
+      if (effectiveSchoolId && user.role !== 'admin') {
         const userSchoolId = user.school_id ?? (user.role === 'school' ? user.id : undefined);
-        if (userSchoolId !== event.schoolId) return;
+        if (userSchoolId !== effectiveSchoolId) return;
       }
 
       try {

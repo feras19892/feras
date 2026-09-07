@@ -47,6 +47,8 @@ app.get('/', async (c) => {
     filters.user_id = user.id;
   } else if (user.role === 'school') {
     filters.school_id = user.id;
+  } else if (user.role === 'admin' && user.school_id) {
+    filters.school_id = user.school_id;
   }
 
   if (status) filters.status = status;
@@ -81,6 +83,8 @@ app.get('/:id', async (c) => {
       if (ticket.school_id !== user.id) {
         return c.json({ success: false, message: 'غير مصرح' }, 403);
       }
+    } else if (user.role === 'admin' && user.school_id && ticket.school_id && ticket.school_id !== user.school_id) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
     }
 
     const comments = await svc.getTicketComments(id, user.role === 'admin');
@@ -104,6 +108,16 @@ app.patch('/:id', adminAuthMiddleware, zValidator('json', updateTicketSchema), a
   const user = c.get('user');
   const id = Number(c.req.param('id'));
   const body = c.req.valid('json');
+
+  if (user.school_id) {
+    const ticket = await svc.getTicketById(id);
+    if (!ticket) {
+      return c.json({ success: false, message: 'Ticket not found' }, 404);
+    }
+    if (ticket.school_id && ticket.school_id !== user.school_id) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
+  }
 
   try {
     await svc.updateTicket(id, { ...body, changed_by: user.id });
@@ -142,6 +156,8 @@ app.post('/:id/comments', zValidator('json', addCommentSchema), async (c) => {
       if (ticket.school_id !== user.id) {
         return c.json({ success: false, message: 'غير مصرح' }, 403);
       }
+    } else if (user.role === 'admin' && user.school_id && ticket.school_id && ticket.school_id !== user.school_id) {
+      return c.json({ success: false, message: 'غير مصرح' }, 403);
     }
 
     const result = await svc.addTicketComment({
@@ -169,6 +185,8 @@ app.get('/stats/summary', async (c) => {
     userId = user.id;
   } else if (user.role === 'school') {
     schoolId = user.id;
+  } else if (user.role === 'admin') {
+    schoolId = user.school_id ?? undefined;
   }
 
   try {

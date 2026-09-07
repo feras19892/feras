@@ -35,6 +35,7 @@ export function useAITutor() {
   const connected = ref(true);
   const copiedId = ref<number | null>(null);
   let abortController: AbortController | null = null;
+  let saveTimer: ReturnType<typeof setTimeout> | null = null;
 
   const isGuest = computed(() => auth.isGuest);
   const charCount = computed(() => input.value.length);
@@ -126,9 +127,15 @@ export function useAITutor() {
     }).catch(() => { /* ignore */ });
   }
 
-  watch(messages, (v) => saveChat(v), { deep: true });
+  function debouncedSave(msgs: ChatMsg[]) {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => { saveChat(msgs); saveTimer = null; }, 500);
+  }
+
+  watch(() => JSON.stringify(messages.value), () => debouncedSave(messages.value));
 
   onUnmounted(() => {
+    if (saveTimer) clearTimeout(saveTimer);
     stopGeneration();
     saveChat(messages.value);
   });

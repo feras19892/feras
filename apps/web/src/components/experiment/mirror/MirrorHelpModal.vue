@@ -93,19 +93,6 @@ const emit = defineEmits<{ (e: 'close'): void }>()
             </ul>
           </section>
 
-          <!-- Keyboard shortcuts -->
-          <section>
-            <h4>{{ t('experiments.helpKbdTitle') }}</h4>
-            <div class="kbd-grid">
-              <span><kbd>Space</kbd> {{ t('experiments.helpKbdSpace') }}</span>
-              <span><kbd>S</kbd> {{ t('experiments.helpKbdS') }}</span>
-              <span><kbd>R</kbd> {{ t('experiments.helpKbdR') }}</span>
-              <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> {{ t('experiments.helpKbdUndo') }}</span>
-              <span><kbd>Ctrl</kbd>+<kbd>Y</kbd> {{ t('experiments.helpKbdRedo') }}</span>
-              <span><kbd>?</kbd> {{ t('experiments.helpKbdHelp') }}</span>
-            </div>
-          </section>
-
         </div>
       </div>
     </div>
@@ -129,7 +116,4 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 .element-grid { display: flex; flex-direction: column; gap: .35rem; }
 .element { background: #1a2332; border-radius: 6px; padding: .4rem .6rem; font-size: .78rem; }
 .tag { color: #5B8DB8; }
-.kbd-grid { display: flex; flex-wrap: wrap; gap: .4rem; }
-.kbd-grid span { background: #1a2332; border: 1px solid #2D3645; border-radius: 5px; padding: .3rem .5rem; font-size: .75rem; }
-kbd { background: #252D3A; border: 1px solid #475569; border-radius: 4px; padding: .05rem .3rem; font-family: monospace; font-size: .7rem; color: #D1D7E0; }
 </style>

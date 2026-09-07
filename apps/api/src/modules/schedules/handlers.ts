@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { authMiddleware, teacherAuthMiddleware } from '../auth/middleware.js';
+import { authMiddleware } from '../auth/middleware.js';
 import type { User } from '@my-modern-app/shared-types';
 import * as svc from './services.js';
 import { db } from '../../db/index.js';
@@ -9,6 +9,19 @@ import { db } from '../../db/index.js';
 type Variables = { user: User };
 const app = new Hono<{ Variables: Variables }>();
 app.use(authMiddleware);
+
+// Teacher: must own the class. School-scoped admin: class must belong to their school.
+async function classAccessibleBy(classId: number, user: User): Promise<boolean> {
+  const cls = await db.get<{ teacher_id: number; school_id: number | null }>(
+    `SELECT c.teacher_id, COALESCE(c.school_id, t.school_id) as school_id
+     FROM classes c LEFT JOIN users t ON c.teacher_id = t.id WHERE c.id = ?`,
+    classId,
+  );
+  if (!cls) return false;
+  if (user.role === 'teacher') return cls.teacher_id === user.id;
+  if (user.role === 'admin' && user.school_id) return !cls.school_id || cls.school_id === user.school_id;
+  return user.role === 'admin';
+}
 
 const createScheduleSchema = z.object({
   class_id: z.number().int().positive(),
@@ -106,19 +119,19 @@ app.patch('/schedule/:id', zValidator('json', createScheduleSchema.partial()), a
   const id = Number(c.req.param('id'));
   const body = c.req.valid('json');
 
-  if (user.role === 'teacher') {
-    const schedule = await db.get<{ class_id: number }>(
-      'SELECT class_id FROM schedules WHERE id = ?',
-      id,
-    );
-    if (!schedule) return c.json({ success: false, message: 'Schedule not found' }, 404);
-    
-    const classRow = await db.get<{ teacher_id: number }>(
-      'SELECT teacher_id FROM classes WHERE id = ?',
-      schedule.class_id,
-    );
-    if (!classRow || classRow.teacher_id !== user.id) {
-      return c.json({ success: false, message: 'غير مصرح' }, 403);
+  const schedule = await db.get<{ class_id: number }>(
+    'SELECT class_id FROM schedules WHERE id = ?',
+    id,
+  );
+  if (!schedule) return c.json({ success: false, message: 'Schedule not found' }, 404);
+
+  if (!(await classAccessibleBy(schedule.class_id, user))) {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
+  // Moving the schedule to another class requires access to the new class too
+  if (body.class_id !== undefined && body.class_id !== schedule.class_id) {
+    if (!(await classAccessibleBy(body.class_id, user))) {
+      return c.json({ success: false, message: 'غير مصرح — الفصل الجديد خارج نطاق صلاحياتك' }, 403);
     }
   }
 
@@ -140,20 +153,13 @@ app.delete('/schedule/:id', async (c) => {
 
   const id = Number(c.req.param('id'));
 
-  if (user.role === 'teacher') {
-    const schedule = await db.get<{ class_id: number }>(
-      'SELECT class_id FROM schedules WHERE id = ?',
-      id,
-    );
-    if (!schedule) return c.json({ success: false, message: 'Schedule not found' }, 404);
-    
-    const classRow = await db.get<{ teacher_id: number }>(
-      'SELECT teacher_id FROM classes WHERE id = ?',
-      schedule.class_id,
-    );
-    if (!classRow || classRow.teacher_id !== user.id) {
-      return c.json({ success: false, message: 'غير مصرح' }, 403);
-    }
+  const schedule = await db.get<{ class_id: number }>(
+    'SELECT class_id FROM schedules WHERE id = ?',
+    id,
+  );
+  if (!schedule) return c.json({ success: false, message: 'Schedule not found' }, 404);
+  if (!(await classAccessibleBy(schedule.class_id, user))) {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
 
   try {
@@ -263,23 +269,23 @@ app.patch('/event/:id', zValidator('json', createEventSchema.partial()), async (
   const id = Number(c.req.param('id'));
   const body = c.req.valid('json');
 
-  if (user.role === 'teacher') {
-    const event = await db.get<{ class_id: number | null; created_by: number | null }>(
-      'SELECT class_id, created_by FROM recurring_events WHERE id = ?',
-      id,
-    );
-    if (!event) return c.json({ success: false, message: 'Event not found' }, 404);
-    
-    if (event.class_id) {
-      const classRow = await db.get<{ teacher_id: number }>(
-        'SELECT teacher_id FROM classes WHERE id = ?',
-        event.class_id,
-      );
-      if (!classRow || classRow.teacher_id !== user.id) {
-        return c.json({ success: false, message: 'غير مصرح' }, 403);
-      }
-    } else if (event.created_by !== user.id) {
+  const event = await db.get<{ class_id: number | null; created_by: number | null }>(
+    'SELECT class_id, created_by FROM recurring_events WHERE id = ?',
+    id,
+  );
+  if (!event) return c.json({ success: false, message: 'Event not found' }, 404);
+
+  if (event.class_id) {
+    if (!(await classAccessibleBy(event.class_id, user))) {
       return c.json({ success: false, message: 'غير مصرح' }, 403);
+    }
+  } else if (user.role === 'teacher' && event.created_by !== user.id) {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
+  }
+  // Reassigning the event to another class requires access to the new class too
+  if (body.class_id !== undefined && body.class_id !== event.class_id) {
+    if (!(await classAccessibleBy(body.class_id, user))) {
+      return c.json({ success: false, message: 'غير مصرح — الفصل الجديد خارج نطاق صلاحياتك' }, 403);
     }
   }
 
@@ -301,24 +307,17 @@ app.delete('/event/:id', async (c) => {
 
   const id = Number(c.req.param('id'));
 
-  if (user.role === 'teacher') {
-    const event = await db.get<{ class_id: number | null; created_by: number | null }>(
-      'SELECT class_id, created_by FROM recurring_events WHERE id = ?',
-      id,
-    );
-    if (!event) return c.json({ success: false, message: 'Event not found' }, 404);
-    
-    if (event.class_id) {
-      const classRow = await db.get<{ teacher_id: number }>(
-        'SELECT teacher_id FROM classes WHERE id = ?',
-        event.class_id,
-      );
-      if (!classRow || classRow.teacher_id !== user.id) {
-        return c.json({ success: false, message: 'غير مصرح' }, 403);
-      }
-    } else if (event.created_by !== user.id) {
+  const event = await db.get<{ class_id: number | null; created_by: number | null }>(
+    'SELECT class_id, created_by FROM recurring_events WHERE id = ?',
+    id,
+  );
+  if (!event) return c.json({ success: false, message: 'Event not found' }, 404);
+  if (event.class_id) {
+    if (!(await classAccessibleBy(event.class_id, user))) {
       return c.json({ success: false, message: 'غير مصرح' }, 403);
     }
+  } else if (user.role === 'teacher' && event.created_by !== user.id) {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
 
   try {

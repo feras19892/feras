@@ -10,36 +10,40 @@ export interface ExperimentTrialsConfig<T extends { id: number }> {
 
 export function useExperimentTrials<T extends { id: number }>(config: ExperimentTrialsConfig<T>) {
   const trials = ref<T[]>([]) as Ref<T[]>
-  const history = ref<T[][]>([]) as Ref<T[][]>
-  const historyIndex = ref(-1)
+  const history = ref<T[][]>([[]]) as Ref<T[][]>
+  const historyIndex = ref(0)
   let nextId = 1
   const maxHistory = config.maxHistory ?? 20
 
-  function pushHistory(): void {
+  function applyState(state: T[]): void {
+    trials.value = [...state] as T[]
+    nextId = state.length > 0 ? Math.max(...state.map(tr => tr.id)) + 1 : 1
+  }
+
+  function commit(newState: T[]): void {
     if (historyIndex.value < history.value.length - 1) {
       history.value = history.value.slice(0, historyIndex.value + 1)
     }
-    history.value.push([...trials.value] as T[])
+    history.value.push(newState)
     historyIndex.value++
     if (history.value.length > maxHistory) {
       history.value.shift()
       historyIndex.value--
     }
+    applyState(newState)
   }
 
   function undo(): void {
     if (historyIndex.value > 0) {
       historyIndex.value--
-      trials.value = [...history.value[historyIndex.value]] as T[]
-      nextId = trials.value.length > 0 ? Math.max(...trials.value.map(tr => tr.id)) + 1 : 1
+      applyState(history.value[historyIndex.value])
     }
   }
 
   function redo(): void {
     if (historyIndex.value < history.value.length - 1) {
       historyIndex.value++
-      trials.value = [...history.value[historyIndex.value]] as T[]
-      nextId = trials.value.length > 0 ? Math.max(...trials.value.map(tr => tr.id)) + 1 : 1
+      applyState(history.value[historyIndex.value])
     }
   }
 
@@ -47,23 +51,19 @@ export function useExperimentTrials<T extends { id: number }>(config: Experiment
   function canRedo(): boolean { return historyIndex.value < history.value.length - 1 }
 
   function addTrial(trial: Omit<T, 'id'>): T {
-    pushHistory()
     const newTrial = { ...trial, id: nextId++ } as T
-    trials.value = [...trials.value, newTrial]
+    commit([...trials.value, newTrial])
     save()
     return newTrial
   }
 
   function removeTrial(id: number): void {
-    pushHistory()
-    trials.value = trials.value.filter(tr => tr.id !== id)
+    commit(trials.value.filter(tr => tr.id !== id))
     save()
   }
 
   function clearTrials(): void {
-    pushHistory()
-    trials.value = []
-    nextId = 1
+    commit([])
     save()
   }
 
@@ -95,16 +95,24 @@ export function useExperimentTrials<T extends { id: number }>(config: Experiment
     } catch { /* ignore */ }
   }
 
-  function exportCsv(filename: string, rows: (string | number)[][]): void {
-    if (!trials.value.length) return
+  function exportCsv(filename: string, rows: (string | number)[][]): string {
+    if (!trials.value.length) return ''
     const content = rows.map(row => row.map(cell => String(cell)).join(',')).join('\n')
     const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = filename
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    const createUrl = typeof URL !== 'undefined' ? URL.createObjectURL : undefined
+    if (typeof createUrl === 'function' && typeof document !== 'undefined') {
+      try {
+        const url = createUrl.call(URL, blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = filename
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        setTimeout(() => { if (typeof URL !== 'undefined' && URL.revokeObjectURL) URL.revokeObjectURL(url) }, 0)
+      } catch { /* ignore download errors in non-browser environments */ }
+    }
+    return content
   }
 
   const trialCount = computed(() => trials.value.length)
@@ -114,7 +122,6 @@ export function useExperimentTrials<T extends { id: number }>(config: Experiment
     trialCount,
     history,
     historyIndex,
-    pushHistory,
     addTrial,
     removeTrial,
     clearTrials,

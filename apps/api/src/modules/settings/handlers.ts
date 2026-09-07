@@ -26,6 +26,15 @@ const DEFAULT_SUBSCRIPTION_SETTINGS: Record<string, string> = {
   student_plan_premium_desc: 'مميزات إضافية ودعم ممتد',
 };
 
+// Keys an admin may write via PATCH /:key. Sensitive values (e.g. the
+// emergency password) are intentionally excluded and managed elsewhere.
+const WRITABLE_SETTING_KEYS = new Set<string>([
+  ...Object.keys(DEFAULT_SUBSCRIPTION_SETTINGS),
+  'experiment_physics_enabled', 'experiment_chemistry_enabled', 'experiment_biology_enabled',
+  'experiment_math_enabled', 'chat_enabled', 'registration_enabled', 'stop_registration',
+  'maintenance_mode', 'freeze_all_classes', 'max_class_size',
+]);
+
 const settingsRoutes = new Hono<{ Variables: { user: User } }>();
 
 settingsRoutes.use(authMiddleware);
@@ -36,7 +45,7 @@ settingsRoutes.get('/', async (c) => {
     return c.json({ success: false, message: 'Admin only' }, 403);
   }
   const rows = await db.all<{ key: string; value: string }[]>(
-    'SELECT key, value FROM system_settings WHERE key NOT IN (?)',
+    'SELECT key, value FROM system_settings WHERE key != ?',
     'emergency_password',
   );
   const data: Record<string, string | boolean | number> = {};
@@ -62,6 +71,9 @@ settingsRoutes.patch('/:key', async (c) => {
   const user = c.get('user');
   if (user.role !== 'admin') return c.json({ success: false, message: 'Admin only' }, 403);
   const key = c.req.param('key');
+  if (!WRITABLE_SETTING_KEYS.has(key)) {
+    return c.json({ success: false, message: 'مفتاح غير مسموح بتعديله' }, 403);
+  }
   const { value } = await c.req.json();
   if (value !== 'true' && value !== 'false' && typeof value !== 'string') {
     return c.json({ success: false, message: 'Value must be true/false or string' }, 400);

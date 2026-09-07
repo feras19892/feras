@@ -11,7 +11,7 @@ import SolenoidParamPanel from '../../../../components/experiment/electromagneti
 import SolenoidReadingsPanel from '../../../../components/experiment/electromagnetism/SolenoidReadingsPanel.vue'
 import SolenoidDataPanel from '../../../../components/experiment/electromagnetism/SolenoidDataPanel.vue'
 import SolenoidGuidePanel from '../../../../components/experiment/electromagnetism/SolenoidGuidePanel.vue'
-import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
+import SolenoidHelpModal from '../../../../components/experiment/electromagnetism/SolenoidHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
@@ -44,7 +44,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen"
     />
 
-    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
+    <SolenoidHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col">

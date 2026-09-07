@@ -19,6 +19,8 @@ export interface ExperimentQuestionTemplate {
   title: string;
   status: 'draft' | 'published' | 'archived';
   experiment_title_ar?: string;
+  category?: string;
+  subject?: string;
   question_count?: number;
   questions?: ExperimentQuestion[];
   created_at: string;
@@ -166,6 +168,17 @@ export async function submitAnswers(reportId: number, answers: AnswerInput[]) {
 
 export async function getReportAnswers(reportId: number) {
   return fetchJson<{ success: boolean; answers?: ReportAnswer[]; message?: string }>(`/api/experiment-questions/reports/${reportId}/answers`);
+}
+
+export async function gradeReportAnswer(reportId: number, answerId: number, data: { teacher_score: number; feedback?: string }) {
+  return fetchJson<{ success: boolean; question_score?: number; question_max_score?: number; message?: string }>(
+    `/api/experiment-questions/reports/${reportId}/answers/${answerId}`,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    },
+  );
 }
 
 export async function getStats() {

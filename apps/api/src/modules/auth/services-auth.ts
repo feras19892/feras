@@ -1,5 +1,5 @@
 import type { User, RegisterCredentials, School } from '@my-modern-app/shared-types';
-import { randomBytes, createHash } from 'crypto';
+import { createHash } from 'crypto';
 import { db } from '../../db/index.js';
 import { hashPassword, comparePassword, generateRefreshToken, hashRefreshToken, generateVerificationCode, hashVerificationCode } from './crypto.js';
 import { signAccessToken } from './jwt.js';

@@ -26,6 +26,8 @@ function connectSSE() {
         _connected.value = true
         _connectionType.value = 'sse'
         _retryCount = 0
+        // Stop polling when SSE connects successfully
+        stopPolling()
       },
       onMessage: (eventType, data) => {
         try {

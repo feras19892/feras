@@ -11,7 +11,7 @@ import CircularCoilParamPanel from '../../../../components/experiment/electromag
 import CircularCoilReadingsPanel from '../../../../components/experiment/electromagnetism/CircularCoilReadingsPanel.vue'
 import CircularCoilDataPanel from '../../../../components/experiment/electromagnetism/CircularCoilDataPanel.vue'
 import CircularCoilGuidePanel from '../../../../components/experiment/electromagnetism/CircularCoilGuidePanel.vue'
-import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
+import CircularCoilHelpModal from '../../../../components/experiment/electromagnetism/CircularCoilHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
@@ -44,7 +44,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen"
     />
 
-    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
+    <CircularCoilHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col">

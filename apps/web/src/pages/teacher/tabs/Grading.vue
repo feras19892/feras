@@ -44,9 +44,9 @@
       @close="closeGrading"
     >
       <template v-if="selectedReport">
-        <ReportContent :report="selectedReport" />
+        <ReportContent :report="selectedReport" :editable="true" />
 
-        <div v-if="autoGradeResult?.notes?.length" class="auto-grade-box">
+        <div v-if="!isBiology && autoGradeResult?.notes?.length" class="auto-grade-box">
           <div class="ag-header">🤖 التقييم التلقائي الذكي</div>
           <div class="ag-scores">
             <span>الدقة: <strong>{{ autoGradeResult?.accuracy ?? 0 }}</strong>/25</span>
@@ -61,21 +61,27 @@
           <button class="btn-apply-auto" @click="applyAutoGrade">تطبيق التقييم التلقائي</button>
         </div>
 
-        <div class="form-group">
-          <label>الدقة (0-25)</label>
-          <input v-model.number="gradeAccuracy" type="number" min="0" max="25" class="form-input" />
-        </div>
-        <div class="form-group">
-          <label>العرض (0-25)</label>
-          <input v-model.number="gradePresentation" type="number" min="0" max="25" class="form-input" />
-        </div>
-        <div class="form-group">
-          <label>الاستنتاج (0-25)</label>
-          <input v-model.number="gradeConclusion" type="number" min="0" max="25" class="form-input" />
-        </div>
-        <div class="form-group">
-          <label>الابتكار (0-25)</label>
-          <input v-model.number="gradeInnovation" type="number" min="0" max="25" class="form-input" />
+        <template v-if="!isBiology">
+          <div class="form-group">
+            <label>الدقة (0-25)</label>
+            <input v-model.number="gradeAccuracy" type="number" min="0" max="25" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label>العرض (0-25)</label>
+            <input v-model.number="gradePresentation" type="number" min="0" max="25" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label>الاستنتاج (0-25)</label>
+            <input v-model.number="gradeConclusion" type="number" min="0" max="25" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label>الابتكار (0-25)</label>
+            <input v-model.number="gradeInnovation" type="number" min="0" max="25" class="form-input" />
+          </div>
+        </template>
+        <div v-else class="form-group">
+          <label>الدرجة (0-100) — تضاف إلى درجة أسئلة التجربة تلقائياً</label>
+          <input v-model.number="gradeBiology" type="number" min="0" max="100" class="form-input" placeholder="أدخل الدرجة من 100" />
         </div>
         <div class="form-group">
           <label>الدرجة الإجمالية: {{ totalGrade }}/100</label>
@@ -102,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useTeacherStore } from '@/stores/teacher.store'
 import * as teacherApi from '@/services/core/teacher.api'
 import FilterBar, { type FilterConfig } from '@/components/shared/FilterBar.vue'
@@ -125,14 +131,18 @@ const gradeAccuracy = ref<number | string>(0)
 const gradePresentation = ref<number | string>(0)
 const gradeConclusion = ref<number | string>(0)
 const gradeInnovation = ref<number | string>(0)
+const gradeBiology = ref<number | null>(null)
+const isBiology = computed(() => selectedReport.value?.experiment_type === 'biology')
 const feedback = ref('')
 const submitting = ref(false)
 const autoGradeResult = ref<AutoGradeResult | null>(null)
 const totalGrade = computed(() =>
-  (Number(gradeAccuracy.value) || 0) +
-  (Number(gradePresentation.value) || 0) +
-  (Number(gradeConclusion.value) || 0) +
-  (Number(gradeInnovation.value) || 0)
+  isBiology.value
+    ? (Number(gradeBiology.value) || 0)
+    : (Number(gradeAccuracy.value) || 0) +
+      (Number(gradePresentation.value) || 0) +
+      (Number(gradeConclusion.value) || 0) +
+      (Number(gradeInnovation.value) || 0)
 )
 const classFilter = ref('')
 const statusFilter = ref('')
@@ -221,18 +231,24 @@ function openGrading(report: Report) {
     if (!confirm('هذا التقرير مصحّح مسبقاً. هل تريد إعادة التصحيح؟')) return
   }
   selectedReport.value = report
-  const result = autoGradeReport(report)
-  autoGradeResult.value = result
-  if (report.status === 'submitted' || report.status === 'resubmitted') {
-    gradeAccuracy.value = result.accuracy
-    gradePresentation.value = result.presentation
-    gradeConclusion.value = result.conclusion
-    gradeInnovation.value = result.innovation
+  if (report.experiment_type === 'biology') {
+    // تقارير الأحياء: لا تقييم فيزيائي تلقائي — تصحيح يدوي من 100 + درجة الأسئلة
+    autoGradeResult.value = null
+    gradeBiology.value = typeof report.grade === 'number' ? report.grade : null
   } else {
-    gradeAccuracy.value = report.grade_accuracy ?? 0
-    gradePresentation.value = report.grade_presentation ?? 0
-    gradeConclusion.value = report.grade_conclusion ?? 0
-    gradeInnovation.value = report.grade_innovation ?? 0
+    const result = autoGradeReport(report)
+    autoGradeResult.value = result
+    if (report.status === 'submitted' || report.status === 'resubmitted') {
+      gradeAccuracy.value = result.accuracy
+      gradePresentation.value = result.presentation
+      gradeConclusion.value = result.conclusion
+      gradeInnovation.value = result.innovation
+    } else {
+      gradeAccuracy.value = report.grade_accuracy ?? 0
+      gradePresentation.value = report.grade_presentation ?? 0
+      gradeConclusion.value = report.grade_conclusion ?? 0
+      gradeInnovation.value = report.grade_innovation ?? 0
+    }
   }
   feedback.value = report.feedback ?? ''
 }
@@ -253,11 +269,35 @@ function closeGrading() {
   gradePresentation.value = 0
   gradeConclusion.value = 0
   gradeInnovation.value = 0
+  gradeBiology.value = null
   feedback.value = ''
 }
 
 async function submitGrade() {
   if (!selectedReport.value) return
+  if (isBiology.value) {
+    // تقارير الأحياء: درجة إجمالية واحدة من 100 (درجة الأسئلة محسوبة منفصلة)
+    const g = Number(gradeBiology.value)
+    if (Number.isNaN(g) || g < 0 || g > 100) {
+      toast.error('الدرجة يجب أن تكون بين 0 و 100')
+      return
+    }
+    submitting.value = true
+    try {
+      await teacherApi.gradeReport(selectedReport.value.id, {
+        grade: g, feedback: feedback.value,
+      })
+      eventBus.emit('report:graded', { reportId: selectedReport.value.id, studentId: selectedReport.value.student_id ?? 0 })
+      await store.fetchReports(true)
+      toast.success('تم حفظ التصحيح')
+      closeGrading()
+    } catch (e: any) {
+      toast.error(e?.message || 'فشل حفظ التصحيح')
+    } finally {
+      submitting.value = false
+    }
+    return
+  }
   const nums = [gradeAccuracy, gradePresentation, gradeConclusion, gradeInnovation]
     .map(v => typeof v.value === 'number' ? v.value : Number(v.value))
   if (nums.some(n => Number.isNaN(n) || n < 0 || n > 25)) {
@@ -285,7 +325,17 @@ async function submitGrade() {
 
 async function load() { await store.fetchReports(true) }
 
-onMounted(load)
+onMounted(() => {
+  load()
+  // تحديث لحظي عند تسليم/تصحيح تقرير جديد عبر SSE/EventBus
+  eventBus.on('report:submitted', load)
+  eventBus.on('report:graded', load)
+})
+
+onUnmounted(() => {
+  eventBus.off('report:submitted', load)
+  eventBus.off('report:graded', load)
+})
 </script>
 
 <style scoped src="./Grading.css"></style>

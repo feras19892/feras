@@ -9,6 +9,7 @@ import { chemistryAssistant } from './chemistry-assistant'
 import { biologyEn } from './biology-en_a'
 import { biologyEn_b } from './biology-en_b'
 import { biologyEn_c } from './biology-en_c'
+import { biologyEn_d } from './biology-en_d'
 import { math } from './math'
 import { lens } from './lens'
 import { report } from './report'
@@ -23,7 +24,15 @@ export default {
   chemistryExperiments: chemistryExperimentsEn,
   chemistryTools: chemistryTools.en,
   chemistryAssistant: chemistryAssistant.en,
-  biology: { ...biologyEn, ...biologyEn_b, anatomy: { ...(biologyEn as Record<string, unknown>).anatomy as Record<string, unknown>, ...(biologyEn_b as Record<string, unknown>).anatomy as Record<string, unknown>, ...biologyEn_c } },
+  biology: {
+    ...biologyEn,
+    ...biologyEn_b,
+    ...biologyEn_d,
+    anatomy: { ...(biologyEn as Record<string, unknown>).anatomy as Record<string, unknown>, ...(biologyEn_b as Record<string, unknown>).anatomy as Record<string, unknown>, ...biologyEn_c },
+    topic: { ...(((biologyEn as Record<string, unknown>).topic ?? {}) as Record<string, unknown>), ...(((biologyEn_b as Record<string, unknown>).topic ?? {}) as Record<string, unknown>), ...(((biologyEn_d as Record<string, unknown>).topic ?? {}) as Record<string, unknown>) },
+    section: { ...(((biologyEn as Record<string, unknown>).section ?? {}) as Record<string, unknown>), ...(((biologyEn_b as Record<string, unknown>).section ?? {}) as Record<string, unknown>), ...(((biologyEn_d as Record<string, unknown>).section ?? {}) as Record<string, unknown>) },
+    report: { ...(((biologyEn as Record<string, unknown>).report ?? {}) as Record<string, unknown>), ...(((biologyEn_b as Record<string, unknown>).report ?? {}) as Record<string, unknown>), ...(((biologyEn_d as Record<string, unknown>).report ?? {}) as Record<string, unknown>) },
+  },
   math: math.en,
   lens: lens.en,
   report: report.en,

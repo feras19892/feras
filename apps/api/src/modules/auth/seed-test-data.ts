@@ -8,7 +8,8 @@ const TEACHERS_PER_SCHOOL = 2;
 const STUDENTS_PER_TEACHER = 4;
 const CLASSES_PER_TEACHER = 4;
 const STUDENTS_PER_CLASS = 1;
-const PASSWORD = 'Test1234!';
+// Dev-only seed password — override via TEST_SEED_PASSWORD if needed.
+const PASSWORD = process.env.TEST_SEED_PASSWORD || 'Test1234!';
 
 const CLASS_NAMES = ['الفيزياء', 'الكيمياء', 'الرياضيات', 'علم الأحياء'];
 const CLASS_CODES = ['PHY', 'CHE', 'MATH', 'BIO'];

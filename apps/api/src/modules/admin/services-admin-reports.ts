@@ -105,7 +105,7 @@ function escapeCsvValue(v: unknown): string {
   let s = String(v).replace(/"/g, '""');
   // CSV injection guard: prepend apostrophe to dangerous formula triggers
   if (/^[=+\-@\t\r]/.test(s)) {
-    s = `\'${s}`;
+    s = `'${s}`;
   }
   if (s.includes(',') || s.includes('\n') || s.includes('\r')) {
     return `"${s}"`;

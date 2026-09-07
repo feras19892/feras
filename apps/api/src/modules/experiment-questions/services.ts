@@ -1,4 +1,4 @@
-import { db, dbAll, dbGet, dbRun } from '../../db/index.js';
+import { dbAll, dbGet, dbRun } from '../../db/index.js';
 
 export interface QuestionInput {
   order_index: number;
@@ -75,11 +75,12 @@ export async function getTemplateWithQuestionsForStudent(id: number) {
 
 export async function listTeacherTemplates(teacherId: number) {
   return dbAll<
-    { id: number; experiment_id: string; title: string; status: string; experiment_title_ar: string; question_count: number; created_at: string }
+    { id: number; experiment_id: string; title: string; status: string; experiment_title_ar: string; category: string; subject: string; question_count: number; created_at: string }
   >(
     `SELECT t.id, t.experiment_id, t.title, t.status, e.title_ar as experiment_title_ar,
-       (SELECT COUNT(*) FROM experiment_template_questions q WHERE q.template_id = t.id) as question_count,
-       t.created_at
+        e.category, e.subject,
+        (SELECT COUNT(*) FROM experiment_template_questions q WHERE q.template_id = t.id) as question_count,
+        t.created_at
      FROM experiment_question_templates t
      JOIN experiments e ON e.id = t.experiment_id
      WHERE t.teacher_id = ?
@@ -263,6 +264,55 @@ export async function getAnswersForReport(reportId: number) {
      ORDER BY q.order_index, q.id`,
     reportId,
   );
+}
+
+/** المدرس يصحح إجابة قصيرة يدوياً: درجة + تعليق، ثم يعيد حساب درجة التقرير */
+export async function gradeAnswer(
+  reportId: number,
+  answerId: number,
+  teacherScore: number,
+  feedback: string | undefined,
+) {
+  const answer = await dbGet<{ id: number; report_id: number; question_id: number; score: number | null }>(
+    'SELECT id, report_id, question_id, score FROM experiment_report_answers WHERE id = ? AND report_id = ?',
+    answerId, reportId,
+  );
+  if (!answer) return { error: 'Answer not found' };
+
+  const question = await dbGet<{ points: number }>(
+    'SELECT points FROM experiment_template_questions WHERE id = ?',
+    answer.question_id,
+  );
+  const maxPoints = question?.points ?? 0;
+  if (!Number.isFinite(teacherScore) || teacherScore < 0 || teacherScore > maxPoints) {
+    return { error: `الدرجة يجب أن تكون بين 0 و ${maxPoints}` };
+  }
+
+  await dbRun(
+    `UPDATE experiment_report_answers
+     SET teacher_score = ?, feedback = ?, updated_at = CURRENT_TIMESTAMP
+     WHERE id = ? AND report_id = ?`,
+    teacherScore, feedback ?? null, answerId, reportId,
+  );
+
+  // إعادة حساب درجة التقرير: تقييم المدرس يغلب التصحيح الآلي عند توفره
+  const totals = await dbGet<{ total_score: number; total_points: number }>(
+    `SELECT
+       COALESCE(SUM(COALESCE(a.teacher_score, a.score, 0)), 0) as total_score,
+       COALESCE(SUM(q.points), 0) as total_points
+     FROM experiment_report_answers a
+     JOIN experiment_template_questions q ON q.id = a.question_id
+     WHERE a.report_id = ?`,
+    reportId,
+  );
+  await dbRun(
+    `UPDATE experiment_reports
+     SET question_score = ?, question_max_score = ?, updated_at = CURRENT_TIMESTAMP
+     WHERE id = ?`,
+    totals?.total_score ?? 0, totals?.total_points ?? 0, reportId,
+  );
+
+  return { success: true, question_score: totals?.total_score ?? 0, question_max_score: totals?.total_points ?? 0 };
 }
 
 export * from './stats.js';

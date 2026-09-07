@@ -12,7 +12,7 @@ dashboardRoutes.get('/name-requests', async (c) => {
   if (user.role !== 'teacher' && user.role !== 'admin') {
     return c.json({ success: false, message: 'Forbidden' }, 403);
   }
-  const requests = await getPendingNameRequests(user.id);
+  const requests = await getPendingNameRequests(user.id, user.role === 'admin');
   return c.json({ success: true, requests });
 });
 
@@ -24,7 +24,7 @@ dashboardRoutes.patch('/name-requests/:id', async (c) => {
   const requestId = Number(c.req.param('id'));
   const body = await c.req.json();
   const approved = body.approved === true;
-  const result = await resolveNameRequest(requestId, user.id, approved);
+  const result = await resolveNameRequest(requestId, user.id, approved, user.role === 'admin');
   if (!result.success) {
     return c.json({ success: false, message: result.message }, 400);
   }

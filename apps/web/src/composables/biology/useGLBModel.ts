@@ -29,6 +29,7 @@ export function useGLBModel(
 ) {
   const error = ref<string | null>(null);
   const isLoading = ref(true);
+  const loadProgress = ref(0);
   const selectedPartId = ref<string | null>(null);
   const hoveredPartId = ref<string | null>(null);
   const xRayMode = ref(false);
@@ -45,6 +46,9 @@ export function useGLBModel(
   let loadedModel: THREE.Object3D | null = null;
   const partMeshes = new Map<string, THREE.Mesh[]>();
   const allMeshes: THREE.Mesh[] = [];
+  const originalMeshPositions = new Map<THREE.Mesh, THREE.Vector3>();
+  const meshExplodeVectors = new Map<THREE.Mesh, THREE.Vector3>();
+  const explodeFactor = ref(0);
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   const defaultCameraPos = new THREE.Vector3(0, 2, 18);
@@ -52,6 +56,7 @@ export function useGLBModel(
   const camTween = createCameraTweenState();
   let pmremGenerator: THREE.PMREMGenerator | null = null;
   let envTexture: THREE.Texture | null = null;
+  let envRenderTarget: THREE.WebGLRenderTarget | null = null;
 
   const callApplyMaterialState = (): void => {
     applyMaterialState({ partMeshes, parts, selectedPartId, hoveredPartId, xRayMode, crossSectionMode, clipPlane });
@@ -82,8 +87,9 @@ export function useGLBModel(
     const visibleMeshes = allMeshes.filter((m) => m.visible);
     const intersects = raycaster.intersectObjects(visibleMeshes, false);
     const isVisibleEnough = (mesh: THREE.Mesh): boolean => {
+      if (!mesh.material) return false;
       const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-      return materials.some((m) => !m.transparent || m.opacity >= 0.5);
+      return materials.some((m) => m && (!m.transparent || m.opacity >= 0.5));
     };
     for (const hit of intersects) {
       const hitMesh = hit.object as THREE.Mesh;
@@ -100,6 +106,44 @@ export function useGLBModel(
     camera.position.copy(defaultCameraPos);
     controls.target.copy(defaultTarget);
     controls.update();
+  };
+
+  const computeExplodeData = (): void => {
+    originalMeshPositions.clear();
+    meshExplodeVectors.clear();
+    if (!loadedModel || allMeshes.length === 0) return;
+
+    const modelBox = new THREE.Box3().setFromObject(loadedModel);
+    const modelCenter = modelBox.getCenter(new THREE.Vector3());
+    const modelSize = modelBox.getSize(new THREE.Vector3());
+    const maxDim = Math.max(modelSize.x, modelSize.y, modelSize.z);
+    const modelScale = loadedModel.scale.x || 1;
+
+    for (const mesh of allMeshes) {
+      originalMeshPositions.set(mesh, mesh.position.clone());
+      const meshBox = new THREE.Box3().setFromObject(mesh);
+      const meshCenter = meshBox.getCenter(new THREE.Vector3());
+      const dir = new THREE.Vector3().subVectors(meshCenter, modelCenter);
+      if (dir.lengthSq() < 0.0001) dir.set(0, 1, 0);
+      dir.normalize();
+      dir.multiplyScalar(maxDim * 0.35);
+      meshExplodeVectors.set(mesh, dir.divideScalar(modelScale));
+    }
+    applyExplode();
+  };
+
+  const applyExplode = (): void => {
+    for (const mesh of allMeshes) {
+      const origin = originalMeshPositions.get(mesh);
+      const vec = meshExplodeVectors.get(mesh);
+      if (!origin || !vec) continue;
+      mesh.position.copy(origin).add(vec.clone().multiplyScalar(explodeFactor.value));
+    }
+  };
+
+  const setExplodeFactor = (value: number): void => {
+    explodeFactor.value = value;
+    applyExplode();
   };
 
   const toggleXRay = (): void => { xRayMode.value = !xRayMode.value; callApplyMaterialState(); };
@@ -124,11 +168,14 @@ export function useGLBModel(
     autoRotate.value = false;
     if (controls) controls.autoRotate = false;
     selectedPartId.value = null; hoveredPartId.value = null;
+    explodeFactor.value = 0;
+    applyExplode();
     callApplyMaterialState(); resetCamera();
   };
   const resize = (): void => {
     if (!containerRef.value || !camera || !renderer) return;
     const w = containerRef.value.clientWidth, h = containerRef.value.clientHeight;
+    if (w === 0 || h === 0) return;
     camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h);
   };
 
@@ -142,7 +189,7 @@ export function useGLBModel(
     camera.position.copy(defaultCameraPos);
 
     try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); }
-    catch { error.value = 'WebGL is not supported or has been disabled in this browser.'; return; }
+    catch { error.value = 'WebGL is not supported or has been disabled in this browser.'; isLoading.value = false; return; }
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.localClippingEnabled = true;
@@ -155,6 +202,7 @@ export function useGLBModel(
     const envScene = new THREE.Scene();
     envScene.background = new THREE.Color(0x223344);
     const envRT = pmrem.fromScene(envScene, 0.04);
+    envRenderTarget = envRT;
     envTexture = envRT.texture;
     scene.environment = envRT.texture;
     clipPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
@@ -165,12 +213,14 @@ export function useGLBModel(
     controls.minDistance = 2; controls.maxDistance = 40;
 
     addLights(scene);
+    loadProgress.value = 0;
     loadGLBModel(
       scene, modelPath, parts, partMeshes, allMeshes,
       () => { isLoading.value = false; callApplyMaterialState(); },
       (msg) => { isLoading.value = false; error.value = msg; },
-      (model) => { loadedModel = model; },
+      (model) => { loadedModel = model; computeExplodeData(); },
       modelGenerator, modelEnhancer,
+      (ratio) => { loadProgress.value = ratio; },
     );
 
     const animate = (): void => {
@@ -203,12 +253,14 @@ export function useGLBModel(
       });
     }
     if (envTexture) envTexture.dispose();
+    if (envRenderTarget) envRenderTarget.dispose();
     pmremGenerator?.dispose();
     renderer?.dispose();
     if (renderer?.domElement && containerRef.value) containerRef.value.removeChild(renderer.domElement);
     scene = null; camera = null; renderer = null; controls = null;
     loadedModel = null; partMeshes.clear(); allMeshes.length = 0;
-    envTexture = null; pmremGenerator = null;
+    originalMeshPositions.clear(); meshExplodeVectors.clear();
+    envTexture = null; envRenderTarget = null; pmremGenerator = null;
   };
 
   let resizeObserver: ResizeObserver | null = null;
@@ -227,10 +279,11 @@ export function useGLBModel(
   });
 
   return {
-    error, isLoading, selectedPartId, hoveredPartId,
-    xRayMode, crossSectionMode, crossSectionOffset, autoRotate,
+    error, isLoading, loadProgress, selectedPartId, hoveredPartId,
+    xRayMode, crossSectionMode, crossSectionOffset, autoRotate, explodeFactor,
     highlight, setHovered, pickPart, resetCamera,
     toggleXRay, toggleCrossSection, setCrossSectionOffset,
     toggleAutoRotate, screenshot, resetAll, resize,
+    setExplodeFactor,
   };
 }

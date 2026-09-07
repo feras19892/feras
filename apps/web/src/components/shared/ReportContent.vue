@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { useI18n } from '@/composables/useI18n';
-const { direction } = useI18n();
 import { computed } from 'vue'
 import type { Report } from '@/services/report.service'
+import BiologyReportSection from '@/components/shared/BiologyReportSection.vue'
 
+const props = defineProps<{
+  report: Report;
+  /** وضع المدرس — يفعّل تصحيح الإجابات القصيرة داخل قسم الأحياء */
+  editable?: boolean;
+}>()
 
-const props = defineProps<{ report: Report }>()
+const isBiology = computed(() => props.report.experiment_type === 'biology')
+
 
 export interface Equation {
   name: string
@@ -81,7 +86,10 @@ function formatReadingsAsTable(str: string | undefined) {
     <div class="info-row"><span class="info-label">الإصدار:</span><span>{{ report.version ?? 1 }}</span></div>
   </div>
 
-  <div v-if="report.readings" class="report-section">
+  <!-- 🔬 تقارير الأحياء: عرض مخصص (أجزاء مستكشفة + أدوات + مدة + لقطة + أسئلة المدرس) -->
+  <BiologyReportSection v-if="isBiology" :report="report" :editable="editable" />
+
+  <div v-else-if="report.readings" class="report-section">
     <h4>📊 القراءات</h4>
     <div class="readings-table" v-html="formatReadingsAsTable(report.readings)"></div>
   </div>
@@ -93,7 +101,7 @@ function formatReadingsAsTable(str: string | undefined) {
     <div v-if="report.conclusion_improvements" class="conclusion-block"><span class="conc-label">التحسينات:</span><p>{{ report.conclusion_improvements }}</p></div>
   </div>
 
-  <div v-if="report.chart_snapshot" class="report-section">
+  <div v-if="!isBiology && report.chart_snapshot" class="report-section">
     <h4>📈 الرسم البياني</h4>
     <img :src="report.chart_snapshot" alt="chart" class="chart-img" />
   </div>

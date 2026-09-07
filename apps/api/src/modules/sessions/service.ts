@@ -15,9 +15,14 @@ export async function logLogout(userId: number) {
   );
 }
 
-export async function getActiveSessions() {
+export async function getActiveSessions(schoolId?: number) {
+  const scope = schoolId ? ` AND u.school_id = ?` : '';
+  const params: number[] = schoolId ? [schoolId] : [];
   return db.all(
-    `SELECT s.*, u.name, u.email, u.role FROM session_log s JOIN users u ON s.user_id = u.id WHERE s.logout_at IS NULL AND s.login_at > datetime('now', '-30 minutes') ORDER BY s.login_at DESC LIMIT 100`
+    `SELECT s.*, u.name, u.email, u.role FROM session_log s JOIN users u ON s.user_id = u.id
+     WHERE s.logout_at IS NULL AND s.login_at > datetime('now', '-30 minutes')${scope}
+     ORDER BY s.login_at DESC LIMIT 100`,
+    ...params
   );
 }
 

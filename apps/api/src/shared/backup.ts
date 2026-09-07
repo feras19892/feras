@@ -1,10 +1,8 @@
 import { copyFile, mkdir, readdir, stat, unlink, readFile } from 'fs/promises';
 import { existsSync } from 'fs';
-import { join, dirname, basename } from 'path';
-import { fileURLToPath } from 'url';
+import { join, basename } from 'path';
 import { uploadToCloud, isCloudBackupEnabled } from './cloud-backup.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_PATH = process.env.DB_PATH || './data/app.db';
 const BACKUP_DIR = process.env.BACKUP_DIR || './data/backups';
 const MAX_BACKUPS = Number(process.env.MAX_BACKUPS) || 7;
@@ -95,6 +93,16 @@ export async function listBackups(): Promise<BackupInfo[]> {
   }
 }
 
+// Resolve a caller-supplied backup name to a path strictly inside BACKUP_DIR.
+// Rejects path separators, traversal sequences, and non-.db files.
+function safeBackupPath(backupName: string): string | null {
+  const base = basename(backupName);
+  if (base !== backupName || base.includes('..') || !base.endsWith('.db')) {
+    return null;
+  }
+  return join(BACKUP_DIR, base);
+}
+
 export async function restoreBackup(backupName: string): Promise<boolean> {
   try {
     if (!existsSync(BACKUP_DIR)) {
@@ -102,7 +110,11 @@ export async function restoreBackup(backupName: string): Promise<boolean> {
       return false;
     }
 
-    const backupPath = join(BACKUP_DIR, backupName);
+    const backupPath = safeBackupPath(backupName);
+    if (!backupPath) {
+      console.error('[backup] Invalid backup name:', backupName);
+      return false;
+    }
     if (!existsSync(backupPath)) {
       console.error('[backup] Backup file not found:', backupPath);
       return false;
@@ -136,9 +148,9 @@ export async function downloadBackup(backupName: string): Promise<Buffer | null>
       return null;
     }
 
-    const backupPath = join(BACKUP_DIR, backupName);
-    if (!existsSync(backupPath)) {
-      console.error('[backup] Backup file not found:', backupPath);
+    const backupPath = safeBackupPath(backupName);
+    if (!backupPath || !existsSync(backupPath)) {
+      console.error('[backup] Backup file not found:', backupName);
       return null;
     }
 
@@ -157,9 +169,9 @@ export async function deleteBackup(backupName: string): Promise<boolean> {
       return false;
     }
 
-    const backupPath = join(BACKUP_DIR, backupName);
-    if (!existsSync(backupPath)) {
-      console.error('[backup] Backup file not found:', backupPath);
+    const backupPath = safeBackupPath(backupName);
+    if (!backupPath || !existsSync(backupPath)) {
+      console.error('[backup] Backup file not found:', backupName);
       return false;
     }
 

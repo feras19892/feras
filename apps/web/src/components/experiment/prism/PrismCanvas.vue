@@ -156,9 +156,9 @@ onUnmounted(() => { window.removeEventListener('resize', resize); ro?.disconnect
 watch(
   () => [props.prismAngle, props.angleIncidence, props.wavelength, props.material, props.hitRatio,
          props.deviation, props.n, props.totalInternalReflection, props.criticalAngle, props.running],
-  draw, { deep: true }
+  draw
 )
-watch(options, draw, { deep: true })
+watch(() => [options.showNormals, options.showAllWavelengths, options.showAngleArcs, options.showScreen, options.showGrid], draw)
 </script>
 
 <template>

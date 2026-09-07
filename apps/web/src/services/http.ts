@@ -12,26 +12,44 @@ export function apiUrl(path: string): string {
 }
 
 const ACCESS_TOKEN_KEY = 'auth_access_token';
-const REFRESH_TOKEN_KEY = 'auth_refresh_token';
 
 export function getAccessToken(): string | null {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
 }
 
-export function getRefreshToken(): string | null {
-  return localStorage.getItem(REFRESH_TOKEN_KEY);
+function base64UrlDecode(value: string): string {
+  const base64 = value.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+  return atob(padded);
 }
 
-export function setTokens(access?: string, _refresh?: string) {
+export function isAccessTokenExpired(token: string): boolean {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return true;
+    const json = base64UrlDecode(parts[1]);
+    const payload = JSON.parse(json) as { exp?: number };
+    if (!payload || typeof payload.exp !== 'number') return false;
+    // Treat as expired 60s before actual expiry to avoid race conditions
+    return (payload.exp * 1000) <= Date.now() + 60_000;
+  } catch {
+    return true;
+  }
+}
+
+// refresh token is now only stored in HttpOnly cookie, not in localStorage
+// This function is kept for backward compatibility but always returns null
+export function getRefreshToken(): string | null {
+  return null;
+}
+
+export function setTokens(access?: string) {
   if (access) localStorage.setItem(ACCESS_TOKEN_KEY, access);
-  // أمان (#3): refresh token لم يعد يُخزَّن في localStorage — يعيش فقط في كوكي
-  // HttpOnly يضبطها الـ API (7 أيام + تدوير عند كل تحديث). الجلسات القديمة التي
-  // تحتوي refresh محفوظ سابقاً تستمر بالعمل عبر getRefreshToken() حتى الدخول القادم.
+  // refresh token is now only stored in HttpOnly cookie by the API
 }
 
 export function clearTokens() {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
-  localStorage.removeItem(REFRESH_TOKEN_KEY);
 }
 
 export interface FetchOptions extends RequestInit {
@@ -67,24 +85,22 @@ export type ApiResult<T> = T & { success?: boolean; message?: string };
 
 let refreshPromise: Promise<boolean> | null = null;
 
-async function singleFlightRefresh(): Promise<boolean> {
+export async function singleFlightRefresh(): Promise<boolean> {
   if (refreshPromise) return refreshPromise;
   refreshPromise = (async () => {
     try {
-      const refreshTok = getRefreshToken();
-      const refreshHeaders: Record<string, string> = {
-        'ngrok-skip-browser-warning': 'true',
-      };
-      if (refreshTok) refreshHeaders['Authorization'] = `Bearer ${refreshTok}`;
+      // Refresh token is sent via HttpOnly cookie automatically
       const refreshRes = await fetch(apiUrl('/api/auth/refresh'), {
         method: 'POST',
         credentials: 'include',
-        headers: refreshHeaders,
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        },
         signal: AbortSignal.timeout(10_000),
       });
       if (refreshRes.ok) {
         const data = await refreshRes.json();
-        if (data.accessToken) setTokens(data.accessToken, data.refreshToken);
+        if (data.accessToken) setTokens(data.accessToken);
       }
       return refreshRes.ok;
     } catch {

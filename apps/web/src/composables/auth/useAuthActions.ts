@@ -1,4 +1,4 @@
-import { fetchJson, ApiError, setTokens, clearTokens, getAccessToken } from '../../services/http'
+import { fetchJson, ApiError, setTokens, clearTokens, getAccessToken, isAccessTokenExpired, singleFlightRefresh } from '../../services/http'
 import { useI18n } from '../useI18n'
 import { useClassActions } from './useClassActions'
 import type { User, School } from '@my-modern-app/shared-types'
@@ -55,7 +55,7 @@ export function useAuthActions(
       }
       clearGuestState()
       if (data.accessToken || data.refreshToken) {
-        setTokens(data.accessToken, data.refreshToken)
+        setTokens(data.accessToken)
       }
       if (data.school) {
         if (setSchoolSession) setSchoolSession(data.school)
@@ -122,6 +122,13 @@ export function useAuthActions(
     const accessToken = getAccessToken();
     if (!accessToken) return;
     try {
+      if (isAccessTokenExpired(accessToken)) {
+        const refreshed = await singleFlightRefresh();
+        if (!refreshed) {
+          await logout();
+          return;
+        }
+      }
       const data = await withNetworkRetry(() => fetchJson<{ success: boolean; user: User }>('/api/auth/me'));
       if (data.success && data.user) {
         if (setSchoolSession) setSchoolSession(null)
@@ -141,9 +148,18 @@ export function useAuthActions(
     }
     const accessToken = getAccessToken();
     if (!accessToken) {
+      user.value = null;
       return;
     }
     try {
+      if (isAccessTokenExpired(accessToken)) {
+        const refreshed = await singleFlightRefresh();
+        if (!refreshed) {
+          clearTokens();
+          user.value = null;
+          return;
+        }
+      }
       const data = await withNetworkRetry(() => fetchJson<{ success: boolean; user: User }>('/api/auth/me'));
       if (data.success && data.user) {
         if (setSchoolSession) setSchoolSession(null)

@@ -9,6 +9,7 @@ import { chemistryAssistant } from './chemistry-assistant'
 import { biologyAr } from './biology-ar_a'
 import { biologyAr_b } from './biology-ar_b'
 import { biologyAr_c } from './biology-ar_c'
+import { biologyAr_d } from './biology-ar_d'
 import { math } from './math'
 import { lens } from './lens'
 import { report } from './report'
@@ -23,7 +24,15 @@ export default {
   chemistryExperiments: chemistryExperimentsAr,
   chemistryTools: chemistryTools.ar,
   chemistryAssistant: chemistryAssistant.ar,
-  biology: { ...biologyAr, ...biologyAr_b, anatomy: { ...(biologyAr as Record<string, unknown>).anatomy as Record<string, unknown>, ...(biologyAr_b as Record<string, unknown>).anatomy as Record<string, unknown>, ...biologyAr_c } },
+  biology: {
+    ...biologyAr,
+    ...biologyAr_b,
+    ...biologyAr_d,
+    anatomy: { ...(biologyAr as Record<string, unknown>).anatomy as Record<string, unknown>, ...(biologyAr_b as Record<string, unknown>).anatomy as Record<string, unknown>, ...biologyAr_c },
+    topic: { ...(((biologyAr as Record<string, unknown>).topic ?? {}) as Record<string, unknown>), ...(((biologyAr_b as Record<string, unknown>).topic ?? {}) as Record<string, unknown>), ...(((biologyAr_d as Record<string, unknown>).topic ?? {}) as Record<string, unknown>) },
+    section: { ...(((biologyAr as Record<string, unknown>).section ?? {}) as Record<string, unknown>), ...(((biologyAr_b as Record<string, unknown>).section ?? {}) as Record<string, unknown>), ...(((biologyAr_d as Record<string, unknown>).section ?? {}) as Record<string, unknown>) },
+    report: { ...(((biologyAr as Record<string, unknown>).report ?? {}) as Record<string, unknown>), ...(((biologyAr_b as Record<string, unknown>).report ?? {}) as Record<string, unknown>), ...(((biologyAr_d as Record<string, unknown>).report ?? {}) as Record<string, unknown>) },
+  },
   math: math.ar,
   lens: lens.ar,
   report: report.ar,

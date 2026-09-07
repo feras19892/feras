@@ -12,6 +12,7 @@ import FaradayStatusBar from '../../../../components/experiment/faraday/FaradayS
 import FaradayControlBar from '../../../../components/experiment/faraday/FaradayControlBar.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import ResetConfirmModal from '../../../../components/shared/ResetConfirmModal.vue'
+import FaradayHelpModal from '../../../../components/experiment/faraday/FaradayHelpModal.vue'
 
 
 
@@ -43,6 +44,8 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown) })
       @toggle-help="helpOpen = !helpOpen"
       @analyze-results="ex.exportToAnalysis"
     />
+
+    <FaradayHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col" :style="{ width: ex.layout.widths.data + 'px' }">

@@ -125,57 +125,85 @@ export async function useInviteCode(input: JoinByCodeInput): Promise<{ success: 
   if (!validation.ok) return { success: false, message: validation.message };
   const invite = validation.invite;
 
-  const sub = await getActiveSubscriptionForOwner(invite.owner_id, invite.owner_type);
-  const limitMsg = sub ? await checkMemberLimit(invite, sub, input.member_id) : null;
-  if (limitMsg) return { success: false, message: limitMsg };
+  let membership: TenantMembership | undefined;
+  let message = 'تم الانضمام بنجاح';
+  let isNewJoin = false;
 
-  const existing = await db.get<TenantMembership>(
-    `SELECT * FROM tenant_memberships WHERE member_id = ? AND tenant_id = ? AND tenant_type = ?`,
-    input.member_id,
-    invite.owner_id,
-    invite.owner_type,
-  );
+  await db.run('BEGIN IMMEDIATE');
+  try {
+    // All membership/limit checks and the insert run inside one transaction so
+    // concurrent joins cannot exceed the subscription cap or the code's max_uses.
+    const sub = await getActiveSubscriptionForOwner(invite.owner_id, invite.owner_type);
+    const limitMsg = sub ? await checkMemberLimit(invite, sub, input.member_id) : 'اشتراك صاحب الدعوة غير نشط';
+    if (limitMsg) {
+      await db.run('ROLLBACK');
+      return { success: false, message: limitMsg };
+    }
 
-  if (existing) {
-    if (existing.status === 'active') return { success: false, message: 'أنت منضم بالفعل إلى هذا المستأجر' };
-    await db.run(
-      `UPDATE tenant_memberships SET status = 'active', invite_code_id = ?, joined_at = ? WHERE id = ?`,
+    // Atomically consume a use — fails if the code was exhausted in the meantime
+    const consumed = await db.run(
+      'UPDATE invite_codes SET used_count = used_count + 1 WHERE id = ? AND (max_uses IS NULL OR used_count < max_uses)',
       invite.id,
-      new Date().toISOString(),
-      existing.id,
     );
-    await db.run('UPDATE invite_codes SET used_count = used_count + 1 WHERE id = ?', invite.id);
-    const row = await db.get<TenantMembership>('SELECT * FROM tenant_memberships WHERE id = ?', existing.id);
+    if (!consumed.changes) {
+      await db.run('ROLLBACK');
+      return { success: false, message: 'تم استنفاد رمز الدعوة' };
+    }
+
+    const existing = await db.get<TenantMembership>(
+      `SELECT * FROM tenant_memberships WHERE member_id = ? AND tenant_id = ? AND tenant_type = ?`,
+      input.member_id,
+      invite.owner_id,
+      invite.owner_type,
+    );
+
+    if (existing) {
+      if (existing.status === 'active') {
+        await db.run('ROLLBACK');
+        return { success: false, message: 'أنت منضم بالفعل إلى هذا المستأجر' };
+      }
+      await db.run(
+        `UPDATE tenant_memberships SET status = 'active', invite_code_id = ?, joined_at = ? WHERE id = ?`,
+        invite.id,
+        new Date().toISOString(),
+        existing.id,
+      );
+      membership = await db.get<TenantMembership>('SELECT * FROM tenant_memberships WHERE id = ?', existing.id);
+      message = 'تم إعادة تفعيل الانضمام';
+    } else {
+      const result = await db.run(
+        `INSERT INTO tenant_memberships (member_id, tenant_id, tenant_type, invite_code_id, joined_at, status)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        input.member_id,
+        invite.owner_id,
+        invite.owner_type,
+        invite.id,
+        new Date().toISOString(),
+        'active',
+      );
+      membership = await db.get<TenantMembership>('SELECT * FROM tenant_memberships WHERE id = ?', result.lastID);
+      isNewJoin = true;
+    }
+
     if (invite.owner_type === 'school') {
       await db.run('UPDATE users SET school_id = ? WHERE id = ?', invite.owner_id, input.member_id);
     }
-    return { success: true, message: 'تم إعادة تفعيل الانضمام', membership: row };
+    await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK').catch(() => {});
+    throw err;
   }
 
-  const result = await db.run(
-    `INSERT INTO tenant_memberships (member_id, tenant_id, tenant_type, invite_code_id, joined_at, status)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    input.member_id,
-    invite.owner_id,
-    invite.owner_type,
-    invite.id,
-    new Date().toISOString(),
-    'active',
-  );
-  await db.run('UPDATE invite_codes SET used_count = used_count + 1 WHERE id = ?', invite.id);
-  const row = await db.get<TenantMembership>('SELECT * FROM tenant_memberships WHERE id = ?', result.lastID);
-  if (invite.owner_type === 'school') {
-    await db.run('UPDATE users SET school_id = ? WHERE id = ?', invite.owner_id, input.member_id);
+  if (isNewJoin) {
+    await notifyActivation(input.member_id, invite.owner_id, invite.owner_type);
   }
-  await notifyActivation(input.member_id, invite.owner_id, invite.owner_type);
-  return { success: true, message: 'تم الانضمام بنجاح', membership: row };
+  return { success: true, message, membership };
 }
 
 export async function getTenantMembers(
   tenantId: number,
   tenantType: 'teacher' | 'school',
 ): Promise<{ member_id: number; name: string; email: string; joined_at: string; status: string; invite_code_id?: number | null; blocked_at?: string | null; block_until?: string | null; block_reason?: string | null }[]> {
-  const userTable = tenantType === 'school' ? 'users' : 'users';
   return db.all(
     `SELECT tm.member_id, u.name, u.email, u.role, u.blocked_at, u.block_until, u.block_reason, tm.invite_code_id, tm.joined_at, tm.status
      FROM tenant_memberships tm

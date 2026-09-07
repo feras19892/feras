@@ -37,9 +37,11 @@ export function pushToUser(userId: number, event: string, data: unknown): void {
     try {
       client.controller.enqueue(new TextEncoder().encode(payload));
     } catch {
-      // client disconnected, will be cleaned up
+      // Dead client — remove immediately instead of waiting for heartbeat failure
+      userClients.delete(client);
     }
   }
+  if (userClients.size === 0) clients.delete(userId);
 }
 
 export function pushToSchool(schoolId: number, event: string, data: unknown): void {
@@ -51,9 +53,11 @@ export function pushToSchool(schoolId: number, event: string, data: unknown): vo
     try {
       client.controller.enqueue(new TextEncoder().encode(payload));
     } catch {
-      // client disconnected, will be cleaned up
+      // Dead client — remove immediately instead of waiting for heartbeat failure
+      sClients.delete(client);
     }
   }
+  if (sClients.size === 0) schoolClients.delete(schoolId);
 }
 
 export function pushToUsers(userIds: number[], event: string, data: unknown): void {

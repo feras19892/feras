@@ -24,6 +24,7 @@ import ChemAnalysisButton from '../../components/experiment/chemistry/ChemAnalys
 import TitrationDataTable from '../../components/experiment/chemistry/TitrationDataTable.vue';
 import TitrationCurveChart from '../../components/experiment/chemistry/TitrationCurveChart.vue';
 import ChemReportModal from '../../components/experiment/chemistry/ChemReportModal.vue';
+import ChemistryHelpModal from '../../components/experiment/chemistry/ChemistryHelpModal.vue';
 import OnboardingOverlay from '../../components/experiment/chemistry/OnboardingOverlay.vue';
 import { buretteWarning } from '../../composables/chemistry/useLabSimulation';
 const router = useRouter();
@@ -36,6 +37,7 @@ const showTheoryPanel = ref(false);
 const titrationReadings = ref<TitrationReading[]>([]);
 const selectedState = ref<ToolState | null>(null);
 const canvasRef = ref<InstanceType<typeof WorkspaceCanvas> | null>(null);
+const helpOpen = ref(false);
 
 const {
   showReport, reportData, reportFields, reportTemplate,
@@ -131,7 +133,9 @@ onUnmounted(() => stopIdleMessages());
       @reset-lab="canvasRef?.resetLab()"
       @show-report="showReportManual"
       @go-back="router.push('/home')"
+      @toggle-help="helpOpen = true"
     />
+    <ChemistryHelpModal :open="helpOpen" @close="helpOpen = false" />
     <ExperimentSelector
       v-if="showExperimentSelector"
       @select="onSelectExperiment"

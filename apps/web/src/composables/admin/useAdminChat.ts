@@ -95,14 +95,22 @@ export function useAdminChat() {
     selectedClass.value = ''
   }
 
+  let isMounted = false
+  let abortController: AbortController | null = null
+
   async function load() {
+    if (!isMounted) return
+    if (abortController) { abortController.abort(); abortController = null }
+    const controller = new AbortController()
+    abortController = controller
     loading.value = true
     try {
       const [statsRes, msgsRes, flaggedRes] = await Promise.all([
-        getChatStats(),
-        getChatMessages(),
-        getFlaggedChatMessages(),
+        getChatStats(controller.signal),
+        getChatMessages(controller.signal),
+        getFlaggedChatMessages(controller.signal),
       ])
+      if (!isMounted || controller.signal.aborted) return
       if (statsRes.success) {
         stats.value = statsRes.stats
         enabled.value = statsRes.stats.chatEnabled
@@ -110,9 +118,11 @@ export function useAdminChat() {
       if (msgsRes.success) messages.value = msgsRes.messages
       if (flaggedRes.success) flagged.value = flaggedRes.messages
     } catch (e: any) {
+      if (!isMounted || controller.signal.aborted) return
       toast.error(e.message || t('common.error'))
     } finally {
-      loading.value = false
+      if (isMounted && abortController === controller) loading.value = false
+      if (abortController === controller) abortController = null
     }
   }
 
@@ -177,10 +187,11 @@ export function useAdminChat() {
 
   function stopPolling() {
     if (pollTimer) { clearInterval(pollTimer); pollTimer = null }
+    if (abortController) { abortController.abort(); abortController = null }
   }
 
-  onMounted(() => { load(); startPolling() })
-  onUnmounted(stopPolling)
+  onMounted(() => { isMounted = true; load(); startPolling() })
+  onUnmounted(() => { isMounted = false; stopPolling() })
 
   return {
     t,

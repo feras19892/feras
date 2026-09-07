@@ -323,16 +323,16 @@ export interface ChatStats {
   byClass: { id: string; name: string; msg_count: number; flagged_count: number }[]
 }
 
-export function getChatStats() {
-  return fetchJson<{ success: boolean; stats: ChatStats }>('/api/chat/admin/stats')
+export function getChatStats(signal?: AbortSignal) {
+  return fetchJson<{ success: boolean; stats: ChatStats }>('/api/chat/admin/stats', { signal })
 }
 
-export function getChatMessages() {
-  return fetchJson<{ success: boolean; messages: ChatMessage[] }>('/api/chat/admin/all')
+export function getChatMessages(signal?: AbortSignal) {
+  return fetchJson<{ success: boolean; messages: ChatMessage[] }>('/api/chat/admin/all', { signal })
 }
 
-export function getFlaggedChatMessages() {
-  return fetchJson<{ success: boolean; messages: ChatMessage[] }>('/api/chat/flagged/list')
+export function getFlaggedChatMessages(signal?: AbortSignal) {
+  return fetchJson<{ success: boolean; messages: ChatMessage[] }>('/api/chat/flagged/list', { signal })
 }
 
 export function deleteChatMessage(messageId: number) {

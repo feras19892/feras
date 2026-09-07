@@ -25,4 +25,12 @@ export const cellBiologyTopics: BiologyTopic[] = [
     route: '/biology/cell/protein-synthesis',
     available: true,
   },
+  {
+    id: 'animal-cell',
+    titleKey: 'biology.animalCellTitle',
+    descriptionKey: 'biology.animalCellSubtitle',
+    icon: '🐾',
+    route: '/biology/cell/animal-cell',
+    available: true,
+  },
 ];

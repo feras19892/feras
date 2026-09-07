@@ -9,6 +9,8 @@ build/
 # Environment variables (never commit real values — .env.example is the only exception)
 .env
 .env.*
+.env.local
+.env.*.local
 !.env.example
 
 # Vercel CLI local data (may contain pulled environment values)

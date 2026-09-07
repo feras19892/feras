@@ -25,7 +25,10 @@ export function useAnimationLoop(
       redraw()
       elapsedSeconds.value = Math.floor((Date.now() - runStartTime.value) / 1000)
     }
-    animFrame = requestAnimationFrame(animLoop)
+    // FIX: Only schedule next frame if still running, otherwise stop the loop to save CPU/GPU
+    if (workshop.running.value) {
+      animFrame = requestAnimationFrame(animLoop)
+    }
   }
 
   function toggleRun() {

@@ -11,7 +11,7 @@ import TorqueCoilParamPanel from '../../../../components/experiment/electromagne
 import TorqueCoilReadingsPanel from '../../../../components/experiment/electromagnetism/TorqueCoilReadingsPanel.vue'
 import TorqueCoilDataPanel from '../../../../components/experiment/electromagnetism/TorqueCoilDataPanel.vue'
 import TorqueCoilGuidePanel from '../../../../components/experiment/electromagnetism/TorqueCoilGuidePanel.vue'
-import ElectromagnetismHelpModal from '../../../../components/experiment/electromagnetism/ElectromagnetismHelpModal.vue'
+import TorqueCoilHelpModal from '../../../../components/experiment/electromagnetism/TorqueCoilHelpModal.vue'
 import DraggablePanel from '../../../../components/experiment/shared/DraggablePanel.vue'
 import { ref } from 'vue'
 
@@ -44,7 +44,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
       @toggle-help="helpOpen = !helpOpen"
     />
 
-    <ElectromagnetismHelpModal :open="helpOpen" @close="helpOpen = false" />
+    <TorqueCoilHelpModal :open="helpOpen" @close="helpOpen = false" />
 
     <div class="lab-grid">
       <div class="lab-col data-col">

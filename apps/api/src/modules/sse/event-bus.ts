@@ -1,13 +1,16 @@
 import { EventEmitter } from 'events';
 
 export interface SSEEvent {
-  type: 'approval_created' | 'approval_escalated' | 'approval_resolved' | 'report_submitted' | 'report_resubmitted' | 'report_graded' | 'chat_flagged' | 'class_frozen' | 'class_unfrozen' | 'class_created';
+  type: 'approval_created' | 'approval_escalated' | 'approval_resolved' | 'report_submitted' | 'report_resubmitted' | 'report_graded' | 'chat_flagged' | 'class_frozen' | 'class_unfrozen' | 'class_created' | 'class_updated' | 'notification' | 'user_banned' | 'user_unbanned';
   payload: Record<string, unknown>;
   targetUserId?: number;
   targetRole?: string;
   schoolId?: number;
   timestamp: string;
 }
+
+// eslint-disable-next-line no-unused-vars
+export type SSEEventListener = (event: SSEEvent) => void;
 
 class SSEEventBus extends EventEmitter {
   private static instance: SSEEventBus;
@@ -31,17 +34,17 @@ class SSEEventBus extends EventEmitter {
     this.emit(`type:${event.type}`, event);
   }
 
-  onEvent(listener: (event: SSEEvent) => void) {
+  onEvent(listener: SSEEventListener) {
     this.on('event', listener);
     return () => this.off('event', listener);
   }
 
-  onUserEvent(userId: number, listener: (event: SSEEvent) => void) {
+  onUserEvent(userId: number, listener: SSEEventListener) {
     this.on(`user:${userId}`, listener);
     return () => this.off(`user:${userId}`, listener);
   }
 
-  onRoleEvent(role: string, listener: (event: SSEEvent) => void) {
+  onRoleEvent(role: string, listener: SSEEventListener) {
     this.on(`role:${role}`, listener);
     return () => this.off(`role:${role}`, listener);
   }

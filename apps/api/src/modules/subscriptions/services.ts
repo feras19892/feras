@@ -211,9 +211,15 @@ export async function getAdminSubscriptions(
     values.push(like, like, like, like);
   }
   const where = wheres.length ? `WHERE ${wheres.join(' AND ')}` : '';
-  const orderBy = ['s.created_at', 's.expires_at', 'p.price_cents'].includes(`s.${sort}`) || sort === 'price_cents'
-    ? `ORDER BY ${sort === 'price_cents' ? 'p.price_cents' : `s.${sort}`} ${order.toUpperCase()}`
-    : 'ORDER BY s.created_at DESC';
+  // Whitelist-only ORDER BY — never interpolate raw query params into SQL.
+  const SORT_COLUMNS: Record<string, string> = {
+    created_at: 's.created_at',
+    expires_at: 's.expires_at',
+    price_cents: 'p.price_cents',
+  };
+  const sortColumn = SORT_COLUMNS[sort] ?? 's.created_at';
+  const sortDir = order === 'asc' ? 'ASC' : 'DESC';
+  const orderBy = `ORDER BY ${sortColumn} ${sortDir}`;
   const offset = (page - 1) * limit;
   return db.all<SubscriptionWithPlan[]>(
     `SELECT s.*, p.name as plan_name, p.type as plan_type, p.price_cents,

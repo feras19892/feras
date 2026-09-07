@@ -89,6 +89,10 @@ app.get('/', async (c) => {
   if (user.role === 'teacher') {
     const classId = c.req.query('class_id');
     if (classId) {
+      const classRow = await db.get<{ teacher_id: number }>('SELECT teacher_id FROM classes WHERE id = ?', classId);
+      if (!classRow || classRow.teacher_id !== user.id) {
+        return c.json({ success: false, message: 'غير مصرح' }, 403);
+      }
       const list = await svc.getClassAnnouncements(classId);
       return c.json({ success: true, announcements: list });
     }
@@ -121,6 +125,10 @@ app.get('/', async (c) => {
     const list = await svc.getSchoolAnnouncements(user.id);
     const global = await svc.getGlobalAnnouncements();
     return c.json({ success: true, announcements: [...list, ...global] });
+  }
+
+  if (user.role !== 'admin') {
+    return c.json({ success: false, message: 'غير مصرح' }, 403);
   }
 
   // Admin sees all

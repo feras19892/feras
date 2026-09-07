@@ -9,7 +9,7 @@ import * as sessionSvc from '../sessions/service.js';
 import { setRefreshCookie, getRefreshCookie, clearRefreshCookie, setAccessCookie, getAccessCookie, clearAccessCookie } from './cookies.js';
 import { verifyAccessToken } from './jwt.js';
 import { authMiddleware } from './middleware.js';
-import { loginRateLimit, passwordResetRateLimit, verifyEmailRateLimit } from '../../shared/middleware/rate-limit.js';
+import { passwordResetRateLimit, verifyEmailRateLimit } from '../../shared/middleware/rate-limit.js';
 import { db } from '../../db/index.js';
 import { getSystemSetting, getSystemSettingBool } from '../../shared/system-settings.js';
 import { getActiveSubscription } from '../subscriptions/services.js';
@@ -253,7 +253,7 @@ authRoutes.post('/resend-verification', verifyEmailRateLimit, zValidator('json',
 // ─── Forgot Password ───
 authRoutes.post('/forgot-password', passwordResetRateLimit, zValidator('json', z.object({ email: z.string().email() })), async (c) => {
   const { email } = c.req.valid('json');
-  const result = await requestPasswordReset(email);
+  await requestPasswordReset(email);
   return c.json({ success: true });
 });
 

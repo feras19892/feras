@@ -57,6 +57,13 @@ export const teacherDashboardConfig: DashboardConfig = {
       lazy: true
     },
     {
+      id: 'bio-analytics',
+      label: 'تحليلات الأحياء',
+      icon: '📈',
+      component: () => import('@/pages/teacher/tabs/BiologyAnalytics.vue'),
+      lazy: true
+    },
+    {
       id: 'chat',
       label: 'الدردشة',
       icon: '💬',
@@ -105,6 +112,7 @@ export const teacherDashboardConfig: DashboardConfig = {
         { id: 'experiments', label: 'التجارب', icon: '🔬', tabId: 'experiments' },
         { id: 'exp-questions', label: 'أسئلة التجارب', icon: '❓', tabId: 'exp-questions' },
         { id: 'grading', label: 'تقارير التجارب', icon: '📄', tabId: 'grading' },
+        { id: 'bio-analytics', label: 'تحليلات الأحياء', icon: '📈', tabId: 'bio-analytics' },
         { id: 'chat', label: 'الدردشة', icon: '💬', tabId: 'chat' },
         { id: 'notifications', label: 'الإشعارات', icon: '🔔', tabId: 'notifications' },
         { id: 'complaints', label: 'التقييم والشكاوى', icon: '⭐', tabId: 'complaints' },

@@ -40,7 +40,7 @@ export function isAllowedOrigin(origin: string): boolean {
 }
 
 export const corsMiddleware: MiddlewareHandler = cors({
-  origin: (origin, c) => {
+  origin: (origin) => {
     if (!origin) return null;
     if (isAllowedOrigin(origin)) {
       return origin;

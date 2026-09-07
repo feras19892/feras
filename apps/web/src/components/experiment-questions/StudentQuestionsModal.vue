@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n';
-const { direction } = useI18n();
+const { t } = useI18n();
 import { ref, watch } from 'vue'
 import { getStudentQuestions } from '@/services/experiment-questions.service'
 import type { StudentQuestion, AnswerInput } from '@/services/experiment-questions.service'

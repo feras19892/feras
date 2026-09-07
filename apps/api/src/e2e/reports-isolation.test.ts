@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { app } from '../index.js'
-import { db, dbRun, dbGet } from '../db/index.js'
+import { dbRun, dbGet } from '../db/index.js'
 import { signAccessToken } from '../modules/auth/jwt.js'
 
 async function tokenFor(payload: { sub: string; email: string; name: string; role: any; school_id?: number | null }) {

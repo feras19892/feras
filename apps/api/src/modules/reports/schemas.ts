@@ -17,6 +17,7 @@ export const createReportSchema = z.object({
   plots: z.string().optional(),
   chart_snapshot: z.string().max(500_000).optional(),
   question_template_id: z.number().int().nullable().optional(),
+  school_id: z.number().int().positive().optional(), // Optional: for multi-tenancy isolation
 });
 
 export const gradeReportSchema = z.object({

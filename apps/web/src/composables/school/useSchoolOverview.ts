@@ -99,26 +99,18 @@ export function useSchoolOverview() {
   })
 
   const lineData = computed(() => {
-    const counts: Record<string, number> = {}
-    for (const c of dailyReport.value?.classes ?? []) {
-      const key = dailyReport.value?.date ?? ''
-      counts[key] = (counts[key] || 0) + c.reports_today
-    }
-    const days: { label: string; x: number; y: number }[] = []
-    const list: { label: string; count: number }[] = []
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date()
-      d.setDate(d.getDate() - i)
-      const key = d.toISOString().split('T')[0]
-      const label = d.toLocaleDateString('ar', { day: 'numeric' })
-      list.push({ label, count: counts[key] || 0 })
-    }
-    const max = Math.max(1, ...list.map(x => x.count))
-    const step = list.length > 1 ? 260 / (list.length - 1) : 0
-    list.forEach((d, i) => {
-      days.push({ label: d.label, x: 10 + i * step, y: 90 - (d.count / max) * 70 })
-    })
-    return days
+    // مصدر البيانات هو تقرير يومي مفرد (dailyReport) — لا سجل 7 أيام متاح.
+    // ارسم توزيع تقارير اليوم حسب الفصل (بيانات حقيقية) بدلاً من سلسلة زمنية وهمية.
+    const classes = (dailyReport.value?.classes ?? []).slice(0, 7)
+    const counts = classes.map(c => c.reports_today ?? 0)
+    const max = Math.max(1, ...counts)
+    const n = classes.length
+    const step = n > 1 ? 260 / (n - 1) : 0
+    return classes.map((c, i) => ({
+      label: (c.class_name || `ف${i + 1}`).slice(0, 6),
+      x: 10 + i * step,
+      y: 90 - ((counts[i] ?? 0) / max) * 70,
+    }))
   })
 
   const gridLines = [20, 40, 60, 80]

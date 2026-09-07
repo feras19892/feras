@@ -53,7 +53,7 @@ describe('http service', () => {
       );
 
       const result = await fetchJson('/fail');
-      expect(result).toEqual({ success: false, message: 'API not available' });
+      expect(result).toEqual({ success: false, message: 'Resource not found' });
     });
 
     it('retries after successful refresh on 401', async () => {
@@ -79,7 +79,7 @@ describe('http service', () => {
       expect(fetchMock).toHaveBeenCalledTimes(3);
     });
 
-    it('throws after failed refresh on 401', async () => {
+    it('returns session-expired object after failed refresh on 401', async () => {
       fetchMock.mockResolvedValueOnce(
         new Response('Unauthorized', { status: 401, statusText: 'Unauthorized' })
       );
@@ -88,7 +88,11 @@ describe('http service', () => {
         new Response('Forbidden', { status: 403 })
       );
 
-      await expect(fetchJson('/protected')).rejects.toThrow('Request failed: 401 Unauthorized');
+      const result = await fetchJson('/protected');
+      expect(result).toEqual({ success: false, message: 'Session expired' });
+
+      // Calls: /protected (401), refresh attempt (403) — no retry after failed refresh
+      expect(fetchMock).toHaveBeenCalledTimes(2);
     });
 
     it('returns parsed JSON on success', async () => {
